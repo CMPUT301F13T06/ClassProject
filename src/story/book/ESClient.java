@@ -84,7 +84,7 @@ public class ESClient {
 			 
 			closeConnection(conn);
 
-			return jsonclient.unSerializeElasticRequest(story_string);			
+			return jsonclient.unSerializeESResponse(story_string);			
 			 
 		} catch (Exception e) {
 			e.printStackTrace();
