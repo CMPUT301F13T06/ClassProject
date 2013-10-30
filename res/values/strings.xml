@@ -4,5 +4,9 @@
     <string name="app_name">C301F2013T06 Story</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="Blank"/>
+    <string name="FragmentTitle"/>
+    <string name="hint_text_field">Enter text here</string>
+    <string name="Button_SaveEditText">Save</string>
 
 </resources>
