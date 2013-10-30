@@ -4,17 +4,17 @@ import com.google.gson.Gson;
 
 public class JSONClient {
 	
-	private Gson Jsc = new Gson();
+	private static Gson Gsonclient = new Gson();
 	
-	public JSONClient() {}
+	private JSONClient() {}
 	
 	/**
 	 * 
 	 * @param s is an Object of type story
 	 * @return s as a serialized string.
 	 */
-	protected String serializeStory(Story s){
-		return Jsc.toJson(s); 
+	static String serializeStory(Story s){
+		return Gsonclient.toJson(s); 
 	}
 	
 	/**
@@ -22,8 +22,8 @@ public class JSONClient {
 	 * @param Serial is a string of serialized story
 	 * @return a null on failure or a Story object
 	 */
-	protected Story unSerialize(String Serial){
-		return Jsc.fromJson(Serial, Story.class);
+	static Story unSerialize(String Serial){
+		return Gsonclient.fromJson(Serial, Story.class);
 	}
 
 	/**
@@ -31,9 +31,9 @@ public class JSONClient {
 	 * @param Serial is a string of serialized ElasticSearch response
 	 * @return a null on failure or a Story object
 	 */
-	protected Story unSerializeESResponse(String Serial){
+	static Story unSerializeESResponse(String Serial){
 		Story s = null;
-		ElasticSearchResponse res = Jsc.fromJson(Serial, ElasticSearchResponse.class);
+		ElasticSearchResponse res = Gsonclient.fromJson(Serial, ElasticSearchResponse.class);
 		s = res.getSource();
 		return s;
 	}
