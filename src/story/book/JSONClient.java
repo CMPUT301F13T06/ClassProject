@@ -25,5 +25,17 @@ public class JSONClient {
 	protected Story unSerialize(String Serial){
 		return Jsc.fromJson(Serial, Story.class);
 	}
+
+	/**
+	 * 
+	 * @param Serial is a string of serialized ElasticSearch response
+	 * @return a null on failure or a Story object
+	 */
+	protected Story unSerializeElasticRequest(String Serial){
+		Story s = null;
+		ElasticSearchResponse res = Jsc.fromJson(Serial, ElasticSearchResponse.class);
+		s = res.getSource();
+		return s;
+	}
 	
 }
