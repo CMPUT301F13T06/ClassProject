@@ -7,11 +7,15 @@ import java.io.InputStreamReader;
 
 import android.content.Context;
 
-public class IOClient {
+public class IOClient{
 	
 	private Context context;
+	private JSONClient Jsc;
 	
-	public IOClient(Context c){this.context = c;}
+	public IOClient(Context c) {
+		this.context = c;
+		Jsc = new JSONClient();
+	}
 	
 	/**
 	 * http://stackoverflow.com/questions/14376807/how-to-read-write-string-from-a-file-in-android
@@ -19,7 +23,8 @@ public class IOClient {
 	 * @param serialStory
 	 * @throws IOException
 	 */
-	public void saveStory(String FileID, String serialStory) throws IOException{
+	public void saveStory(String FileID, Story aStory) throws IOException{
+		String serialStory = Jsc.serializeStory(aStory);
 		FileOutputStream fos =  context.openFileOutput(FileID, Context.MODE_PRIVATE);
 		fos.write(serialStory.getBytes());
 		fos.flush();
@@ -32,7 +37,7 @@ public class IOClient {
 	 * @returns A string representing a serialized story;
 	 * @throws IOException
 	 */
-	public String getStory(String FileID) throws IOException{
+	public Story getStory(String FileID) throws IOException{
 		FileInputStream fis = context.openFileInput(FileID);
 		InputStreamReader isr = new InputStreamReader(fis);
 		char[] inputBuffer = new char[5048];
@@ -42,6 +47,6 @@ public class IOClient {
 			sb.append(inputBuffer, 0, l);
 		}
 		fis.close();
-		return sb.toString();
+		return Jsc.unSerialize(sb.toString());
 	}
 }

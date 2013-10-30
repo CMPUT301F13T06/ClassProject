@@ -3,30 +3,27 @@ package story.book;
 import com.google.gson.Gson;
 
 public class JSONClient {
-	private Gson g;
 	
-	public JSONClient() {
-		g = new Gson();
-	}
+	private Gson Jsc = new Gson();
+	
+	public JSONClient() {}
 	
 	/**
 	 * 
 	 * @param s is an Object of type story
 	 * @return s as a serialized string.
 	 */
-	public String serializeStory(Story s){
-		return g.toJson(s).toString(); 
+	protected String serializeStory(Story s){
+		return Jsc.toJson(s); 
 	}
 	
 	/**
 	 * 
-	 * @param Serial is a string of serialized story as a string
+	 * @param Serial is a string of serialized story
 	 * @return a null on failure or a Story object
 	 */
-	public Story unSerialize(String Serial){
-		Story s = null;
-		g.fromJson(Serial, Story.class);
-		return s;
+	protected Story unSerialize(String Serial){
+		return Jsc.fromJson(Serial, Story.class);
 	}
 	
 }
