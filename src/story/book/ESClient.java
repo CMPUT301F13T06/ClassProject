@@ -9,7 +9,6 @@ import java.net.URL;
 
 public class ESClient {
 	private String url_string = "http://cmput301.softwareprocess.es:8080/cmput301f13t06/testing/";
-	private JSONClient jsonclient = new JSONClient();
 	
 	/**
 	 * 
@@ -53,7 +52,7 @@ public class ESClient {
 			
 			OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
 			
-			String story_string = jsonclient.serializeStory(story);
+			String story_string = JSONClient.serializeStory(story);
 			out.write(story_string);
 			out.close();
 			 
@@ -84,7 +83,7 @@ public class ESClient {
 			 
 			closeConnection(conn);
 
-			return jsonclient.unSerializeESResponse(story_string);			
+			return JSONClient.unSerializeESResponse(story_string);			
 			 
 		} catch (Exception e) {
 			e.printStackTrace();
