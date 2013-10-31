@@ -15,12 +15,36 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="story.book.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/title_activity_dashboard" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="story.book.StoryListActivity"
+            android:label="@string/title_activity_story_list"
+            android:parentActivityName="story.book.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="story.book.MainActivity" />
+        </activity>
+        <activity
+            android:name="story.book.LocalStoriesActivity"
+            android:label="@string/title_activity_local_stories"
+            android:parentActivityName="story.book.StoryListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="story.book.StoryListActivity" />
+        </activity>
+        <activity
+            android:name="story.book.StoryInfoActivity"
+            android:label="@string/title_activity_story_info" >
+        </activity>
+        <activity
+            android:name="story.book.EditStoryInformationActivity"
+            android:label="@string/title_activity_edit_story_information" >
         </activity>
     </application>
 
