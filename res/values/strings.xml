@@ -8,5 +8,7 @@
     <string name="FragmentTitle"/>
     <string name="hint_text_field">Enter text here</string>
     <string name="Button_SaveEditText">Save</string>
+    <string name="Title_Annotations">Annotations</string>
+    <string name="Title_Dashboard">Dashboard</string>
 
 </resources>
