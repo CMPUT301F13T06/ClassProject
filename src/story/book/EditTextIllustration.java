@@ -23,21 +23,22 @@ public class EditTextIllustration extends Fragment {
 			Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		final View rootView = inflater.inflate(R.layout.edit_text_illustration, container, false);
-		setTitle(R.string.FragmentTitle);
+		//setTitle(R.string.FragmentTitle);
 
 		// add VIEW to story handler
 		// StoryHandler sh = StoryHandlerApplication.getStoryHandler();
 		// sh.addView(this);
 		Button saveButton = (Button) rootView.findViewById(R.id.Button_SaveEditText);
-		String text = (String) editTextIllustration.toString();
+		//String text = (String) editTextIllustration.toString();
 		saveButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				//String textIllustration = (String) EditTextIllustration.toString();
-				setContextText(text);
+				//setContextText(text);
 				//saveText(textIllustration);
 			}
 		});
+		return rootView;
 	}
 
 	public void update() {
