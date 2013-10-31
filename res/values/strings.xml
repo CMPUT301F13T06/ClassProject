@@ -3,7 +3,6 @@
 
     <string name="app_name">C301F2013T06 Story</string>
     <string name="action_settings">Settings</string>
-<<<<<<< HEAD
     <string name="action_search"></string>
     <string name="action_create_story"></string>
     <string name="hello_adventurer">Hello, Adventurer </string>
@@ -22,7 +21,6 @@
     <string name="test">ENTER</string>
     <string name="title_activity_edit_story_information">EditStoryInformationActivity</string>
     <string name="done">Done</string>
-=======
     <string name="hello_world">Hello world!</string>
     <string name="Blank"/>
     <string name="FragmentTitle"/>
@@ -30,6 +28,5 @@
     <string name="Button_SaveEditText">Save</string>
     <string name="Title_Annotations">Annotations</string>
     <string name="Title_Dashboard">Dashboard</string>
->>>>>>> 18ea496e5553075c347b2bb4d20702424a054e37
 
 </resources>
