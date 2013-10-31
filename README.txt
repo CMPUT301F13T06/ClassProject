@@ -12,7 +12,7 @@ LICENSE
 3rd Party Libraries
 =============
 
-gson-2.2.4.jar : Apache License Version 2.0
+google-gson : Apache License Version 2.0
 Apache HttpComponents Client Under : Apache License Version 2.0
 
 
