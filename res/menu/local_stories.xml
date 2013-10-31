@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    
+
+    <item 
+        android:id="@+id/action_search"
+		android:icon="@drawable/ic_search"
+        android:title="@string/action_search"
+        android:showAsAction="ifRoom"/>
+    
+    <item
+        android:id="@+id/action_create_story"
+        android:icon="@drawable/ic_new"
+        android:title="@string/action_create_story"
+        android:showAsAction="ifRoom"/>
+    
+    <item 
+        android:id="@+id/title_activity_dashboard"
+        android:title="@string/title_activity_dashboard"/>
+    
+    
+</menu>
