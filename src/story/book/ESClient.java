@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 
-public class ESClient {
+public class ESClient extends JSONClient {
 	private String url_string = "http://cmput301.softwareprocess.es:8080/cmput301f13t06/testing/";
 	
 	/**
@@ -52,7 +52,7 @@ public class ESClient {
 			
 			OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
 			
-			String story_string = JSONClient.serializeStory(story);
+			String story_string = super.serializeStory(story);
 			out.write(story_string);
 			out.close();
 			 
@@ -83,13 +83,24 @@ public class ESClient {
 			 
 			closeConnection(conn);
 
-			return JSONClient.unSerializeESResponse(story_string);			
+			return this.unSerialize(story_string);			
 			 
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 		
+	}
+	
+	@Override
+	/**
+	 * The return class of the server is an object of type
+	 * ElasticSearch, and inside is the story object.
+	 * @param Serial is a string of serialized ElasticSearch response
+	 * @return a null on failure or a Story object
+	 */
+	protected Story unSerialize(String Serial){
+		return Gsonclient.fromJson(Serial, ElasticSearchResponse.class).getSource();
 	}
 	
 }

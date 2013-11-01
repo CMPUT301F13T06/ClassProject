@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 
 import android.content.Context;
 
-public class IOClient{
+public class IOClient extends JSONClient{
 
 	private Context context;
 
@@ -19,6 +19,7 @@ public class IOClient{
 	 * the package name directory can change
 	 */
 	public IOClient(Context c) {
+		super();
 		this.context = c;
 	}
 
@@ -31,7 +32,7 @@ public class IOClient{
 	 * since it doesn't make sense to try to handle it here.
 	 */
 	public void saveStory(String FileID, Story aStory) throws IOException{
-		String serialStory = JSONClient.serializeStory(aStory);
+		String serialStory = super.serializeStory(aStory);
 		FileOutputStream fos =  context.openFileOutput(FileID, Context.MODE_PRIVATE);
 		fos.write(serialStory.getBytes());
 		fos.flush();
@@ -56,6 +57,6 @@ public class IOClient{
 		}
 		fis.close();
 		isr.close();
-		return JSONClient.unSerialize(sb.toString());
+		return super.unSerialize(sb.toString());
 	}
 }
