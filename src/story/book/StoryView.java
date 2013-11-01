@@ -1,5 +1,5 @@
 package story.book;
 
-public interface StoryView {
-	 public void update(StoryModel model);
+public interface StoryView<M> {
+	 public void update(M model);
 }
