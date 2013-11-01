@@ -2,18 +2,23 @@ package story.book;
 
 import java.util.ArrayList;
 
-public class OnlineStoryModel extends StoryModel implements StoryHandler{
+public class OnlineStoryHandler extends StoryHandler{
 
-	@Override
 	public int getFreeSID() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
+	public Story getStory(int SID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public ArrayList<StoryInfo> getStoryList() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 
 }
