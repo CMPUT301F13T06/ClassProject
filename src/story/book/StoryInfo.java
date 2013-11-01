@@ -16,6 +16,8 @@ public class StoryInfo {
 	private Date publishDate;
 	private StoryFragment startingFragment;
 	
+	public StoryInfo() {}
+	
 	public String getAuthor() {
 		return author;
 	}
