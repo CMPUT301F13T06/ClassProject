@@ -5,23 +5,26 @@ import java.util.ArrayList;
 /**
  * 
  */
-public class Story {
+public class Story extends StoryModel<StoryView> {
 	
 	private ArrayList<StoryFragment> fragmentList;
 	private StoryInfo storyInfo;
 	
 	public Story(StoryInfo storyInfo) {
-		setStoryInfo(storyInfo);
-		newFragmentList();
+		super();
+		this.storyInfo = storyInfo;
+		this.fragmentList = new ArrayList<StoryFragment>();
 	}
 	
 	public void addFragment(StoryFragment storyFragment) {
 		fragmentList.add(storyFragment);
+		notifyViews();
 	}
 	
 	public void removeFragment(StoryFragment storyFragment) {
 		fragmentList.remove(storyFragment);
 		removeBranchesToFragment(storyFragment);
+		notifyViews();
 	}
 	
 	public StoryInfo getStoryInfo() {
@@ -30,14 +33,11 @@ public class Story {
 	
 	public void setStoryInfo(StoryInfo storyInfo) {
 		this.storyInfo = storyInfo;
+		notifyViews();
 	}
 	
 	public ArrayList<StoryFragment> getStoryFragments() {
 		return this.fragmentList;
-	}
-	
-	private void newFragmentList() {
-		this.fragmentList = new ArrayList<StoryFragment>();
 	}
 	
 	/*
