@@ -2,26 +2,26 @@ package story.book;
 
 import java.util.ArrayList;
 
-public abstract class StoryModel {
+public abstract class StoryModel<V extends StoryView> {
 	
-	private ArrayList<StoryView> views;
+	private ArrayList<V> views;
 	
 	public StoryModel () {
-		   views = new ArrayList<StoryView>();
+		   views = new ArrayList<V>();
 	}
 
-    public void addView(StoryView view) {
+    public void addView(V view) {
         if (!views.contains(view)) {
             views.add(view);
         }
     }
 
-    public void deleteView(StoryView view) {
+    public void deleteView(V view) {
         views.remove(view);
     }
 
-    public void notifyViews() {
-        for (StoryView view : views) {
+    protected void notifyViews() {
+        for (V view : views) {
             view.update(this);
         }
     }
