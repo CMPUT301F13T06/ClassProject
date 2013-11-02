@@ -12,7 +12,7 @@ import android.util.Log;
 
 public class IOClient extends JSONClient {
 
-    private Context context;
+    private String story_dir;
 
     /**
      * Unbuffered IO for writing a serialized story. Buffered IO for read a
@@ -24,7 +24,8 @@ public class IOClient extends JSONClient {
      */
     public IOClient(Context c) {
 	super();
-	this.context = c;
+	this.story_dir = c.getFilesDir() + "/storys/";
+	new File(story_dir).mkdir(); // make the dir if it doesnt exist
     }
 
     /**
@@ -41,9 +42,8 @@ public class IOClient extends JSONClient {
      */
     public void saveStory(Story aStory) throws IOException {
 	String serialStory = super.serializeStory(aStory);
-	FileOutputStream fos = context.openFileOutput(
-		String.valueOf(aStory.getStoryInfo().getSID()),
-		Context.MODE_PRIVATE);
+	FileOutputStream fos = new FileOutputStream(story_dir
+		+ String.valueOf(aStory.getStoryInfo().getSID()));
 	fos.write(serialStory.getBytes());
 	fos.flush();
 	fos.close();
@@ -57,8 +57,7 @@ public class IOClient extends JSONClient {
      */
     public boolean deleteStory(int SID) {
 	// I add a slash here since getFilesDir doesnt include it at the end
-	return new File(context.getFilesDir() + "/" + String.valueOf(SID))
-		.delete();
+	return new File(story_dir + String.valueOf(SID)).delete();
     }
 
     /**
@@ -67,7 +66,8 @@ public class IOClient extends JSONClient {
      */
     public ArrayList<String> getStoryList() {
 	ArrayList<String> listOfFileNames = new ArrayList<String>();
-	for (String temp : context.getFilesDir().list()) {
+	File f = new File(story_dir);
+	for (String temp : f.list()) {
 	    listOfFileNames.add(temp);
 	}
 	return listOfFileNames;
@@ -75,14 +75,14 @@ public class IOClient extends JSONClient {
 
     /**
      * 
-     * @return an arraylist of StoryInfos
+     * @return an array list of StoryInfos
      */
     public ArrayList<StoryInfo> getStoryInfoList() {
 	ArrayList<StoryInfo> listOfStoryInfo = new ArrayList<StoryInfo>();
 	for (String file : getStoryList()) {
 	    Story aStory = null;
 	    try {
-		Log.d(file, "THE FILE");
+		Log.d(file, "List Of Files");
 		aStory = getStory(Integer.valueOf(file).intValue());
 	    } catch (IOException e) {
 		// TODO Auto-generated catch block
@@ -105,7 +105,8 @@ public class IOClient extends JSONClient {
      *             doesn't make sense to try to handle it here.
      */
     public Story getStory(int SID) throws IOException {
-	FileInputStream fis = context.openFileInput(String.valueOf(SID));
+	FileInputStream fis = new FileInputStream(story_dir
+		+ String.valueOf(SID));
 	InputStreamReader isr = new InputStreamReader(fis);
 	char[] inputBuffer = new char[5048];
 	StringBuilder sb = new StringBuilder(5048); // set the initial size of
