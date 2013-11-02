@@ -1,15 +1,14 @@
 package story.book.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.Date;
 
 import org.junit.Test;
 
-import story.book.*;
+import story.book.IOClient;
+import story.book.MainActivity;
+import story.book.Story;
+import story.book.StoryInfo;
 import android.test.ActivityInstrumentationTestCase2;
-import android.util.Log;
 
 public class IOClientTest extends ActivityInstrumentationTestCase2<story.book.MainActivity>{
 	Story s;
@@ -33,7 +32,7 @@ public class IOClientTest extends ActivityInstrumentationTestCase2<story.book.Ma
 	@Test
 	public void testIOClient() throws Exception{
 		IOClient io = new IOClient(getActivity());
-		io.saveStory((s.getStoryInfo().getSID()), s);
+		io.saveStory(s);
 		
 		StoryInfo sample_info = io.getStory((s.getStoryInfo().getSID())).getStoryInfo();
 		
@@ -44,8 +43,12 @@ public class IOClientTest extends ActivityInstrumentationTestCase2<story.book.Ma
 		assertTrue(sample_info.getSynopsis().equals(info.getSynopsis()));
 		assertEquals(sample_info.getSID(), info.getSID());
 		
+		assertTrue(io.deleteStory(600));
+		assertFalse(io.deleteStory(600));
 		
-		io.saveStory(600, null);
-		assertEquals(io.getStory(600), null);
+//		io.saveStory(null);
+//		assertEquals(io.getStory(600), null);
+		
+
 	}
 }
