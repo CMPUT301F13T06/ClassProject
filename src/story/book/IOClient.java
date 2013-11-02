@@ -41,7 +41,7 @@ public class IOClient extends JSONClient {
      *             doesn't make sense to try to handle it here.
      */
     public void saveStory(Story aStory) throws IOException {
-	String serialStory = super.serializeStory(aStory);
+	String serialStory = super.serialize(aStory);
 	FileOutputStream fos = new FileOutputStream(story_dir
 		+ String.valueOf(aStory.getStoryInfo().getSID()));
 	fos.write(serialStory.getBytes());
@@ -118,6 +118,6 @@ public class IOClient extends JSONClient {
 	}
 	fis.close();
 	isr.close();
-	return super.unSerialize(sb.toString());
+	return super.unSerialize(sb.toString(), Story.class);
     }
 }
