@@ -6,7 +6,7 @@
     <string name="action_search"></string>
     <string name="action_create_story"></string>
     <string name="hello_adventurer">Hello, Adventurer </string>
-    <string name="enter_name">Enter your name here</string>
+    <string name="enter_name">Please Enter a Nickname</string>
     <string name="title_activity_dashboard">Dashboard</string>
     <string name="local_stories">Local Stories</string>
     <string name="online_stories">Online Stories</string>
@@ -18,15 +18,20 @@
     <string name="synopsis">Synposis</string>
     <string name="title_activity_local_stories">Local Stories</string>
     <string name="title_activity_story_info">StoryInfoActivity</string>
-    <string name="test">ENTER</string>
-    <string name="title_activity_edit_story_information">EditStoryInformationActivity</string>
+    <string name="test"></string>
+    <string name="title_activity_edit_story_information">Edit Story Info</string>
     <string name="done">Done</string>
     <string name="hello_world">Hello world!</string>
-    <string name="Blank"/>
-    <string name="FragmentTitle"/>
+    <string name="Blank" />
+    <string name="FragmentTitle" />
     <string name="hint_text_field">Enter text here</string>
     <string name="Button_SaveEditText">Save</string>
     <string name="Title_Annotations">Annotations</string>
     <string name="Title_Dashboard">Dashboard</string>
+    <string name="dialog_message">Please fill in the Title before continuing</string>
+    <string name="dialog_title">Warning!</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="title_activity_online_stories">OnlineStoriesActivity</string>
 
 </resources>
