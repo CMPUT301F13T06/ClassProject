@@ -26,14 +26,14 @@ public class IOClient extends JSONClient{
 	/**
 	 * http://stackoverflow.com/questions/14376807/how-to-read-write-string-from-a-file-in-android
 	 * 
-	 * @param FileID A fileID
+	 * @param SID A fileID
 	 * @param aStory The story to be saved
 	 * @throws IOException IO exceptions should be caught in the calling code
 	 * since it doesn't make sense to try to handle it here.
 	 */
-	public void saveStory(String FileID, Story aStory) throws IOException{
+	public void saveStory(int SID, Story aStory) throws IOException{
 		String serialStory = super.serializeStory(aStory);
-		FileOutputStream fos =  context.openFileOutput(FileID, Context.MODE_PRIVATE);
+		FileOutputStream fos =  context.openFileOutput(String.valueOf(SID), Context.MODE_PRIVATE);
 		fos.write(serialStory.getBytes());
 		fos.flush();
 		fos.close();
@@ -41,13 +41,13 @@ public class IOClient extends JSONClient{
 
 	/**
 	 * http://stackoverflow.com/questions/14376807/how-to-read-write-string-from-a-file-in-android
-	 * @param FileID Likely to the SID of the story or any other string
+	 * @param SID Likely to the SID of the story or any other string
 	 * @returns A string representing a serialized story;
 	 * @throws IOException IO exceptions should be caught in the calling code
 	 * since it doesn't make sense to try to handle it here.
 	 */
-	public Story getStory(String FileID) throws IOException{
-		FileInputStream fis = context.openFileInput(FileID);
+	public Story getStory(int SID) throws IOException{
+		FileInputStream fis = context.openFileInput(String.valueOf(SID));
 		InputStreamReader isr = new InputStreamReader(fis);
 		char[] inputBuffer = new char[5048];
 		StringBuilder sb = new StringBuilder(5048); //set the initial size of string builder to be a decent sized length
