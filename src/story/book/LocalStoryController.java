@@ -1,31 +1,44 @@
 package story.book;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class LocalStoryController implements StoryController {
 
-	public Story getStory(int SID) {
-		// TODO Auto-generated method stub
-		return null;
+	private IOClient io;
+	
+	public LocalStoryController() {
+		StoryApplication.getIOClient();
+	}
+	
+	public void getStory(int SID) {
+		try {
+			StoryApplication.setCurrentStory(io.getStory(SID));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public ArrayList<StoryInfo> getStoryList() {
-		// TODO Auto-generated method stub
+		// TODO: Needs to be implemented with IOClient
 		return null;
 	}
 	
-	public Story createStory() {
-		// TODO Auto-generated method stub
-		return null;
+	public void createStory() {
+		StoryApplication.setCurrentStory(new Story(new StoryInfo()));
 	}
 
-	public void deleteStory() {
-		// TODO Auto-generated method stub
-		
+	public void deleteStory(int SID) {
+		// TODO: Needs support from IOClient
 	}
 
-	public void saveStory(Story story) {
-		// TODO Auto-generated method stub
-		
+	public void saveStory() {
+		try {
+			io.saveStory(StoryApplication.getCurrentStory());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

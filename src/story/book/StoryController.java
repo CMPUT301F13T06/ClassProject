@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 public interface StoryController {
 	
-	public Story getStory(int SID); // generic
+	public void getStory(int SID);
 		
 	public ArrayList<StoryInfo> getStoryList();
+	
+	public void saveStory();
 }
