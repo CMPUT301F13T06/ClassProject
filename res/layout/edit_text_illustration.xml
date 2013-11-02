@@ -12,7 +12,7 @@
     <EditText
         android:id="@+id/editTextIllustration"
         android:layout_width="match_parent"
-        android:layout_height="395dp"
+        android:layout_height="0dip"
         android:layout_gravity="top|left|fill_horizontal"
         android:layout_weight="0.36"
         android:ems="10"
