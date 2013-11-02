@@ -10,14 +10,14 @@ public class StoryApplication extends Application {
     
     private static Story currentStory;
     
-    static LocalStoryHandler getLocalModel() {
+    static LocalStoryHandler getLocalHandler() {
         if (localHandler == null) {
         	localHandler = new LocalStoryHandler();
         }
         return localHandler;
     }
     
-    static OnlineStoryHandler getOnlineModel() {
+    static OnlineStoryHandler getOnlineHandler() {
         if (onlineHandler == null) {
         	onlineHandler = new OnlineStoryHandler();
         }
