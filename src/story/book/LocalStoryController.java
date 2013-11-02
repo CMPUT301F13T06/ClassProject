@@ -4,18 +4,16 @@ import java.util.ArrayList;
 
 public class LocalStoryController implements StoryController {
 
-	@Override
 	public Story getStory(int SID) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public void saveStory() {
+	
+	public ArrayList<StoryInfo> getStoryList() {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
-
+	
 	public Story createStory() {
 		// TODO Auto-generated method stub
 		return null;
@@ -26,20 +24,8 @@ public class LocalStoryController implements StoryController {
 		
 	}
 
-	public StoryFragment createFragment() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void deleteFragment() {
+	public void saveStory(Story story) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public ArrayList<StoryInfo> getStoryList() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

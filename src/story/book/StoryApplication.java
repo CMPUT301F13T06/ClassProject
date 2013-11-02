@@ -3,39 +3,32 @@ package story.book;
 import android.app.Application;
 
 public class StoryApplication extends Application {
-    // Singleton Models
-    transient private static LocalStoryModel localModel = null;
-    transient private static OnlineStoryModel onlineModel = null;
+	
+    // Singleton Handlers
+    transient private static LocalStoryHandler localHandler = null;
+    transient private static OnlineStoryHandler onlineHandler = null;
     
-    // Singleton Controllers
-    transient private static LocalStoryController localController = null;
-    transient private static OnlineStoryController onlineController = null;
+    private static Story currentStory;
     
-    static LocalStoryModel getLocalModel() {
-        if (localModel== null) {
-        	localModel = new LocalStoryModel();
+    static LocalStoryHandler getLocalModel() {
+        if (localHandler == null) {
+        	localHandler = new LocalStoryHandler();
         }
-        return localModel;
+        return localHandler;
     }
     
-    static OnlineStoryModel getOnlineModel() {
-        if (onlineModel == null) {
-        	onlineModel = new OnlineStoryModel();
+    static OnlineStoryHandler getOnlineModel() {
+        if (onlineHandler == null) {
+        	onlineHandler = new OnlineStoryHandler();
         }
-        return onlineModel;
+        return onlineHandler;
     }
     
-    static LocalStoryController getlocalController() {
-        if (localController == null) {
-        	localController = new LocalStoryController();
-        }
-        return localController;
+    static Story getCurrentStory() {
+    	return currentStory;
     }
     
-    static OnlineStoryController getOnlineController() {
-        if (onlineController == null) {
-        	onlineController = new OnlineStoryController();
-        }
-        return onlineController;
+    static void setCurrentStory(Story story) {
+    	currentStory = story;
     }
 }
