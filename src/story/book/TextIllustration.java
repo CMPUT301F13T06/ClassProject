@@ -1,28 +1,28 @@
-/**
- * 
- */
 package story.book;
 
-import android.widget.TextView;
-
 /**
+ * Illustration class with textual content.
+ * @author Alex
  *
  */
-public class TextIllustration implements Illustration<TextView> {
+public class TextIllustration extends Illustration<String> {
 	
-	private String contents;
-	
-	public TextIllustration(String contents) {
-		setContents(contents);
+	/**
+	 * Initialize content in constructor.
+	 * @param content is the String containing the text of the TextIllustration
+	 */
+	public TextIllustration(String content) {
+		super();
+		setContent(content);
 	}
 	
-	private void setContents(String contents) {
-		this.contents = contents;
+	@Override
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	@Override
-	public TextView getContent() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getContent() {
+		return this.content;
 	}
 }
