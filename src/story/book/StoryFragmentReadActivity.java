@@ -15,7 +15,7 @@ import android.view.MenuInflater;
  * @author jsurya
  *
  */
-public class StoryFragmentReadActivity extends Activity implements StoryView {
+public class StoryFragmentReadActivity extends Activity implements StoryView<Story> {
 	 // Declare Tab Variable
     ActionBar.Tab Tab1, Tab2;
     Fragment readingTab1 = new ReadingFragment();
@@ -56,7 +56,7 @@ public class StoryFragmentReadActivity extends Activity implements StoryView {
 	}
 
 	@Override
-	public void update(StoryModel model) {
+	public void update(Story model) {
 		// TODO Auto-generated method stub
 		
 	}
