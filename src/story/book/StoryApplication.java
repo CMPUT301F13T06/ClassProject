@@ -1,34 +1,42 @@
 package story.book;
 
 import android.app.Application;
+import android.content.Context;
 
 public class StoryApplication extends Application {
 	
-    // Singleton Handlers
-    transient private static LocalStoryHandler localHandler = null;
-    transient private static OnlineStoryHandler onlineHandler = null;
+    // Singleton IO and ES clients
+    transient private static IOClient io = null;
+    transient private static ESClient es = null;
     
     private static Story currentStory;
-    
-    static LocalStoryHandler getLocalHandler() {
-        if (localHandler == null) {
-        	localHandler = new LocalStoryHandler();
-        }
-        return localHandler;
+    private static Context context;
+
+    public void onCreate(){
+        super.onCreate();
+        context = getApplicationContext();
     }
     
-    static OnlineStoryHandler getOnlineHandler() {
-        if (onlineHandler == null) {
-        	onlineHandler = new OnlineStoryHandler();
-        }
-        return onlineHandler;
+    public static IOClient getIOClient() {
+    	if (io == null) {
+    		io = new IOClient(context);
+    	}
+    	return io;
     }
     
-    static Story getCurrentStory() {
+    public static ESClient getESClient() {
+    	if (es == null) {
+    		es = new ESClient();
+    	}
+    	return es;
+    }
+    
+    public static Story getCurrentStory() {
     	return currentStory;
     }
     
-    static void setCurrentStory(Story story) {
+    public static void setCurrentStory(Story story) {
     	currentStory = story;
     }
+    
 }
