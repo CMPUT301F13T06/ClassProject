@@ -20,8 +20,8 @@ import android.view.MenuItem;
 public class StoryFragmentReadActivity extends Activity implements StoryView<Story> {
 	 // Declare Tab Variable
     ActionBar.Tab Tab1, Tab2;
-    Fragment readingTab1 = new ReadingFragment();
-    Fragment annotationsTab2 = new AnnotationFragment();
+    Fragment readingTab1;
+    Fragment annotationsTab2;
     ActionBar actionBar;
 	//StoryFragment sf = new StoryFragment(fragmentTitle);
     
@@ -30,6 +30,8 @@ public class StoryFragmentReadActivity extends Activity implements StoryView<Sto
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.story_fragment_read_activity);
 		//R.string.FragmentTitle = sf.getFragmentTitle();
+		readingTab1 = new ReadingFragment();
+		annotationsTab2 = new AnnotationFragment();
 		actionBar = getActionBar();
 		actionBar.setTitle(R.string.FragmentTitle);
 		 
