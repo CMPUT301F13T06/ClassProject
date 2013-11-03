@@ -3,7 +3,10 @@ package story.book;
 import java.util.ArrayList;
 
 /**
+ * Main model class for representing stories.
  * 
+ * @author Alexander Cheung
+ *
  */
 public class Story extends StoryModel<StoryView> {
 	
