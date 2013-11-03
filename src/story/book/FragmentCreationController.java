@@ -1,11 +1,18 @@
 package story.book;
 
+/**
+ * Controller responsible for creating and editing instances of StoryFragment
+ * for the StoryFragmentEditActivity.
+ * 
+ * @author Alexander Cheung
+ *
+ */
 public class FragmentCreationController {
 
 	private StoryFragment storyFragment;
 	
 	public FragmentCreationController(StoryFragment storyFragment) {
-		setStoryFragment(storyFragment);
+		this.storyFragment = storyFragment;
 	}
 	
 	/**
@@ -15,10 +22,7 @@ public class FragmentCreationController {
 	 * @param content
 	 */
 	public void addTextIllustration(String content) {
-		
+		storyFragment.addIllustration(new TextIllustration(content));
 	}
 	
-	private void setStoryFragment(StoryFragment storyFragment) {
-		this.storyFragment = storyFragment;
-	}
 }
