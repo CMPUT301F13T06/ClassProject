@@ -3,6 +3,13 @@ package story.book;
 import android.app.Application;
 import android.content.Context;
 
+/**
+ * Application class for aggregating Singleton IOClient and ESClient, and
+ * the current instance of Story.
+ * 
+ * @author Alexander Cheung
+ *
+ */
 public class StoryApplication extends Application {
 	
     // Singleton IO and ES clients
@@ -39,4 +46,7 @@ public class StoryApplication extends Application {
     	currentStory = story;
     }
     
+    public static Context getContext() {
+    	return context;
+    }
 }
