@@ -1,16 +1,23 @@
 package story.book;
 
+/**
+ * Controller responsible for creating and editing instances of Story for the
+ * StoryFragmentListActivity.
+ * 
+ * @author Alexander Cheung
+ *
+ */
 public class StoryCreationController {
 	
 	private Story story;
 	
-	public StoryCreationController(Story story) {
-		setStory(story);
+	public StoryCreationController() {
+		this.story = StoryApplication.getCurrentStory();
 	}
 	
 	/** 
-	 * Instantiates a new StoryFragment object and adds it to the Story object
-	 * being modified.
+	 * Instantiates a new StoryFragment object, adds it to the current Story,
+	 * and returns a reference to it.
 	 * 
 	 * @param fragmentTitle	The proposed title of the new StoryFragment.
 	 */
@@ -18,20 +25,22 @@ public class StoryCreationController {
 		return new StoryFragment(fragmentTitle);
 	}
 	
+	/**
+	 * Adds a instance of StoryFragment to the current Story.
+	 * 
+	 * @param storyFragment the instance of StoryFragment to add
+	 */
 	public void addFragment(StoryFragment storyFragment) {
 		story.addFragment(storyFragment);
 	}
-
-	public void editFragment() {
-		// TODO: This might have to be implemented by the LocalStoriesActivity
-	}
 	
+	/**
+	 * Removes an instance of StoryFragment from the current Story.
+	 * 
+	 * @param storyFragment the instance of StoryFragment to remove
+	 */
 	public void deleteFragment(StoryFragment storyFragment) {
 		story.removeFragment(storyFragment);
-	}
-	
-	private void setStory(Story story) {
-		this.story = story;
 	}
 	
 }

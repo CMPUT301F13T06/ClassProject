@@ -43,14 +43,11 @@ public class Story extends StoryModel<StoryView> {
 		return this.fragmentList;
 	}
 	
-	/*
-	 * This function removes all DecisionBranches containing the removed 
-	 * fragment from all fragments in the story.
+	/**
+	 * Removes all instances DecisionBranch containing the specified instance
+	 * of StoryFragment from all StoryFragment objects in the Story.
 	 * 
-	 * A > B > C > D
-	 * remove B
-	 * A ? C > D
-	 * 
+	 * @param storyFragment the instance of StoryFragment to remove branches to
 	 */
 	private void removeBranchesToFragment(StoryFragment storyFragment) {
 		// TODO
