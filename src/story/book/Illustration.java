@@ -1,10 +1,12 @@
 package story.book;
 
+import android.view.View;
+
 /**
  * Base class for Illustrations. Extend to implement different types of
  * Illustrations for different forms of media.
  * 
- * @author Alex
+ * @author Alexander Cheung
  *
  * @param <T> the type of the content to be held by the Illustration.
  */
@@ -23,4 +25,11 @@ public abstract class Illustration<T> {
 	 * @param content the content to be stored in the Illustration, of type T.
 	 */
 	public abstract void setContent(T content);
+	
+	/**
+	 * Returns the contents of the illustration in a View object for Activities
+	 * to display.
+	 * @return the View object containing the contents of the illustration
+	 */
+	public abstract View getView();
 }
