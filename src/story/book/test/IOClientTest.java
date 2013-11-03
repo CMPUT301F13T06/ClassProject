@@ -11,6 +11,11 @@ import story.book.Story;
 import story.book.StoryInfo;
 import android.test.ActivityInstrumentationTestCase2;
 
+/**
+ * 
+ * @author Anthony Ou
+ * 
+ */
 public class IOClientTest extends
 	ActivityInstrumentationTestCase2<story.book.MainActivity> {
     Story s;
@@ -18,17 +23,18 @@ public class IOClientTest extends
 
     public IOClientTest() {
 	super(MainActivity.class);
-	{
-	    info = new StoryInfo();
-	    info.setAuthor("Daniel");
-	    info.setTitle("Broken Star");
-	    info.setGenre("Science Fiction");
-	    info.setSynopsis("The princess of a destroyed kingdom is left with no one to guide her, until she finds a fallen star with a secret inside....");
-	    info.setPublishDate(new Date());
-	    info.setSID(600);
 
-	    s = new Story(info);
-	}
+	info = new StoryInfo();
+	info.setAuthor("Daniel");
+	info.setTitle("Broken Star");
+	info.setGenre("Science Fiction");
+	info.setSynopsis("The princess of a destroyed kingdom is left with no one to guide her, "
+		+ "until she finds a fallen star with a secret inside....");
+	info.setPublishDate(new Date());
+	info.setSID(600);
+
+	s = new Story(info);
+
     }
 
     @Test

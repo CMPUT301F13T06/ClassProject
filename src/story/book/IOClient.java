@@ -10,6 +10,11 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.util.Log;
 
+/**
+ * 
+ * @author Anthony Ou
+ * 
+ */
 public class IOClient extends JSONClient {
 
     private String story_dir;
@@ -110,8 +115,8 @@ public class IOClient extends JSONClient {
 	InputStreamReader isr = new InputStreamReader(fis);
 	char[] inputBuffer = new char[5048];
 	StringBuilder sb = new StringBuilder(5048); // set the initial size of
-						    // string builder to be a
-						    // decent sized length
+						    // string builder to be
+						    // same size as the buffer
 	int l;
 	while ((l = isr.read(inputBuffer)) != -1) {
 	    sb.append(inputBuffer, 0, l);
