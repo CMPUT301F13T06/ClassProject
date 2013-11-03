@@ -18,16 +18,27 @@ public class StoryFragment extends StoryModel<StoryView> {
 	
 	public StoryFragment(String fragmentTitle) {
 		setFragmentTitle(fragmentTitle);
-		newIllustrationList();
-		newDecisionBranchList();
+		illustrations = new ArrayList<Illustration>();
+		decisionBranches = new ArrayList<DecisionBranch>();
+	}
+	
+	private void setFragmentTitle(String fragmentTitle) {
+		this.fragmentTitle = fragmentTitle;
+		notifyViews();
 	}
 	
 	public void addIllustration(Illustration illustration) {
 		this.illustrations.add(illustration);
+		notifyViews();
+	}
+	
+	public String getFragmentTitle() {
+		return this.fragmentTitle;
 	}
 	
 	public void removeIllustration(Illustration illustration) {
 		this.illustrations.remove(illustration);
+		notifyViews();
 	}
 	
 	public ArrayList<Illustration> getIllustrations() {
@@ -38,19 +49,4 @@ public class StoryFragment extends StoryModel<StoryView> {
 		return this.decisionBranches;
 	}
 	
-	public String getFragmentTitle() {
-		return this.fragmentTitle;
-	}
-	
-	private void setFragmentTitle(String fragmentTitle) {
-		this.fragmentTitle = fragmentTitle;
-	}
-	
-	private void newIllustrationList() {
-		illustrations = new ArrayList<Illustration>();
-	}
-	
-	private void newDecisionBranchList() {
-		decisionBranches = new ArrayList<DecisionBranch>();
-	}
 }
