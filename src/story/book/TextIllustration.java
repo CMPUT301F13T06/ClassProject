@@ -1,9 +1,12 @@
 package story.book;
 
+import android.view.View;
+import android.widget.TextView;
+
 /**
  * Illustration class with textual content.
- * @author Alex
- *
+ * 
+ * @author Alexander Cheung
  */
 public class TextIllustration extends Illustration<String> {
 	
@@ -24,5 +27,12 @@ public class TextIllustration extends Illustration<String> {
 	@Override
 	public String getContent() {
 		return this.content;
+	}
+	
+	@Override
+	public View getView() {
+		TextView textView = new TextView(StoryApplication.getContext());
+		textView.setText(this.content);
+		return textView;
 	}
 }
