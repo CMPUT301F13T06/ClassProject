@@ -2,7 +2,13 @@ package story.book;
 
 import java.util.ArrayList;
 
-public class StoryFragment {
+/**
+ * Model class for representing fragments of a story.
+ * 
+ * @author Alexander Cheung
+ *
+ */
+public class StoryFragment extends StoryModel<StoryView> {
 	
 	private ArrayList<Illustration> illustrations;
 	private ArrayList<DecisionBranch> decisionBranches;
