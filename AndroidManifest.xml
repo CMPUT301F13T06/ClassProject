@@ -13,12 +13,13 @@
         android:targetPackage="story.book" />
 
     <application
+        android:name="story.book.StoryApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" 
-        android:name="story.book.StoryApplication">
+        android:theme="@style/AppTheme" >
         <uses-library android:name="android.test.runner" />
+
         <activity
             android:name="story.book.MainActivity"
             android:label="@string/title_activity_dashboard" >
@@ -51,6 +52,14 @@
         <activity
             android:name="story.book.EditStoryInformationActivity"
             android:label="@string/title_activity_edit_story_information" >
+        </activity>
+        <activity
+            android:name="story.book.OnlineStoriesActivity"
+            android:label="@string/title_activity_online_stories"
+            android:parentActivityName="story.book.StoryListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="story.book.StoryListActivity" />
         </activity>
     </application>
 
