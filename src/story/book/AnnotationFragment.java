@@ -10,6 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
+ * Annotation fragment is the right tab in <code>StoryFragmentReadActivity</code> 
+ * This is the view for displaying all image annotations posted by users on the 
+ * currently open in <code>Reading Fragment</code> (reading tab)
+ * 
  * @author jsurya
  *
  */
