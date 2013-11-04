@@ -32,12 +32,22 @@ public class StoryFragment extends StoryModel<StoryView> {
 		notifyViews();
 	}
 	
+	public void addDecisionBranch(DecisionBranch decisionBranch) {
+		decisionBranches.add(decisionBranch);
+		notifyViews();
+	}
+	
 	public String getFragmentTitle() {
 		return this.fragmentTitle;
 	}
 	
 	public void removeIllustration(Illustration illustration) {
 		this.illustrations.remove(illustration);
+		notifyViews();
+	}
+	
+	public void removeDecisionBranch(DecisionBranch decisionBranch) {
+		decisionBranches.remove(decisionBranch);
 		notifyViews();
 	}
 	
