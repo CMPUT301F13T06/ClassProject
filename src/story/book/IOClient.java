@@ -2,6 +2,7 @@ package story.book;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -30,7 +31,7 @@ public class IOClient extends JSONClient {
     public IOClient(Context c) {
 	super();
 	this.story_dir = c.getFilesDir() + "/storys/";
-	new File(story_dir).mkdir(); // make the dir if it doesnt exist
+	new File(story_dir).mkdir(); // make the directory if it doesn't exist
     }
 
     /**
@@ -41,17 +42,19 @@ public class IOClient extends JSONClient {
      *            A fileID
      * @param aStory
      *            The story to be saved
-     * @throws IOException
-     *             IO exceptions should be caught in the calling code since it
-     *             doesn't make sense to try to handle it here.
      */
-    public void saveStory(Story aStory) throws IOException {
-	String serialStory = super.serialize(aStory);
-	FileOutputStream fos = new FileOutputStream(story_dir
-		+ String.valueOf(aStory.getStoryInfo().getSID()));
-	fos.write(serialStory.getBytes());
-	fos.flush();
-	fos.close();
+    public void saveStory(Story aStory) {
+	FileOutputStream fos;
+	try {
+	    Log.d(String.valueOf(aStory.hashCode()), "hash Code");
+	    fos = new FileOutputStream(story_dir
+		    + String.valueOf(aStory.getStoryInfo().getSID()));
+	    fos.write(super.serialize(aStory).getBytes());
+	    fos.flush();
+	    fos.close();
+	} catch (IOException e) {
+	}
+
     }
 
     /**
@@ -85,17 +88,33 @@ public class IOClient extends JSONClient {
     public ArrayList<StoryInfo> getStoryInfoList() {
 	ArrayList<StoryInfo> listOfStoryInfo = new ArrayList<StoryInfo>();
 	for (String file : getStoryList()) {
-	    Story aStory = null;
-	    try {
-		Log.d(file, "List Of Files");
-		aStory = getStory(Integer.valueOf(file).intValue());
-	    } catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	    }
-	    listOfStoryInfo.add(aStory.getStoryInfo());
+	    Log.d(file, "List Of Files");
+	    listOfStoryInfo.add(getStory(Integer.valueOf(file).intValue())
+		    .getStoryInfo());
 	}
 	return listOfStoryInfo;
+    }
+
+    /**
+     * 
+     * @param SID
+     *            The SID you want checked to be unique
+     * @return -1 on failure, Free unused SID which may be different from the
+     *         given SID
+     * 
+     */
+    public int checkSID(int SID) {
+	ArrayList<String> StoryList = getStoryList();
+	if (!StoryList.contains(String.valueOf(SID))) {
+	    return SID;
+	} else {
+	    for (int i = 1; i <= StoryList.size() + 1; ++i) {
+		if (!StoryList.contains(String.valueOf(i))) {
+		    return i;
+		}
+	    }
+	}
+	return -1;
     }
 
     /**
@@ -105,24 +124,30 @@ public class IOClient extends JSONClient {
      * @param SID
      *            Likely to the SID of the story or any other string
      * @returns A string representing a serialized story;
-     * @throws IOException
-     *             IO exceptions should be caught in the calling code since it
-     *             doesn't make sense to try to handle it here.
      */
-    public Story getStory(int SID) throws IOException {
-	FileInputStream fis = new FileInputStream(story_dir
-		+ String.valueOf(SID));
-	InputStreamReader isr = new InputStreamReader(fis);
+    public Story getStory(int SID) {
+
 	char[] inputBuffer = new char[5048];
-	StringBuilder sb = new StringBuilder(5048); // set the initial size of
-						    // string builder to be
-						    // same size as the buffer
-	int l;
-	while ((l = isr.read(inputBuffer)) != -1) {
-	    sb.append(inputBuffer, 0, l);
+	StringBuilder sb = new StringBuilder(5048); // set the initial size
+	// of
+	try {
+	    FileInputStream fis = new FileInputStream(story_dir
+		    + String.valueOf(SID));
+	    InputStreamReader isr = new InputStreamReader(fis);
+
+	    // string builder to be
+	    // same size as the buffer
+	    int l;
+	    while ((l = isr.read(inputBuffer)) != -1) {
+		sb.append(inputBuffer, 0, l);
+	    }
+	    fis.close();
+	    isr.close();
+	} catch (Exception e) {
+	    // TODO Auto-generated catch block
+	    return null;
 	}
-	fis.close();
-	isr.close();
+
 	return super.unSerialize(sb.toString(), Story.class);
     }
 }
