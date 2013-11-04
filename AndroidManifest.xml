@@ -61,6 +61,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="story.book.StoryListActivity" />
         </activity>
+        <activity
+            android:name="story.book.StoryFragmentEditActivity"
+            android:label="@string/FragmentTitle">
+        </activity>
+        <activity
+            android:name="story.book.StoryFragmentReadActivity"
+            android:label="@string/FragmentTitle">
+        </activity>
+        
     </application>
 
 </manifest>
