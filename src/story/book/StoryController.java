@@ -9,4 +9,5 @@ public interface StoryController {
 	public ArrayList<StoryInfo> getStoryList();
 	
 	public void saveStory();
+
 }
