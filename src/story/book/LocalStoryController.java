@@ -28,12 +28,7 @@ public class LocalStoryController implements StoryController {
 	 * @param SID the SID of the Story to fetch
 	 */
 	public void getStory(int SID) {
-		try {
-			StoryApplication.setCurrentStory(io.getStory(SID));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		StoryApplication.setCurrentStory(io.getStory(SID));
 	}
 	
 	/**
@@ -41,7 +36,8 @@ public class LocalStoryController implements StoryController {
 	 * stories.
 	 */
 	public ArrayList<StoryInfo> getStoryList() {
-		return io.getStoryList();
+		// TODO return io.getStoryList();
+		return null;
 	}
 	
 	/**
@@ -65,12 +61,7 @@ public class LocalStoryController implements StoryController {
 	 * Save the current application Story to local storage.
 	 */
 	public void saveStory() {
-		try {
-			io.saveStory(StoryApplication.getCurrentStory());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		io.saveStory(StoryApplication.getCurrentStory());
 	}
 
 	/**
@@ -79,6 +70,7 @@ public class LocalStoryController implements StoryController {
 	 * @param SID the SID of the story being published
 	 */
 	public void publishStory(int SID) {
+		/* TODO
 		// TODO: no need to check for SID conflict if story has already been
 		// published before.
 		
@@ -91,6 +83,7 @@ public class LocalStoryController implements StoryController {
 		// Publish the story
 		// XXX: there is a potential of SID conflict beyond this point
 		es.publishStory(StoryApplication.getCurrentStory());
+		*/
 	}
 	
 	/**
@@ -101,7 +94,7 @@ public class LocalStoryController implements StoryController {
 	 * @return 
 	 */
 	private int checkSIDConflict(int SID) {
-		
+		/* TODO
 		// Check if any remote story has conflicting SID. ESClient will return
 		// the original ID if it is free, else it returns a free SID from the
 		// server.
@@ -114,6 +107,8 @@ public class LocalStoryController implements StoryController {
 		}
 		
 		return id;
+		*/
+		return 0;
 	}
 	
 }

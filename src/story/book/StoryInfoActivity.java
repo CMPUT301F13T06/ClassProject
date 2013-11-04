@@ -25,12 +25,12 @@ public class StoryInfoActivity extends Activity implements StoryView<Story> {
 		setContentView(R.layout.activity_story_info);
 		
 		Intent intent = getIntent();
-		String message = intent.getStringExtra(LocalStoriesActivity.EXTRA_MESSAGE);
+		//String message = intent.getStringExtra(LocalStoriesActivity.EXTRA_MESSAGE);
 		author = (TextView) findViewById(R.id.author);
 		//infoList = new ArrayList<String>();
 		
 		
-		author.setText("Author: " + " " + message);
+		//author.setText("Author: " + " " + message);
 		
 	}
 	
