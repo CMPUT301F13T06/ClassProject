@@ -3,6 +3,13 @@ package story.book;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * StoryController for the LocalStoriesActivity to manage locally stored
+ * stories. This controller interfaces with the IO and ES clients.
+ * 
+ * @author Alexander Cheung
+ *
+ */
 public class LocalStoryController implements StoryController {
 
 	private IOClient io;
@@ -13,6 +20,12 @@ public class LocalStoryController implements StoryController {
 		es = StoryApplication.getESClient();
 	}
 	
+	/**
+	 * Sets the current application Story to the locally stored Story with 
+	 * matching SID.
+	 * 
+	 * @param SID the SID of the Story to fetch
+	 */
 	public void getStory(int SID) {
 		try {
 			StoryApplication.setCurrentStory(io.getStory(SID));
@@ -22,19 +35,34 @@ public class LocalStoryController implements StoryController {
 		}
 	}
 	
+	/**
+	 * Returns the list of StoryInfo corresponding to all locally stored 
+	 * stories.
+	 */
 	public ArrayList<StoryInfo> getStoryList() {
-		// TODO: Needs to be implemented with IOClient
-		return null;
+		return io.getStoryList();
 	}
 	
+	/**
+	 * Instantiates a new Story object and sets the current application Story
+	 * to the new object.
+	 */
 	public void createStory() {
 		StoryApplication.setCurrentStory(new Story(new StoryInfo()));
 	}
 
+	/**
+	 * Deletes the locally stored Story with the specified SID.
+	 * 
+	 * @param SID the SID of the story to delete.
+	 */
 	public void deleteStory(int SID) {
-		// TODO: Needs support from IOClient
+		io.deleteStory(SID);
 	}
 
+	/**
+	 * Save the current application Story to local storage.
+	 */
 	public void saveStory() {
 		try {
 			io.saveStory(StoryApplication.getCurrentStory());
