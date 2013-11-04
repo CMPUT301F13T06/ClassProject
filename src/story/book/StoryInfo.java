@@ -70,8 +70,8 @@ public class StoryInfo {
 		return SID;
 	}
 
-	public void setSID(int sID) {
-		SID = sID;
+	public void setSID(int SID) {
+		SID = SID;
 	}
 	
 }
