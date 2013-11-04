@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * StoryController to read and download locally stored stories. This controller
  * interfaces with the IO and ES clients.
  * 
- * @author Alex
+ * @author Alexander Cheung
  *
  */
 public class OnlineStoryController implements StoryController {

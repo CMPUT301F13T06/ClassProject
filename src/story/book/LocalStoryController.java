@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * StoryController for the LocalStoriesActivity to manage locally stored
- * stories. This controller interfaces with the IO and ES clients.
+ * Story controller for the <code>LocalStoriesActivity</code> to manage locally
+ * stored stories. This controller interfaces with the IO and ES clients to 
+ * publish, save, and create Story objects.
  * 
  * @author Alexander Cheung
  *
