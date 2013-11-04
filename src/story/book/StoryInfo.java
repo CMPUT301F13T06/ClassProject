@@ -71,7 +71,7 @@ public class StoryInfo {
 	}
 
 	public void setSID(int SID) {
-		SID = SID;
+		this.SID = SID;
 	}
 	
 }
