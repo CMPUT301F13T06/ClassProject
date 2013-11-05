@@ -46,7 +46,8 @@ public class Dashboard extends Activity {
 		//else{
 
 		
-		final Intent intent = new Intent(this, LocalStoriesActivity.class);
+		final Intent localIntent = new Intent(this, LocalStoriesActivity.class);
+		final Intent onlineIntent = new Intent(this, OnlineStoriesActivity.class);
 
 		Button localButton = (Button) findViewById(R.id.local_stories);
 		localButton.setOnClickListener(new OnClickListener() {
@@ -57,23 +58,23 @@ public class Dashboard extends Activity {
 				}
 
 				
-				startActivity(intent);
+				startActivity(localIntent);
 				
 				
 			}
 		});
 
-		// intent = new Intent(this, OnlineStoriesActivity.class);
-		//Button onlineButton = (Button) findViewById(R.id.online_stories);
-		//onlineButton.setOnClickListener(new OnClickListener() {
-			//public void onClick(View v) {
-		//if(enterName.getText().toString().equals("")){
-		//	enterName.setText("Anonymous");
-		//}
+		 
+		Button onlineButton = (Button) findViewById(R.id.online_stories);
+		onlineButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+		if(enterName.getText().toString().equals("")){
+			enterName.setText("Anonymous");
+		}
 
-		//		startActivity(intent);
-			//}
-		//});
+				startActivity(onlineIntent);
+			}
+		});
 
 	}
 
