@@ -32,7 +32,7 @@ public class StoryApplication extends Application {
         super.onCreate();
         context = getApplicationContext();
         
-        setCurrentStory(es.getStory(600)); // DEBUG
+        setCurrentStory(getESClient().getStory(600)); // DEBUG
     }
     
     public static IOClient getIOClient() {
