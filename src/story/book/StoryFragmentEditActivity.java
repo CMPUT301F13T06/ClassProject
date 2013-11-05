@@ -14,6 +14,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 /**
+ * StoryFragmentEditActivity is the interface users can make changes
+ * to illustrations contained in the story fragment which is currently
+ * open. 
+ * 
  * @author jsurya
  *
  */
