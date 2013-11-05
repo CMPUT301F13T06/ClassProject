@@ -54,6 +54,19 @@ public class StoryInfo {
 		return publishDate;
 	}
 	
+	/**
+	 * Returns a <code>String</code> representation of the 
+	 * <code>publishDate</code> <code>Date</code> object.
+	 * 
+	 * @return the <code>String</code> representation of the publish date
+	 */
+	public String getPublishDateString() {
+		if (publishDate != null)
+			return publishDate.toString();
+		else
+			return "";
+	}
+	
 	public void setPublishDate(Date publishDate) {
 		this.publishDate = publishDate;
 	}

@@ -31,6 +31,8 @@ public class StoryApplication extends Application {
     public void onCreate(){
         super.onCreate();
         context = getApplicationContext();
+        
+        setCurrentStory(es.getStory(600)); // DEBUG
     }
     
     public static IOClient getIOClient() {
