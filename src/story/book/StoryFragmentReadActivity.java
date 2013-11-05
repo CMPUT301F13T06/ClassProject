@@ -3,11 +3,13 @@
  */
 package story.book;
 
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,13 +19,14 @@ import android.view.MenuItem;
  * @author jsurya
  *
  */
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
 public class StoryFragmentReadActivity extends Activity implements StoryView<Story> {
 	 // Declare Tab Variable
     ActionBar.Tab Tab1, Tab2;
     Fragment readingTab1;
     Fragment annotationsTab2;
     ActionBar actionBar;
-	//StoryFragment sf = new StoryFragment(fragmentTitle);
+
     
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
