@@ -61,10 +61,10 @@ public class StoryFragment extends StoryModel<StoryView> {
 	}
 	
 	/**
-	 * Removes any DecisionBranch object whose destination StoryFragment equals
-	 * the specified StoryFragment.
+	 * Removes any <code>DecisionBranch</code> object whose destination 
+	 * <code>StoryFragment</code> is the specified <code>StoryFragment</code>.
 	 * 
-	 * @param storyFragment the StoryFragment to look for
+	 * @param 	storyFragment 	the target <code>StoryFragment</code>
 	 */
 	public void removeBranchWithFragment(StoryFragment storyFragment) {
 		Iterator<DecisionBranch> branchIterator = decisionBranches.iterator();

@@ -1,11 +1,6 @@
 package story.book;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -95,26 +90,22 @@ public class IOClient extends DataClient {
 	return listOfStoryInfo;
     }
 
+    public Boolean checkSID(int SID) {
+	return getStoryList().contains(String.valueOf(SID)) ? false : true;
+    }
+
     /**
      * 
-     * @param SID
-     *            The SID you want checked to be unique
-     * @return -1 on failure, Free unused SID which may be different from the
-     *         given SID
-     * 
+     * @return a free SID or -1 on failure
      */
-    public Boolean checkSID(int SID) {
-	/*ArrayList<String> StoryList = getStoryList();
-	if (!StoryList.contains(String.valueOf(SID))) {
-	    return SID;
-	} else {
-	    for (int i = 1; i <= StoryList.size() + 1; ++i) {
-		if (!StoryList.contains(String.valueOf(i))) {
-		    return i;
-		}
+    public int getSID() {
+	ArrayList<StoryInfo> StoryInfo = getStoryInfoList();
+	for (int i = 1; i < Integer.MAX_VALUE; ++i) {
+	    if (!StoryInfo.contains(String.valueOf(i))) {
+		return i;
 	    }
-	}*/
-	return false;
+	}
+	return -1;
     }
 
     /**
@@ -129,14 +120,13 @@ public class IOClient extends DataClient {
 
 	char[] inputBuffer = new char[5048];
 	StringBuilder sb = new StringBuilder(5048); // set the initial size
-	// of
+	// of string builder to be
+	// same size as the buffer
 	try {
 	    FileInputStream fis = new FileInputStream(story_dir
 		    + String.valueOf(SID));
 	    InputStreamReader isr = new InputStreamReader(fis);
 
-	    // string builder to be
-	    // same size as the buffer
 	    int l;
 	    while ((l = isr.read(inputBuffer)) != -1) {
 		sb.append(inputBuffer, 0, l);
@@ -150,10 +140,4 @@ public class IOClient extends DataClient {
 
 	return (Story) super.unSerialize(sb.toString(), Story.class);
     }
-
-	@Override
-	public int getSID() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 }

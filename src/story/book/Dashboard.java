@@ -1,6 +1,12 @@
 package story.book;
 
+
 import android.os.Bundle;
+
+import android.os.Build;
+import android.os.Bundle;
+import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
@@ -12,6 +18,7 @@ import android.widget.TextView;
 
 public class Dashboard extends Activity {
 
+
 	public EditText enterName;
 	private TextView tView1;
 	private TextView tView2;
@@ -19,7 +26,7 @@ public class Dashboard extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.dashboard);
 
 		enterName = (EditText) findViewById(R.id.enter_name);
 		

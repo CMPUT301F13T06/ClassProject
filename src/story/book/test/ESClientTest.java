@@ -94,4 +94,11 @@ public class ESClientTest {
 		}
 	}
 	
+	@Test
+	public void testCheckSID() {
+		assertTrue(es.checkSID(500));
+		assertFalse(es.checkSID(600));
+		assertEquals(0, es.getSID());
+	}
+	
 }
