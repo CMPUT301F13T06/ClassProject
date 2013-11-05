@@ -1,6 +1,7 @@
 package story.book;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Model class for representing fragments of a story.
@@ -57,6 +58,28 @@ public class StoryFragment extends StoryModel<StoryView> {
 	
 	public ArrayList<DecisionBranch> getDecisionBranches() {
 		return this.decisionBranches;
+	}
+	
+	/**
+	 * Removes any DecisionBranch object whose destination StoryFragment equals
+	 * the specified StoryFragment.
+	 * 
+	 * @param storyFragment the StoryFragment to look for
+	 */
+	public void removeBranchWithFragment(StoryFragment storyFragment) {
+		Iterator<DecisionBranch> branchIterator = decisionBranches.iterator();
+		DecisionBranch branchToCheck;
+		ArrayList<DecisionBranch> branchesToRemove = new ArrayList<DecisionBranch>();
+		
+		while(branchIterator.hasNext()) {
+			branchToCheck = branchIterator.next();
+			if (branchToCheck.getDestination().equals(storyFragment))
+				branchesToRemove.add(branchToCheck);
+		}
+		
+		branchIterator = branchesToRemove.iterator();
+		while(branchIterator.hasNext())
+			removeDecisionBranch(branchIterator.next());
 	}
 	
 }
