@@ -13,6 +13,7 @@ import story.book.Story;
 import story.book.StoryInfo;
 
 /**
+ * Unit testing for the ESClient and related classes.
  * 
  * @author Vina Nguyen
  * 

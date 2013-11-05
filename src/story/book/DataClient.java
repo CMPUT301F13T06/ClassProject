@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 
 /**
+ * DataClient is an abstract class that represents 
+ * a storage location that contains Stories. Stories
+ * can be saved and retrieved using a DataClient.
  * 
  * @author Anthony Ou
  * 

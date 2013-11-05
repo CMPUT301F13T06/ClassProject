@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import com.google.gson.reflect.TypeToken;
 
 /**
+ * ESClient is a DataClient class that represents 
+ * an online storage location for Stories. Stories
+ * are saved to an Elastic Search server.
  * 
  * @author Vina Nguyen
  * 
