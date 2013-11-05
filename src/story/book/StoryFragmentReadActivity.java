@@ -66,7 +66,7 @@ public class StoryFragmentReadActivity extends Activity implements StoryView<Sto
 	public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-        case R.id.activity_main:
+        case R.id.title_activity_dashboard:
             Intent intent = new Intent(this, Dashboard.class);
             startActivity(intent);
             return true;
