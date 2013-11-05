@@ -42,11 +42,10 @@ public class OnlineStoryController implements StoryController {
 	private void checkSIDConflict(int SID) {
 		// Check if any local story has a conflicting SID. IOClient will return
 		// the original ID if it is free, else it returns a locally free SID.
-		int id = io.checkSID(SID);
-		if (id != SID) {
+		if (!io.checkSID(SID)) {
 			// Change the locally stored Story with the original SID (SID) to
 			// the new SID (id) supplied by the IOClient.
-			changeLocalSID(SID, id);
+			changeLocalSID(SID, io.getSID());
 		}
 	}
 	
