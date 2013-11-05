@@ -2,7 +2,6 @@ package story.book;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
 
 /**
  * Application class for aggregating the Singleton IOClient, ESClient, and
