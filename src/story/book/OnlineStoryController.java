@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * StoryController to read and download locally stored stories. This controller
  * interfaces with the IO and ES clients.
  * 
- * @author Alex
+ * @author Alexander Cheung
  *
  */
 public class OnlineStoryController implements StoryController {
@@ -20,15 +20,16 @@ public class OnlineStoryController implements StoryController {
 	}
 	
 	public void getStory(int SID) {
-		StoryApplication.setCurrentStory(es.getStory(SID));
+		// TODO StoryApplication.setCurrentStory(es.getStory(SID));
 	}
 
 	public void saveStory() {
-		io.saveStory();
+		// TODO io.saveStory();
 	}
 
 	public ArrayList<StoryInfo> getStoryList() {
-		return es.getStoryList();
+		// TODO return es.getStoryList();
+		return null;
 	}
 
 	/**
@@ -41,11 +42,10 @@ public class OnlineStoryController implements StoryController {
 	private void checkSIDConflict(int SID) {
 		// Check if any local story has a conflicting SID. IOClient will return
 		// the original ID if it is free, else it returns a locally free SID.
-		int id = io.checkSID(SID);
-		if (id != SID) {
+		if (!io.checkSID(SID)) {
 			// Change the locally stored Story with the original SID (SID) to
 			// the new SID (id) supplied by the IOClient.
-			changeLocalSID(SID, id);
+			changeLocalSID(SID, io.getSID());
 		}
 	}
 	

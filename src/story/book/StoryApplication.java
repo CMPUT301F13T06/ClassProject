@@ -5,12 +5,14 @@ import android.content.Context;
 
 /**
  * Application class for aggregating the Singleton IOClient, ESClient, and
- * the active instance of Story. The current instance of Story, "currentStory",
- * is the current Story object being read, edited or published by an 
- * application controller.
+ * the active instance of Story. The current instance of Story, 
+ * <code>currentStory</code>, is the active Story object which can be read, 
+ * edited or published by an application controller.
  * 
- * @author Alexander Cheung
- *
+ * @author 	Alexander Cheung
+ * @see 	Story
+ * @see		IOClient
+ * @see		ESClient
  */
 public class StoryApplication extends Application {
 	

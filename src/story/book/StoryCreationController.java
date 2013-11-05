@@ -1,5 +1,7 @@
 package story.book;
 
+import java.util.ArrayList;
+
 /**
  * Controller responsible for creating and editing instances of Story for the
  * StoryFragmentListActivity.
@@ -41,6 +43,15 @@ public class StoryCreationController {
 	 */
 	public void deleteFragment(StoryFragment storyFragment) {
 		story.removeFragment(storyFragment);
+	}
+	
+	/**
+	 * Returns an ArrayList of StoryFragment objects from the current Story.
+	 * 
+	 * @return the ArrayList of StoryFragment objects
+	 */
+	public ArrayList<StoryFragment> getFragments() {
+		return story.getStoryFragments();
 	}
 	
 }
