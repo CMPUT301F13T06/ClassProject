@@ -1,5 +1,7 @@
 package story.book;
 
+import story.book.dataclient.IOClient;
+
 /**
  * Controller responsible for creating, editing, displaying
  * the StoryInfo of the current Story for the StoryInfoActivity 

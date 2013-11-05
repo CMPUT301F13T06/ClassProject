@@ -1,4 +1,4 @@
-package story.book;
+package story.book.dataclient;
 
 /**
  * ESData<T> represents a data item stored at _index/_type/_id 

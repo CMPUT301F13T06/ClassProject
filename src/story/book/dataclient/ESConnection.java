@@ -1,4 +1,4 @@
-package story.book;
+package story.book.dataclient;
 
 import java.io.BufferedReader;
 import java.io.IOException;

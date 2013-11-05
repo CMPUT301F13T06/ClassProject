@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import story.book.IOClient;
+import story.book.dataclient.IOClient;
 import story.book.Dashboard;
 import story.book.Story;
 import story.book.StoryInfo;

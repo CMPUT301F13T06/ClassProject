@@ -2,6 +2,9 @@ package story.book;
 
 import java.util.ArrayList;
 
+import story.book.dataclient.IOClient;
+import story.book.dataclient.ESClient;
+
 /**
  * StoryController to read and download locally stored stories. This controller
  * interfaces with the IO and ES clients.

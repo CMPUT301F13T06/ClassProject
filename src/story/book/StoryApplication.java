@@ -3,6 +3,9 @@ package story.book;
 import android.app.Application;
 import android.content.Context;
 
+import story.book.dataclient.IOClient;
+import story.book.dataclient.ESClient;
+
 /**
  * Application class for aggregating the Singleton IOClient, ESClient, and
  * the active instance of Story. The current instance of Story, 

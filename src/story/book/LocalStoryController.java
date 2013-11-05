@@ -2,6 +2,9 @@ package story.book;
 
 import java.util.ArrayList;
 
+import story.book.dataclient.IOClient;
+import story.book.dataclient.ESClient;
+
 /**
  * Story controller for the <code>LocalStoriesActivity</code> to manage locally
  * stored stories. This controller interfaces with the IO and ES clients to 

@@ -1,7 +1,10 @@
-package story.book;
+package story.book.dataclient;
 
 import java.io.*;
 import java.util.ArrayList;
+
+import story.book.Story;
+import story.book.StoryInfo;
 
 import android.content.Context;
 import android.util.Log;
