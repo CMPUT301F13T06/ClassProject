@@ -7,6 +7,9 @@ import java.util.Collection;
  * ESResponse<T> is response matching a query to our 
  * Elastic Search server, which includes header information 
  * in addition to the collection of data items.
+ * 
+ * From:
+ * ES Demo (https://github.com/rayzhangcl/ESDemo, Creative Commons 0) 10/2013
  */
 public class ESResponse<T> {    
 	int took;

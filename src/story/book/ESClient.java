@@ -6,6 +6,12 @@ import java.util.ArrayList;
 
 import com.google.gson.reflect.TypeToken;
 
+/**
+ * 
+ * @author Vina Nguyen
+ * 
+ */
+
 public class ESClient extends DataClient {	
 	private ESConnection connector = new ESConnection();
 	

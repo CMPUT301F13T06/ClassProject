@@ -5,6 +5,13 @@ import java.util.ArrayList;
 
 import com.google.gson.Gson;
 
+/**
+ * 
+ * @author Anthony Ou
+ * 
+ * @author Vina Nguyen
+ * 
+ */
 public abstract class DataClient {
 	
 	protected static Gson Gsonclient = new Gson();

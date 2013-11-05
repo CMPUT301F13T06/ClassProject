@@ -12,6 +12,12 @@ import story.book.ESClient;
 import story.book.Story;
 import story.book.StoryInfo;
 
+/**
+ * 
+ * @author Vina Nguyen
+ * 
+ */
+
 public class ESClientTest {
 
 	private ESClient es;

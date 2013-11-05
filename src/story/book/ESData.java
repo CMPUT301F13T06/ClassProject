@@ -3,6 +3,9 @@ package story.book;
 /**
  * ESData<T> represents a data item stored at _index/_type/_id 
  * on our Elastic Search server. 
+ * 
+ * From:
+ * ES Demo (https://github.com/rayzhangcl/ESDemo, Creative Commons 0) 10/2013
  */
 public class ESData<T> {
     String _index;

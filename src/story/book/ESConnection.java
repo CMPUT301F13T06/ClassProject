@@ -1,12 +1,17 @@
 package story.book;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+/**
+ * 
+ * @author Vina Nguyen
+ * 
+ */
 
 public class ESConnection {
 	private String base_url = "http://cmput301.softwareprocess.es:8080/cmput301f13t06/";
