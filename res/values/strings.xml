@@ -6,11 +6,11 @@
     <string name="action_search"></string>
     <string name="action_create_story"></string>
     <string name="hello_adventurer">Hello, Adventurer </string>
-    <string name="enter_name">Enter a Nickname</string>
+    <string name="enter_name">Please Enter a Nickname</string>
     <string name="title_activity_dashboard">Dashboard</string>
     <string name="local_stories">Local Stories</string>
     <string name="online_stories">Online Stories</string>
-    <string name="start_adventure">Start your adventure...</string>
+    <string name="start_adventure">Start Your Adventure</string>
     <string name="title_activity_story_list">StoryListActivity</string>
     <string name="author">Author</string>
     <string name="title">Title</string>
@@ -27,7 +27,7 @@
     <string name="Button_SaveEditText">Save</string>
     <string name="Title_Annotations">Annotations</string>
     <string name="Title_Dashboard">Dashboard</string>
-    <string name="dialog_message">Fill in the Title before continuing</string>
+    <string name="dialog_message">Please fill in the Title before continuing</string>
     <string name="dialog_title">Warning!</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
