@@ -1,37 +1,76 @@
 package story.book;
 
+import java.util.ArrayList;
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 import android.support.v4.app.NavUtils;
 
-public class LocalStoriesActivity extends StoryListActivity {
+/**
+ * Activity that allows the user to create new stories or select a story to read from
+ * their local stories
+ * 
+ * @author Nancy Pham-Nguyen
+ *
+ */
 
-	StoryInfo storyInfo;
+public class LocalStoriesActivity extends StoryListActivity implements StoryView<Story>{
+
+	
 	public EditText text;
 	ListView view;
+	
+	//public ArrayList<String> storyInfo;
+	public ArrayList<StoryInfo> storyInfo;
+	
+	public final static String EXTRA_MESSAGE ="story.book.MainActivity";
+	
+	
+	LocalStoryController localController = new LocalStoryController();
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);		
 		setContentView(R.layout.activity_local_stories);
 		
+		
 		//Get message from intent
 		//Intent intent = getIntent();
 		
-		//text = (EditText) findViewById(R.id.test);
+		//storyInfo = new ArrayList<String>();
 		
-		//listView = (ListView) findViewById(R.id.listView);
-		//listView.setAdapter(adapter);
+		storyInfo = localController.getStoryList();
 		
+		text = (EditText) findViewById(R.id.test);
+		
+		
+	String storeAuthor = text.getText().toString();
+	
+	
+		//storyInfo.setAuthor(storeAuthor);
+		
+		listView = (ListView) findViewById(R.id.listView);
+		listView.setAdapter(adapter);
+		
+		longClick();
+		//itemSelected();
 		
 		// Show the Up button in the action bar.
 		setupActionBar();
@@ -39,39 +78,104 @@ public class LocalStoriesActivity extends StoryListActivity {
 	
 	protected void onStart(){
 		super.onStart();
-		/*
+		
+		
 		Button testB = (Button) findViewById(R.id.testButton);
 		testB.setOnClickListener(new OnClickListener() {
 			public void onClick(View v){
 			
-				storyList.add(text.getText().toString());
-				//storyList.add(0,storyInfo);
+				//storyList.addAll(0,storyInfo);
+				storyList.add(0,text.getText().toString());
+				//storyList.add(storyInfo);
+				
+				
 				adapter.notifyDataSetChanged();
 				
 			}
-		});*/
+		});
+	}
+	
+	public void sendMessage(View v){
+		StoryInfo storyInfo = new StoryInfo();
+		Intent intent = new Intent(this, StoryInfoActivity.class);
 		
 		
-		//storyList.add(0,storyInfo);
-		//adapter.notifyDataSetChanged();
+		
+		
+		String storeAuthor = text.getText().toString();
+		storyInfo.setAuthor(storeAuthor);
+		
+		
+		intent.putExtra(EXTRA_MESSAGE,storyInfo.getAuthor());
+		startActivity(intent);
+	}
+	
+	public void longClick(){
+		listView.setOnLongClickListener(new View.OnLongClickListener(){
+			public boolean onLongClick(View v){
+				v.setSelected(true);
+				Context context = getApplicationContext();
+				CharSequence start = "Start";
+				int duration = Toast.LENGTH_SHORT;
+
+				Toast toast = Toast.makeText(context, start, duration);
+				toast.show();
+				return true;
+			}
+		});
+	}
+	
+	public void itemSelected(){
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> parent, View v, int pos,
+					long id) {
+				
+					// start new activity when an entry is selected
+					sendMessage(v);
+		}
+		});
+
 	}
 	
 	/**
 	 * Add the newly created story to the list with it's story information
 	 **/
 	
-	public void addStory(){
-
-		//Intent intent = new Intent(this, EditStoryInformationActivity.class);
-		//startActivity(intent);
-		//test = (EditText) findViewById(R.id.title);
-		//storyList.add(0,test.getText().toString());
+	public void createStory(){
 		
-		//storyList.add(0,storyInfo);
-		//adapter.notifyDataSetChanged();
+		localController.createStory();
+		localController.saveStory();
+		Intent intent = new Intent(this, EditStoryInformationActivity.class);
+		startActivity(intent);
+	}
+	
+	/**
+	 * Method that is called when a user chooses to read the story
+	 */
+	public void readStory(){
+		Intent intent = new Intent(this, StoryFragmentReadActivity.class);
+		startActivity(intent);
 		
 	}
 	
+	public void editStory(){
+		
+	}
+	
+	/**
+	 * Delete the story at the correct SID
+	 */
+	public void deleteStory(){
+		//if long click on story then give option to delete
+		int SID;
+		//localController.deleteStory(SID);
+	}
+	
+	/**
+	 * Method that shows the popup menu
+	 * @param v
+	 */
 	public void showPopup(View v){
 		PopupMenu popup = new PopupMenu(this,v);
 		MenuInflater inflater = popup.getMenuInflater();
@@ -91,7 +195,41 @@ public class LocalStoriesActivity extends StoryListActivity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 	}
-
+	
+	/**
+	 * Method to create a floating context menu when an item in the list
+	 * is clicked and held on
+	 */
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo){
+		super.onCreateContextMenu(menu, v, menuInfo);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.context_menu,menu);
+	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public boolean onContextItemSelected(MenuItem item){
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		switch(item.getItemId()){
+		case R.id.read_story:
+			readStory();
+			return true;
+		case R.id.edit_story:
+			editStory();
+			return true;
+		case R.id.delete_story:
+			deleteStory();
+			return true;
+			default:
+				return super.onContextItemSelected(item);
+		}
+	}
+		
+	
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -106,24 +244,20 @@ public class LocalStoriesActivity extends StoryListActivity {
 			openSearch();
 			return true;
 		case R.id.action_create_story:
-			addStory();
+			createStory();
 			return true;
 		case R.id.title_activity_dashboard:
-			
-			return true;
-		
-		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+
+	@Override
+	public void update(Story model) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
