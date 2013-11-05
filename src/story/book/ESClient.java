@@ -15,6 +15,8 @@ import com.google.gson.reflect.TypeToken;
 public class ESClient extends DataClient {	
 	private ESConnection connector = new ESConnection();
 	
+	private String SID_folder = "SIDs/0";
+	
 	/**
 	 *  Publishes a story.	 
 	 *  
@@ -22,41 +24,57 @@ public class ESClient extends DataClient {
 	 */
 	public void saveStory(Story story) {
 		try {
-			String stringSID = String.valueOf(story.getStoryInfo().getSID());
+			int SID = story.getStoryInfo().getSID();
+			String stringSID = String.valueOf(SID);
 			OutputStreamWriter out = connector.getESWriter(stringSID);
 			
 			String story_string = super.serialize(story);
 			out.write(story_string);
-			
+
 			connector.closeESWriter();
 			
-			/*connector.setFolder("SIDTests/");
-			ArrayList<String> SIDs;
+			// Now record this SID as in-use
+			connector.setFolder(SID_folder);
+
+			// Read the existing SIDList, if any
+			SIDList list = readSIDList();
 			
-			try {
-				String server_read = connector.getESRead("1");
-				Type type = new TypeToken<ESData<ArrayList<String>>>(){}.getType();
-				ESData<ArrayList<String>> es = (ESData<ArrayList<String>>) super.unSerialize(server_read, type);
-				SIDs = es.getSource();
-			} catch (NullPointerException e) {
-				SIDs = new ArrayList<String>();
-			}
-			
-			if (!SIDs.contains(stringSID)) {
-				SIDs.add(stringSID);
-				out = connector.getESWriter("1");
-				String SID_string = super.serialize(SIDs);
-				//out.write(SID_string);
-				out.write(story_string);
-				System.out.println(stringSID);
+			ArrayList<Integer> SIDs = list.getSIDs();
+			// If we are publishing a story for the first time, add the SID to the list
+			if (!SIDs.contains(Integer.valueOf(SID))) {
+				SIDs.add(Integer.valueOf((SID)));
+				
+				out = connector.getESWriter("");
+				String SID_string = super.serialize(list);
+				out.write(SID_string);
 			} 
 			
-			connector.resetFolder();*/
+			connector.resetFolder();
 			connector.closeESWriter();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 *  Reads the in-use SID list from the server. 
+	 *  
+	 * @return SIDList
+	 */
+	private SIDList readSIDList() {
+		connector.setFolder(SID_folder);
+		String server_read = connector.getESRead("");
+		
+		SIDList list = new SIDList();
+		
+		if (!server_read.equals("")) {
+			Type type = new TypeToken<ESData<SIDList>>(){}.getType();
+			ESData<SIDList> es = (ESData<SIDList>) super.unSerialize(server_read, type);
+			list = es.getSource();
+		}
+		
+		return list;
 	}
 	
 	/**
@@ -103,13 +121,25 @@ public class ESClient extends DataClient {
 	}
 
 	public Boolean checkSID(int SID) {
-		// TODO Auto-generated method stub
-		return false;
+		SIDList list = readSIDList();
+		ArrayList<Integer> SIDs = list.getSIDs();
+		if (!SIDs.contains(Integer.valueOf(SID))) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public int getSID() {
-		// TODO Auto-generated method stub
-		return 0;
+		SIDList list = readSIDList();
+		ArrayList<Integer> SIDs = list.getSIDs();
+		
+		for (int i = 0; i < Integer.MAX_VALUE; i++) {
+			if (!SIDs.contains(i)) {
+				return i;
+			} 
+		}
+		
+		return -1;
 	}
-	
 }
