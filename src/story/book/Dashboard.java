@@ -31,7 +31,7 @@ public class Dashboard extends Activity {
 		setContentView(R.layout.dashboard);
 
 		enterName = (EditText) findViewById(R.id.enter_name);
-		defaultName = this.getString(R.string.enter_name);
+		defaultName = this.getString(R.string.default_nickname);
 		displayNickname();
 		
 		tView1 = (TextView) findViewById(R.id.hello_adventurer);
