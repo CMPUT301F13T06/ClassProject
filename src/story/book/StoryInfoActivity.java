@@ -8,6 +8,9 @@ import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -34,11 +37,23 @@ public class StoryInfoActivity extends Activity implements StoryView<Story> {
 		
 	}
 	
-	protected void onStart(StoryInfo storyInfo){
+	protected void onStart(){
 		super.onStart();
 		
-		
-		
+		/*
+		final Intent intent = new Intent(this, StoryFragmentReadActivity.class);
+
+		Button viewButton = (Button) findViewById(R.id.view);
+		viewButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+
+				
+				startActivity(intent);
+				
+				
+			}
+		});
+*/
 		//infoList.add(storyInfo.getAuthor());
 		//infoList.add(storyInfo.getTitle());
 		//infoList.add(storyInfo.getGenre());
@@ -55,9 +70,10 @@ public class StoryInfoActivity extends Activity implements StoryView<Story> {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.title_activity_dashboard:
-			Intent intent = new Intent(this, MainActivity.class);
-			startActivity(intent);
+			//Intent intent = new Intent(this, MainActivity.class);
+			//startActivity(intent);
 			return true;
+		
 		}
 		return super.onOptionsItemSelected(item);
 	}

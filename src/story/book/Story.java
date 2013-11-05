@@ -1,6 +1,7 @@
 package story.book;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Main model class for representing stories.
@@ -50,6 +51,8 @@ public class Story extends StoryModel<StoryView> {
 	 * @param storyFragment the instance of StoryFragment to remove branches to
 	 */
 	private void removeBranchesToFragment(StoryFragment storyFragment) {
-		// TODO
+		Iterator<StoryFragment> fragmentIterator = fragmentList.iterator();
+		while(fragmentIterator.hasNext())
+			fragmentIterator.next().removeBranchWithFragment(storyFragment);
 	}
 }
