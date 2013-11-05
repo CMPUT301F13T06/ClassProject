@@ -1,11 +1,6 @@
 package story.book;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -98,23 +93,24 @@ public class IOClient extends DataClient {
     /**
      * 
      * @param SID
-     *            The SID you want checked to be unique
-     * @return -1 on failure, Free unused SID which may be different from the
-     *         given SID
-     * 
+     * @return true if the SID exists and false if it does not
      */
     public Boolean checkSID(int SID) {
-	/*ArrayList<String> StoryList = getStoryList();
-	if (!StoryList.contains(String.valueOf(SID))) {
-	    return SID;
-	} else {
-	    for (int i = 1; i <= StoryList.size() + 1; ++i) {
-		if (!StoryList.contains(String.valueOf(i))) {
-		    return i;
-		}
+	return (getStoryList().contains(String.valueOf(SID))) ? true : false;
+    }
+
+    /**
+     * 
+     * @return a free SID or -1 on failure
+     */
+    public int getSID() {
+	ArrayList<StoryInfo> StoryInfo = getStoryInfoList();
+	for (int i = 1; i < Integer.MAX_VALUE; ++i) {
+	    if (!StoryInfo.contains(String.valueOf(i))) {
+		return i;
 	    }
-	}*/
-	return false;
+	}
+	return -1;
     }
 
     /**
@@ -150,10 +146,4 @@ public class IOClient extends DataClient {
 
 	return (Story) super.unSerialize(sb.toString(), Story.class);
     }
-
-	@Override
-	public int getSID() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 }
