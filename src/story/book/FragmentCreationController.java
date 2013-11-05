@@ -7,11 +7,12 @@ package story.book;
  * @author Alexander Cheung
  *
  */
-public class FragmentCreationController {
+public class FragmentCreationController extends LocalEditingController {
 
 	private StoryFragment storyFragment;
 	
 	public FragmentCreationController(StoryFragment storyFragment) {
+		super();
 		this.storyFragment = storyFragment;
 	}
 	

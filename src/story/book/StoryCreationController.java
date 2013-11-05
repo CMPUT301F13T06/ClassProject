@@ -9,11 +9,12 @@ import java.util.ArrayList;
  * @author Alexander Cheung
  *
  */
-public class StoryCreationController {
+public class StoryCreationController extends LocalEditingController {
 	
 	private Story story;
 	
 	public StoryCreationController() {
+		super();
 		this.story = StoryApplication.getCurrentStory();
 	}
 	
