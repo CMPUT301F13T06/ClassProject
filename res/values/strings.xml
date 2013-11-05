@@ -6,7 +6,7 @@
     <string name="action_search"></string>
     <string name="action_create_story"></string>
     <string name="hello_adventurer">Hello, Adventurer </string>
-    <string name="enter_name">Please Enter a Nickname</string>
+    <string name="enter_name">Anonymous</string>
     <string name="title_activity_dashboard">Dashboard</string>
     <string name="local_stories">Local Stories</string>
     <string name="online_stories">Online Stories</string>
