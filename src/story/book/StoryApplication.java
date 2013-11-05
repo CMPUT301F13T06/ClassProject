@@ -2,6 +2,7 @@ package story.book;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 /**
  * Application class for aggregating the Singleton IOClient, ESClient, and
@@ -22,6 +23,8 @@ public class StoryApplication extends Application {
     
     private static Story currentStory;
     private static Context context;
+    
+    private static String nickname;
 
     public void onCreate(){
         super.onCreate();
@@ -52,5 +55,17 @@ public class StoryApplication extends Application {
     
     public static Context getContext() {
     	return context;
+    }
+    
+    public static void setNickname(String name) {
+    	nickname = name;
+    }
+    
+    public static String getNickname() {
+    	if (nickname == null) {
+    		return "Anonymous";
+    	} else {
+    		return nickname;
+    	}
     }
 }
