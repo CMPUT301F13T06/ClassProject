@@ -3,7 +3,7 @@
     <item android:id="@id/title_activity_dashboard" 
         android:title="@string/Title_Dashboard" 
 		android:icon="@drawable/ic_action_view_as_grid"
-        android:showAsAction="ifRoom"></item>
+        android:showAsAction="ifRoom" android:orderInCategory="9999"></item>
     
 
 </menu>
