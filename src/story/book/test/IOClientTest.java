@@ -6,7 +6,7 @@ import java.util.Date;
 import org.junit.Test;
 
 import story.book.IOClient;
-import story.book.MainActivity;
+import story.book.Dashboard;
 import story.book.Story;
 import story.book.StoryInfo;
 import android.test.ActivityInstrumentationTestCase2;
@@ -17,12 +17,12 @@ import android.test.ActivityInstrumentationTestCase2;
  * 
  */
 public class IOClientTest extends
-	ActivityInstrumentationTestCase2<story.book.MainActivity> {
+	ActivityInstrumentationTestCase2<story.book.Dashboard> {
     Story s;
     StoryInfo info;
 
     public IOClientTest() {
-	super(MainActivity.class);
+	super(Dashboard.class);
 
 	info = new StoryInfo();
 	info.setAuthor("Daniel");
