@@ -54,6 +54,13 @@ public class StoryInfo {
 		return publishDate;
 	}
 	
+	public String getPublishDateString() {
+		if (publishDate != null)
+			return publishDate.toString();
+		else
+			return "";
+	}
+	
 	public void setPublishDate(Date publishDate) {
 		this.publishDate = publishDate;
 	}
