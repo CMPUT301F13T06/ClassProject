@@ -16,7 +16,7 @@ import android.util.Log;
  * @author Anthony Ou
  * 
  */
-public class IOClient extends JSONClient {
+public class IOClient extends DataClient {
 
     private String story_dir;
 
@@ -103,8 +103,8 @@ public class IOClient extends JSONClient {
      *         given SID
      * 
      */
-    public int checkSID(int SID) {
-	ArrayList<String> StoryList = getStoryList();
+    public Boolean checkSID(int SID) {
+	/*ArrayList<String> StoryList = getStoryList();
 	if (!StoryList.contains(String.valueOf(SID))) {
 	    return SID;
 	} else {
@@ -113,8 +113,8 @@ public class IOClient extends JSONClient {
 		    return i;
 		}
 	    }
-	}
-	return -1;
+	}*/
+	return false;
     }
 
     /**
@@ -148,6 +148,12 @@ public class IOClient extends JSONClient {
 	    return null;
 	}
 
-	return super.unSerialize(sb.toString(), Story.class);
+	return (Story) super.unSerialize(sb.toString(), Story.class);
     }
+
+	@Override
+	public int getSID() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
