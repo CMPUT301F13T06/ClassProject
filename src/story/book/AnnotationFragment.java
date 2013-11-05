@@ -10,9 +10,11 @@ import android.os.Bundle;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -40,9 +42,21 @@ public class AnnotationFragment extends Fragment {
 	
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 	    // Inflate the menu items for use in the action bar
-		
-		inflater.inflate(R.menu.add_illustration_menu, menu);
 		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.add_illustration_menu, menu);
 	   
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+        case R.id.add_new:
+            Intent intent = new Intent();
+            startActivity(intent);
+            return true;
+            
+        default:
+            return super.onOptionsItemSelected(item);
+        }
 	}
 }
