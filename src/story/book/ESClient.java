@@ -1,102 +1,109 @@
 package story.book;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
-public class ESClient extends JSONClient {
-    private String url_string = "http://cmput301.softwareprocess.es:8080/cmput301f13t06/testing/";
+import com.google.gson.reflect.TypeToken;
 
-    /**
-     * 
-     * @param SID
-     *            is a Story's SID
-     * @return a null on failure or a HttpURLConnection
-     */
-    private HttpURLConnection getConnection(int SID) {
-	try {
-	    URL url = new URL(url_string + String.valueOf(SID));
-
-	    HttpURLConnection urlConnection = (HttpURLConnection) url
-		    .openConnection();
-	    urlConnection.setDoOutput(true);
-	    urlConnection.setRequestProperty("Accept", "application/json");
-
-	    return urlConnection;
-
-	} catch (Exception e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	    return null;
+public class ESClient extends DataClient {	
+	private ESConnection connector = new ESConnection();
+	
+	/**
+	 *  Publishes a story.	 
+	 *  
+	 * @param SID is a Story's SID
+	 */
+	public void saveStory(Story story) {
+		try {
+			String stringSID = String.valueOf(story.getStoryInfo().getSID());
+			OutputStreamWriter out = connector.getESWriter(stringSID);
+			
+			String story_string = super.serialize(story);
+			out.write(story_string);
+			
+			connector.closeESWriter();
+			
+			/*connector.setFolder("SIDTests/");
+			ArrayList<String> SIDs;
+			
+			try {
+				String server_read = connector.getESRead("1");
+				Type type = new TypeToken<ESData<ArrayList<String>>>(){}.getType();
+				ESData<ArrayList<String>> es = (ESData<ArrayList<String>>) super.unSerialize(server_read, type);
+				SIDs = es.getSource();
+			} catch (NullPointerException e) {
+				SIDs = new ArrayList<String>();
+			}
+			
+			if (!SIDs.contains(stringSID)) {
+				SIDs.add(stringSID);
+				out = connector.getESWriter("1");
+				String SID_string = super.serialize(SIDs);
+				//out.write(SID_string);
+				out.write(story_string);
+				System.out.println(stringSID);
+			} 
+			
+			connector.resetFolder();*/
+			connector.closeESWriter();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-    }
+	
+	/**
+	 * Retrieves an online story (to be used for download or viewing).	 
+	 *  
+	 * @param SID is a Story's SID
+	 * @return a null on failure or a Story object 
+	 */
+	public Story getStory(int SID) {
+		try {			
+			String server_read = connector.getESRead(String.valueOf(SID));
+			
+			Type type = new TypeToken<ESData<Story>>(){}.getType();
+			ESData<Story> es = (ESData<Story>) super.unSerialize(server_read, type);
+			
+			return es.getSource();
 
-    /**
-     * 
-     * @param Closes
-     *            a HttpURLConnection
-     */
-    private void closeConnection(HttpURLConnection conn) {
-	conn.disconnect();
-    }
-
-    /**
-     * Publishes a story.
-     * 
-     * @param SID
-     *            is a Story's SID
-     */
-    public void openSaveConnection(Story story) {
-	try {
-	    HttpURLConnection conn = getConnection(story.getStoryInfo()
-		    .getSID());
-	    conn.setChunkedStreamingMode(0);
-
-	    OutputStreamWriter out = new OutputStreamWriter(
-		    conn.getOutputStream());
-
-	    String story_string = super.serialize(story);
-	    out.write(story_string);
-	    out.close();
-
-	    closeConnection(conn);
-
-	} catch (Exception e) {
-	    e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
-    }
-
-    /**
-     * Retrieves an online story.
-     * 
-     * @param SID
-     *            is a Story's SID
-     * @return a null on failure or a Story object
-     */
-    public Story openGetConnection(int SID) {
-	try {
-	    HttpURLConnection conn = getConnection(SID);
-
-	    BufferedReader in = new BufferedReader(new InputStreamReader(
-		    conn.getInputStream()));
-
-	    String story_string = "";
-	    String inputLine;
-	    while ((inputLine = in.readLine()) != null)
-		story_string += inputLine;
-	    in.close();
-
-	    closeConnection(conn);
-
-	    return this.unSerialize(story_string, Story.class);
-
-	} catch (Exception e) {
-	    e.printStackTrace();
-	    return null;
+	
+	public ArrayList<StoryInfo> getStoryInfoList() {
+		try {
+			String server_read = connector.getESRead("_search?");
+			
+			Type type = new TypeToken<ESResponse<Story>>(){}.getType();
+			ESResponse<Story> es = (ESResponse<Story>) super.unSerialize(server_read, type);			
+			
+			ArrayList<StoryInfo> storyInfoList = new ArrayList<StoryInfo>();
+			ArrayList<Story> stories = (ArrayList<Story>) es.getSources();
+			for(Story s: stories) {
+				storyInfoList.add(s.getStoryInfo());
+			}
+			
+			return storyInfoList;			
+			 
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
-    }
+	public Boolean checkSID(int SID) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
+	public int getSID() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 }
