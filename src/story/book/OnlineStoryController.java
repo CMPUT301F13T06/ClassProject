@@ -23,16 +23,17 @@ public class OnlineStoryController implements StoryController {
 	}
 	
 	public void getStory(int SID) {
-		// TODO StoryApplication.setCurrentStory(es.getStory(SID));
+		StoryApplication.setCurrentStory(es.getStory(SID));
 	}
 
 	public void saveStory() {
-		// TODO io.saveStory();
+		checkSIDConflict(StoryApplication.getCurrentStory().getStoryInfo()
+				.getSID());
+		io.saveStory(StoryApplication.getCurrentStory());
 	}
 
 	public ArrayList<StoryInfo> getStoryList() {
-		// TODO return es.getStoryList();
-		return null;
+		return es.getStoryInfoList();
 	}
 
 	/**

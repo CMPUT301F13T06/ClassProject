@@ -38,8 +38,7 @@ public class LocalStoryController implements StoryController {
 	 * stories.
 	 */
 	public ArrayList<StoryInfo> getStoryList() {
-		//return io.getStoryList();
-		return null;
+		return io.getStoryInfoList();
 	}
 	
 	/**
@@ -94,18 +93,18 @@ public class LocalStoryController implements StoryController {
 	 * @return 
 	 */
 	private void checkSIDConflict(int SID) {
-		/*
+		
 		// Check if any remote story has conflicting SID. ESClient will return
 		// the original ID if it is free, else it returns a free SID from the
 		// server.
-		if (!es.checkSID(SID))
-			int id = es.getSID(SID);
+		int id;
+		if (!es.checkSID(SID)) {
+			id = es.getSID();
 		
 			// Change the current Story's SID to the new SID supplied by the
 			// ESClient.
 			StoryApplication.getCurrentStory().getStoryInfo().setSID(id);
 		}
-		*/
 	}
 	
 }
