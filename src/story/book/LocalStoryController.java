@@ -1,6 +1,5 @@
 package story.book;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -36,7 +35,7 @@ public class LocalStoryController implements StoryController {
 	 * stories.
 	 */
 	public ArrayList<StoryInfo> getStoryList() {
-		// TODO return io.getStoryList();
+		//return io.getStoryList();
 		return null;
 	}
 	
@@ -70,20 +69,18 @@ public class LocalStoryController implements StoryController {
 	 * @param SID the SID of the story being published
 	 */
 	public void publishStory(int SID) {
-		/* TODO
 		// TODO: no need to check for SID conflict if story has already been
 		// published before.
 		
 		// Load the specified Story as the current Story
 		getStory(SID);
 		
-		// Check if the SID has any conflicts with the server
-		int id = checkSIDConflict(SID);
+		// Check if the SID has any conflicts with the server and resolve it
+		checkSIDConflict(SID);
 		
 		// Publish the story
 		// XXX: there is a potential of SID conflict beyond this point
-		es.publishStory(StoryApplication.getCurrentStory());
-		*/
+		es.saveStory(StoryApplication.getCurrentStory());
 	}
 	
 	/**
@@ -93,22 +90,19 @@ public class LocalStoryController implements StoryController {
 	 * @param SID the SID being checked for
 	 * @return 
 	 */
-	private int checkSIDConflict(int SID) {
-		/* TODO
+	private void checkSIDConflict(int SID) {
+		/*
 		// Check if any remote story has conflicting SID. ESClient will return
 		// the original ID if it is free, else it returns a free SID from the
 		// server.
-		int id = es.checkSID(SID);
+		if (!es.checkSID(SID))
+			int id = es.getSID(SID);
 		
-		if (id != SID) {
 			// Change the current Story's SID to the new SID supplied by the
 			// ESClient.
 			StoryApplication.getCurrentStory().getStoryInfo().setSID(id);
 		}
-		
-		return id;
 		*/
-		return 0;
 	}
 	
 }
