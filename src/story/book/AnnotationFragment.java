@@ -3,7 +3,9 @@
  */
 package story.book;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
  * @author jsurya
  *
  */
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
 public class AnnotationFragment extends Fragment {
 
 	@Override
