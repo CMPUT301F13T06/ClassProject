@@ -46,7 +46,7 @@ public class StoryFragmentEditActivity extends Activity {
 	        // Handle item selection
 	        switch (item.getItemId()) {
 	        case R.id.activity_main:
-	            Intent intent = new Intent(this, MainActivity.class);
+	            Intent intent = new Intent(this, Dashboard.class);
 	            startActivity(intent);
 	            return true;
 	            

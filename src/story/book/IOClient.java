@@ -120,14 +120,13 @@ public class IOClient extends DataClient {
 
 	char[] inputBuffer = new char[5048];
 	StringBuilder sb = new StringBuilder(5048); // set the initial size
-	// of
+	// of string builder to be
+	// same size as the buffer
 	try {
 	    FileInputStream fis = new FileInputStream(story_dir
 		    + String.valueOf(SID));
 	    InputStreamReader isr = new InputStreamReader(fis);
 
-	    // string builder to be
-	    // same size as the buffer
 	    int l;
 	    while ((l = isr.read(inputBuffer)) != -1) {
 		sb.append(inputBuffer, 0, l);

@@ -15,9 +15,6 @@ LICENSE
 google-gson : Apache License Version 2.0
 Source Avaliable at : https://code.google.com/p/google-gson/source/checkout
 
-Apache HttpComponents Client Under : Apache License Version 2.0
-Source Avaliable at: http://apache.mirror.vexxhost.com/httpcomponents/httpclient/source/
-
 
 
 

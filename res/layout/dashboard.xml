@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/hello_adventurer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/hello_adventurer" />
+
+    <EditText
+        android:id="@+id/enter_name"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="50dp"
+        android:hint="@string/enter_name" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/start_adventure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="35dp"
+            android:gravity="center"
+            android:text="@string/start_adventure"
+            android:textSize="40sp" />
+
+        <Button
+            android:id="@+id/online_stories"
+            android:layout_width="189dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:layout_weight="0.3"
+            android:background="#333333"
+            android:text="@string/online_stories"
+            android:textColor="#FFFFFF"
+            android:textSize="35sp" />
+
+        <Button
+            android:id="@+id/local_stories"
+            android:layout_width="192dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dp"
+            android:layout_weight="0.3"
+            android:background="#333333"
+            android:text="@string/local_stories"
+            android:textColor="#FFFFFF"
+            android:textSize="35sp" />
+    </LinearLayout>
+
+</LinearLayout>
