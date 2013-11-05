@@ -7,6 +7,9 @@ import android.app.Activity;
 import android.os.Bundle;
 
 /**
+ * StoryFragmentListActivity displays all story fragments contained
+ * in the story that is currently open.
+ * 
  * @author Jessica Surya
  *
  */
