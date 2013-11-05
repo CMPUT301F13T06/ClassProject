@@ -14,6 +14,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 /**
+ * StoryFragmentEditActivity is the interface users can make changes
+ * to illustrations contained in the story fragment which is currently
+ * open. 
+ * 
  * @author jsurya
  *
  */
@@ -46,7 +50,7 @@ public class StoryFragmentEditActivity extends Activity {
 		public boolean onOptionsItemSelected(MenuItem item) {
 	        // Handle item selection
 	        switch (item.getItemId()) {
-	        case R.id.activity_main:
+	        case R.id.title_activity_dashboard:
 	            Intent intent = new Intent(this, Dashboard.class);
 	            startActivity(intent);
 	            return true;

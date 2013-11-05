@@ -72,6 +72,10 @@
             android:name="story.book.StoryFragmentReadActivity"
             android:label="@string/FragmentTitle">
         </activity>
+        <activity
+            android:name="story.book.StoryFragmentListActivity"
+            android:label="@string/StoryTitle">
+        </activity>
         
     </application>
 
