@@ -24,13 +24,15 @@ import android.view.MenuItem;
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
 public class StoryFragmentEditActivity extends Activity {
     	ActionBar actionBar;
-    	
+    	//FragmentCreationController FCC = new FragmentCreationController(storyFragment);
+    	//storyFragment passed as intent from FragmentList
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.story_fragment_read_activity);
 			actionBar = getActionBar();
 			actionBar.setTitle(R.string.FragmentTitle);
+			
 		}
 		
 		@Override
