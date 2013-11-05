@@ -10,8 +10,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import story.book.dataclient.ESClient;
+import story.book.DecisionBranch;
 import story.book.Story;
+import story.book.StoryFragment;
 import story.book.StoryInfo;
+import story.book.TextIllustration;
 
 /**
  * Unit testing for the ESClient and related classes.
@@ -42,7 +45,26 @@ public class ESClientTest {
 		info.setPublishDate(new Date());
 		info.setSID(600);
 		
-		sample_story.add(new Story(info));
+		Story story = new Story(info);
+		StoryFragment fragment1 = new StoryFragment("Finding the Star");
+		// TODO
+		//TextIllustration text = new TextIllustration("It was a dark, clear night.");
+		//fragment1.addIllustration(text);
+		StoryFragment fragment2 = new StoryFragment("Preparing for the Journey");
+		//TextIllustration text2 = new TextIllustration("She ventured into the locked dungeons to retrieve some potions.");
+		//TextIllustration text3 = new TextIllustration("She could not carry everything, she had to choose between potion A and potion B.");
+		//fragment2.addIllustration(text2);
+		//fragment2.addIllustration(text3);
+		DecisionBranch branch = new DecisionBranch("She decides she must find the star.", fragment2);
+		//DecisionBranch branch2 = new DecisionBranch("She declares she is too weak to find the star.", fragment1);
+		fragment1.addDecisionBranch(branch);
+		//fragment2.addDecisionBranch(branch2);
+		
+		story.addFragment(fragment1);
+		story.addFragment(fragment2);
+		
+		sample_story.add(story);
+		
 		
 		StoryInfo info2 = new StoryInfo();
 		info2.setAuthor("Ashley");
