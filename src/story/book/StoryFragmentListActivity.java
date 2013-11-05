@@ -8,10 +8,14 @@ import java.util.ArrayList;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
@@ -28,8 +32,11 @@ public class StoryFragmentListActivity extends Activity {
 	ArrayAdapter<StoryFragment> adapter;
 	StoryCreationController SCC;
 	
+	int pos;
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.story_fragment_read_activity);
 		SCC = new StoryCreationController();
 		SFL = SCC.getFragments();
@@ -39,8 +46,25 @@ public class StoryFragmentListActivity extends Activity {
 		adapter = new ArrayAdapter<StoryFragment>(getBaseContext(),
 				android.R.layout.simple_list_item_1,
 				SFL);
-		
+//		
+//		GridView gridview = (GridView) findViewById(R.layout.story_fragment_list_activity);
+//
+//		gridview.setBackgroundColor(Color.WHITE);
+//		gridview.setNumColumns(2);
+//		gridview.setGravity(Gravity.CENTER);
+//		gridview.setAdapter(adapter);
+//		
+//		registerForContextMenu(gridview);
+//		gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//			@Override
+//			public void onItemClick(AdapterView parent, View v, int position, long id) {
+//				pos = position;
+//			}
+//		});
+//
+//		return;
 	}
+
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
