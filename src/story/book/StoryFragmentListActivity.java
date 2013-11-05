@@ -31,15 +31,14 @@ public class StoryFragmentListActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.story_fragment_read_activity);
-//		SCC = new StoryCreationController();
-//		SFL = SCC.getFragments();
+		SCC = new StoryCreationController();
+		SFL = SCC.getFragments();
 		actionBar = getActionBar();
 		actionBar.setTitle(R.string.StoryTitle);
 
-		
-//		adapter = new ArrayAdapter<StoryFragment>(getBaseContext(),
-//				android.R.layout.simple_list_item_1,
-//				SFL);
+		adapter = new ArrayAdapter<StoryFragment>(getBaseContext(),
+				android.R.layout.simple_list_item_1,
+				SFL);
 		
 	}
 	
