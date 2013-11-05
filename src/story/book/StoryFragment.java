@@ -82,4 +82,9 @@ public class StoryFragment extends StoryModel<StoryView> {
 			removeDecisionBranch(branchIterator.next());
 	}
 	
+	@Override
+	public String toString() {
+		return this.fragmentTitle;
+	}
+	
 }
