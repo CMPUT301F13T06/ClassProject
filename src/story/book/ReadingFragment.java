@@ -10,6 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
+ * ReadingFragment is the interface users can use to read story
+ * fragments. If the current fragment being read is not an ending 
+ * fragment, the end of the page will have buttons which 
+ * will allow users to pick a <code>DecisionBranch</code>
+ * progress to the following story fragment in the story.
+ * 
  * @author jsurya
  *
  */

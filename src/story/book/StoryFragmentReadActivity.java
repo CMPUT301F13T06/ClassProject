@@ -16,6 +16,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 /**
+ * StoryFragmentReadActivity is an interface for users to read a story
+ * fragment (left tab), as well as an interface for users to add 
+ * annotations (right tab) on the story fragment which is currently being read.
+ * 
  * @author jsurya
  *
  */

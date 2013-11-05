@@ -1,11 +1,17 @@
-package story.book;
+package story.book.dataclient;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import story.book.Story;
+import story.book.StoryInfo;
+
 import com.google.gson.Gson;
 
 /**
+ * DataClient is an abstract class that represents 
+ * a storage location that contains Stories. Stories
+ * can be saved and retrieved using a DataClient.
  * 
  * @author Anthony Ou
  * 

@@ -1,4 +1,4 @@
-package story.book;
+package story.book.dataclient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,6 +8,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
+ * ESConnection is used by the ESClient to connect
+ * to the Elastic Search server to read or write.
  * 
  * @author Vina Nguyen
  * 

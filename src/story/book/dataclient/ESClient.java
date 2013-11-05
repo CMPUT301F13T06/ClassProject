@@ -1,12 +1,18 @@
-package story.book;
+package story.book.dataclient;
 
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import story.book.Story;
+import story.book.StoryInfo;
+
 import com.google.gson.reflect.TypeToken;
 
 /**
+ * ESClient is a DataClient class that represents 
+ * an online storage location for Stories. Stories
+ * are saved to an Elastic Search server.
  * 
  * @author Vina Nguyen
  * 

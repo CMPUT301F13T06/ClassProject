@@ -2,17 +2,19 @@ package story.book.test;
 
 import static org.junit.Assert.*;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import story.book.ESClient;
+import story.book.dataclient.ESClient;
 import story.book.Story;
 import story.book.StoryInfo;
 
 /**
+ * Unit testing for the ESClient and related classes.
  * 
  * @author Vina Nguyen
  * 
