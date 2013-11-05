@@ -90,13 +90,8 @@ public class IOClient extends DataClient {
 	return listOfStoryInfo;
     }
 
-    /**
-     * 
-     * @param SID
-     * @return true if the SID exists and false if it does not
-     */
     public Boolean checkSID(int SID) {
-	return (getStoryList().contains(String.valueOf(SID))) ? true : false;
+	return getStoryList().contains(String.valueOf(SID)) ? false : true;
     }
 
     /**
