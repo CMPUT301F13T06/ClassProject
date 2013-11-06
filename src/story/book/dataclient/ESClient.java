@@ -1,8 +1,8 @@
 package story.book.dataclient;
 
-import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import story.book.Story;
 import story.book.StoryInfo;
@@ -19,8 +19,7 @@ import com.google.gson.reflect.TypeToken;
  */
 
 public class ESClient extends DataClient {	
-	private ESConnection connector = new ESConnection();
-	
+	protected String def_folder = "testing/"; //"stories/";
 	private String SID_folder = "SIDs/0";
 	
 	/**
@@ -32,15 +31,10 @@ public class ESClient extends DataClient {
 		try {
 			int SID = story.getStoryInfo().getSID();
 			String stringSID = String.valueOf(SID);
-			OutputStreamWriter out = connector.getESWriter(stringSID);
-			
 			String story_string = super.serialize(story);
-			out.write(story_string);
-
-			connector.closeESWriter();
 			
-			// Now record this SID as in-use
-			connector.setFolder(SID_folder);
+			// Write the Story to the server
+			String res = new ESWrite(def_folder).execute(stringSID, story_string).get();
 
 			// Read the existing SIDList, if any
 			SIDList list = readSIDList();
@@ -49,14 +43,11 @@ public class ESClient extends DataClient {
 			// If we are publishing a story for the first time, add the SID to the list
 			if (!SIDs.contains(Integer.valueOf(SID))) {
 				SIDs.add(Integer.valueOf((SID)));
-				
-				out = connector.getESWriter("");
 				String SID_string = super.serialize(list);
-				out.write(SID_string);
+				
+				// Write the updated SID list to the server
+				new ESWrite(SID_folder).execute("", SID_string);
 			} 
-			
-			connector.resetFolder();
-			connector.closeESWriter();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -67,10 +58,18 @@ public class ESClient extends DataClient {
 	 *  Reads the in-use SID list from the server. 
 	 *  
 	 * @return SIDList
+	 * @throws ExecutionException 
+	 * @throws InterruptedException 
 	 */
 	private SIDList readSIDList() {
-		connector.setFolder(SID_folder);
-		String server_read = connector.getESRead("");
+		String server_read;
+		try {
+			server_read = new ESRead(SID_folder).execute("").get();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			server_read = "";
+		} 
 		
 		SIDList list = new SIDList();
 		
@@ -91,8 +90,8 @@ public class ESClient extends DataClient {
 	 */
 	public Story getStory(int SID) {
 		try {			
-			String server_read = connector.getESRead(String.valueOf(SID));
-			
+			String server_read = new ESRead(def_folder).execute(String.valueOf(SID)).get();
+			//String server_read = new ESConnection().getESRead(String.valueOf(SID));
 			Type type = new TypeToken<ESData<Story>>(){}.getType();
 			ESData<Story> es = (ESData<Story>) super.unSerialize(server_read, type);
 			
@@ -107,7 +106,7 @@ public class ESClient extends DataClient {
 	
 	public ArrayList<StoryInfo> getStoryInfoList() {
 		try {
-			String server_read = connector.getESRead("_search?");
+			String server_read = new ESRead(def_folder).execute("_search?").get();
 			
 			Type type = new TypeToken<ESResponse<Story>>(){}.getType();
 			ESResponse<Story> es = (ESResponse<Story>) super.unSerialize(server_read, type);			
