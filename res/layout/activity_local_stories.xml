@@ -21,12 +21,25 @@
     
     <ListView
         android:id="@+id/listView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:dividerHeight="2dp"
         android:scrollbars="vertical"
         android:divider="#C0C0C0">   
-    </ListView>
+         </ListView>
+         
+    <TextView
+        android:id="@+id/textTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_name"/>
+    
+    <TextView
+        android:id="@+id/textTest2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_name"/>
+    
     
     
     
