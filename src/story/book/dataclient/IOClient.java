@@ -42,11 +42,10 @@ public class IOClient extends DataClient {
      *            The story to be saved
      */
     public void saveStory(Story aStory) {
-	FileOutputStream fos;
 	try {
-	    Log.d(String.valueOf(aStory.hashCode()), "hash Code");
-	    fos = new FileOutputStream(story_dir
-		    + String.valueOf(aStory.getStoryInfo().getSID()));
+	    String SID = String.valueOf(aStory.getStoryInfo().getSID());
+	    new File(story_dir + SID).mkdir();
+	    FileOutputStream fos = new FileOutputStream(story_dir + SID + "/" + SID);
 	    fos.write(super.serialize(aStory).getBytes());
 	    fos.flush();
 	    fos.close();
@@ -62,8 +61,16 @@ public class IOClient extends DataClient {
      * @return true on success and false on failure
      */
     public boolean deleteStory(int SID) {
-	// I add a slash here since getFilesDir doesnt include it at the end
-	return new File(story_dir + String.valueOf(SID)).delete();
+	File dir = new File(story_dir + "/" +String.valueOf(SID));
+	String[] children = dir.list();
+	if(children != null){
+	    for (int i = 0; i < children.length; i++) {
+		new File(dir, children[i]).delete();
+	    }
+	    return dir.delete();
+	}
+	else
+	    return false;
     }
 
     /**
@@ -121,13 +128,13 @@ public class IOClient extends DataClient {
      */
     public Story getStory(int SID) {
 
-	char[] inputBuffer = new char[5048];
-	StringBuilder sb = new StringBuilder(5048); // set the initial size
+	char[] inputBuffer = new char[4096];
+	StringBuilder sb = new StringBuilder(4096); // set the initial size
 	// of string builder to be
 	// same size as the buffer
 	try {
 	    FileInputStream fis = new FileInputStream(story_dir
-		    + String.valueOf(SID));
+		    + String.valueOf(SID) + "/" + String.valueOf(SID));
 	    InputStreamReader isr = new InputStreamReader(fis);
 
 	    int l;
