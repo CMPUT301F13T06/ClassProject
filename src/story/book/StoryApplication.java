@@ -67,7 +67,7 @@ public class StoryApplication extends Application {
     
     public static IOClient getIOClient() {
     	if (io == null) {
-    		io = new IOClient(context);
+    		io = new IOClient();
     	}
     	return io;
     }

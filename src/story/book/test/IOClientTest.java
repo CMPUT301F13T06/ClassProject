@@ -39,7 +39,7 @@ public class IOClientTest extends
 
     @Test
     public void testIOClient() throws Exception {
-	IOClient io = new IOClient(getActivity());
+	IOClient io = new IOClient();
 	io.saveStory(s);
 	StoryInfo sample_info = io.getStory((s.getStoryInfo().getSID()))
 		.getStoryInfo();
