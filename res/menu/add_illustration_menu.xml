@@ -1,9 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/add_new" 
-        android:title="@string/Blank" 
+<menu xmlns:android="http://schemas.android.com/apk/res/android" 
 		android:icon="@drawable/ic_action_new"
-        android:showAsAction="always"></item>
-    
-</menu>
+        android:showAsAction="always">
+        
+    <item
+        android:id="@+id/text"
+        android:title="@string/Blank">
+    </item>
+    <item
+        android:id="@+id/take_photo"
+        android:title="@string/Blank">
+    </item>
+    <item
+        android:id="@+id/addGalleryPhoto"
+        android:title="@string/Blank">
+    </item>
+    <item
+        android:id="@+id/addDecisionBranch"
+        android:title="@string/Blank">
+    </item>
+    <item
+        android:id="@+id/audio"
+        android:showAsAction="always"
+        android:title="@string/Blank">
+    </item>
+    <item
+        android:id="@+id/video"
+        android:showAsAction="always"
+        android:title="@string/Blank">
+    </item>
+    <item
+        android:id="@+id/record_video"
+        android:showAsAction="always"
+        android:title="@string/Blank">
+    </item>
+    <item
+        android:id="@+id/add_new"
+        android:showAsAction="always"
+        android:title="@string/Blank">
+    </item>
 
+</menu>

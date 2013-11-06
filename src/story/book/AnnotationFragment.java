@@ -3,14 +3,11 @@
  */
 package story.book;
 
-import java.util.zip.Inflater;
-
-import android.os.Build;
-import android.os.Bundle;
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
