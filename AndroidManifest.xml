@@ -25,7 +25,7 @@
         <uses-library android:name="android.test.runner" />
 
         <activity
-            android:name="story.book.StoryInfoActivity" >
+            android:name="story.book.Dashboard" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,11 +48,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="story.book.StoryListActivity" />
         </activity>
-        <!--
         <activity
             android:name="story.book.StoryInfoActivity"
             android:label="@string/title_activity_story_info" >
-        </activity> -->
+        </activity> 
         <activity
             android:name="story.book.EditStoryInformationActivity"
             android:label="@string/title_activity_edit_story_information" >
