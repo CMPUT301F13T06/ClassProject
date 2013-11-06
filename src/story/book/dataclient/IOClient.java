@@ -72,8 +72,8 @@ public class IOClient extends DataClient {
 		File dir = new File(story_dir + "/" +String.valueOf(SID));
 		String[] children = dir.list();
 		if(children != null){
-			for (int i = 0; i < children.length; i++) {
-				new File(dir, children[i]).delete();
+			for (String i : children) {
+				new File(dir, i).delete();
 			}
 			return dir.delete();
 		}
@@ -87,8 +87,7 @@ public class IOClient extends DataClient {
 	 */
 	public ArrayList<String> getStoryList() {
 		ArrayList<String> listOfFileNames = new ArrayList<String>();
-		File f = new File(story_dir);
-		for (String temp : f.list()) {
+		for (String temp : new File(story_dir).list()) {
 			listOfFileNames.add(temp);
 		}
 		return listOfFileNames;
@@ -136,7 +135,7 @@ public class IOClient extends DataClient {
 	 */
 	public Story getStory(int SID) {
 
-		char[] inputBuffer = new char[4096];
+		char[] inputBuffer = new char[1024];
 		StringBuilder sb = new StringBuilder(4096); // set the initial size
 		// of string builder to be
 		// same size as the buffer

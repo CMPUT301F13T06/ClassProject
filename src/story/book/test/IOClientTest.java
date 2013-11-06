@@ -55,9 +55,10 @@ public class IOClientTest extends
 
 	ArrayList<StoryInfo> storyinfos = io.getStoryInfoList();
 	assertEquals(storyinfos.get(0).getAuthor(), "Daniel");
-
+	assertFalse(io.checkSID(600));
+	assertTrue(io.getSID() != 600);
 	assertTrue(io.deleteStory(600));
-
+	assertTrue(io.checkSID(600));
 	assertFalse(io.deleteStory(600));
 
 	// io.saveStory(null);
