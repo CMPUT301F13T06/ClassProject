@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ListView;
 
 /**
  * StoryFragmentListActivity displays all story fragments contained
@@ -43,26 +44,28 @@ public class StoryFragmentListActivity extends Activity {
 		actionBar = getActionBar();
 		actionBar.setTitle(R.string.StoryTitle);
 
-		adapter = new ArrayAdapter<StoryFragment>(getBaseContext(),
-				android.R.layout.simple_list_item_1,
+		
+		
+		adapter = new ArrayAdapter<StoryFragment>(this, android.R.layout.simple_list_item_1,
 				SFL);
-//		
-//		GridView gridview = (GridView) findViewById(R.layout.story_fragment_list_activity);
-//
-//		gridview.setBackgroundColor(Color.WHITE);
-//		gridview.setNumColumns(2);
-//		gridview.setGravity(Gravity.CENTER);
-//		gridview.setAdapter(adapter);
-//		
-//		registerForContextMenu(gridview);
-//		gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//			@Override
-//			public void onItemClick(AdapterView parent, View v, int position, long id) {
-//				pos = position;
-//			}
-//		});
-//
-//		return;
+
+		
+		ListView listview = new ListView(this);
+
+		listview.setBackgroundColor(Color.WHITE);
+
+		listview.setAdapter(adapter);
+		setContentView(listview);
+		
+		registerForContextMenu(listview);
+		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView parent, View v, int position, long id) {
+				pos = position;
+			}
+		});
+
+		return;
 	}
 
 	
