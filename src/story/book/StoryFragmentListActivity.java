@@ -10,6 +10,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -62,7 +64,10 @@ public class StoryFragmentListActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView parent, View v, int position, long id) {
 				pos = position;
+				startActivity(new Intent(v.getContext(), 
+						 StoryFragmentEditActivity.class));
 			}
+
 		});
 
 		return;
@@ -91,4 +96,41 @@ public class StoryFragmentListActivity extends Activity {
         }
 	}
 	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		 super.onCreateContextMenu(menu, v, menuInfo);
+		 menu.setHeaderTitle("Select an Option:");
+		 menu.add(0, v.getId(), 1, "Edit");  
+		 menu.add(0, v.getId(), 2, "Set as Starting Story Fragment"); 
+		 menu.add(0, v.getId(), 3, "Delete");
+		 menu.add(0, v.getId(), 4, "Cancel");
+	}
+	
+	@Override  
+	public boolean onContextItemSelected(MenuItem item) {
+		
+		switch (item.getOrder()) {
+		case 1:
+			// Edit story fragment
+			Intent i = new Intent(this, StoryFragmentEditActivity.class);
+			startActivity(i);
+			break;
+			
+		case 2:
+			// Set as starting story fragment
+
+			break;
+		case 3:
+			//Delete
+			
+			break;
+			
+		case 4:
+			// Cancel options
+			return false;
+		}
+			
+		return true; 
+		
+	}
 }
