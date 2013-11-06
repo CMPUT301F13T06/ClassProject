@@ -1,7 +1,9 @@
 package story.book;
 
 import java.util.ArrayList;
+import java.util.Date;
 
+import story.book.StoryInfo.PublishState;
 import story.book.dataclient.IOClient;
 import story.book.dataclient.ESClient;
 
@@ -49,6 +51,7 @@ public class LocalStoryController implements StoryController {
 		StoryInfo info = new StoryInfo();
 		info.setAuthor(StoryApplication.getNickname());
 		info.setSID(io.getSID());
+		info.setPublishState(PublishState.UNPUBLISHED);
 		StoryApplication.setCurrentStory(new Story(info));
 	}
 
@@ -74,18 +77,22 @@ public class LocalStoryController implements StoryController {
 	 * @param SID the SID of the story being published
 	 */
 	public void publishStory(int SID) {
-		// TODO: no need to check for SID conflict if story has already been
-		// published before.
-		
 		// Load the specified Story as the current Story
 		getStory(SID);
 		
-		// Check if the SID has any conflicts with the server and resolve it
-		checkSIDConflict(SID);
+		Story story = StoryApplication.getCurrentStory();
+		StoryInfo storyInfo = story.getStoryInfo();
+		if (storyInfo.getPublishState() == PublishState.UNPUBLISHED) {
+			// Check if the SID has any conflicts with the server and resolve it
+			checkSIDConflict(SID);	
+		}
+		storyInfo.setPublishState(PublishState.PUBLISHED);
+		storyInfo.setPublishDate(new Date());
+		
+		saveStory();
 		
 		// Publish the story
-		// XXX: there is a potential of SID conflict beyond this point
-		es.saveStory(StoryApplication.getCurrentStory());
+		es.saveStory(story);
 	}
 	
 	/**
