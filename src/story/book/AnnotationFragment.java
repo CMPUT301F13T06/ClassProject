@@ -40,13 +40,19 @@ public class AnnotationFragment extends Fragment {
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 	    // Inflate the menu items for use in the action bar
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.add_illustration_menu, menu);
+		inflater.inflate(R.menu.add_annotation_menu, menu);
 	   
 	}
 	
 	public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+        case R.id.fromCamera:
+            return true;
+            
+        case R.id.fromGallery:
+            
+            return true;
         case R.id.add_new:
             Intent intent = new Intent();
             startActivity(intent);

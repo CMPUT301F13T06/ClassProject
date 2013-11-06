@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/addAnno">
+
+    <item
+        android:id="@+id/addAnno"
+        android:icon="@drawable/ic_action_new"
+        android:showAsAction="always"
+        android:title="@string/Blank">
         <menu>
-            <item android:id="@+id/fromCamera"/>
-            <item android:id="@+id/fromGallery"/>
+            <item
+                android:id="@+id/fromCamera"
+                android:title="Camera"/>
+            <item
+                android:id="@+id/fromGallery"
+                android:title="Gallery"/>
         </menu>
     </item>
-    record_videorecord_video
-	
+
 </menu>
