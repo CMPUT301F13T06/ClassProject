@@ -24,7 +24,11 @@ import android.widget.ListView;
 
 /**
  * StoryFragmentListActivity displays all story fragments contained
- * in the story that is currently open.
+ * in the story that is currently open. Selecting a story fragment
+ * will allow user to:
+ * 		1. Edit the story fragment
+ * 		2. Set the story fragment as the starting fragment (TODO)
+ * 		3. Delete the story fragment from the story (TODO)
  * 
  * @author jsurya
  *
@@ -46,11 +50,8 @@ public class StoryFragmentListActivity extends Activity {
 		actionBar = getActionBar();
 		actionBar.setTitle(R.string.StoryTitle);
 
-		
-		
 		adapter = new ArrayAdapter<StoryFragment>(this, android.R.layout.simple_list_item_1,
 				SFL);
-
 		
 		ListView listview = new ListView(this);
 
@@ -73,7 +74,6 @@ public class StoryFragmentListActivity extends Activity {
 		return;
 	}
 
-	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    // Inflate the menu items for use in the action bar
