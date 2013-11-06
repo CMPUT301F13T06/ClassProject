@@ -15,7 +15,15 @@ public class StoryInfo {
 	private int SID;
 
 	private Date publishDate;
+	
 	private StoryFragment startingFragment;
+	
+	enum PublishState {
+		PUBLISHED,
+		UNPUBLISHED,
+		NEEDS_REPUBLISH
+	}
+	private PublishState publishState;
 	
 	public StoryInfo() {}
 	
@@ -88,6 +96,14 @@ public class StoryInfo {
 
 	public void setSID(int SID) {
 		this.SID = SID;
+	}
+
+	public PublishState getPublishState() {
+		return publishState;
+	}
+
+	public void setPublishState(PublishState publishState) {
+		this.publishState = publishState;
 	}
 	
 }
