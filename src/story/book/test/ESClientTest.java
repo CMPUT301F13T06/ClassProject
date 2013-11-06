@@ -1,15 +1,13 @@
 package story.book.test;
 
-import static org.junit.Assert.*;
-
+import org.junit.Test;
+import android.test.ActivityInstrumentationTestCase2;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import story.book.dataclient.ESClient;
+import story.book.Dashboard;
 import story.book.DecisionBranch;
 import story.book.Story;
 import story.book.StoryFragment;
@@ -23,12 +21,17 @@ import story.book.TextIllustration;
  * 
  */
 
-public class ESClientTest {
+public class ESClientTest extends
+ActivityInstrumentationTestCase2<story.book.Dashboard> {
 
 	private ESClient es;
 	private ArrayList<Story> sample_story;
 	
-	@Before
+	public ESClientTest() {
+		super(Dashboard.class);
+		setup();
+	}
+	
 	public void setup() {
 		es = new ESClient();
 		sample_story = new ArrayList<Story>();
@@ -38,7 +41,7 @@ public class ESClientTest {
 	
 	public void createSampleStory() {
 		StoryInfo info = new StoryInfo();
-		info.setAuthor("Daniel Andy");
+		info.setAuthor("Danny");
 		info.setTitle("Broken Star");
 		info.setGenre("Science Fiction");
 		info.setSynopsis("The princess of a destroyed kingdom is left with no one to guide her, until she finds a fallen star with a secret inside....");
@@ -64,7 +67,6 @@ public class ESClientTest {
 		story.addFragment(fragment2);
 		
 		sample_story.add(story);
-		
 		
 		StoryInfo info2 = new StoryInfo();
 		info2.setAuthor("Ashley");
@@ -97,7 +99,7 @@ public class ESClientTest {
 	@Test
 	public void testGetStory() {		
 		StoryInfo sample_info = sample_story.get(0).getStoryInfo();
-		
+
 		Story returned_story = es.getStory(sample_info.getSID());
 		StoryInfo info = returned_story.getStoryInfo();
 		
