@@ -1,5 +1,15 @@
 package story.book;
 
+/**
+ * Controller responsible for adding and removing <code>DecisionBranch</code>
+ * objects to a <code>StoryFragment</code> for the 
+ * <code>DecisionBranchListActivity</code>.
+ * 
+ * @author 	Alexander Cheung
+ * @see 	StoryFragment
+ * @see		DecisionBranch
+ * @see 	LocalEditingController
+ */
 public class DecisionBranchCreationController extends LocalEditingController {
 	
 	private StoryFragment storyFragment;

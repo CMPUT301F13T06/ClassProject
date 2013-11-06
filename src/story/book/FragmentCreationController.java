@@ -1,11 +1,15 @@
 package story.book;
 
 /**
- * Controller responsible for creating and editing instances of StoryFragment
- * for the StoryFragmentEditActivity.
+ * Controller responsible for adding and removing <code>Illustration</code>
+ * objects of a <code>StoryFragment</code> object for the 
+ * <code>StoryFragmentEditActivity</code>.
  * 
- * @author Alexander Cheung
- *
+ * @author 	Alexander Cheung
+ * @see 	Illustration
+ * @see		TextIllustration
+ * @see		StoryFragment
+ * @see		LocalEditingController
  */
 public class FragmentCreationController extends LocalEditingController {
 
