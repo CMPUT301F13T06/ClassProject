@@ -44,6 +44,7 @@ public class StoryFragmentEditActivity extends FragmentActivity {
 	// Inflate the menu items for use in the action bar
 	MenuInflater inflater = getMenuInflater();
 	inflater.inflate(R.menu.add_illustration_menu, menu);
+
 	inflater.inflate(R.menu.standard_menu, menu);
 	return super.onCreateOptionsMenu(menu);
     }
@@ -51,6 +52,30 @@ public class StoryFragmentEditActivity extends FragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 	// Handle item selection
 	switch (item.getItemId()) {
+	case R.id.text:
+	    
+	    return true;
+	case R.id.take_photo:
+	    
+	    return true;
+	case R.id.addGalleryPhoto:
+	    
+	    return true;
+	case R.id.addDecisionBranch:
+	    
+	    return true;
+	
+	case R.id.audio:
+	    
+	    return true;
+	    
+	case R.id.video:
+	    
+	    return true;
+	    
+	case R.id.record_video:
+	    
+	    return true;
 	case R.id.title_activity_dashboard:
 	    Intent intent = new Intent(this, Dashboard.class);
 	    startActivity(intent);
