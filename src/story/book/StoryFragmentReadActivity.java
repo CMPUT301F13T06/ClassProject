@@ -3,17 +3,21 @@
  */
 package story.book;
 
+import java.util.ArrayList;
+
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Fragment;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.TabHost;
 
 /**
  * StoryFragmentReadActivity is an interface for users to read a story
@@ -24,19 +28,26 @@ import android.view.MenuItem;
  *
  */
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
-public class StoryFragmentReadActivity extends Activity implements StoryView<Story> {
+public class StoryFragmentReadActivity extends FragmentActivity implements StoryView<Story> {
 	 // Declare Tab Variable
     ActionBar.Tab Tab1, Tab2;
     Fragment readingTab1;
     Fragment annotationsTab2;
     ActionBar actionBar;
-
+    StoryReadController SRC;
+    ArrayList<Illustration> illustrations;
     
+    static StoryFragment SF = null;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.story_fragment_read_activity);
-		//R.string.FragmentTitle = sf.getFragmentTitle();
+		
+		SRC = new StoryReadController();
+		SF = SRC.getStartingFragment();
+//		illustrations = SF.getIllustrations();
+		
 		readingTab1 = new ReadingFragment();
 		annotationsTab2 = new AnnotationFragment();
 		actionBar = getActionBar();
@@ -52,10 +63,19 @@ public class StoryFragmentReadActivity extends Activity implements StoryView<Sto
         // Set Tab Listeners
         Tab1.setTabListener(new TabListener(readingTab1));
         Tab2.setTabListener(new TabListener(annotationsTab2));
- 
+        
         // Add tabs to action bar
         actionBar.addTab(Tab1);
         actionBar.addTab(Tab2);
+
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+//		if (SF == null) {
+//			SF = SRC.getStartingFragment();
+//		}
 
 	}
 	
@@ -84,6 +104,10 @@ public class StoryFragmentReadActivity extends Activity implements StoryView<Sto
 	public void update(Story model) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public StoryReadController getController() {
+		return SRC;
 	}
 
 }
