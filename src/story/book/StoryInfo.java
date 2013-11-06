@@ -3,6 +3,7 @@
  */
 package story.book;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class StoryInfo {
@@ -61,9 +62,11 @@ public class StoryInfo {
 	 * @return the <code>String</code> representation of the publish date
 	 */
 	public String getPublishDateString() {
-		if (publishDate != null)
-			return publishDate.toString();
-		else
+		if (publishDate != null) {
+			SimpleDateFormat stringForm = new SimpleDateFormat("MMMM dd yyyy");
+			
+			return stringForm.format(publishDate);
+		} else
 			return "";
 	}
 	

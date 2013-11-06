@@ -3,31 +3,29 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
- 
-    
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="2dp"
-        android:text="@string/title" />
     
     <TextView
         android:id="@+id/author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:layout_marginLeft="2dp"
+        android:layout_marginLeft="10dp"
         android:text="@string/author" />
+    
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:text="@string/date" />
     
     <TextView
         android:id="@+id/genre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:layout_marginLeft="2dp"
+        android:layout_marginLeft="10dp"
         android:text="@string/genre" />
     
     <TextView
@@ -35,19 +33,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:layout_marginLeft="2dp"
+        android:layout_marginLeft="10dp"
         android:text="@string/synopsis" />
     
-    
-    <Button 
-        android:id="@+id/view"
+        <TextView
+        android:id="@+id/synopsis_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_marginTop="300dp"
-        android:background="#333333"
-        android:textColor="#FFFFFF"
-        android:text="View"
-        />
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp" 
+        android:layout_marginRight="10dp" />
+    
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical" >
+        
+               <Button
+            android:id="@+id/view"
+            android:layout_width="192dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:background="#333333"
+            android:text="View"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" />
+          
+    </LinearLayout>
 
 </LinearLayout>
