@@ -30,9 +30,9 @@ public class IOClient extends DataClient {
 	 *            the Context of the main application since the package name
 	 *            directory can change
 	 */
-	public IOClient(Context c) {
+	public IOClient() {
 		super();
-		context = c; //I dont need to context but its nice to have for the future
+		//context = c; //I dont need to context but its nice to have for the future
 		this.story_dir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/StoryBook";
 		new File(story_dir).mkdir();
 		story_dir += "/story/";

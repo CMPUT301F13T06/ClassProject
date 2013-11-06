@@ -4,16 +4,17 @@
 package story.book;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
-import android.os.Bundle;
-import android.app.Activity;
+import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.graphics.Color;
+import android.os.Build;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * ReadingFragment is the interface users can use to read story
@@ -25,32 +26,45 @@ import android.widget.ListView;
  * @author jsurya
  *
  */
+@TargetApi(Build.VERSION_CODES.JELLY_BEAN) 
 public class ReadingFragment extends Fragment {
 	StoryReadController SRC;
 	StoryFragment SF;
 	ArrayList<Illustration> illustrations;
-	ArrayAdapter<Illustration> adapter;
 	View rootView;
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.reading_fragment, container, false);
 		SRC = new StoryReadController();
 		SF = SRC.getStartingFragment();
-//	 	illustrations = SF.getIllustrations();
-//		
-//		adapter = new ArrayAdapter<Illustration>(rootView.getContext(), android.R.layout.simple_list_item_1,
-//				illustrations);
-//		
-//		ListView listview = new ListView(rootView.getContext());
-//
-//		listview.setBackgroundColor(Color.WHITE);
-//
-//		listview.setAdapter(adapter);
+		illustrations = SF.getIllustrations();
+
+		ArrayList<View> illustrationViews = new ArrayList<View>();
+
+		for (Illustration<?> i : illustrations){
+			illustrationViews.add(i.getView());
+		}
+
+		formatView(illustrationViews);
+
+		for (View t: illustrationViews){
+			((ViewGroup) rootView).addView(t);
+		}
+		
 		return rootView;
-		
-		
+
 	}
-	
+
+	private void formatView(ArrayList<View> v) {
+		Iterator<View> viewIterator = v.iterator();
+		TextView x = null;
+		while(viewIterator.hasNext()) {
+			x = (TextView) viewIterator.next();
+			x.setTextSize(20);
+			x.setTextColor(Color.BLACK);
+			x.setPaddingRelative(5, 0, 0, 0);
+		}
+	}
 }
