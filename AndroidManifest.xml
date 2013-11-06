@@ -14,7 +14,7 @@
     
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA"/>
-    
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name="story.book.StoryApplication"
@@ -51,7 +51,7 @@
         <activity
             android:name="story.book.StoryInfoActivity"
             android:label="@string/title_activity_story_info" >
-        </activity>
+        </activity> 
         <activity
             android:name="story.book.EditStoryInformationActivity"
             android:label="@string/title_activity_edit_story_information" >
