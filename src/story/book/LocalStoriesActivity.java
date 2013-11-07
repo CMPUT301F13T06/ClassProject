@@ -65,13 +65,13 @@ public class LocalStoriesActivity extends StoryListActivity implements
 		localController = new LocalStoryController();
 
 		sList = new ArrayList<HashMap<String, String>>();
-		 listView = (ListView) findViewById(R.id.listView);
+		 //listView = (ListView) findViewById(R.id.listView);
 
 		tView1 = (TextView) findViewById(R.id.textTest);
 		tView2 = (TextView) findViewById(R.id.textTest2);
 
-		tView1.setText("yea");
-		tView2.setText("no");
+		//tView1.setText("yea");
+		//tView2.setText("no");
 
 		String[] from = new String[] { "row_1", "row_2" };
 		int[] to = new int[] { R.id.textTest, R.id.textTest2 };
@@ -90,7 +90,7 @@ public class LocalStoriesActivity extends StoryListActivity implements
 
 		
 		
-
+		listView = (ListView) findViewById(R.id.listView);
 		listView.setAdapter(sAdapter);
 		
 
@@ -103,7 +103,7 @@ public class LocalStoriesActivity extends StoryListActivity implements
 		// getStoryList is giving errors (needs sd card)
 		// storyInfo = localController.getStoryList();
 		// tView1 = (TextView) findViewById(R.id.textTest);
-		// displayList();
+		 displayList();
 
 		// Show the Up button in the action bar.
 		setupActionBar();
@@ -111,11 +111,11 @@ public class LocalStoriesActivity extends StoryListActivity implements
 
 	private void displayList() {
 		if (storyInfo != null) {
-			tView1.setText(storyInfo.toString());
+			tView1.setText(storyInfo.get(0).getTitle());
 		}
 	}
-
-	protected void onStart() {
+	@Override
+	public void onStart() {
 		super.onStart();
 
 		Button testB = (Button) findViewById(R.id.testButton);
@@ -131,12 +131,14 @@ public class LocalStoriesActivity extends StoryListActivity implements
 
 	public void longClick() {
 
-		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
-			public boolean onItemLongClick(AdapterView<?> parent , View view,
+		registerForContextMenu(listView);
+		listView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void  onItemClick(AdapterView<?> parent , View view,
 					int pos, long id) {
 
-				view.setSelected(true);
-				return true;
+				//view.setSelected(true);
+				
 			}
 		});
 	}
@@ -174,7 +176,7 @@ public class LocalStoriesActivity extends StoryListActivity implements
 	 * @param id
 	 */
 	public void readStory(long id) {
-		Intent intent = new Intent(this, StoryFragmentReadActivity.class);
+		Intent intent = new Intent(this, StoryInfoActivity.class);
 		startActivity(intent);
 
 	}
@@ -237,7 +239,7 @@ public class LocalStoriesActivity extends StoryListActivity implements
 	        	deleteStory(info.id);
 	        	return true;
 	        default:
-	            return super.onContextItemSelected(item);
+	            return true;
 	    }
 	}
 	
