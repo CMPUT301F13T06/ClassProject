@@ -11,7 +11,7 @@
     <string name="title_activity_dashboard">Dashboard</string>
     <string name="local_stories">Local Stories</string>
     <string name="online_stories">Online Stories</string>
-    <string name="start_adventure">Start Your Adventure</string>
+    <string name="start_adventure">Start your adventure..</string>
     <string name="title_activity_story_list">StoryListActivity</string>
     <string name="author">Author: </string>
     <string name="title">Title: </string>

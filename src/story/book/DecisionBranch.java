@@ -10,12 +10,13 @@ package story.book;
  * 
  */
 public class DecisionBranch {
-	private String decisionText;
-	private StoryFragment destination;
 	
-	public DecisionBranch(String decisionText, StoryFragment destination) {
+	private String decisionText;
+	private int destinationID;
+	
+	public DecisionBranch(String decisionText, int destinationID) {
 		setDecisionText(decisionText);
-		setDestination(destination);
+		setDestinationID(destinationID);
 	}
 
 	public String getDecisionText() {
@@ -26,12 +27,12 @@ public class DecisionBranch {
 		this.decisionText = decisionText;
 	}
 
-	public StoryFragment getDestination() {
-		return destination;
+	public int getDestinationID() {
+		return destinationID;
 	}
 
-	public void setDestination(StoryFragment destination) {
-		this.destination = destination;
+	public void setDestinationID(int destinationID) {
+		this.destinationID = destinationID;
 	}
 	
 }

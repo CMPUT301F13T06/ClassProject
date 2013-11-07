@@ -18,67 +18,52 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.support.v4.app.NavUtils;
 
+/**
+ * 
+ * @author Nancy Pham-Nguyen
+ *
+ */
 public class OnlineStoriesActivity extends Activity {
 
-	private OnlineStoryController onlineController = new OnlineStoryController();
+	private OnlineStoryController onlineController;
 	ArrayList<StoryInfo> storyInfo;
-	
-	TextView tView;
 	ListView listView;
-	
+
 	protected ArrayAdapter<StoryInfo> adapter;
 	protected ArrayList<StoryInfo> storyList;
-	
-	
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_local_stories);
-		
-		
-		storyList = new ArrayList<StoryInfo>();
-		storyList.add(StoryApplication.getCurrentStory().getStoryInfo());
+
+		onlineController = new OnlineStoryController();
+		storyList = onlineController.getStoryList();
 		adapter = new ArrayAdapter<StoryInfo>(this, android.R.layout.simple_list_item_1, storyList);
-		
-		//tView = (TextView) findViewById(R.id.textTest);
-		//storyInfo = onlineController.getStoryList();
-		
-		//displayList();
-		
+
 		listView = (ListView) findViewById(R.id.listView);
+		adapter.notifyDataSetChanged();
 		listView.setAdapter(adapter);
 		
-		registerForContextMenu(listView);
-		longClick();
-		
-		// Show the Up button in the action bar.
-		setupActionBar();
-	}
-
-	private void displayList(){
-		if (storyInfo != null){
-			tView.setText(storyInfo.toString());
-		}
-	}
-	
-	public void longClick() {
-
 		registerForContextMenu(listView);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void  onItemClick(AdapterView<?> parent , View view,
 					int pos, long id) {
 
-				
-				
+
+
 			}
 		});
+		// Show the Up button in the action bar.
+		setupActionBar();
 	}
-	
+
 	private void  readStory(long id){
-		
+
 	}
-	
+
 	/**
 	 * Method to create a floating context menu when an item in the list is
 	 * clicked and held on
@@ -99,23 +84,23 @@ public class OnlineStoriesActivity extends Activity {
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-	    AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-	    switch (item.getItemId()) {
-	        case R.id.read_story:
-	            readStory(info.id);
-	            return true;
-	        case R.id.edit_story:
-	           // editStory(info.id);
-	            return true;
-	        case R.id.delete_story:
-	        //	deleteStory(info.id);
-	        	return true;
-	        default:
-	            return true;
-	    }
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		switch (item.getItemId()) {
+		case R.id.read_story:
+			readStory(info.id);
+			return true;
+		case R.id.edit_story:
+			// editStory(info.id);
+			return true;
+		case R.id.delete_story:
+			//	deleteStory(info.id);
+			return true;
+		default:
+			return true;
+		}
 	}
-	
-	
+
+
 	/**
 	 * Set up the {@link android.app.ActionBar}.
 	 */
@@ -146,7 +131,7 @@ public class OnlineStoriesActivity extends Activity {
 
 	private void openSearch() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

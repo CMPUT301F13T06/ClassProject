@@ -1,6 +1,6 @@
 package story.book;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Controller responsible for creating and editing instances of Story for the
@@ -42,8 +42,8 @@ public class StoryCreationController extends LocalEditingController {
 	 * 
 	 * @param storyFragment the instance of StoryFragment to remove
 	 */
-	public void deleteFragment(StoryFragment storyFragment) {
-		story.removeFragment(storyFragment);
+	public void deleteFragment(int storyFragmentID) {
+		story.removeFragment(storyFragmentID);
 	}
 	
 	/**
@@ -51,12 +51,8 @@ public class StoryCreationController extends LocalEditingController {
 	 * 
 	 * @return the ArrayList of StoryFragment objects
 	 */
-	public ArrayList<StoryFragment> getFragments() {
+	public HashMap<Integer, StoryFragment> getFragments() {
 		return story.getStoryFragments();
 	}
-	/*
-	public HashMap<StoryFragment> getFragments() {
-		return story.getStoryFragments();
-	}
-	*/
+
 }

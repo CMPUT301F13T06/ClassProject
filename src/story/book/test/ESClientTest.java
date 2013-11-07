@@ -1,7 +1,9 @@
 package story.book.test;
 
 import org.junit.Test;
+
 import android.test.ActivityInstrumentationTestCase2;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,7 +60,7 @@ ActivityInstrumentationTestCase2<story.book.Dashboard> {
 		//TextIllustration text3 = new TextIllustration("She could not carry everything, she had to choose between potion A and potion B.");
 		//fragment2.addIllustration(text2);
 		//fragment2.addIllustration(text3);
-		DecisionBranch branch = new DecisionBranch("She decides she must find the star.", fragment2);
+		DecisionBranch branch = new DecisionBranch("She decides she must find the star.", fragment2.getFragmentID());
 		//DecisionBranch branch2 = new DecisionBranch("She declares she is too weak to find the star.", fragment1);
 		fragment1.addDecisionBranch(branch);
 		//fragment2.addDecisionBranch(branch2);
@@ -110,10 +112,10 @@ ActivityInstrumentationTestCase2<story.book.Dashboard> {
 	public void testGetStoryInfoList() {
 		ArrayList<StoryInfo> list = es.getStoryInfoList();
 		for (int i = 0; i < sample_story.size(); i++) {
-			
-			for (int j = 0; j < sample_story.size(); j++) {
-				if (list.get(i).getSID() == sample_story.get(j).getStoryInfo().getSID()) {
-					checkStoryInfo(list.get(i), sample_story.get(j).getStoryInfo());
+			for (int j = 0; j < list.size(); j++) {
+				if (list.get(j).getSID() == sample_story.get(i).getStoryInfo().getSID()) {
+				    	Log.d("are you running", "are you running?");
+					checkStoryInfo(list.get(j), sample_story.get(i).getStoryInfo());
 					break;
 				}
 			}

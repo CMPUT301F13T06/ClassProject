@@ -18,7 +18,7 @@ import java.util.Iterator;
  */
 public class StoryFragment extends StoryModel<StoryView> {
 	
-	// private int fragmentID;
+	private Integer fragmentID;
 	private ArrayList<Illustration> illustrations;
 	private ArrayList<DecisionBranch> decisionBranches;
 	// private ArrayList<Annotation> annotations;
@@ -120,18 +120,18 @@ public class StoryFragment extends StoryModel<StoryView> {
 	
 	/**
 	 * Removes any <code>DecisionBranch</code> object whose destination 
-	 * <code>StoryFragment</code> is the specified <code>StoryFragment</code>.
+	 * fragment ID is the specified value.
 	 * 
 	 * @param 	storyFragment 	the target <code>StoryFragment</code>
 	 */
-	public void removeBranchWithFragment(StoryFragment storyFragment) {
+	public void removeBranchWithFragment(int storyFragmentID) {
 		Iterator<DecisionBranch> branchIterator = decisionBranches.iterator();
 		DecisionBranch branchToCheck;
 		ArrayList<DecisionBranch> branchesToRemove = new ArrayList<DecisionBranch>();
 		
 		while(branchIterator.hasNext()) {
 			branchToCheck = branchIterator.next();
-			if (branchToCheck.getDestination().equals(storyFragment))
+			if (branchToCheck.getDestinationID() == storyFragmentID)
 				branchesToRemove.add(branchToCheck);
 		}
 		
@@ -143,6 +143,25 @@ public class StoryFragment extends StoryModel<StoryView> {
 	@Override
 	public String toString() {
 		return this.fragmentTitle;
+	}
+	
+	/**
+	 * Returns the fragment ID of the <code>StoryFragment</code> as an 
+	 * <code>int</code>.
+	 * @return	the ID of the fragment
+	 */
+	public int getFragmentID() {
+		return this.fragmentID.intValue();
+	}
+	
+	/** 
+	 * Sets the fragment ID of the <code>StoryFragment</code> to the specified
+	 * value.
+	 * 
+	 * @param	ID	the ID to set as the fragment ID
+	 */
+	public void setFragmentID(int ID) {
+		this.fragmentID = ID;
 	}
 	
 }

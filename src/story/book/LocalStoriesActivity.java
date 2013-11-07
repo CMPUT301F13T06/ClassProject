@@ -2,7 +2,6 @@ package story.book;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,13 +13,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -37,47 +33,48 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	public static final String KEY_TITLE = "Title";
 	public static final String KEY_ID = "id";
 
-	
 	ListView listView;
-	
+
 	SimpleAdapter sAdapter;
 
 	ArrayList<HashMap<String, String>> sList;
 	HashMap<String, String> testMap;
 
-	
-
 	ArrayList<StoryInfo> storyInfo;
 	private LocalStoryController localController;
+	ArrayAdapter a;
+	int SID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_local_stories);
-		
+
+		// localController.getStory();
+
 		localController = new LocalStoryController();
-		
-		sList = new ArrayList<HashMap<String,String>>();
-		
-		
+		storyInfo = localController.getStoryList();
+
+		sList = new ArrayList<HashMap<String, String>>();
 
 		String[] from = new String[] { KEY_TITLE, KEY_ID };
 		int[] to = new int[] { R.id.textTest, R.id.textTest2 };
 
-		for (int i = 0; i < from.length; i++) {
-			testMap = new HashMap<String, String>();
-			testMap.put(KEY_TITLE, from[i]);
-			testMap.put(KEY_ID, ""+i);
-			sList.add(testMap);
-		}
+		// for (int i = 0; i < from.length; i++) {
+		testMap = new HashMap<String, String>();
+		testMap.put(KEY_TITLE, from[0]);
+		testMap.put(KEY_ID, "" + "\n" + "hello");
+		sList.add(testMap);
+		// }
 
-		sAdapter = new SimpleAdapter(this, sList,
-				R.layout.stories_list, from, to);
+		sAdapter = new SimpleAdapter(this, sList, R.layout.stories_list, from,
+				to);
 
-		storyInfo = localController.getStoryList();
 		
+
 		listView = (ListView) findViewById(R.id.listView);
-		listView.setAdapter(sAdapter);
+		a = new ArrayAdapter<StoryInfo>(this, android.R.layout.simple_list_item_1, storyInfo);
+		listView.setAdapter(a);
 
 		registerForContextMenu(listView);
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -85,31 +82,23 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 			public void onItemClick(AdapterView<?> parent, View view, int pos,
 					long id) {
 
+				SID = pos;
+
 			}
 		});
 		// Show the Up button in the action bar.
 		setupActionBar();
 	}
 
-	public void itemSelected() {
-		final Intent intent = new Intent(this, StoryInfoActivity.class);
-		listView.setOnItemClickListener(new OnItemClickListener() {
-
-			public void onItemClick(AdapterView<?> parent, View v, int pos,
-					long id) {
-
-				// start new activity when an entry is selected
-				startActivity(intent);
-
-			}
-		});
-
+	@Override
+	public void onResume(){
+		super.onResume();
+		a.notifyDataSetChanged();
 	}
 
 	/**
 	 * Add the newly created story to the list with it's story information
 	 **/
-
 	public void createStory() {
 
 		localController.createStory();
@@ -121,15 +110,15 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	/**
 	 * Method that is called when a user chooses to read the story
 	 * 
-	 * @param id
+	 * @param SID
 	 */
-	public void readStory(int id) {
+	public void readStory(int SID) {
 		Intent intent = new Intent(this, StoryInfoActivity.class);
 		startActivity(intent);
 
 	}
 
-	public void editStory(int id) {
+	public void editStory(int SID) {
 		Intent intent = new Intent(this, EditStoryInformationActivity.class);
 		startActivity(intent);
 	}
@@ -137,9 +126,10 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	/**
 	 * Delete the story at the correct SID
 	 */
-	public void deleteStory(int id) {
+	public void deleteStory(int SID) {
 		// if long click on story then give option to delete
-		localController.deleteStory(id);
+		//SID = this.SID;
+		localController.deleteStory(SID);
 	}
 
 	private void openSearch() {

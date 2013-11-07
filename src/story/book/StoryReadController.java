@@ -8,6 +8,10 @@ public class StoryReadController {
 	}
 	
 	public StoryFragment getStartingFragment() {
-		return story.getStoryInfo().getStartingFragment();
+		return story.getStoryFragments().get(story.getStoryInfo().getStartingFragmentID());
+	}
+	
+	public StoryFragment getStoryFragment(int storyFragmentID) {
+		return story.getStoryFragments().get(storyFragmentID);
 	}
 }

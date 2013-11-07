@@ -28,7 +28,7 @@ import android.widget.TextView;
  * will allow users to pick a <code>DecisionBranch</code>
  * progress to the following story fragment in the story.
  * 
- * @author jsurya
+ * @author Jessica Surya
  *
  */
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN) 
@@ -46,33 +46,19 @@ public class ReadingFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.reading_fragment, container, false);
 		SRC = new StoryReadController();
 		SF = SRC.getStartingFragment();
-		illustrations = SF.getIllustrations();
-		decisions = SF.getDecisionBranches();
-
-		ArrayList<View> illustrationViews = new ArrayList<View>();
-
-		for (Illustration<?> i : illustrations){
-			illustrationViews.add(i.getView());
-		}
-
-		formatView(illustrationViews);
-
-		for (View t: illustrationViews){
-			((ViewGroup) rootView).addView(t);
-		}
-
-		buttons = formatButton(decisions, rootView.getContext());
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
-				LayoutParams.WRAP_CONTENT);
-		lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-
-		for (Button dbButton : buttons) {
-			((ViewGroup) rootView).addView(dbButton, lp);
-		}
-
+		displayFragment(SF, rootView);
 		return rootView;
 	}
-
+	
+	/**
+	 * formatView() (FOR TEXTVIEWS ONLY) formats illustration textViews in an array list
+	 * by changing:
+	 * 		- text size (20)
+	 * 		- text color (black)
+	 * 		- padding on the left side
+	 * 
+	 * @param v
+	 */
 	private void formatView(ArrayList<View> v) {
 		Iterator<View> viewIterator = v.iterator();
 		TextView x = null;
@@ -80,10 +66,20 @@ public class ReadingFragment extends Fragment {
 			x = (TextView) viewIterator.next();
 			x.setTextSize(20);
 			x.setTextColor(Color.BLACK);
-			x.setPaddingRelative(5, 0, 0, 0);
+			x.setPaddingRelative(5, 0, 0, 5);
 		}
 	}
-
+	
+	/**
+	 * formatButton() creates a button with the corresponding decision branch text
+	 * for each decision branch in an array list of decision branches.
+	 * 
+	 * This returns method an array list of buttons.
+	 * 
+	 * @param db
+	 * @param c
+	 * @return ArrayList<Button>
+	 */
 	private ArrayList<Button> formatButton(ArrayList<DecisionBranch> db, Context c) {
 
 		ArrayList<Button> buttonList = new ArrayList<Button>();
@@ -96,9 +92,59 @@ public class ReadingFragment extends Fragment {
 			d = dbIterator.next();
 			button = new Button(c);
 			button.setText(d.getDecisionText());
+			button.setOnClickListener(setListener(button, d.getDestinationID()));
 			buttonList.add(button);
 		}
 
 		return buttonList;
+	}
+	
+	/**
+	 * displayFragment() displays all text illustrations as views 
+	 * and decision branches as buttons by getting them from the containing 
+	 * fragment and formatting them by calling <code>formatView</code>
+	 * and <code>formatButton</code> respectively.
+	 * 
+	 */
+	private void displayFragment(StoryFragment SF, View rootView) {
+		illustrations = SF.getIllustrations();
+		decisions = SF.getDecisionBranches();
+
+		ArrayList<View> illustrationViews = new ArrayList<View>();
+
+		for (Illustration<?> i : illustrations){
+			illustrationViews.add(((TextIllustration)i).getView());
+		}
+
+		formatView(illustrationViews);
+		LayoutParams p = new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
+		for (View t: illustrationViews){
+			((ViewGroup) rootView).addView(t, p);
+		}
+
+		buttons = formatButton(decisions, rootView.getContext());
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
+				LayoutParams.WRAP_CONTENT);
+		lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
+		for (Button dbButton : buttons) {
+			((ViewGroup) rootView).addView(dbButton, lp);
+		}
+
+	}
+	
+	private View.OnClickListener setListener(final Button b, final int destinationID) {
+		return new View.OnClickListener() {
+			public void onClick(View v) {
+				SF = SRC.getStoryFragment(destinationID);
+
+				update();
+			}
+		};
+	}
+	
+	public void update() {
+
+		displayFragment(SF, rootView);
 	}
 }
