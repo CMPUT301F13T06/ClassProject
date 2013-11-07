@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.ActionBar.LayoutParams;
 import android.app.Fragment;
 import android.content.Context;
@@ -43,7 +44,7 @@ public class ReadingFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.reading_fragment, container, false);
+		rootView = inflater.inflate(R.layout.reading_fragment, container, false);
 		SRC = new StoryReadController();
 		SF = SRC.getStartingFragment();
 		displayFragment(SF, rootView);
@@ -107,6 +108,7 @@ public class ReadingFragment extends Fragment {
 	 * 
 	 */
 	private void displayFragment(StoryFragment SF, View rootView) {
+		
 		illustrations = SF.getIllustrations();
 		decisions = SF.getDecisionBranches();
 
@@ -137,7 +139,7 @@ public class ReadingFragment extends Fragment {
 		return new View.OnClickListener() {
 			public void onClick(View v) {
 				SF = SRC.getStoryFragment(destinationID);
-
+					
 				update();
 			}
 		};
