@@ -16,7 +16,7 @@ public class StoryInfo {
 
 	private Date publishDate;
 	
-	private StoryFragment startingFragment;
+	private int startingFragmentID;
 	
 	enum PublishState {
 		PUBLISHED,
@@ -82,12 +82,12 @@ public class StoryInfo {
 		this.publishDate = publishDate;
 	}
 	
-	public StoryFragment getStartingFragment() {
-		return startingFragment;
+	public int getStartingFragmentID() {
+		return startingFragmentID;
 	}
 	
-	public void setStartingFragment(StoryFragment startingFragment) {
-		this.startingFragment = startingFragment;
+	public void setStartingFragmentID(int startingFragmentID) {
+		this.startingFragmentID = startingFragmentID;
 	}
 
 	public int getSID() {

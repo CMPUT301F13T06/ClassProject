@@ -46,7 +46,7 @@ public class StoryFragmentTest extends ActivityInstrumentationTestCase2
 	@Test
 	public void testAddRemoveDecisionBranch() {
 		DecisionBranch branch1 = new DecisionBranch("Branch to storyFragment2",
-				storyFragment2);
+				storyFragment2.getFragmentID());
 		storyFragment1.addDecisionBranch(branch1);
 		assertFalse(storyFragment1.getDecisionBranches().isEmpty());
 		assertTrue(storyFragment1.getDecisionBranches().contains(branch1));
@@ -57,23 +57,23 @@ public class StoryFragmentTest extends ActivityInstrumentationTestCase2
 	@Test
 	public void followDecisionBranch() {
 		DecisionBranch branch12 = new DecisionBranch("Branch to storyFragment2"
-				+ " from 1", storyFragment2);
+				+ " from 1", storyFragment2.getFragmentID());
 		DecisionBranch branch23 = new DecisionBranch("Branch to storyFragment3"
-				+ " from 2", storyFragment3);
+				+ " from 2", storyFragment3.getFragmentID());
 		DecisionBranch branch13 = new DecisionBranch("Branch to storyFragment3"
-				+ " from 1", storyFragment3);
+				+ " from 1", storyFragment3.getFragmentID());
 
 		storyFragment1.addDecisionBranch(branch12);
 		storyFragment2.addDecisionBranch(branch23);
 		storyFragment1.addDecisionBranch(branch13);
 		
 		assertEquals(storyFragment1.getDecisionBranches().get(0)
-				.getDestination(), storyFragment2);
+				.getDestinationID(), storyFragment2);
 		assertEquals(storyFragment2.getDecisionBranches().get(0)
-				.getDestination(), storyFragment3);
+				.getDestinationID(), storyFragment3);
 		assertEquals(storyFragment1.getDecisionBranches().get(1)
 				.getDecisionText(), "Branch to storyFragment3 from 1");
 		assertEquals(storyFragment1.getDecisionBranches().get(1)
-				.getDestination(), storyFragment3);
+				.getDestinationID(), storyFragment3);
 	}
 }
