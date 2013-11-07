@@ -47,17 +47,17 @@ public class StoryApplication extends Application {
 		Story story = new Story(info);
 		StoryFragment fragment1 = new StoryFragment("Finding the Star");
 		// TODO
-		//TextIllustration text = new TextIllustration("It was a dark, clear night.");
-		//fragment1.addIllustration(text);
+		TextIllustration text = new TextIllustration("It was a dark, clear night.");
+		fragment1.addIllustration(text);
 		StoryFragment fragment2 = new StoryFragment("Preparing for the Journey");
-		//TextIllustration text2 = new TextIllustration("She ventured into the locked dungeons to retrieve some potions.");
-		//TextIllustration text3 = new TextIllustration("She could not carry everything, she had to choose between potion A and potion B.");
-		//fragment2.addIllustration(text2);
-		//fragment2.addIllustration(text3);
+		TextIllustration text2 = new TextIllustration("She ventured into the locked dungeons to retrieve some potions.");
+		TextIllustration text3 = new TextIllustration("She could not carry everything, she had to choose between potion A and potion B.");
+		fragment2.addIllustration(text2);
+		fragment2.addIllustration(text3);
 		DecisionBranch branch = new DecisionBranch("She decides she must find the star.", fragment2);
-		//DecisionBranch branch2 = new DecisionBranch("She declares she is too weak to find the star.", fragment1);
+		DecisionBranch branch2 = new DecisionBranch("She declares she is too weak to find the star.", fragment1);
 		fragment1.addDecisionBranch(branch);
-		//fragment2.addDecisionBranch(branch2);
+		fragment2.addDecisionBranch(branch2);
 		
 		story.addFragment(fragment1);
 		story.addFragment(fragment2);
