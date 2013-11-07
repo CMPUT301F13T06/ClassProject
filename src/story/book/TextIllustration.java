@@ -9,7 +9,7 @@ import android.widget.TextView;
  * 
  * @author Alexander Cheung
  */
-public class TextIllustration extends Illustration<String> {
+public class TextIllustration extends Illustration {
 	
 	/**
 	 * Initialize content in constructor.
@@ -26,12 +26,10 @@ public class TextIllustration extends Illustration<String> {
 	 * 
 	 * @param	content	the <code>String</code> to set as the content
 	 */
-	@Override
 	public void setContent(String content) {
 		this.content = content;
 	}
 
-	@Override
 	public String getContent() {
 		return this.content;
 	}
@@ -43,7 +41,6 @@ public class TextIllustration extends Illustration<String> {
 	 * 
 	 * @return	the <code>TextView</code> object with text set
 	 */
-	@Override
 	public View getView() {
 		TextView textView = new TextView(StoryApplication.getContext());
 		textView.setText(this.content);

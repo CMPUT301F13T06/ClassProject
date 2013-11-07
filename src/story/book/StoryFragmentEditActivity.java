@@ -211,7 +211,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 		ArrayList<View> illustrationViews = new ArrayList<View>();
 
-		for (Illustration<?> i : illustrations){
+		for (Illustration i : illustrations){
 			illustrationViews.add(((TextIllustration)i).getEditView());
 		}
 
