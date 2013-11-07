@@ -74,6 +74,15 @@ public class StoryCreationController extends LocalEditingController {
 	}
 	
 	/**
+	 * Get the starting fragment of the current Story.
+	 * 
+	 * @param fragmentID of StoryFragment
+	 */
+	public int getStartingFragment() {
+		return story.getStoryInfo().getStartingFragmentID();
+	}
+	
+	/**
 	 * Gets the current Story.
 	 */
 	public Story getStory() {

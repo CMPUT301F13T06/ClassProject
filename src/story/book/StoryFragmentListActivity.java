@@ -8,7 +8,9 @@ import java.util.HashMap;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 /**
  * StoryFragmentListActivity displays all story fragments contained
@@ -116,18 +119,18 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 
 	public void onUserSelectValue(String title) {
 		if (title == null) {
-			//Title vaildation failed
+			//Title vaildation failed, re-prompt
 			//addFragment();
-			//TODO don't close on warnining
+			//TODO change flow in mock-up? can't block in Android
+		} else {
+			//Create fragment with this title
+			StoryFragment fragment = SCC.newFragment(title);
+			
+			//Save the story before opening fragment to edit
+			SCC.saveStory();
+			//TODO want to change this flow in the mock-up?
+			editFragment(fragment.getFragmentID());
 		}
-		
-		//Create fragment with this title
-		StoryFragment fragment = SCC.newFragment(title);
-		
-		//Save the story before opening fragment to edit
-		SCC.saveStory();
-		//TODO want to change this flow in the mock-up?
-		editFragment(fragment.getFragmentID());
 	}
 	
 	@Override
@@ -175,7 +178,9 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 
 	@Override  
 	public boolean onContextItemSelected(MenuItem item) {
-
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		pos = info.position;
+		
 		switch (item.getOrder()) {
 		case 1:
 			// Edit story fragment
@@ -188,7 +193,12 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 			break;
 		case 3:
 			//Delete
-			SCC.deleteFragment(SFL.get(pos).getFragmentID());
+			int FID = SFL.get(pos).getFragmentID();
+			if (FID == SCC.getStartingFragment()) {
+				fragmentDeleteDialog();
+			} else {
+				SCC.deleteFragment(FID);
+			}
 			break;
 		case 4:
 			// Cancel options
@@ -197,5 +207,26 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 
 		return true; 
 
+	}
+	
+	private void fragmentDeleteDialog() {
+		// Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(
+				StoryFragmentListActivity.this);
+		// Chain together various setter methods to set the dialog
+		// characteristics
+		builder.setMessage(R.string.bad_frag_delete_msg).setTitle(
+				R.string.dialog_title);
+
+		// Add buttons to AlertDialog
+		builder.setPositiveButton(R.string.ok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						// User clicked OK button
+					}
+				});
+		// Create the AlertDialog
+		AlertDialog dialog = builder.create();
+		dialog.show();
 	}
 }

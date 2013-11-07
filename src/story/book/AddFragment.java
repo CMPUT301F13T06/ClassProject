@@ -9,6 +9,7 @@ import android.widget.EditText;
 
 public class AddFragment extends DialogFragment {
 	
+	private StoryFragmentListActivity callingActivity;
     /**
      * http://developer.android.com/guide/topics/ui/dialogs.html,
      * http://stackoverflow.com/questions/12622742/get-value-from-dialogfragment
@@ -53,7 +54,7 @@ public class AddFragment extends DialogFragment {
 				getActivity());
 		// Chain together various setter methods to set the dialog
 		// characteristics
-		builder.setMessage(R.string.dialog_message).setTitle(
+		builder.setMessage(R.string.bad_frag_title_msg).setTitle(
 				R.string.dialog_title);
 
 		// Add buttons to AlertDialog
@@ -63,14 +64,6 @@ public class AddFragment extends DialogFragment {
 						// User clicked OK button
 					}
 				});
-		builder.setNegativeButton(R.string.cancel,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						// User clicked Cancel button
-
-					}
-				});
-
 		// Create the AlertDialog
 		AlertDialog dialog = builder.create();
 		dialog.show();

@@ -142,13 +142,6 @@ public class EditStoryInformationActivity extends Activity  {
 						// User clicked OK button
 					}
 				});
-		builder.setNegativeButton(R.string.cancel,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						// User clicked Cancel button
-
-					}
-				});
 
 		// Create the AlertDialog
 		AlertDialog dialog = builder.create();
