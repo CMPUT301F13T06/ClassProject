@@ -51,6 +51,8 @@ public class LocalStoriesActivity extends StoryListActivity implements
 	List<HashMap<String, String>> sList;
 	HashMap<String, String> testMap;
 
+	protected ArrayAdapter<StoryInfo> adapter;
+	protected ArrayList<StoryInfo> storyList;
 	
 	ArrayList<StoryInfo> storyInfo;
 	private LocalStoryController localController;
@@ -60,8 +62,10 @@ public class LocalStoriesActivity extends StoryListActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_local_stories);
 
-		
-
+		storyList = new ArrayList<StoryInfo>();
+		storyList.add(StoryApplication.getCurrentStory().getStoryInfo());
+		adapter = new ArrayAdapter<StoryInfo>(this, android.R.layout.simple_list_item_1, storyList);
+		/*
 		localController = new LocalStoryController();
 
 		sList = new ArrayList<HashMap<String, String>>();
@@ -85,13 +89,14 @@ public class LocalStoriesActivity extends StoryListActivity implements
 
 		sAdapter = new SimpleAdapter(LocalStoriesActivity.this, sList,
 			R.layout.stories_list, from, to);
-
+*/
 		text = (EditText) findViewById(R.id.test);
 
 		
 		
 		listView = (ListView) findViewById(R.id.listView);
-		listView.setAdapter(sAdapter);
+		listView.setAdapter(adapter);
+		//listView.setAdapter(sAdapter);
 		
 
 		registerForContextMenu(listView);
@@ -103,7 +108,7 @@ public class LocalStoriesActivity extends StoryListActivity implements
 		// getStoryList is giving errors (needs sd card)
 		// storyInfo = localController.getStoryList();
 		// tView1 = (TextView) findViewById(R.id.textTest);
-		 displayList();
+		// displayList();
 
 		// Show the Up button in the action bar.
 		setupActionBar();
@@ -137,7 +142,7 @@ public class LocalStoriesActivity extends StoryListActivity implements
 			public void  onItemClick(AdapterView<?> parent , View view,
 					int pos, long id) {
 
-				//view.setSelected(true);
+				
 				
 			}
 		});
@@ -182,7 +187,8 @@ public class LocalStoriesActivity extends StoryListActivity implements
 	}
 
 	public void editStory(long id) {
-
+		Intent intent = new Intent(this,EditStoryInformationActivity.class);
+		startActivity(intent);
 	}
 
 	/**

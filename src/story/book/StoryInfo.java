@@ -105,5 +105,9 @@ public class StoryInfo {
 	public void setPublishState(PublishState publishState) {
 		this.publishState = publishState;
 	}
+	@Override
+	public String toString(){
+		return this.title + "\n" + this.author +"\n" + this.publishDate;
+	}
 	
 }
