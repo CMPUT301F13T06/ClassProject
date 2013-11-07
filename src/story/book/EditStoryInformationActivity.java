@@ -28,8 +28,7 @@ import android.widget.TextView;
 
 public class EditStoryInformationActivity extends Activity  {
 
-	// public final int ids[] = {R.id.author, R.id.genre, R.id.synopsis};
-
+	
 	public EditText editTitle;
 	public TextView date;
 	public EditText editAuthor;
@@ -60,11 +59,7 @@ public class EditStoryInformationActivity extends Activity  {
 
 		displayStoryInfo();
 
-		// TextView[] textViews = new TextView[ids.length];
-
-		// for(int i =0; i < ids.length; i++){
-		// textViews[i] = new TextView(this);
-		// }
+		
 		
 		Button doneButton = (Button) findViewById(R.id.done);
 		doneButton.setVisibility(View.VISIBLE);
