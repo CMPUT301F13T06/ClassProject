@@ -16,13 +16,13 @@ import android.widget.ListView;
 import android.support.v4.app.NavUtils;
 
 
-public class StoryListActivity extends Activity {
+public class StoryListActivity extends Activity implements StoryView<Story> {
 
-	//protected ArrayAdapter<StoryInfo> adapter;
+//	protected ArrayAdapter<StoryInfo> adapter;
 	//protected ArrayList<StoryInfo> storyList;
 	
-	protected ArrayAdapter<String> adapter;
-	protected ArrayList<String> storyList;
+	//protected ArrayAdapter<String> adapter;
+	//protected ArrayList<String> storyList;
 	ListView listView;
 	
 	public EditText text;
@@ -38,12 +38,12 @@ public class StoryListActivity extends Activity {
 		
 		text = (EditText) findViewById(R.id.test);
 		
-		storyList = new ArrayList<String>();
-		adapter =  new ArrayAdapter<String>(this, R.layout.stories_list, storyList);
+		//storyList = new ArrayList<String>();
+		//adapter =  new ArrayAdapter<String>(this, R.layout.stories_list, storyList);
 		
 		
-		listView = (ListView) findViewById(R.id.listView);
-		listView.setAdapter(adapter);
+		//listView = (ListView) findViewById(R.id.listView);
+		//listView.setAdapter(adapter);
 		
 		
 	
@@ -58,9 +58,9 @@ public class StoryListActivity extends Activity {
 		testB.setOnClickListener(new OnClickListener() {
 			public void onClick(View v){
 			
-				storyList.add(text.getText().toString());
+				//storyList.add(text.getText().toString());
 				//storyList.add(0,storyInfo);
-				adapter.notifyDataSetChanged();
+				//adapter.notifyDataSetChanged();
 				
 			}
 		});
@@ -98,6 +98,12 @@ public class StoryListActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void update(Story model) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
