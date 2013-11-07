@@ -52,7 +52,7 @@ public class StoryFragmentEditActivity extends FragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.story_fragment_read_activity);
+		setContentView(R.layout.reading_fragment);
 		
 		SCC = new StoryCreationController();
 		SFL = SCC.getFragments();
@@ -87,7 +87,8 @@ public class StoryFragmentEditActivity extends FragmentActivity {
 		buttons = formatButton(decisions, this);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
 				LayoutParams.WRAP_CONTENT);
-
+		
+		//TODO: Fix the overlap of illustrations
 		lp.addRule(RelativeLayout.ALIGN_BOTTOM);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
@@ -116,8 +117,10 @@ public class StoryFragmentEditActivity extends FragmentActivity {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.text:
+			// TODO: Pass illustration to fragment for editing
 
 			return true;
+			
 		case R.id.take_photo:
 
 			return true;
