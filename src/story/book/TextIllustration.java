@@ -15,6 +15,7 @@ public class TextIllustration extends Illustration {
 	 * Initialize content in constructor.
 	 * @param content is the String containing the text of the TextIllustration
 	 */
+	String content;
 	public TextIllustration(String content) {
 		super();
 		setContent(content);
@@ -29,7 +30,6 @@ public class TextIllustration extends Illustration {
 	public void setContent(String content) {
 		this.content = content;
 	}
-
 	public String getContent() {
 		return this.content;
 	}
@@ -53,6 +53,7 @@ public class TextIllustration extends Illustration {
 	 * 
 	 * @return	the <code>EditText</code> object with text set
 	 */
+	
 	public EditText getEditView() {
 		EditText editView = new EditText(StoryApplication.getContext());
 		editView.setText(this.content);
