@@ -46,6 +46,64 @@ public class ReadingFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.reading_fragment, container, false);
 		SRC = new StoryReadController();
 		SF = SRC.getStartingFragment();
+		displayFragments();
+		return rootView;
+	}
+	/**
+	 * formatView() (FOR TEXTVIEWS ONLY) formats illustration textViews in an array list
+	 * by changing:
+	 * 		- text size (20)
+	 * 		- text color (black)
+	 * 		- padding on the left side
+	 * 
+	 * @param v
+	 */
+	private void formatView(ArrayList<View> v) {
+		Iterator<View> viewIterator = v.iterator();
+		TextView x = null;
+		while(viewIterator.hasNext()) {
+			x = (TextView) viewIterator.next();
+			x.setTextSize(20);
+			x.setTextColor(Color.BLACK);
+			x.setPaddingRelative(5, 0, 0, 0);
+		}
+	}
+	/**
+	 * formatButton() creates a button with the corresponding decision branch text
+	 * for each decision branch in an array list of decision branches.
+	 * 
+	 * This returns method an array list of buttons.
+	 * 
+	 * @param db
+	 * @param c
+	 * @return ArrayList<Button>
+	 */
+	private ArrayList<Button> formatButton(ArrayList<DecisionBranch> db, Context c) {
+
+		ArrayList<Button> buttonList = new ArrayList<Button>();
+
+		Iterator<DecisionBranch> dbIterator = db.iterator();
+		DecisionBranch d = null;
+		Button button;
+		while(dbIterator.hasNext()) {
+
+			d = dbIterator.next();
+			button = new Button(c);
+			button.setText(d.getDecisionText());
+			buttonList.add(button);
+		}
+
+		return buttonList;
+	}
+	
+	/**
+	 * displayFragments() displays all text illustrations as views 
+	 * and decision branches as buttons by getting them from the containing 
+	 * fragment and formatting them by calling <code>formatView</code>
+	 * and <code>formatButton</code> respectively.
+	 * 
+	 */
+	private void displayFragments() {
 		illustrations = SF.getIllustrations();
 		decisions = SF.getDecisionBranches();
 
@@ -70,35 +128,5 @@ public class ReadingFragment extends Fragment {
 			((ViewGroup) rootView).addView(dbButton, lp);
 		}
 
-		return rootView;
-	}
-
-	private void formatView(ArrayList<View> v) {
-		Iterator<View> viewIterator = v.iterator();
-		TextView x = null;
-		while(viewIterator.hasNext()) {
-			x = (TextView) viewIterator.next();
-			x.setTextSize(20);
-			x.setTextColor(Color.BLACK);
-			x.setPaddingRelative(5, 0, 0, 0);
-		}
-	}
-
-	private ArrayList<Button> formatButton(ArrayList<DecisionBranch> db, Context c) {
-
-		ArrayList<Button> buttonList = new ArrayList<Button>();
-
-		Iterator<DecisionBranch> dbIterator = db.iterator();
-		DecisionBranch d = null;
-		Button button;
-		while(dbIterator.hasNext()) {
-
-			d = dbIterator.next();
-			button = new Button(c);
-			button.setText(d.getDecisionText());
-			buttonList.add(button);
-		}
-
-		return buttonList;
 	}
 }
