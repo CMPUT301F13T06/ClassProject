@@ -11,12 +11,12 @@
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
         android:targetPackage="story.book" />
-    
+
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-	
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name="story.book.StoryApplication"
         android:allowBackup="true"
@@ -25,8 +25,16 @@
         android:theme="@style/AppTheme" >
         <uses-library android:name="android.test.runner" />
 
+        <activity android:name="story.book.Dashboard" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
-            android:name="story.book.Dashboard" >
+            android:name="story.book.StoryFragmentListActivity"
+            android:label="Fragment List Activity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,7 +60,7 @@
         <activity
             android:name="story.book.StoryInfoActivity"
             android:label="@string/title_activity_story_info" >
-        </activity> 
+        </activity>
         <activity
             android:name="story.book.EditStoryInformationActivity"
             android:label="@string/title_activity_edit_story_information" >
@@ -67,17 +75,17 @@
         </activity>
         <activity
             android:name="story.book.StoryFragmentEditActivity"
-            android:label="@string/FragmentTitle">
+            android:label="@string/FragmentTitle" >
         </activity>
         <activity
             android:name="story.book.StoryFragmentReadActivity"
-            android:label="@string/FragmentTitle">
+            android:label="Fragment Read Activity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity
-            android:name="story.book.StoryFragmentListActivity"
-            android:label="@string/StoryTitle">
-        </activity>
-        
     </application>
 
 </manifest>
