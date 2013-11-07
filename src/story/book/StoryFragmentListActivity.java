@@ -38,6 +38,7 @@ public class StoryFragmentListActivity extends Activity {
 	ArrayList<StoryFragment> SFL;
 	ArrayAdapter<StoryFragment> adapter;
 	StoryCreationController SCC;
+	StoryApplication SA;
 	
 	int pos;
 	
@@ -47,8 +48,10 @@ public class StoryFragmentListActivity extends Activity {
 		setContentView(R.layout.story_fragment_read_activity);
 		SCC = new StoryCreationController();
 		SFL = SCC.getFragments();
+		SA = new StoryApplication();
+		String title = SA.getCurrentStory().getStoryInfo().getTitle();
 		actionBar = getActionBar();
-		actionBar.setTitle(R.string.StoryTitle);
+		actionBar.setTitle(title);
 
 		adapter = new ArrayAdapter<StoryFragment>(this, android.R.layout.simple_list_item_1,
 				SFL);
