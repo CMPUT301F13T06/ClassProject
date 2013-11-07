@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -41,7 +42,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 
 	ArrayList<StoryInfo> storyInfo;
 	private LocalStoryController localController;
-
+	ArrayAdapter a;
 	int SID;
 
 	@Override
@@ -72,7 +73,8 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		
 
 		listView = (ListView) findViewById(R.id.listView);
-		listView.setAdapter(sAdapter);
+		a = new ArrayAdapter<StoryInfo>(this, android.R.layout.simple_list_item_1, storyInfo);
+		listView.setAdapter(a);
 
 		registerForContextMenu(listView);
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -88,12 +90,15 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		setupActionBar();
 	}
 
-	
+	@Override
+	public void onResume(){
+		super.onResume();
+		a.notifyDataSetChanged();
+	}
 
 	/**
 	 * Add the newly created story to the list with it's story information
 	 **/
-
 	public void createStory() {
 
 		localController.createStory();
