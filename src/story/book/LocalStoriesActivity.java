@@ -55,69 +55,11 @@ StoryView<Story> {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_local_stories);
 	localController = new LocalStoryController();
-	storyList = new ArrayList<StoryInfo>();
-	storyList = localController.getStoryList();
-	adapter = new ArrayAdapter<StoryInfo>(this, android.R.layout.simple_list_item_1, storyList);
-
 	
-	/*
-		sList = new ArrayList<HashMap<String, String>>();
-		 //listView = (ListView) findViewById(R.id.listView);
-
-		tView1 = (TextView) findViewById(R.id.textTest);
-		tView2 = (TextView) findViewById(R.id.textTest2);
-
-		//tView1.setText("yea");
-		//tView2.setText("no");
-
-		String[] from = new String[] { "row_1", "row_2" };
-		int[] to = new int[] { R.id.textTest, R.id.textTest2 };
-
-		for (int i = 0; i < from.length; i++) {
-			testMap = new HashMap<String, String>();
-			testMap.put("First Line", tView1.getText().toString());
-			testMap.put("Second Line", "Wohhooo");
-			sList.add(testMap);
-		}
-
-		sAdapter = new SimpleAdapter(LocalStoriesActivity.this, sList,
-			R.layout.stories_list, from, to);
-	 */
-	text = (EditText) findViewById(R.id.test);
-
-
-
+	storyList = localController.getStoryList();
 	listView = (ListView) findViewById(R.id.listView);
-	listView.setAdapter(adapter);
+	listView.setAdapter(new ArrayAdapter<StoryInfo>(this, android.R.layout.simple_list_item_1, storyList));
 
-
-	registerForContextMenu(listView);
-	longClick();
-	// Show the Up button in the action bar.
-	setupActionBar();
-    }
-
-    private void displayList() {
-	if (storyInfo != null) {
-	    tView1.setText(storyInfo.get(0).getTitle());
-	}
-    }
-    @Override
-    public void onStart() {
-	super.onStart();
-
-	Button testB = (Button) findViewById(R.id.testButton);
-	testB.setOnClickListener(new OnClickListener() {
-	    public void onClick(View v) {
-
-
-		sAdapter.notifyDataSetChanged();
-
-	    }
-	});
-    }
-
-    public void longClick() {
 
 	registerForContextMenu(listView);
 	listView.setOnItemClickListener(new OnItemClickListener() {
@@ -129,6 +71,8 @@ StoryView<Story> {
 
 	    }
 	});
+	// Show the Up button in the action bar.
+	setupActionBar();
     }
 
     public void itemSelected() {
@@ -152,8 +96,8 @@ StoryView<Story> {
 
     public void createStory() {
 
-	//localController.createStory();
-	//localController.saveStory();
+	localController.createStory();
+	localController.saveStory();
 	Intent intent = new Intent(this, EditStoryInformationActivity.class);
 	startActivity(intent);
     }
@@ -163,13 +107,13 @@ StoryView<Story> {
      * 
      * @param id
      */
-    public void readStory(long id) {
+    public void readStory(int id) {
 	Intent intent = new Intent(this, StoryInfoActivity.class);
 	startActivity(intent);
 
     }
 
-    public void editStory(long id) {
+    public void editStory(int id) {
 	Intent intent = new Intent(this,EditStoryInformationActivity.class);
 	startActivity(intent);
     }
@@ -177,10 +121,9 @@ StoryView<Story> {
     /**
      * Delete the story at the correct SID
      */
-    public void deleteStory(long id) {
+    public void deleteStory(int id) {
 	// if long click on story then give option to delete
-	int SID;
-	// localController.deleteStory(SID);
+	localController.deleteStory(id);
     }
 
     private void openSearch() {
@@ -219,13 +162,13 @@ StoryView<Story> {
 	AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 	switch (item.getItemId()) {
 	case R.id.read_story:
-	    readStory(info.id);
+	    readStory(Long.valueOf(info.id).intValue());
 	    return true;
 	case R.id.edit_story:
-	    editStory(info.id);
+	    editStory(Long.valueOf(info.id).intValue());
 	    return true;
 	case R.id.delete_story:
-	    deleteStory(info.id);
+	    deleteStory(Long.valueOf(info.id).intValue());
 	    return true;
 	default:
 	    return true;
