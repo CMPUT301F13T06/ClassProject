@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 /** This is a facade for creating a simple warning dialog 
  * with title, message, and a confirmation button.
  * 
+ * @author Nancy Pham-Nguyen	
+ *
  * @author Vina Nguyen
  *
  * Reference: http://developer.android.com/guide/topics/ui/dialogs.html 

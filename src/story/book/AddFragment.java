@@ -7,6 +7,13 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.EditText;
 
+/** 
+ * AddFragment is a DialogFragment to get a title for a new fragment.
+ * Its calling activity is StoryFragmentListActivity.	
+ *
+ * @author Vina Nguyen
+ */
+
 public class AddFragment extends DialogFragment {
 	
 	private StoryFragmentListActivity callingActivity;
@@ -41,31 +48,4 @@ public class AddFragment extends DialogFragment {
 		// Create the AlertDialog object and return it
 		return builder.create();
     }
-	
-	/**
-	 * AlertDialog http://developer.android.com/guide/topics/ui/dialogs.html
-	 * Method shows an alertDialog when the user selects the "Done" button but
-	 * the required text field has no text input
-	 */
-
-	private void alertDialog() {
-		// Instantiate an AlertDialog.Builder with its constructor
-		AlertDialog.Builder builder = new AlertDialog.Builder(
-				getActivity());
-		// Chain together various setter methods to set the dialog
-		// characteristics
-		builder.setMessage(R.string.bad_frag_title_msg).setTitle(
-				R.string.dialog_title);
-
-		// Add buttons to AlertDialog
-		builder.setPositiveButton(R.string.ok,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						// User clicked OK button
-					}
-				});
-		// Create the AlertDialog
-		AlertDialog dialog = builder.create();
-		dialog.show();
-	}
 }
