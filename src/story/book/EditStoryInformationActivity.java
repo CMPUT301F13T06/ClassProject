@@ -27,7 +27,7 @@ import android.widget.TextView;
 
 public class EditStoryInformationActivity extends Activity  {
 
-	// public final int ids[] = {R.id.author, R.id.genre, R.id.synopsis};
+	
 
 	public EditText editTitle;
 	public EditText editAuthor;
@@ -50,11 +50,7 @@ public class EditStoryInformationActivity extends Activity  {
 		setStoryInfo();
 		displayStoryInfo();
 
-		// TextView[] textViews = new TextView[ids.length];
-
-		// for(int i =0; i < ids.length; i++){
-		// textViews[i] = new TextView(this);
-		// }
+		
 
 	}
 
@@ -92,10 +88,7 @@ public class EditStoryInformationActivity extends Activity  {
 
 	protected void onStart() {
 		super.onStart();
-		// final Intent intent = new Intent(this,
-		// StoryFragmentListActivity.class);
-
-		// test for StoryInfoActivity
+		
 		final Intent intent = new Intent(this, StoryFragmentListActivity.class);
 
 		// When the user selects the Done button do something
