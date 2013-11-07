@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,6 +33,7 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 
 	protected ArrayAdapter<StoryInfo> adapter;
 
+	int position;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 			@Override
 			public void  onItemClick(AdapterView<?> parent , View view,
 					int pos, long id) {
+				position = pos;
 			}
 		});
 		// Show the Up button in the action bar.
@@ -64,7 +67,9 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 	}
 
 	private void  readStory(long id){
-
+		Intent intent = new Intent(this, StoryInfoActivity.class);
+		intent.putExtra("SID", adapter.getItem(position).getSID());
+		startActivity(intent);
 	}
 
 	/**
