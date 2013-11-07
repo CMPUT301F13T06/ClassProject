@@ -96,7 +96,7 @@ public class EditStoryInformationActivity extends Activity  {
 		// StoryFragmentListActivity.class);
 
 		// test for StoryInfoActivity
-		final Intent intent = new Intent(this, StoryInfoActivity.class);
+		final Intent intent = new Intent(this, StoryFragmentListActivity.class);
 
 		// When the user selects the Done button do something
 		Button doneButton = (Button) findViewById(R.id.done);
