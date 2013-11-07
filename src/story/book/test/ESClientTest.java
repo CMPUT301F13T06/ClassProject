@@ -1,7 +1,9 @@
 package story.book.test;
 
 import org.junit.Test;
+
 import android.test.ActivityInstrumentationTestCase2;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -110,10 +112,10 @@ ActivityInstrumentationTestCase2<story.book.Dashboard> {
 	public void testGetStoryInfoList() {
 		ArrayList<StoryInfo> list = es.getStoryInfoList();
 		for (int i = 0; i < sample_story.size(); i++) {
-			
-			for (int j = 0; j < sample_story.size(); j++) {
-				if (list.get(i).getSID() == sample_story.get(j).getStoryInfo().getSID()) {
-					checkStoryInfo(list.get(i), sample_story.get(j).getStoryInfo());
+			for (int j = 0; j < list.size(); j++) {
+				if (list.get(j).getSID() == sample_story.get(i).getStoryInfo().getSID()) {
+				    	Log.d("are you running", "are you running?");
+					checkStoryInfo(list.get(j), sample_story.get(i).getStoryInfo());
 					break;
 				}
 			}
