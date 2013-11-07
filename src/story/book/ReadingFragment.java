@@ -119,20 +119,32 @@ public class ReadingFragment extends Fragment {
 		}
 
 		formatView(illustrationViews);
-		LayoutParams p = new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
+		int pos = 0;
+		
 		for (View t: illustrationViews){
+			t.setId(pos + 1);
+			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
+					WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
+			p.addRule(RelativeLayout.BELOW, pos);
+			t.setLayoutParams(p);
 			((ViewGroup) rootView).addView(t, p);
+			pos++;
 		}
-
+		
+		int order = 0;
 		buttons = formatButton(decisions, rootView.getContext());
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
 				LayoutParams.WRAP_CONTENT);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-
+		lp.addRule(RelativeLayout.BELOW, order);
+		
 		for (Button dbButton : buttons) {
+			dbButton.setId(order + 1);
+			dbButton.setLayoutParams(lp);
 			((ViewGroup) rootView).addView(dbButton, lp);
+			order++;
 		}
-		((ViewGroup) this.getView()).removeAllViews();
+
 	}
 	
 	private View.OnClickListener setListener(final Button b, final int destinationID) {
