@@ -57,7 +57,6 @@ public class StoryApplication extends Application {
 		DecisionBranch branch = new DecisionBranch("She decides she must find the star.", fragment2);
 		DecisionBranch branch2 = new DecisionBranch("She declares she is too weak to find the star.", fragment1);
 		fragment1.addDecisionBranch(branch);
-		fragment2.addDecisionBranch(branch2);
 		
 		story.addFragment(fragment1);
 		story.addFragment(fragment2);
