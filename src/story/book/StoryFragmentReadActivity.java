@@ -92,6 +92,7 @@ public class StoryFragmentReadActivity extends FragmentActivity implements Story
         case R.id.title_activity_dashboard:
             Intent intent = new Intent(this, Dashboard.class);
             startActivity(intent);
+            finish();
             return true;
             
         default:
