@@ -34,7 +34,7 @@ import android.widget.TextView;
  *
  */
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-public class StoryFragmentEditActivity extends FragmentActivity {
+public class StoryFragmentEditActivity extends FragmentActivity implements StoryView<StoryFragment> {
 	ActionBar actionBar;
 	
 	StoryFragment SF;
@@ -55,14 +55,18 @@ public class StoryFragmentEditActivity extends FragmentActivity {
 		setContentView(R.layout.reading_fragment);
 		
 		SCC = new StoryCreationController();
+		
 		SFL = SCC.getFragments();
 		SA = new StoryApplication();
 		SF = SFL.get(0);
+		
 		FCC = new FragmentCreationController(SF);
 		String title = SF.getFragmentTitle();
 		
 		actionBar = getActionBar();
 		actionBar.setTitle(title);
+		
+		SF.addView(this);
 		
 	}
 	
@@ -179,5 +183,12 @@ public class StoryFragmentEditActivity extends FragmentActivity {
 		}
 
 		return buttonList;
+	}
+
+	@Override
+	public void update(StoryFragment model) {
+		// TODO Auto-generated method stub
+		//display fragment contents
+		
 	}
 }
