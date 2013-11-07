@@ -42,6 +42,9 @@ public class Story extends StoryModel<StoryView> {
 	 * @param 	storyFragment	the <code>StoryFragment</code> to be added
 	 */
 	public void addFragment(StoryFragment storyFragment) {
+		if (fragmentList.size() == 0) {
+			storyInfo.setStartingFragment(storyFragment);
+		}
 		fragmentList.add(storyFragment);
 		notifyViews();
 	}
