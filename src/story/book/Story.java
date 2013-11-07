@@ -1,6 +1,7 @@
 package story.book;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -19,8 +20,10 @@ import java.util.Iterator;
  */
 public class Story extends StoryModel<StoryView> {
 	
-	private ArrayList<StoryFragment> fragmentList;
+	private HashMap<Integer, StoryFragment> fragmentList;
 	private StoryInfo storyInfo;
+	private ArrayList<Integer> fragmentIDs;
+	private Integer nextFragmentID;
 	
 	/**
 	 * <code>Story</code> constructor initializes a new <code>Story</code>
@@ -32,7 +35,9 @@ public class Story extends StoryModel<StoryView> {
 	public Story(StoryInfo storyInfo) {
 		super();
 		this.storyInfo = storyInfo;
-		this.fragmentList = new ArrayList<StoryFragment>();
+		this.fragmentList = new HashMap<Integer, StoryFragment>();
+		this.fragmentIDs = new ArrayList<Integer>();
+		this.nextFragmentID = 0;
 	}
 	
 	/**
@@ -42,10 +47,11 @@ public class Story extends StoryModel<StoryView> {
 	 * @param 	storyFragment	the <code>StoryFragment</code> to be added
 	 */
 	public void addFragment(StoryFragment storyFragment) {
+		int ID = getNextFragmentID();
 		if (fragmentList.size() == 0) {
-			storyInfo.setStartingFragment(storyFragment);
+			storyInfo.setStartingFragmentID(ID);
 		}
-		fragmentList.add(storyFragment);
+		fragmentList.put(ID, storyFragment);
 		notifyViews();
 	}
 	
@@ -56,12 +62,12 @@ public class Story extends StoryModel<StoryView> {
 	 * whose destination is the removed <code>StoryFragment</code> are removed
 	 * from their containing <code>StoryFragment</code>.
 	 * 
-	 * @param 	storyFragment	the <code>StoryFragment</code> to be removed
-	 * @see 	removeBranchesToFragment(StoryFragment storyFragment)
+	 * @param 	storyFragmentID	the ID of the <code>StoryFragment</code> to be 
+	 * 							removed
 	 */
-	public void removeFragment(StoryFragment storyFragment) {
-		fragmentList.remove(storyFragment);
-		removeBranchesToFragment(storyFragment);
+	public void removeFragment(int storyFragmentID) {
+		fragmentList.remove(storyFragmentID);
+		removeBranchesToFragment(storyFragmentID);
 		notifyViews();
 	}
 	
@@ -89,8 +95,24 @@ public class Story extends StoryModel<StoryView> {
 		notifyViews();
 	}
 	
-	public ArrayList<StoryFragment> getStoryFragments() {
+	/**
+	 * Returns the story's collection of <code>StoryFragment</code> objects
+	 * 
+	 * @return	<code>HashMap</code> containing the story's fragments
+	 */
+	public HashMap<Integer, StoryFragment> getStoryFragments() {
 		return this.fragmentList;
+	}
+	
+	/**
+	 * Returns the next available fragment ID
+	 * 
+	 * @return	the next available fragment ID
+	 */
+	public int getNextFragmentID() {
+		int nextID = nextFragmentID.intValue();
+		nextFragmentID++;
+		return nextID;
 	}
 	
 	/**
@@ -101,9 +123,9 @@ public class Story extends StoryModel<StoryView> {
 	 * @param 	storyFragment 	the <code>StoryFragment</code> to remove
 	 * @see		DecisionBranch
 	 */
-	private void removeBranchesToFragment(StoryFragment storyFragment) {
-		Iterator<StoryFragment> fragmentIterator = fragmentList.iterator();
+	private void removeBranchesToFragment(int storyFragmentID) {
+		Iterator<StoryFragment> fragmentIterator = fragmentList.values().iterator();
 		while(fragmentIterator.hasNext())
-			fragmentIterator.next().removeBranchWithFragment(storyFragment);
+			fragmentIterator.next().removeBranchWithFragment(storyFragmentID);
 	}
 }
