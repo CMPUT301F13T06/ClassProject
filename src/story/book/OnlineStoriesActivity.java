@@ -128,6 +128,7 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 			openSearch();
 		case R.id.title_activity_dashboard:
 			NavUtils.navigateUpFromSameTask(this);
+			finish();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
