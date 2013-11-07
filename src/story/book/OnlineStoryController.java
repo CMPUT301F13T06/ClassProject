@@ -2,6 +2,7 @@ package story.book;
 
 import java.util.ArrayList;
 
+import story.book.StoryInfo.PublishState;
 import story.book.dataclient.IOClient;
 import story.book.dataclient.ESClient;
 
@@ -48,8 +49,13 @@ public class OnlineStoryController implements StoryController {
 		// the original ID if it is free, else it returns a locally free SID.
 		if (!io.checkSID(SID)) {
 			// Change the locally stored Story with the original SID (SID) to
-			// the new SID (id) supplied by the IOClient.
-			changeLocalSID(SID, io.getSID());
+			// the new SID (id) supplied by the IOClient
+			// ONLY IF the locally stored Story was never published 
+			// (else we are just re-downloading)
+			StoryInfo info = io.getStory(SID).getStoryInfo();
+			if (info.getPublishState() == PublishState.UNPUBLISHED) {
+				changeLocalSID(SID, io.getSID());
+			}
 		}
 	}
 	
