@@ -107,7 +107,7 @@ public class StoryInfo {
 	}
 	@Override
 	public String toString(){
-		return this.title + "\n" + this.author +"\n" + this.publishDate;
+		return this.title + "\n" + this.author +"\n" + this.getPublishDateString();
 	}
 	
 }

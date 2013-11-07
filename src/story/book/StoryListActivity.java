@@ -53,17 +53,17 @@ public class StoryListActivity extends Activity implements StoryView<Story> {
 	
 	protected void onStart(){
 		super.onStart();
-		
-		Button testB = (Button) findViewById(R.id.testButton);
-		testB.setOnClickListener(new OnClickListener() {
-			public void onClick(View v){
-			
-				//storyList.add(text.getText().toString());
-				//storyList.add(0,storyInfo);
-				//adapter.notifyDataSetChanged();
-				
-			}
-		});
+//		
+//		Button testB = (Button) findViewById(R.id.testButton);
+//		testB.setOnClickListener(new OnClickListener() {
+//			public void onClick(View v){
+//			
+//				//storyList.add(text.getText().toString());
+//				//storyList.add(0,storyInfo);
+//				//adapter.notifyDataSetChanged();
+//				
+//			}
+//		});
 		
 	}
 
