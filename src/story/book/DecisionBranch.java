@@ -1,5 +1,14 @@
 package story.book;
 
+/**
+ * Represents a decision that a reader of the story can take. Contains a
+ * <code>String</code> containing a message describing the decision and the 
+ * <code>StoryFragment</code> that the decision leads to.
+ * 
+ * @author 	Alexander Cheung
+ * @see		StoryFragment
+ * 
+ */
 public class DecisionBranch {
 	private String decisionText;
 	private StoryFragment destination;
@@ -24,6 +33,5 @@ public class DecisionBranch {
 	public void setDestination(StoryFragment destination) {
 		this.destination = destination;
 	}
-	
 	
 }
