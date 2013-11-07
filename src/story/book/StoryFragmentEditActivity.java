@@ -30,26 +30,26 @@ import android.widget.TextView;
 /**
  * StoryFragmentEditActivity is the interface users can make changes
  * to illustrations contained in the story fragment which is currently
- * open. 
+ * open. All text illustrations displayed as dynamically editable EditTexts.
  * 
- * @author jsurya
+ * @author Jessica Surya
  *
  */
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class StoryFragmentEditActivity extends FragmentActivity implements StoryView<StoryFragment> {
 	ActionBar actionBar;
-	
+
 	StoryFragment SF;
 	FragmentCreationController FCC;
 	ArrayList<StoryFragment> SFL;
 	ArrayAdapter<StoryFragment> adapter;
 	StoryCreationController SCC;
 	StoryApplication SA;
-	
+
 	ArrayList<Illustration> illustrations;
 	ArrayList<DecisionBranch> decisions;
 	ArrayList<Button> buttons;
-	
+
 	//storyFragment passed as intent from FragmentList
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -57,42 +57,42 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		setContentView(R.layout.reading_fragment);
 		savedInstanceState = getIntent().getExtras();
 		int FID = savedInstanceState.getInt("FID");
-		
+
 		SCC = new StoryCreationController();
 		SFL = new ArrayList<StoryFragment>();
-		
+
 		HashMap<Integer, StoryFragment> map = SCC.getFragments();
 		for (Integer key : map.keySet()){
 			SFL.add(map.get(key));
 		}
 
 		SF = SFL.get(FID);
-		
+
 		FCC = new FragmentCreationController(SF);
 		String title = SF.getFragmentTitle();
-		
+
 		actionBar = getActionBar();
 		actionBar.setTitle(title);
-		
+
 		SF.addView(this);
-		
+
 	}
-	
+
 	@Override
 	public void onStart() {
 		super.onStart();
-		displayFragments();
+		displayFragment();
 	}
 
 	@Override
 	public void onPause(){
 		super.onPause();
 	}
-	
+
 	@Override
 	public void onResume(){
 		super.onResume();
-		displayFragments();
+		displayFragment();
 	}
 
 	@Override
@@ -110,9 +110,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		switch (item.getItemId()) {
 		case R.id.text:
 			// TODO: Pass illustration to fragment for editing
-			
+
 			return true;
-			
+
 		case R.id.take_photo:
 
 			return true;
@@ -195,9 +195,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	public void update(StoryFragment model) {
 		// TODO Auto-generated method stub
 		//display fragment contents
-		displayFragments();
+		displayFragment();
 	}
-	
+
 	/**
 	 * displayFragments() displays all text illustrations as views 
 	 * and decision branches as buttons by getting them from the containing 
@@ -205,7 +205,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * and <code>formatButton</code> respectively.
 	 * 
 	 */
-	private void displayFragments() {
+	private void displayFragment() {
 		illustrations = SF.getIllustrations();
 		decisions = SF.getDecisionBranches();
 
@@ -224,7 +224,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		buttons = formatButton(decisions, this);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
 				LayoutParams.WRAP_CONTENT);
-		
+
 		//TODO: Fix the overlap of illustrations
 		lp.addRule(RelativeLayout.ALIGN_BOTTOM);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);

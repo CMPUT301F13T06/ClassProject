@@ -31,7 +31,7 @@ import android.widget.ListView;
  * 		2. Set the story fragment as the starting fragment (TODO)
  * 		3. Delete the story fragment from the story (TODO)
  * 
- * @author jsurya
+ * @author Jessica Surya
  *
  */
 public class StoryFragmentListActivity extends Activity {
@@ -41,14 +41,14 @@ public class StoryFragmentListActivity extends Activity {
 	StoryCreationController SCC;
 	StoryApplication SA;
 	int pos;
-	
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.story_fragment_read_activity);
 		SCC = new StoryCreationController();
 		SFL = new ArrayList<StoryFragment>();
-		
+
 		HashMap<Integer, StoryFragment> map = SCC.getFragments();
 		for (Integer key : map.keySet()){
 			SFL.add(map.get(key));
@@ -60,14 +60,14 @@ public class StoryFragmentListActivity extends Activity {
 
 		adapter = new ArrayAdapter<StoryFragment>(this, android.R.layout.simple_list_item_1,
 				SFL);
-		
+
 		ListView listview = new ListView(this);
 
 		listview.setBackgroundColor(Color.WHITE);
 
 		listview.setAdapter(adapter);
 		setContentView(listview);
-		
+
 		registerForContextMenu(listview);
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
@@ -85,65 +85,65 @@ public class StoryFragmentListActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    // Inflate the menu items for use in the action bar
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.add_illustration_menu, menu);
-	    inflater.inflate(R.menu.standard_menu, menu);
-	    return super.onCreateOptionsMenu(menu);
+		// Inflate the menu items for use in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.add_illustration_menu, menu);
+		inflater.inflate(R.menu.standard_menu, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-        case R.id.title_activity_dashboard:
-            Intent intent = new Intent(this, Dashboard.class);
-            startActivity(intent);
-            finish();
-            return true;
-            
-        default:
-            return super.onOptionsItemSelected(item);
-        }
+		// Handle item selection
+		switch (item.getItemId()) {
+		case R.id.title_activity_dashboard:
+			Intent intent = new Intent(this, Dashboard.class);
+			startActivity(intent);
+			finish();
+			return true;
+
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
-	
+
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-		 super.onCreateContextMenu(menu, v, menuInfo);
-		 menu.setHeaderTitle("Select an Option:");
-		 menu.add(0, v.getId(), 1, "Edit");  
-		 menu.add(0, v.getId(), 2, "Set as Starting Story Fragment"); 
-		 menu.add(0, v.getId(), 3, "Delete");
-		 menu.add(0, v.getId(), 4, "Cancel");
+		super.onCreateContextMenu(menu, v, menuInfo);
+		menu.setHeaderTitle("Select an Option:");
+		menu.add(0, v.getId(), 1, "Edit");  
+		menu.add(0, v.getId(), 2, "Set as Starting Story Fragment"); 
+		menu.add(0, v.getId(), 3, "Delete");
+		menu.add(0, v.getId(), 4, "Cancel");
 	}
-	
+
 	@Override  
 	public boolean onContextItemSelected(MenuItem item) {
-		
+
 		switch (item.getOrder()) {
 		case 1:
 			// Edit story fragment
-			
+
 			Intent i = new Intent(this, StoryFragmentEditActivity.class);
-			
+
 			i.putExtra("FID", SFL.get(pos).getFragmentID());
 			startActivity(i);
 			break;
-			
+
 		case 2:
 			// Set as starting story fragment
 
 			break;
 		case 3:
 			//Delete
-			
+
 			break;
-			
+
 		case 4:
 			// Cancel options
 			return false;
 		}
-			
+
 		return true; 
-		
+
 	}
 }

@@ -128,7 +128,6 @@ public class ReadingFragment extends Fragment {
 		lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
 		for (Button dbButton : buttons) {
-			
 			((ViewGroup) rootView).addView(dbButton, lp);
 		}
 
@@ -138,12 +137,14 @@ public class ReadingFragment extends Fragment {
 		return new View.OnClickListener() {
 			public void onClick(View v) {
 				SF = SRC.getStoryFragment(destinationID);
+
 				update();
 			}
 		};
 	}
 	
 	public void update() {
+
 		displayFragment(SF, rootView);
 	}
 }
