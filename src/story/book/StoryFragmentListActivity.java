@@ -4,6 +4,7 @@
 package story.book;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -39,7 +40,6 @@ public class StoryFragmentListActivity extends Activity {
 	ArrayAdapter<StoryFragment> adapter;
 	StoryCreationController SCC;
 	StoryApplication SA;
-	
 	int pos;
 	
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,8 +47,13 @@ public class StoryFragmentListActivity extends Activity {
 		
 		setContentView(R.layout.story_fragment_read_activity);
 		SCC = new StoryCreationController();
-		SFL = SCC.getFragments();
-		SA = new StoryApplication();
+		SFL = new ArrayList<StoryFragment>();
+		
+		HashMap<Integer, StoryFragment> map = SCC.getFragments();
+		for (Integer key : map.keySet()){
+			SFL.add(map.get(key));
+		}
+
 		String title = SA.getCurrentStory().getStoryInfo().getTitle();
 		actionBar = getActionBar();
 		actionBar.setTitle(title);
@@ -68,8 +73,9 @@ public class StoryFragmentListActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView parent, View v, int position, long id) {
 				pos = position;
-				startActivity(new Intent(v.getContext(), 
-						 StoryFragmentEditActivity.class));
+				Intent i = new Intent(parent.getContext(), StoryFragmentEditActivity.class);
+				i.putExtra("FID", SFL.get(pos).getFragmentID());
+				startActivity(i);
 			}
 
 		});
@@ -92,6 +98,7 @@ public class StoryFragmentListActivity extends Activity {
         case R.id.title_activity_dashboard:
             Intent intent = new Intent(this, Dashboard.class);
             startActivity(intent);
+            finish();
             return true;
             
         default:
@@ -115,7 +122,10 @@ public class StoryFragmentListActivity extends Activity {
 		switch (item.getOrder()) {
 		case 1:
 			// Edit story fragment
+			
 			Intent i = new Intent(this, StoryFragmentEditActivity.class);
+			
+			i.putExtra("FID", SFL.get(pos).getFragmentID());
 			startActivity(i);
 			break;
 			
