@@ -54,5 +54,9 @@ public class StoryCreationController extends LocalEditingController {
 	public ArrayList<StoryFragment> getFragments() {
 		return story.getStoryFragments();
 	}
-	
+	/*
+	public HashMap<StoryFragment> getFragments() {
+		return story.getStoryFragments();
+	}
+	*/
 }

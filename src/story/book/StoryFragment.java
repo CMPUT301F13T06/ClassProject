@@ -18,6 +18,7 @@ import java.util.Iterator;
  */
 public class StoryFragment extends StoryModel<StoryView> {
 	
+	// private int fragmentID;
 	private ArrayList<Illustration> illustrations;
 	private ArrayList<DecisionBranch> decisionBranches;
 	// private ArrayList<Annotation> annotations;

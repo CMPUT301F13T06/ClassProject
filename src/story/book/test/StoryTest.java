@@ -1,23 +1,26 @@
 package story.book.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
+import android.test.ActivityInstrumentationTestCase2;
+import story.book.Dashboard;
 import story.book.DecisionBranch;
 import story.book.Story;
 import story.book.StoryFragment;
 import story.book.StoryInfo;
 
-public class StoryTest {
+public class StoryTest extends ActivityInstrumentationTestCase2
+<story.book.Dashboard> {
 
 	private Story story;
 	
-	@Before
-	public void setUp() throws Exception {
+	public StoryTest() {
+		super(Dashboard.class);
+		setup();
+	}
+	
+	public void setup() {
 		story = new Story(new StoryInfo());
 	}
 
@@ -27,7 +30,7 @@ public class StoryTest {
 
 	@Test
 	public void testCreation() {
-		assertEquals(story.getStoryFragments().size(), 0);
+		assertNotNull(story);
 	}
 	
 	@Test
