@@ -54,12 +54,13 @@ public class StoryApplication extends Application {
 		TextIllustration text3 = new TextIllustration("She could not carry everything, she had to choose between potion A and potion B.");
 		fragment2.addIllustration(text2);
 		fragment2.addIllustration(text3);
+		story.addFragment(fragment1);
+		story.addFragment(fragment2);
+		
 		DecisionBranch branch = new DecisionBranch("She decides she must find the star.", fragment2.getFragmentID());
 		DecisionBranch branch2 = new DecisionBranch("She declares she is too weak to find the star.", fragment1.getFragmentID());
 		fragment1.addDecisionBranch(branch);
 		
-		story.addFragment(fragment1);
-		story.addFragment(fragment2);
 		
 		setCurrentStory(story);
     }
