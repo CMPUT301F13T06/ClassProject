@@ -46,6 +46,7 @@ public class StoryFragmentReadActivity extends FragmentActivity implements Story
 		
 		SRC = new StoryReadController();
 		SF = SRC.getStartingFragment();
+		SF.notifyViews();
 		String title = SF.getFragmentTitle();
 		illustrations = SF.getIllustrations();
 		
@@ -74,9 +75,6 @@ public class StoryFragmentReadActivity extends FragmentActivity implements Story
 	@Override
 	public void onStart() {
 		super.onStart();
-//		if (SF == null) {
-//			SF = SRC.getStartingFragment();
-//		}
 
 	}
 	
