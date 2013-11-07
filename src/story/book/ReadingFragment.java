@@ -7,13 +7,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import android.annotation.TargetApi;
+import android.app.ActionBar.LayoutParams;
 import android.app.Fragment;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -31,6 +36,8 @@ public class ReadingFragment extends Fragment {
 	StoryReadController SRC;
 	StoryFragment SF;
 	ArrayList<Illustration> illustrations;
+	ArrayList<DecisionBranch> decisions;
+	ArrayList<Button> buttons;
 	View rootView;
 
 	@Override
@@ -40,6 +47,7 @@ public class ReadingFragment extends Fragment {
 		SRC = new StoryReadController();
 		SF = SRC.getStartingFragment();
 		illustrations = SF.getIllustrations();
+		decisions = SF.getDecisionBranches();
 
 		ArrayList<View> illustrationViews = new ArrayList<View>();
 
@@ -52,9 +60,17 @@ public class ReadingFragment extends Fragment {
 		for (View t: illustrationViews){
 			((ViewGroup) rootView).addView(t);
 		}
-		
-		return rootView;
 
+		buttons = formatButton(decisions, rootView.getContext());
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
+				LayoutParams.WRAP_CONTENT);
+		lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
+		for (Button dbButton : buttons) {
+			((ViewGroup) rootView).addView(dbButton, lp);
+		}
+
+		return rootView;
 	}
 
 	private void formatView(ArrayList<View> v) {
@@ -66,5 +82,23 @@ public class ReadingFragment extends Fragment {
 			x.setTextColor(Color.BLACK);
 			x.setPaddingRelative(5, 0, 0, 0);
 		}
+	}
+
+	private ArrayList<Button> formatButton(ArrayList<DecisionBranch> db, Context c) {
+
+		ArrayList<Button> buttonList = new ArrayList<Button>();
+
+		Iterator<DecisionBranch> dbIterator = db.iterator();
+		DecisionBranch d = null;
+		Button button;
+		while(dbIterator.hasNext()) {
+
+			d = dbIterator.next();
+			button = new Button(c);
+			button.setText(d.getDecisionText());
+			buttonList.add(button);
+		}
+
+		return buttonList;
 	}
 }
