@@ -26,7 +26,7 @@ import android.support.v4.app.NavUtils;
  */
 public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 
-	private OnlineStoryController onlineController;
+	private StoryController onlineController;
 	ArrayList<StoryInfo> storyInfo;
 	ListView listView;
 
@@ -41,7 +41,6 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 		onlineController = new OnlineStoryController();
 
 		adapter = new ArrayAdapter<StoryInfo>(this, android.R.layout.simple_list_item_1, onlineController.getStoryList());
-		adapter.addAll(onlineController.getStoryList());
 		listView = (ListView) findViewById(R.id.listView);
 		registerForContextMenu(listView);
 		
