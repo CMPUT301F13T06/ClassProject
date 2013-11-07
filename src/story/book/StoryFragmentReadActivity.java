@@ -46,12 +46,13 @@ public class StoryFragmentReadActivity extends FragmentActivity implements Story
 		
 		SRC = new StoryReadController();
 		SF = SRC.getStartingFragment();
-//		illustrations = SF.getIllustrations();
+		String title = SF.getFragmentTitle();
+		illustrations = SF.getIllustrations();
 		
 		readingTab1 = new ReadingFragment();
 		annotationsTab2 = new AnnotationFragment();
 		actionBar = getActionBar();
-		actionBar.setTitle(R.string.FragmentTitle);
+		actionBar.setTitle(title);
 		 
         // Create Actionbar Tabs
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
