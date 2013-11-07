@@ -19,10 +19,7 @@ import android.widget.TextView;
 
 public class Dashboard extends Activity {
 
-	public EditText enterName;
-	private TextView tView1;
-	private TextView tView2;
-	
+	private EditText enterName;
     private String defaultName;
 
 	@Override
@@ -33,15 +30,6 @@ public class Dashboard extends Activity {
 		enterName = (EditText) findViewById(R.id.enter_name);
 		defaultName = this.getString(R.string.default_nickname);
 		displayNickname();
-		
-		tView1 = (TextView) findViewById(R.id.hello_adventurer);
-		tView2 = (TextView) findViewById(R.id.start_adventure);
-	}
-
-	protected void onStart() {
-		super.onStart();
-
-		// Maybe use swtich statement for the buttons?
 		
 		final Intent localIntent = new Intent(this, LocalStoriesActivity.class);
 		final Intent onlineIntent = new Intent(this, OnlineStoriesActivity.class);
@@ -59,9 +47,8 @@ public class Dashboard extends Activity {
 				startActivity(onlineIntent);
 			}
 		});
-
 	}
-    
+
 	@Override
 	protected void onPause() {
 		super.onPause();

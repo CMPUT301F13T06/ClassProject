@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +31,7 @@ public class EditStoryInformationActivity extends Activity  {
 	// public final int ids[] = {R.id.author, R.id.genre, R.id.synopsis};
 
 	public EditText editTitle;
+	public TextView date;
 	public EditText editAuthor;
 	public EditText editGenre;
 	public EditText editSynopsis;
@@ -37,7 +39,8 @@ public class EditStoryInformationActivity extends Activity  {
 	public ArrayList<StoryInfo> storyList;
 
 	StoryInfoController storyInfoController = new StoryInfoController();
-
+	LocalStoryController localController = new LocalStoryController();
+	
 	StoryInfo storyInfo;
 
 	@Override
@@ -46,8 +49,15 @@ public class EditStoryInformationActivity extends Activity  {
 		setContentView(R.layout.activity_edit_story_information);
 
 		storyInfo = storyInfoController.getStoryInfo();
+		
+		findViewById(R.id.title).setVisibility(View.VISIBLE);
+		editTitle = (EditText) findViewById(R.id.enter_title);
+		editTitle.setVisibility(View.VISIBLE);
+		editAuthor = (EditText) findViewById(R.id.enter_author);
+		date = (TextView) findViewById(R.id.enter_date);
+		editGenre = (EditText) findViewById(R.id.enter_genre);
+		editSynopsis = (EditText) findViewById(R.id.enter_synopsis);
 
-		setStoryInfo();
 		displayStoryInfo();
 
 		// TextView[] textViews = new TextView[ids.length];
@@ -55,7 +65,23 @@ public class EditStoryInformationActivity extends Activity  {
 		// for(int i =0; i < ids.length; i++){
 		// textViews[i] = new TextView(this);
 		// }
-
+		
+		Button doneButton = (Button) findViewById(R.id.done);
+		doneButton.setVisibility(View.VISIBLE);
+		final Intent intent = new Intent(this, StoryFragmentListActivity.class);
+		doneButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// if the title field is empty then an AlertDialog will appear
+				if (editTitle.getText().toString().equals("")) {
+					alertDialog();
+				} else {
+					setStoryInfo();
+					// Navigate to the list of Story Fragments
+					startActivity(intent);
+				}
+			}
+		});
 	}
 
 	/**
@@ -63,59 +89,35 @@ public class EditStoryInformationActivity extends Activity  {
 	 */
 	// TODO call onCreate AND onUpdate
 	private void displayStoryInfo() {
-		editTitle = (EditText) findViewById(R.id.enter_title);
+		setTitle(storyInfo.getTitle());
+		
 		editTitle.setText(storyInfo.getTitle());
-		editAuthor = (EditText) findViewById(R.id.enter_author);
 		editAuthor.setText(storyInfo.getAuthor());
-		editGenre = (EditText) findViewById(R.id.enter_genre);
+		date.setText(storyInfo.getPublishDateString());
 		editGenre.setText(storyInfo.getGenre());
-		editSynopsis = (EditText) findViewById(R.id.enter_synopsis);
 		editSynopsis.setText(storyInfo.getSynopsis());
 
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		
+		if (editTitle.getText().toString().equals("") == false) {
+			setStoryInfo();
+		} 
 	}
 
 	/**
 	 * Method that sets the information of the story entered by the user
 	 */
 	private void setStoryInfo() {
-		editTitle = (EditText) findViewById(R.id.enter_title);
 		storyInfo.setTitle(editTitle.getText().toString());
-		editAuthor = (EditText) findViewById(R.id.enter_author);
 		storyInfo.setAuthor(editAuthor.getText().toString());
-		editGenre = (EditText) findViewById(R.id.enter_genre);
 		storyInfo.setGenre(editGenre.getText().toString());
-		editSynopsis = (EditText) findViewById(R.id.enter_synopsis);
 		storyInfo.setSynopsis(editSynopsis.getText().toString());
-		storyInfoController.setStoryInfo(storyInfo);
-
-	}
-
-	protected void onStart() {
-		super.onStart();
-		// final Intent intent = new Intent(this,
-		// StoryFragmentListActivity.class);
-
-		// test for StoryInfoActivity
-		final Intent intent = new Intent(this, StoryFragmentListActivity.class);
-
-		// When the user selects the Done button do something
-		Button doneButton = (Button) findViewById(R.id.done);
-		doneButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				// if the title field is empty then an AlertDialog will appear
-				if (editTitle.getText().toString().equals("")) {
-					alertDialog();
-				} else {
-					// Navigate to the list of Story Fragments
-					startActivity(intent);
-				}
-				/*
-				 * if(editAuthor.getText().toString() == ""){ //set the author
-				 * to nickname that was entered in the dashboard }
-				 */
-			}
-
-		});
+		
+		storyInfoController.saveStory();
 	}
 
 	/**
@@ -156,7 +158,7 @@ public class EditStoryInformationActivity extends Activity  {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.edit_story_information, menu);
+		getMenuInflater().inflate(R.menu.standard_menu, menu);
 		return true;
 	}
 
@@ -166,11 +168,9 @@ public class EditStoryInformationActivity extends Activity  {
 		case R.id.title_activity_dashboard:
 			Intent intent = new Intent(this, Dashboard.class);
 			startActivity(intent);
+			finish();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-	
-
 }

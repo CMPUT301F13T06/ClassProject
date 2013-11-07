@@ -18,6 +18,7 @@
     <string name="genre">Genre: </string>
     <string name="synopsis">Synposis: </string>
     <string name="date">Publish Date: </string>
+     <string name="download">Download </string>
     <string name="title_activity_local_stories">Local Stories</string>
     <string name="title_activity_story_info">StoryInfoActivity</string>
     <string name="test"></string>

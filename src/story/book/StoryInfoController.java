@@ -1,5 +1,6 @@
 package story.book;
 
+import android.util.Log;
 import story.book.dataclient.IOClient;
 
 /**
@@ -10,12 +11,12 @@ import story.book.dataclient.IOClient;
  * @author Vina Nguyen
  *
  */
-public class StoryInfoController {
-	private Story story;
+public class StoryInfoController extends LocalEditingController {
+	private StoryInfo storyInfo;
 	private IOClient io;
 	
 	public StoryInfoController() {
-		story = StoryApplication.getCurrentStory();
+		storyInfo = StoryApplication.getCurrentStory().getStoryInfo();
 		io = StoryApplication.getIOClient();
 	}
 	
@@ -24,15 +25,18 @@ public class StoryInfoController {
 	 * @return StoryInfo of the current story
 	 */
 	public StoryInfo getStoryInfo() {
-		return story.getStoryInfo();
-	}
-	
-	/**
-	 * 
-	 * @param StoryInfo to set for the current story
-	 */
-	public void setStoryInfo(StoryInfo info) {
-		story.setStoryInfo(info);
+		return storyInfo;
 	}
 
+	/**
+	 * Saves the current story, defaulting the
+	 * author if necessary.
+	 */
+	@Override
+	public void saveStory() {
+		if (storyInfo.getAuthor().equals("")) {
+			storyInfo.setAuthor(StoryApplication.getNickname());
+		}
+		super.saveStory();
+	}
 }
