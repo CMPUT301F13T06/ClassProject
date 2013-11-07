@@ -4,17 +4,13 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
- 
     <ListView
         android:id="@+id/listView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:divider="#C0C0C0"
         android:dividerHeight="2dp"
-        android:scrollbars="vertical"
-        android:divider="#C0C0C0">   
-         </ListView>
-    
-    
-    
-    
+        android:scrollbars="vertical" >
+    </ListView>
+
 </LinearLayout>

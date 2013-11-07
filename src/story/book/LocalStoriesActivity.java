@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -31,7 +32,7 @@ import android.widget.TextView;
  * @author Nancy Pham-Nguyen
  * 
  */
-public class LocalStoriesActivity extends StoryListActivity implements
+public class LocalStoriesActivity extends Activity implements
 StoryView<Story> {
 
     public EditText text;
