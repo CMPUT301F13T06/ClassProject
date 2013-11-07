@@ -1,8 +1,5 @@
 package story.book;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -25,14 +22,13 @@ import android.widget.TextView;
 
 public class StoryInfoActivity extends Activity  {
 
-	public ArrayList<String> infoList;
-
 	TextView title;
 	TextView author;
+	TextView date;
 	TextView genre;
-	TextView synopsis;
+	TextView synopsis_text;
 
-	StoryInfoController storyInfoController = new StoryInfoController();
+	StoryInfoController storyInfoController;
 	StoryInfo storyInfo;
 
 	@Override
@@ -40,47 +36,33 @@ public class StoryInfoActivity extends Activity  {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_story_info);
 
-		Intent intent = getIntent();
-		// String message =
-		// intent.getStringExtra(LocalStoriesActivity.EXTRA_MESSAGE);
-
-		title = (TextView) findViewById(R.id.title);
 		author = (TextView) findViewById(R.id.author);
+		date = (TextView) findViewById(R.id.date);
 		genre = (TextView) findViewById(R.id.genre);
-		synopsis = (TextView) findViewById(R.id.synopsis);
+		synopsis_text = (TextView) findViewById(R.id.synopsis_text);
 
+		storyInfoController = new StoryInfoController();
 		storyInfo = storyInfoController.getStoryInfo();
-
-		// infoList = new ArrayList<String>();
-		// author.setText("Author: " + " " + message);
-
+		
 		displayStoryInfo();
-	}
-
-	private void displayStoryInfo() {
-		title.setText("Title: " + storyInfo.getTitle());
-		author.setText("Author: " + storyInfo.getAuthor());
-		genre.setText("Genre: " + storyInfo.getGenre());
-		synopsis.setText("Synopsis: " + storyInfo.getSynopsis());
-	}
-
-	protected void onStart() {
-		super.onStart();
 
 		final Intent intent = new Intent(this, StoryFragmentReadActivity.class);
-
 		Button viewButton = (Button) findViewById(R.id.view);
 		viewButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-
 				startActivity(intent);
-
 			}
 		});
+	}
 
-		// infoList.add(storyInfo.getAuthor());
-		// infoList.add(storyInfo.getTitle());
-		// infoList.add(storyInfo.getGenre());
+	private void displayStoryInfo() {
+		
+		setTitle(storyInfo.getTitle());
+		
+		author.setText(this.getString(R.string.author) + " " + storyInfo.getAuthor());
+		date.setText(this.getString(R.string.date) + " " + storyInfo.getPublishDateString());
+		genre.setText(this.getString(R.string.genre)+ " " + storyInfo.getGenre());
+		synopsis_text.setText(storyInfo.getSynopsis());
 	}
 
 	@Override
@@ -101,7 +83,4 @@ public class StoryInfoActivity extends Activity  {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-	
-
 }

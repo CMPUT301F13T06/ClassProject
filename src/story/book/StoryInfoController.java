@@ -34,17 +34,5 @@ public class StoryInfoController {
 	public void setStoryInfo(StoryInfo info) {
 		story.setStoryInfo(info);
 	}
-	
-	/**
-	 * 
-	 * @return a default StoryInfo for a new story
-	 */
-	public StoryInfo getNewStoryInfo() {
-		StoryInfo info = new StoryInfo();
-		info.setAuthor(StoryApplication.getNickname());
-		info.setSID(io.getSID());
-		//TODO what to set for default publish date?
-		return story.getStoryInfo();
-	}
 
 }

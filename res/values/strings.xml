@@ -13,10 +13,11 @@
     <string name="online_stories">Online Stories</string>
     <string name="start_adventure">Start Your Adventure</string>
     <string name="title_activity_story_list">StoryListActivity</string>
-    <string name="author">Author</string>
-    <string name="title">Title</string>
-    <string name="genre">Genre</string>
-    <string name="synopsis">Synposis</string>
+    <string name="author">Author: </string>
+    <string name="title">Title: </string>
+    <string name="genre">Genre: </string>
+    <string name="synopsis">Synposis: </string>
+    <string name="date">Publish Date: </string>
     <string name="title_activity_local_stories">Local Stories</string>
     <string name="title_activity_story_info">StoryInfoActivity</string>
     <string name="test"></string>

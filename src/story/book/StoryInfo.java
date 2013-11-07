@@ -3,6 +3,7 @@
  */
 package story.book;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class StoryInfo {
@@ -14,7 +15,15 @@ public class StoryInfo {
 	private int SID;
 
 	private Date publishDate;
+	
 	private StoryFragment startingFragment;
+	
+	enum PublishState {
+		PUBLISHED,
+		UNPUBLISHED,
+		NEEDS_REPUBLISH
+	}
+	private PublishState publishState;
 	
 	public StoryInfo() {}
 	
@@ -61,9 +70,11 @@ public class StoryInfo {
 	 * @return the <code>String</code> representation of the publish date
 	 */
 	public String getPublishDateString() {
-		if (publishDate != null)
-			return publishDate.toString();
-		else
+		if (publishDate != null) {
+			SimpleDateFormat stringForm = new SimpleDateFormat("MMMM dd yyyy");
+			
+			return stringForm.format(publishDate);
+		} else
 			return "";
 	}
 	
@@ -85,6 +96,14 @@ public class StoryInfo {
 
 	public void setSID(int SID) {
 		this.SID = SID;
+	}
+
+	public PublishState getPublishState() {
+		return publishState;
+	}
+
+	public void setPublishState(PublishState publishState) {
+		this.publishState = publishState;
 	}
 	
 }
