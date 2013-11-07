@@ -25,7 +25,13 @@ public class StoryInfo {
 	}
 	private PublishState publishState;
 	
-	public StoryInfo() {}
+	public StoryInfo() {
+		setAuthor("");
+		setTitle("");
+		setGenre("");
+		setSynopsis("");
+		setPublishState(PublishState.UNPUBLISHED);
+	}
 	
 	public String getAuthor() {
 		return author;

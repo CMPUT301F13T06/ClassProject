@@ -51,7 +51,6 @@ public class LocalStoryController implements StoryController {
 		StoryInfo info = new StoryInfo();
 		info.setAuthor(StoryApplication.getNickname());
 		info.setSID(io.getSID());
-		info.setPublishState(PublishState.UNPUBLISHED);
 		StoryApplication.setCurrentStory(new Story(info));
 	}
 
