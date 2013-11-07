@@ -47,6 +47,8 @@ public class StoryInfoActivity extends Activity  {
 		storyInfo = storyInfoController.getStoryInfo();
 		
 		displayStoryInfo();
+		
+		int SID = getIntent().getIntExtra("intVariableName", 0);
 
 		final Intent intent = new Intent(this, StoryFragmentReadActivity.class);
 		Button viewButton = (Button) findViewById(R.id.view);

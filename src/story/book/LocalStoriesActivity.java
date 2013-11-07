@@ -26,7 +26,7 @@ import android.widget.TextView;
  * from their local stories
  * 
  * @author Nancy Pham-Nguyen
- * 
+ * @author Anthony Ou
  */
 public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 
@@ -40,20 +40,19 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	ArrayList<HashMap<String, String>> sList;
 	HashMap<String, String> testMap;
 
-	ArrayList<StoryInfo> storyInfo;
+
 	private LocalStoryController localController;
-	ArrayAdapter a;
-	int SID;
+	ArrayAdapter<StoryInfo> a;
+	int position;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_local_stories);
+		setContentView(R.layout.library_activity);
 
 		// localController.getStory();
 
 		localController = new LocalStoryController();
-		storyInfo = localController.getStoryList();
 
 		sList = new ArrayList<HashMap<String, String>>();
 
@@ -70,10 +69,8 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		sAdapter = new SimpleAdapter(this, sList, R.layout.stories_list, from,
 				to);
 
-		
-
 		listView = (ListView) findViewById(R.id.listView);
-		a = new ArrayAdapter<StoryInfo>(this, android.R.layout.simple_list_item_1, storyInfo);
+		a = new ArrayAdapter<StoryInfo>(this, android.R.layout.simple_list_item_1, localController.getStoryList());
 		listView.setAdapter(a);
 
 		registerForContextMenu(listView);
@@ -81,26 +78,18 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int pos,
 					long id) {
-
-				SID = pos;
+				position = pos;
 
 			}
 		});
 		// Show the Up button in the action bar.
-		setupActionBar();
-	}
-
-	@Override
-	public void onResume(){
-		super.onResume();
-		a.notifyDataSetChanged();
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	/**
 	 * Add the newly created story to the list with it's story information
 	 **/
 	public void createStory() {
-
 		localController.createStory();
 		localController.saveStory();
 		Intent intent = new Intent(this, EditStoryInformationActivity.class);
@@ -112,45 +101,37 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	 * 
 	 * @param SID
 	 */
-	public void readStory(int SID) {
+	public void readStory() {
 		Intent intent = new Intent(this, StoryInfoActivity.class);
+		intent.putExtra("SID", a.getItem(position).getSID());
 		startActivity(intent);
-
 	}
 
-	public void editStory(int SID) {
+	public void editStory() {
 		Intent intent = new Intent(this, EditStoryInformationActivity.class);
+		intent.putExtra("SID", a.getItem(position).getSID());
 		startActivity(intent);
 	}
 
 	/**
 	 * Delete the story at the correct SID
 	 */
-	public void deleteStory(int SID) {
+	public void deleteStory() {
 		// if long click on story then give option to delete
 		//SID = this.SID;
-		localController.deleteStory(SID);
+		localController.deleteStory(position);
 	}
 
 	private void openSearch() {
 
 	}
 
-	/**
-	 * Set up the {@link android.app.ActionBar}.
-	 */
-	private void setupActionBar() {
-
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-
-	}
 
 	/**
 	 * Method to create a floating context menu when an item in the list is
 	 * clicked and held on
 	 * http://developer.android.com/guide/topics/ui/menus.html#context-menu
 	 */
-
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
@@ -162,20 +143,17 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	/**
 	 * http://developer.android.com/guide/topics/ui/menus.html#context-menu
 	 */
-
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
-				.getMenuInfo();
 		switch (item.getItemId()) {
 		case R.id.read_story:
-			readStory(Long.valueOf(info.id).intValue());
+			readStory();
 			return true;
 		case R.id.edit_story:
-			editStory(Long.valueOf(info.id).intValue());
+			editStory();
 			return true;
 		case R.id.delete_story:
-			deleteStory(Long.valueOf(info.id).intValue());
+			deleteStory();
 			return true;
 		default:
 			return true;
@@ -209,7 +187,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	@Override
 	public void update(Story model) {
 		// TODO Auto-generated method stub
-
+		a.clear();
+		a.addAll(localController.getStoryList());
 	}
-
 }

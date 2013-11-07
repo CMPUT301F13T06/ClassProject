@@ -19,45 +19,49 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.support.v4.app.NavUtils;
 
 /**
+ * An activity that displays the stories stored on the device
  * 
  * @author Nancy Pham-Nguyen
- *
+ * @author Anthony Ou
  */
-public class OnlineStoriesActivity extends Activity {
+public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 
 	private OnlineStoryController onlineController;
 	ArrayList<StoryInfo> storyInfo;
 	ListView listView;
 
 	protected ArrayAdapter<StoryInfo> adapter;
-	protected ArrayList<StoryInfo> storyList;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_local_stories);
+		setContentView(R.layout.library_activity);
 
 		onlineController = new OnlineStoryController();
-		storyList = onlineController.getStoryList();
-		adapter = new ArrayAdapter<StoryInfo>(this, android.R.layout.simple_list_item_1, storyList);
 
+		adapter = new ArrayAdapter<StoryInfo>(this, android.R.layout.simple_list_item_1, onlineController.getStoryList());
+		adapter.addAll(onlineController.getStoryList());
 		listView = (ListView) findViewById(R.id.listView);
-		adapter.notifyDataSetChanged();
+		registerForContextMenu(listView);
+		
 		listView.setAdapter(adapter);
 		
-		registerForContextMenu(listView);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void  onItemClick(AdapterView<?> parent , View view,
 					int pos, long id) {
-
-
-
 			}
 		});
 		// Show the Up button in the action bar.
 		setupActionBar();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		adapter.clear();
+		adapter.addAll(onlineController.getStoryList());
 	}
 
 	private void  readStory(long id){
@@ -132,6 +136,12 @@ public class OnlineStoriesActivity extends Activity {
 	private void openSearch() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void update(Story model) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
