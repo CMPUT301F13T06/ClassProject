@@ -1,6 +1,7 @@
 package story.book;
 
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 /**
@@ -47,5 +48,17 @@ public class TextIllustration extends Illustration<String> {
 		TextView textView = new TextView(StoryApplication.getContext());
 		textView.setText(this.content);
 		return textView;
+	}
+	
+	/**
+	 * Returns a <code>EditText</code> object initialized with the contents of
+	 * the illustration.
+	 * 
+	 * @return	the <code>EditText</code> object with text set
+	 */
+	public EditText getEditView() {
+		EditText editView = new EditText(StoryApplication.getContext());
+		editView.setText(this.content);
+		return editView;
 	}
 }
