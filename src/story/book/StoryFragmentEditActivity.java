@@ -214,22 +214,33 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		for (Illustration i : illustrations){
 			illustrationViews.add(((TextIllustration)i).getEditView());
 		}
-
+		
+		int pos = 0;
+		
 		formatView(illustrationViews);
-		LayoutParams p = new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
-		for (View t: illustrationViews) {
+		for (View t: illustrationViews){
+			t.setId(pos + 1);
+			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
+					WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
+			p.addRule(RelativeLayout.BELOW, pos);
+			t.setLayoutParams(p);
 			this.addContentView(t, p);
+			pos++;
 		}
 
 		buttons = formatButton(decisions, this);
+		int order = 0;
+
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
 				LayoutParams.WRAP_CONTENT);
-
-		//TODO: Fix the overlap of illustrations
-		lp.addRule(RelativeLayout.ALIGN_BOTTOM);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		lp.addRule(RelativeLayout.BELOW, order);
 
 		for (Button dbButton : buttons) {
+			dbButton.setId(order + 1);
+			dbButton.setLayoutParams(lp);
+			
+			order++;
 			this.addContentView(dbButton, lp);
 		}
 	}
