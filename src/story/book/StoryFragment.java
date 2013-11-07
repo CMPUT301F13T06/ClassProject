@@ -154,4 +154,14 @@ public class StoryFragment extends StoryModel<StoryView> {
 		return this.fragmentID.intValue();
 	}
 	
+	/** 
+	 * Sets the fragment ID of the <code>StoryFragment</code> to the specified
+	 * value.
+	 * 
+	 * @param	ID	the ID to set as the fragment ID
+	 */
+	public void setFragmentID(int ID) {
+		this.fragmentID = ID;
+	}
+	
 }
