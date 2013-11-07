@@ -51,6 +51,7 @@ public class Story extends StoryModel<StoryView> {
 		if (fragmentList.size() == 0) {
 			storyInfo.setStartingFragmentID(ID);
 		}
+		storyFragment.setFragmentID(ID);
 		fragmentList.put(ID, storyFragment);
 		notifyViews();
 	}
