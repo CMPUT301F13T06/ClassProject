@@ -10,9 +10,12 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -155,8 +158,12 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 			addFragment();
 			return true;
 		case R.id.publish:
-			SCC.saveStory();
-			SCC.publishStory();
+			if (checkInternetConnected()) {
+				SCC.saveStory();
+				SCC.publishStory();
+			} else {
+				SimpleWarningDialog.getWarningDialog(this.getString(R.string.no_internet), this);
+			}
 			return true;
 		case R.id.change_info:
 			SCC.saveStory();
@@ -195,7 +202,8 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 			//Delete
 			int FID = SFL.get(pos).getFragmentID();
 			if (FID == SCC.getStartingFragment()) {
-				fragmentDeleteDialog();
+				//fragmentDeleteDialog();
+				SimpleWarningDialog.getWarningDialog(this.getString(R.string.bad_frag_delete_msg), this);
 			} else {
 				SCC.deleteFragment(FID);
 			}
@@ -209,24 +217,14 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 
 	}
 	
-	private void fragmentDeleteDialog() {
-		// Instantiate an AlertDialog.Builder with its constructor
-		AlertDialog.Builder builder = new AlertDialog.Builder(
-				StoryFragmentListActivity.this);
-		// Chain together various setter methods to set the dialog
-		// characteristics
-		builder.setMessage(R.string.bad_frag_delete_msg).setTitle(
-				R.string.dialog_title);
-
-		// Add buttons to AlertDialog
-		builder.setPositiveButton(R.string.ok,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						// User clicked OK button
-					}
-				});
-		// Create the AlertDialog
-		AlertDialog dialog = builder.create();
-		dialog.show();
+	/**
+	 * http://stackoverflow.com/questions/4238921/android-detect-whether-there-is-an-internet-connection-available
+	 */
+	//TODO put this also when click onlinelibrary button
+	private Boolean checkInternetConnected() {
+		 ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		 NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		 return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
+	
 }

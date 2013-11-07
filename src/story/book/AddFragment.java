@@ -25,7 +25,7 @@ public class AddFragment extends DialogFragment {
 		    public void onClick(DialogInterface dialog, int id) {
 		    	String value = title.getText().toString();
 		    	if (value.equals("")) {
-		    		alertDialog();
+		    		SimpleWarningDialog.getWarningDialog(callingActivity.getString(R.string.bad_frag_title_msg), callingActivity);
 		    		callingActivity.onUserSelectValue(null);
 		    	} else {
 			        callingActivity.onUserSelectValue(value);

@@ -46,6 +46,7 @@
     <string name="set">Set</string>
      <string name="bad_frag_title_msg">Cannot create fragment with empty title.</string>
     <string name="bad_frag_delete_msg">Cannot delete fragment that is the starting fragment.</string>
+    <string name="no_internet">Action could not be completed because no internet connectivity.</string>
     <string name="StoryTitle"/>
 
 </resources>
