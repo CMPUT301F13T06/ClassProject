@@ -132,7 +132,7 @@ public class ReadingFragment extends Fragment {
 		for (Button dbButton : buttons) {
 			((ViewGroup) rootView).addView(dbButton, lp);
 		}
-
+		((ViewGroup) this.getView()).removeAllViews();
 	}
 	
 	private View.OnClickListener setListener(final Button b, final int destinationID) {
@@ -146,7 +146,7 @@ public class ReadingFragment extends Fragment {
 	}
 	
 	public void update() {
-
+		((ViewGroup) this.getView()).removeAllViews();
 		displayFragment(SF, rootView);
 	}
 }
