@@ -8,19 +8,19 @@ import java.util.HashMap;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ListView;
 
 /**
@@ -34,19 +34,40 @@ import android.widget.ListView;
  * @author Jessica Surya
  *
  */
-public class StoryFragmentListActivity extends Activity {
+public class StoryFragmentListActivity extends Activity implements StoryView<Story> {
 	ActionBar actionBar;
 	ArrayList<StoryFragment> SFL;
 	ArrayAdapter<StoryFragment> adapter;
 	StoryCreationController SCC;
-	StoryApplication SA;
+	
 	int pos;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.story_fragment_read_activity);
+		
 		SCC = new StoryCreationController();
+		SCC.getStory().addView(this);
+		
+		updateFragmentList();
+
+		return;
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		
+		SCC.saveStory();
+	}
+	
+	@Override
+	public void update(Story model) {
+		updateFragmentList(); 
+	}
+	
+	private void updateFragmentList() {
 		SFL = new ArrayList<StoryFragment>();
 
 		HashMap<Integer, StoryFragment> map = SCC.getFragments();
@@ -54,10 +75,10 @@ public class StoryFragmentListActivity extends Activity {
 			SFL.add(map.get(key));
 		}
 
-		String title = SA.getCurrentStory().getStoryInfo().getTitle();
+		String title = SCC.getStory().getStoryInfo().getTitle();
 		actionBar = getActionBar();
 		actionBar.setTitle(title);
-
+		
 		adapter = new ArrayAdapter<StoryFragment>(this, android.R.layout.simple_list_item_1,
 				SFL);
 
@@ -79,15 +100,41 @@ public class StoryFragmentListActivity extends Activity {
 			}
 
 		});
+	}
+	
+	private void editFragment(int FID) {
+		Intent i = new Intent(this, StoryFragmentEditActivity.class);
 
-		return;
+		i.putExtra("FID", FID);
+		startActivity(i);
+	}
+	
+	private void addFragment() {
+	    DialogFragment newFragment = new AddFragment();
+        newFragment.show(getFragmentManager(), "addFragment");
 	}
 
+	public void onUserSelectValue(String title) {
+		if (title == null) {
+			//Title vaildation failed
+			//addFragment();
+			//TODO don't close on warnining
+		}
+		
+		//Create fragment with this title
+		StoryFragment fragment = SCC.newFragment(title);
+		
+		//Save the story before opening fragment to edit
+		SCC.saveStory();
+		//TODO want to change this flow in the mock-up?
+		editFragment(fragment.getFragmentID());
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items for use in the action bar
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.add_illustration_menu, menu);
+		inflater.inflate(R.menu.fragment_list_menu, menu);
 		inflater.inflate(R.menu.standard_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -101,6 +148,16 @@ public class StoryFragmentListActivity extends Activity {
 			finish();
 			return true;
 
+		case R.id.add_fragment:
+			addFragment();
+			return true;
+		case R.id.publish:
+			SCC.saveStory();
+			SCC.publishStory();
+			return true;
+		case R.id.change_info:
+			SCC.saveStory();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -122,22 +179,17 @@ public class StoryFragmentListActivity extends Activity {
 		switch (item.getOrder()) {
 		case 1:
 			// Edit story fragment
-
-			Intent i = new Intent(this, StoryFragmentEditActivity.class);
-
-			i.putExtra("FID", SFL.get(pos).getFragmentID());
-			startActivity(i);
+			editFragment(SFL.get(pos).getFragmentID());
 			break;
 
 		case 2:
 			// Set as starting story fragment
-
+			SCC.setStartingFragment(SFL.get(pos).getFragmentID());
 			break;
 		case 3:
 			//Delete
-
+			SCC.deleteFragment(SFL.get(pos).getFragmentID());
 			break;
-
 		case 4:
 			// Cancel options
 			return false;

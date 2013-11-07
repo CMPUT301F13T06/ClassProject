@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+     <item
+        android:id="@+id/add_fragment"
+        android:icon="@drawable/ic_action_new"
+        android:showAsAction="always"
+        android:title="@string/change_info">
+     </item>
+     
+     <item
+        android:id="@+id/add_new"
+        android:icon="@drawable/ic_action_edit"
+        android:showAsAction="always"
+        android:title="@string/Blank">
+        <menu>
+            <item
+                android:id="@+id/publish"
+                android:showAsAction="never"
+                android:title="@string/publish">
+            </item>
+            <item
+                android:id="@+id/change_info"
+                android:showAsAction="never"
+                android:title="@string/change_info">
+            </item>
+        </menu>
+     </item>
+
+</menu>
