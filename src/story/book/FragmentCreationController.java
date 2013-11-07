@@ -15,6 +15,7 @@ public class FragmentCreationController extends LocalEditingController {
 
 	private StoryFragment storyFragment;
 	
+	// public FragmentCreationController(int fragmentID) {
 	public FragmentCreationController(StoryFragment storyFragment) {
 		super();
 		this.storyFragment = storyFragment;
