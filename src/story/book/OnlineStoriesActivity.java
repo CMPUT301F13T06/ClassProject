@@ -62,6 +62,9 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 	listView.setAdapter(adapter);
 
 	listView.setOnItemClickListener(new OnItemClickListener() {
+	    /*
+	     * on click of an online story to display the story info immdiately. 
+	     */
 	    @Override
 	    public void  onItemClick
 	    (AdapterView<?> parent , View view, int pos, long id) {
