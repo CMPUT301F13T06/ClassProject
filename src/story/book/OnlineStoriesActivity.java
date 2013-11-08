@@ -74,6 +74,7 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
     public boolean onContextItemSelected(MenuItem item) {
 	onlineController.getStory(adapter.getItem(position).getSID());
 	Intent intent = new Intent(this, StoryInfoActivity.class);
+	intent.putExtra("calledByOnline", true);
 	startActivity(intent);
 	return true;
     }
