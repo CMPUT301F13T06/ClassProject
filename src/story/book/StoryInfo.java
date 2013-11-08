@@ -20,6 +20,14 @@ package story.book;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Class representing additional information about a <code>Story</code> object.
+ * Contains fields such as author, title, genre, etc. of the story in addition
+ * to information for identifying the story.
+ * 
+ * @author 	Alexander Cheung
+ * @see		Story
+ */
 public class StoryInfo {
 	
 	private String author;
@@ -27,18 +35,25 @@ public class StoryInfo {
 	private String genre;
 	private String synopsis;
 	private int SID;
-
 	private Date publishDate;
-	
+	private PublishState publishState;
 	private int startingFragmentID;
 	
+	/**
+	 * Defines the different publishing states of the story.
+	 * 
+	 * @author Alexander Cheung
+	 *
+	 */
 	enum PublishState {
 		PUBLISHED,
 		UNPUBLISHED,
 		NEEDS_REPUBLISH
 	}
-	private PublishState publishState;
 	
+	/**
+	 * Initializes all of the fields to the empty <code>String</code>.
+	 */
 	public StoryInfo() {
 		setAuthor("");
 		setTitle("");
@@ -47,38 +62,74 @@ public class StoryInfo {
 		setPublishState(PublishState.UNPUBLISHED);
 	}
 	
+	/**
+	 * 
+	 * @return the author of the story
+	 */
 	public String getAuthor() {
 		return author;
 	}
 	
+	/**
+	 * 
+	 * @param author	the author of the story
+	 */
 	public void setAuthor(String author) {
 		this.author = author;
 	}
 	
+	/**
+	 * 
+	 * @return	the title of the story
+	 */
 	public String getTitle() {
 		return title;
 	}
 	
+	/**
+	 * 
+	 * @param title the desired title for the story
+	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 	
+	/**
+	 * 
+	 * @return the genre of the story
+	 */
 	public String getGenre() {
 		return genre;
 	}
 	
+	/**
+	 * 
+	 * @param genre the genre of the story
+	 */
 	public void setGenre(String genre) {
 		this.genre = genre;
 	}
 	
+	/**
+	 * 
+	 * @return the synopsis of the story
+	 */
 	public String getSynopsis() {
 		return synopsis;
 	}
 	
+	/**
+	 * 
+	 * @param synopsis the synopsis of the story
+	 */
 	public void setSynopsis(String synopsis) {
 		this.synopsis = synopsis;
 	}
 	
+	/**
+	 * 
+	 * @return the publish date of the story
+	 */
 	public Date getPublishDate() {
 		return publishDate;
 	}
@@ -98,33 +149,62 @@ public class StoryInfo {
 			return "";
 	}
 	
+	/**
+	 * 
+	 * @param publishDate the publish date of the story
+	 */
 	public void setPublishDate(Date publishDate) {
 		this.publishDate = publishDate;
 	}
 	
+	/**
+	 * 
+	 * @return the fragment ID of the starting fragment
+	 */
 	public int getStartingFragmentID() {
 		return startingFragmentID;
 	}
 	
+	/**
+	 * 
+	 * @param startingFragmentID the fragment ID of the starting fragment
+	 */
 	public void setStartingFragmentID(int startingFragmentID) {
 		this.startingFragmentID = startingFragmentID;
 	}
 
+	/**
+	 * 
+	 * @return the SID of the story
+	 */
 	public int getSID() {
 		return SID;
 	}
 
+	/**
+	 * 
+	 * @param SID the desired SID for the story
+	 */
 	public void setSID(int SID) {
 		this.SID = SID;
 	}
 
+	/**
+	 * 
+	 * @return the publish state of the story
+	 */
 	public PublishState getPublishState() {
 		return publishState;
 	}
 
+	/**
+	 * 
+	 * @param publishState the publish state of the story
+	 */
 	public void setPublishState(PublishState publishState) {
 		this.publishState = publishState;
 	}
+	
 	@Override
 	public String toString(){
 		return this.author +"\n" + this.getPublishDateString();
