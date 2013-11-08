@@ -42,11 +42,11 @@
     <string name="publish">Publish</string>
     <string name="change_info">Change info</string>
     <string name="add_fragment">Add fragment</string>
-    <string name="add_fragment_title">Set Fragment Title</string>
+    <string name="add_fragment_title">New Fragment Title</string>
     <string name="set">Set</string>
     <string name="bad_frag_title_msg">Cannot create fragment with empty title.</string>
     <string name="bad_frag_delete_msg">Cannot delete fragment that is the starting fragment.</string>
-    <string name="add_branch_title">Set Decision Branch Label</string>
+    <string name="add_branch_title">New Decision Branch Label</string>
     <string name="bad_branch_msg">Cannot create branch with empty label.</string>
     <string name="no_internet">Action could not be completed because no internet connectivity.</string>
     <string name="title_decision_picker">Create Decision Branch</string>

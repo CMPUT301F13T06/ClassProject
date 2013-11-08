@@ -35,7 +35,6 @@ public class DecisionPickerActivity extends Activity implements RequestingActivi
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.story_fragment_read_activity);
 		
 		SCC = new StoryCreationController();
@@ -79,7 +78,7 @@ public class DecisionPickerActivity extends Activity implements RequestingActivi
 				
 			    DialogFragment newFragment = new RequestTextDialog();
 			    ((RequestTextDialog)newFragment).setParent(DecisionPickerActivity.this);
-			    ((RequestTextDialog)newFragment).setHeader("Set Decision Branch Label");
+			    ((RequestTextDialog)newFragment).setHeader("New Decision Branch Label");
 			    ((RequestTextDialog)newFragment).setWarning("Cannot create branch with empty label.");
 			    newFragment.show(getFragmentManager(), "addBranch");
 			}
