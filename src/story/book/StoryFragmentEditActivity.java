@@ -47,9 +47,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	FragmentCreationController FCC;
 	DecisionBranchCreationController DBCC;
 	ArrayList<StoryFragment> SFL;
-	ArrayAdapter<StoryFragment> adapter;
 	StoryCreationController SCC;
-	StoryApplication SA;
 
 	ArrayList<Illustration> illustrations;
 	ArrayList<DecisionBranch> decisions;
@@ -90,18 +88,20 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		actionBar.setTitle(title);
 
 		SF.addView(this);
-
+		illustrationViews = new ArrayList<View>();
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
+
 		displayFragment();
 	}
 
 	@Override
 	public void onPause(){
 		super.onPause();
+		FCC.saveStory();
 	}
 
 	@Override
@@ -125,6 +125,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		switch (item.getItemId()) {
 		case R.id.text:
 			// TODO: Pass illustration to fragment for editing
+			addNewTextIllustration(this.findViewById(R.id.reading_fragment));
 
 			return true;
 
@@ -160,6 +161,18 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		}
 	}
 	/**
+	 * addNewTextIllustration() creates a new EditText for users to enter the text
+	 * for a TextIllustration.
+	 */
+	private void addNewTextIllustration(View v) {
+		// TODO Auto-generated method stub
+		EditText newText = new EditText(this);
+		newText.setHint("Enter text here");
+		illustrationViews.add(newText);
+		displayFragment();
+	}
+
+	/**
 	 * formatView() (FOR TEXTVIEWS ONLY) formats illustration textViews in an array list
 	 * by changing:
 	 * 		- text size (20)
@@ -179,6 +192,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			x.setPaddingRelative(5, 0, 0, 10);
 		}
 	}
+
 	/**
 	 * formatButton() creates a button with the corresponding decision branch text
 	 * for each decision branch in an array list of decision branches.
@@ -197,13 +211,11 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		DecisionBranch d = null;
 		Button button;
 		while(dbIterator.hasNext()) {
-
 			d = dbIterator.next();
 			button = new Button(c);
 			button.setText(d.getDecisionText());
 			buttonList.add(button);
 		}
-
 		return buttonList;
 	}
 
@@ -212,15 +224,18 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		// TODO Auto-generated method stub
 		//display fragment contents
 		SF = SFL.get(FID);
+	}
+	
+	private void loadFragmentContents() {
 
-		for (View v : illustrationViews) {
-			v.invalidate();
+		illustrations = SF.getIllustrations();
+		decisions = SF.getDecisionBranches();
+
+		illustrationViews = new ArrayList<View>();
+		for (Illustration i : illustrations){
+			illustrationViews.add(((TextIllustration)i).getEditView());
 		}
 
-		for (Button b : buttonList) {
-			b.invalidate();
-		}
-		
 	}
 
 	/**
@@ -231,21 +246,15 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * 
 	 */
 	private void displayFragment() {
-
-		illustrations = SF.getIllustrations();
-		decisions = SF.getDecisionBranches();
-
-		illustrationViews = new ArrayList<View>();
-
-		for (Illustration i : illustrations){
-			illustrationViews.add(((TextIllustration)i).getEditView());
-		}
-
-		formatView(illustrationViews);
-		int position = 0;
-
+		
 		RelativeLayout layout = (RelativeLayout) findViewById(R.id.reading_fragment);
+		((ViewGroup) layout).removeAllViews();
+		
+		loadFragmentContents();
 
+		int position = 0;
+		
+		formatView(illustrationViews);
 		for (View t: illustrationViews){
 			t.setId(position + 1);
 			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
@@ -257,13 +266,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			position++;
 		}
 
-		
-		//parent.addView(layout);
-		
-		//setContentView(this.findViewById(R.id.reading_fragment));
 
-		buttons = formatButton(decisions, this);
 		int buttonIndex = 0;
+		buttons = formatButton(decisions, this);
 		for (Button dbButton : buttons) {
 			dbButton.setId(position + 1);
 			buttonIndex++;
@@ -273,9 +278,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 				lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 			}
 			else {
-			lp.addRule(RelativeLayout.ABOVE, position);
+				lp.addRule(RelativeLayout.ABOVE, position);
 			}
-			
+
 			dbButton.setLayoutParams(lp);
 			registerForContextMenu(dbButton);
 			((ViewGroup) layout).addView(dbButton, lp);
@@ -314,8 +319,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			index = illustrationViews.indexOf(v);
 			Illustration i = illustrations.get(index);
 			FCC.removeTextIllustration((TextIllustration) i);
-
-			SF.notifyViews();
+			displayFragment();
 
 			break;
 
@@ -325,7 +329,8 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			index =  buttonList.indexOf(b);
 			DecisionBranch branch = decisions.get(index);
 			DBCC.removeDecisionBranch(branch);
-			SF.notifyViews();
+			displayFragment();
+			
 			break;
 
 		case 3:
