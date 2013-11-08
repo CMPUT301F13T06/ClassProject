@@ -49,17 +49,17 @@ public class StoryTest extends ActivityInstrumentationTestCase2
 		StoryFragment testFragment2 = new StoryFragment("Test fragment 2");
 		StoryFragment testFragment3 = new StoryFragment("Test fragment 3");
 		
-		testFragment1.addDecisionBranch(new DecisionBranch("Branch from 1 to 2", testFragment2.getFragmentID()));
-		testFragment1.addDecisionBranch(new DecisionBranch("Branch from 1 to 3", testFragment3.getFragmentID()));
-		
 		story.addFragment(testFragment1);
 		story.addFragment(testFragment2);
 		story.addFragment(testFragment3);
 		
+		testFragment1.addDecisionBranch(new DecisionBranch("Branch from 1 to 2", testFragment2.getFragmentID()));
+		testFragment1.addDecisionBranch(new DecisionBranch("Branch from 1 to 3", testFragment3.getFragmentID()));
+		
 		assertEquals(testFragment1.getDecisionBranches().size(), 2);
 		story.removeFragment(testFragment2.getFragmentID());
 		assertEquals(testFragment1.getDecisionBranches().size(), 1);
-		assertEquals(testFragment1.getDecisionBranches().get(0).getDestinationID(), testFragment3);
+		assertEquals(testFragment1.getDecisionBranches().get(0).getDestinationID(), testFragment3.getFragmentID());
 		story.removeFragment(testFragment3.getFragmentID());
 		assertEquals(testFragment1.getDecisionBranches().size(), 0);
 	}
