@@ -45,28 +45,24 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	ArrayAdapter<StoryInfo> a;
 	int position;
 
-	StoryInfo storyInfo;
-	StoryInfoController storyController;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.library_activity);
 
-		
-		storyController = new StoryInfoController();
+		// localController.getStory();
+
 		localController = new LocalStoryController();
-		
-		storyInfo = storyController.getStoryInfo();
+
 		sList = new ArrayList<HashMap<String, String>>();
 
-		String[] from = new String[] {storyInfo.getTitle(), localController.getStoryList().get(0).toString() };
+		String[] from = new String[] { KEY_TITLE, KEY_ID };
 		int[] to = new int[] { R.id.textTest, R.id.textTest2 };
 
 		// for (int i = 0; i < from.length; i++) {
 		testMap = new HashMap<String, String>();
-		testMap.put(storyInfo.getTitle(), from[0]);
-		testMap.put(localController.getStoryList().get(0).toString(),localController.getStoryList().get(0).toString() );
+		testMap.put(KEY_TITLE, from[0]);
+		testMap.put(KEY_ID, "" + "\n" + "hello");
 		sList.add(testMap);
 		// }
 
@@ -75,8 +71,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 
 		listView = (ListView) findViewById(R.id.listView);
 		a = new ArrayAdapter<StoryInfo>(this, android.R.layout.simple_list_item_1, localController.getStoryList());
-		//listView.setAdapter(a);
-		listView.setAdapter(sAdapter);
+		listView.setAdapter(a);
 
 		registerForContextMenu(listView);
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -125,8 +120,6 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		// if long click on story then give option to delete
 		//SID = this.SID;
 		localController.deleteStory(position);
-		sAdapter.notifyDataSetChanged();
-		//a.notifyDataSetChanged();
 	}
 
 	private void openSearch() {
