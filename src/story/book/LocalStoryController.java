@@ -20,6 +20,7 @@ package story.book;
 import java.util.ArrayList;
 import java.util.Date;
 
+import android.util.Log;
 import story.book.StoryInfo.PublishState;
 import story.book.dataclient.IOClient;
 import story.book.dataclient.ESClient;
@@ -66,7 +67,8 @@ public class LocalStoryController implements StoryController {
 		StoryInfo info = new StoryInfo();
 		info.setAuthor(StoryApplication.getNickname());
 		info.setSID(io.getSID());
-		StoryApplication.setCurrentStory(new Story(info));
+		Story s = new Story(info);
+		StoryApplication.setCurrentStory(s);
 	}
 
 	/**

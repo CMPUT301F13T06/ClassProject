@@ -27,126 +27,96 @@ import android.support.v4.app.NavUtils;
  */
 public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 
-	private StoryController onlineController;
-	ArrayList<StoryInfo> storyInfo;
-	ListView listView;
+    private StoryController onlineController;
+    ArrayList<StoryInfo> storyInfo;
+    ListView listView;
 
-	protected ArrayAdapter<StoryInfo> adapter;
+    protected ArrayAdapter<StoryInfo> adapter;
 
-	int position;
+    int position;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.library_activity);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.library_activity);
 
-		onlineController = new OnlineStoryController();
+	onlineController = new OnlineStoryController();
 
-		adapter = new ArrayAdapter<StoryInfo>(this, android.R.layout.simple_list_item_1, onlineController.getStoryList());
-		listView = (ListView) findViewById(R.id.listView);
-		registerForContextMenu(listView);
-		
-		listView.setAdapter(adapter);
-		
-		listView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void  onItemClick(AdapterView<?> parent , View view,
-					int pos, long id) {
-				position = pos;
-			}
-		});
-		// Show the Up button in the action bar.
-		setupActionBar();
+	adapter = new ArrayAdapter<StoryInfo>(this, android.R.layout.simple_list_item_1, onlineController.getStoryList());
+	listView = (ListView) findViewById(R.id.listView);
+	registerForContextMenu(listView);
+
+	listView.setAdapter(adapter);
+
+	listView.setOnItemClickListener(new OnItemClickListener() {
+	    @Override
+	    public void  onItemClick(AdapterView<?> parent , View view,
+		    int pos, long id) {
+		position = pos;
+	    }
+	});
+	// Show the Up button in the action bar.
+	setupActionBar();
+    }
+
+    @Override
+    public void onResume() {
+	super.onResume();
+	adapter.clear();
+	adapter.addAll(onlineController.getStoryList());
+    }
+
+    /**
+     * http://developer.android.com/guide/topics/ui/menus.html#context-menu
+     */
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+	onlineController.getStory(adapter.getItem(position).getSID());
+	Intent intent = new Intent(this, StoryInfoActivity.class);
+	startActivity(intent);
+	return true;
+    }
+
+
+    /**
+     * Set up the {@link android.app.ActionBar}.
+     */
+    private void setupActionBar() {
+
+	getActionBar().setDisplayHomeAsUpEnabled(true);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+	// Inflate the menu; this adds items to the action bar if it is present.
+	getMenuInflater().inflate(R.menu.online_stories, menu);
+	return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+	switch (item.getItemId()) {
+	case R.id.action_search:
+	    openSearch();
+	case R.id.title_activity_dashboard:
+	    NavUtils.navigateUpFromSameTask(this);
+	    finish();
+	    return true;
 	}
+	return super.onOptionsItemSelected(item);
+    }
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		adapter.clear();
-		adapter.addAll(onlineController.getStoryList());
-	}
+    private void openSearch() {
+	// TODO Auto-generated method stub
 
-	private void  readStory(long id){
-		Intent intent = new Intent(this, StoryInfoActivity.class);
-		intent.putExtra("SID", adapter.getItem(position).getSID());
-		startActivity(intent);
-	}
+    }
 
-	/**
-	 * Method to create a floating context menu when an item in the list is
-	 * clicked and held on
-	 * http://developer.android.com/guide/topics/ui/menus.html#context-menu
-	 */
+    @Override
+    public void update(Story model) {
+	// TODO Auto-generated method stub
 
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.context_menu, menu);
-	}
-
-	/**
-	 * http://developer.android.com/guide/topics/ui/menus.html#context-menu
-	 */
-
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-		switch (item.getItemId()) {
-		case R.id.read_story:
-			readStory(info.id);
-			return true;
-		case R.id.edit_story:
-			// editStory(info.id);
-			return true;
-		case R.id.delete_story:
-			//	deleteStory(info.id);
-			return true;
-		default:
-			return true;
-		}
-	}
-
-
-	/**
-	 * Set up the {@link android.app.ActionBar}.
-	 */
-	private void setupActionBar() {
-
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.online_stories, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.action_search:
-			openSearch();
-		case R.id.title_activity_dashboard:
-			NavUtils.navigateUpFromSameTask(this);
-			finish();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	private void openSearch() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void update(Story model) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
 }
