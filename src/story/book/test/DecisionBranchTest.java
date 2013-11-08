@@ -36,4 +36,10 @@ public class DecisionBranchTest extends ActivityInstrumentationTestCase2
 		db.setDecisionText("New string");
 		assertEquals(db.getDecisionText(), "New string");
 	}
+	
+	@Test
+	public void testSetDestination() {
+		db.setDestinationID(3);
+		assertEquals(db.getDestinationID(), 3);
+	}
 }
