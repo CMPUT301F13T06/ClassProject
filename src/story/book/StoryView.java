@@ -17,6 +17,14 @@
 
 package story.book;
 
+/**
+ * Base View interface for the application Views. Provides method signature for
+ * updating when the update method is called.
+ * 
+ * @author Alexander Cheung
+ *
+ * @param <M> the type of model to associate with
+ */
 public interface StoryView<M> {
 	 public void update(M model);
 }

@@ -40,16 +40,33 @@ public class OnlineStoryController implements StoryController {
 		es = StoryApplication.getESClient();
 	}
 	
+	/**
+	 * Sets the current application <code>Story</code> to the story with the
+	 * specified SID using the ESClient.
+	 * 
+	 * @param	SID	the ID of the <code>Story</code> to load
+	 */
 	public void getStory(int SID) {
 		StoryApplication.setCurrentStory(es.getStory(SID));
 	}
 
+	/**
+	 * Saves the current application <code>Story</code> to local storage after
+	 * checking for and resolving SID conflicts.
+	 */
 	public void saveStory() {
 		checkSIDConflict(StoryApplication.getCurrentStory().getStoryInfo()
 				.getSID());
 		io.saveStory(StoryApplication.getCurrentStory());
 	}
 
+	/**
+	 * Returns an <code>ArrayList</code> of <code>StoryInfo</code> from the
+	 * server using the ESClient.
+	 * 
+	 * @return	the <code>ArrayList</code> of <code>StoryInfo</code> from the
+	 * 			server
+	 */
 	public ArrayList<StoryInfo> getStoryList() {
 		return es.getStoryInfoList();
 	}

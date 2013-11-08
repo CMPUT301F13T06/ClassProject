@@ -17,17 +17,38 @@
 
 package story.book;
 
+/**
+ * Controller for accessing the current story and starting fragment for 
+ * reading and adding annotations.
+ * 
+ * @author Alexander Cheung
+ *
+ */
 public class StoryReadController {
 	private Story story;
 	
+	/**
+	 * Initializes the story to the current application story
+	 */
 	public StoryReadController() {
 		story = StoryApplication.getCurrentStory();
 	}
 	
+	/**
+	 * 
+	 * @return returns the fragment ID of the starting fragment
+	 */
 	public StoryFragment getStartingFragment() {
 		return story.getStoryFragments().get(story.getStoryInfo().getStartingFragmentID());
 	}
 	
+	/**
+	 * Gets the <code>StoryFragment</code> with the specified fragment ID from
+	 * the current application story.
+	 *  
+	 * @param 	storyFragmentID	the ID of the fragment to get
+	 * @return	the <code>StoryFragment</code> with the specified ID
+	 */
 	public StoryFragment getStoryFragment(int storyFragmentID) {
 		return story.getStoryFragments().get(storyFragmentID);
 	}
