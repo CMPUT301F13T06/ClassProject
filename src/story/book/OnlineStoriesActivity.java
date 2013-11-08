@@ -5,22 +5,19 @@ import java.util.ArrayList;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.view.ContextMenu;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.support.v4.app.NavUtils;
 
 /**
- * An activity that displays the stories stored on the device
+ * Activity that allows the user to view stories from an available list of 
+ * stories online and download them to their local stories list.
+ * It uses a controller called OnlineStoryController.
  * 
  * @author Nancy Pham-Nguyen
  * @author Anthony Ou
@@ -74,6 +71,7 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
     public boolean onContextItemSelected(MenuItem item) {
 	onlineController.getStory(adapter.getItem(position).getSID());
 	Intent intent = new Intent(this, StoryInfoActivity.class);
+	intent.putExtra("calledByOnline", true);
 	startActivity(intent);
 	return true;
     }

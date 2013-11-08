@@ -2,11 +2,6 @@ package story.book;
 
 
 import android.os.Bundle;
-
-import android.os.Build;
-import android.os.Bundle;
-import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,7 +10,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+
+/**
+ * Activity that serves as the main menu where the user can 
+ * navigate to a list of their local stories or to a list of online stories.
+ * Every view is able to navigate back to this Dashboard.
+ * 
+ * @author Nancy Pham-Nguyen
+ * @author Vina Nguyen
+ */
 
 public class Dashboard extends Activity {
 
@@ -37,6 +40,7 @@ public class Dashboard extends Activity {
 		Button localButton = (Button) findViewById(R.id.local_stories);
 		localButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				//Navigate to the Local Stories
 				startActivity(localIntent);
 			}
 		});
@@ -44,6 +48,7 @@ public class Dashboard extends Activity {
 		Button onlineButton = (Button) findViewById(R.id.online_stories);
 		onlineButton.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {
+		    	//Navigate to the Online Stories
 				startActivity(onlineIntent);
 			}
 		});
@@ -63,6 +68,10 @@ public class Dashboard extends Activity {
 	return true;
     }
     
+    /**
+     * Method where the user can set their nickname. If 
+     * they do not enter anything, set the name to "Anonymous"
+     */
     private void setNickname() {
 		String name = enterName.getText().toString();
 		if (name == "") {
@@ -77,6 +86,10 @@ public class Dashboard extends Activity {
     	StoryApplication.setNickname(name);
     }
     
+    /**
+     * Displays the nickname of the user whether it is the one
+     * they entered or "Anonymous"
+     */
     private void displayNickname() {
     	SharedPreferences settings = getPreferences(MODE_PRIVATE);
     	String name = settings.getString("Nickname", defaultName );
