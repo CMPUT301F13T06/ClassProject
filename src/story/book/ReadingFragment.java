@@ -73,7 +73,7 @@ public class ReadingFragment extends Fragment {
 	 * 		- text color (black)
 	 * 		- padding on the left side
 	 * 
-	 * @param v
+	 * @param View		illustrations displayed as Views
 	 */
 	private void formatView(ArrayList<View> v) {
 		Iterator<View> viewIterator = v.iterator();
@@ -92,9 +92,9 @@ public class ReadingFragment extends Fragment {
 	 * 
 	 * This returns method an array list of buttons.
 	 * 
-	 * @param db
-	 * @param c
-	 * @return ArrayList<Button>
+	 * @param DecisionBranch 	the decision branches associated with the fragment
+	 * @param Context 	the context where the button will be displayed
+	 * @return an custom ArrayList<Button> corresponding to the decision branches in a fragment
 	 */
 	private ArrayList<Button> formatButton(ArrayList<DecisionBranch> db, Context c) {
 
@@ -121,6 +121,8 @@ public class ReadingFragment extends Fragment {
 	 * fragment and formatting them by calling <code>formatView</code>
 	 * and <code>formatButton</code> respectively.
 	 * 
+	 * @param StoryFragment 	StoryFragment object
+	 * @param View	 where illustrations will be displayed
 	 */
 	private void displayFragment(StoryFragment SF, View rootView) {
 

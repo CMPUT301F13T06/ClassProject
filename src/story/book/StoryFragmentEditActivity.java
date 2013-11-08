@@ -104,7 +104,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		actionBar = getActionBar();
 		actionBar.setTitle(title);
 
-		//SF.addView(this);
+		SF.addView(this);
 		illustrationViews = new ArrayList<View>();
 		loadFragmentContents();
 
@@ -119,10 +119,8 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	@Override
 	public void onPause() {
 		super.onPause();
-		Log.d(String.valueOf(illustrations.size()), "# of illustrations");
 		saveFragment();
-		//FCC.saveStory();
-		Log.d(String.valueOf(illustrations.size()), "# of illustrations");
+		FCC.saveStory();
 	}
 
 	@Override
@@ -245,6 +243,8 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * fragment with <code>loadFragmentContents()</code> and formatting them 
 	 * by calling <code>formatView</code> and <code>formatButton</code> respectively.
 	 * 
+	 * Used for updating all views in the activity.
+	 * 
 	 * http://stackoverflow.com/questions/6583019/dynamic-textview-in-relative-layout
 	 * http://stackoverflow.com/questions/3995215/add-and-remove-views-in-android-dynamically
 	 * 
@@ -363,8 +363,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * 		- text color (black)
 	 * 		- padding on the left side
 	 * 
-	 * @param v
-	 * 
+	 * @param View		illustrations displayed as Views
 	 */
 	private void formatView(ArrayList<View> v) {
 		Iterator<View> viewIterator = v.iterator();
@@ -383,9 +382,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * 
 	 * This returns method an array list of buttons.
 	 * 
-	 * @param db
-	 * @param c
-	 * @return ArrayList<Button>
+	 * @param DecisionBranch 	the decision branches associated with the fragment
+	 * @param Context 	the context where the button will be displayed
+	 * @return an custom ArrayList<Button> corresponding to the decision branches in a fragment
 	 */
 	private ArrayList<Button> formatButton(ArrayList<DecisionBranch> db, Context c) {
 
