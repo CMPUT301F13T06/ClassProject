@@ -1,6 +1,6 @@
 AUTHORS
 ========
-Alex Cheung, Jessica Surya, Vina Nguyen, Anthony Ou, Nancy Pham-Nguyen 
+Alexander Cheung, Jessica Surya, Vina Nguyen, Anthony Ou, Nancy Pham-Nguyen 
  
 LICENSE
 =======
