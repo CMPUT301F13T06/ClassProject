@@ -2,11 +2,13 @@ package story.book.test;
 
 import org.junit.Test;
 
-import android.test.ActivityInstrumentationTestCase2;
 import story.book.Dashboard;
 import story.book.DecisionBranch;
+import story.book.Story;
 import story.book.StoryFragment;
+import story.book.StoryInfo;
 import story.book.TextIllustration;
+import android.test.ActivityInstrumentationTestCase2;
 
 public class StoryFragmentTest extends ActivityInstrumentationTestCase2
 		<story.book.Dashboard> {
@@ -14,6 +16,8 @@ public class StoryFragmentTest extends ActivityInstrumentationTestCase2
 	private StoryFragment storyFragment1;
 	private StoryFragment storyFragment2;
 	private StoryFragment storyFragment3;
+	
+	private Story story;
 	
 	public StoryFragmentTest() {
 		super(Dashboard.class);
@@ -24,6 +28,11 @@ public class StoryFragmentTest extends ActivityInstrumentationTestCase2
 		storyFragment1 = new StoryFragment("Test Fragment 1");
 		storyFragment2 = new StoryFragment("Test Fragment 2");
 		storyFragment3 = new StoryFragment("Test Fragment 3");
+		
+		story = new Story(new StoryInfo());
+		story.addFragment(storyFragment1);
+		story.addFragment(storyFragment2);
+		story.addFragment(storyFragment3);
 	}
 	
 	@Test
