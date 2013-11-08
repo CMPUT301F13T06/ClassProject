@@ -18,7 +18,6 @@ public class TextIllustrationTest extends ActivityInstrumentationTestCase2
 	
 	@Test
 	public void testCreation() {
-		textIllustration = new TextIllustration("Test illustration String");
 		assertNotNull(textIllustration);
 	}
 	
