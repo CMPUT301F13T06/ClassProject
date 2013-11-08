@@ -39,7 +39,6 @@ public class Story extends StoryModel<StoryView> {
 	
 	private HashMap<Integer, StoryFragment> fragmentList;
 	private StoryInfo storyInfo;
-	private ArrayList<Integer> fragmentIDs;
 	private Integer nextFragmentID;
 	
 	/**
@@ -53,7 +52,6 @@ public class Story extends StoryModel<StoryView> {
 		super();
 		this.storyInfo = storyInfo;
 		this.fragmentList = new HashMap<Integer, StoryFragment>();
-		this.fragmentIDs = new ArrayList<Integer>();
 		this.nextFragmentID = 0;
 	}
 	
@@ -145,5 +143,20 @@ public class Story extends StoryModel<StoryView> {
 		Iterator<StoryFragment> fragmentIterator = fragmentList.values().iterator();
 		while(fragmentIterator.hasNext())
 			fragmentIterator.next().removeBranchWithFragment(storyFragmentID);
+	}
+	
+	/**
+	 * Copies everything except inherited view list from StoryModel.
+	 * This is to recover from serialization as the view list cannot be
+	 * serialized.
+	 * 
+	 * @return a new Story object
+	 */
+	public Story copy() {
+		Story copy = new Story(this.getStoryInfo());
+		copy.fragmentList = this.fragmentList;
+		copy.nextFragmentID = this.nextFragmentID;
+		
+		return copy;
 	}
 }

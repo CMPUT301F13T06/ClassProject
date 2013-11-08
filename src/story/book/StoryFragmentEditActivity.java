@@ -111,9 +111,10 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
-		displayFragment();
+	public void onDestroy() {
+		super.onDestroy();
+		if (SF != null)
+			SF.deleteView(this);
 	}
 
 	@Override

@@ -22,6 +22,7 @@ import java.util.HashMap;
 
 import story.book.StoryInfo.PublishState;
 import story.book.dataclient.ESClient;
+import story.book.dataclient.IOClient;
 
 /**
  * Controller responsible for creating and editing instances of Story for the
@@ -34,11 +35,11 @@ public class StoryCreationController extends LocalEditingController {
 	
 	private Story story;
 	private ESClient es;
+	private IOClient io;
 	
 	public StoryCreationController() {
 		super();
 		this.story = StoryApplication.getCurrentStory();
-		es = StoryApplication.getESClient();
 	}
 	
 	/** 
@@ -110,6 +111,9 @@ public class StoryCreationController extends LocalEditingController {
 	 * Publishes the Story with the specified SID to the server.
 	 */
 	public void publishStory() {
+		es = StoryApplication.getESClient();
+		io = StoryApplication.getIOClient();
+		
 		Story story = StoryApplication.getCurrentStory();
 		StoryInfo storyInfo = story.getStoryInfo();
 		if (storyInfo.getPublishState() == PublishState.UNPUBLISHED) {
@@ -118,6 +122,7 @@ public class StoryCreationController extends LocalEditingController {
 		}
 		storyInfo.setPublishState(PublishState.PUBLISHED);
 		storyInfo.setPublishDate(new Date());
+		StoryApplication.setCurrentStory(story);
 		
 		saveStory();
 		
@@ -144,6 +149,9 @@ public class StoryCreationController extends LocalEditingController {
 			// Change the current Story's SID to the new SID supplied by the
 			// ESClient.
 			StoryApplication.getCurrentStory().getStoryInfo().setSID(id);
+			
+			//Removes the old one
+			io.deleteStory(SID);
 		}
 	}
 
