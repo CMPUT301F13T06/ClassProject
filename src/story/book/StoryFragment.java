@@ -20,6 +20,8 @@ package story.book;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import android.view.View;
+
 /**
  * Model class for representing fragments of a story which extends the abstract
  * class <code>StoryModel</code>. A <code>StoryFragment</code> contains a 
@@ -181,4 +183,22 @@ public class StoryFragment extends StoryModel<StoryView> {
 		this.fragmentID = ID;
 	}
 	
+	/** 
+	 * Clears all the illustrations.
+	 */
+	public void removeAllIllustrations() {
+		this.illustrations = new ArrayList<Illustration>();
+	}
+
+	/** 
+	 * Sets all the illustrations.
+	 * 
+	 * @param currentView
+	 */
+	public void setAllIllustrations(ArrayList<Illustration> currentView) {
+		// TODO Auto-generated method stub
+		this.illustrations = currentView;
+		notifyViews();
+		
+	}
 }

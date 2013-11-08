@@ -41,6 +41,7 @@ import android.widget.TextView;
  * option from the context menu. 
  * 
  * @author Jessica Surya
+ * @author Vina Nguyen
  *
  */
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -90,7 +91,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		actionBar = getActionBar();
 		actionBar.setTitle(title);
 
-		SF.addView(this);
+		//SF.addView(this);
 		illustrationViews = new ArrayList<View>();
 		loadFragmentContents();
 
@@ -99,22 +100,20 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	@Override
 	public void onStart() {
 		super.onStart();
-
 		displayFragment();
 	}
 
 	@Override
-	public void onPause(){
+	public void onPause() {
 		super.onPause();
 		Log.d(String.valueOf(illustrations.size()), "# of illustrations");
 		saveFragment();
 		//FCC.saveStory();
-		loadFragmentContents();
 		Log.d(String.valueOf(illustrations.size()), "# of illustrations");
 	}
 
 	@Override
-	public void onResume(){
+	public void onResume() {
 		super.onResume();
 		displayFragment();
 	}
@@ -186,38 +185,22 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * saveFragment() saves the current state and layout of the fragment
 	 */
 	public void saveFragment() {
-
-		Log.d(String.valueOf(illustrationViews.size()), "DEBUG number of views 1");
-		for (int i = 0; i < illustrationViews.size(); ++i) {
-			Log.d(String.valueOf(illustrationViews.size()), "DEBUG number of views 2");
-			Log.d(String.valueOf(i), "DEBUG view #");
-			if (i <= illustrations.size()) {
-				Illustration ill = illustrations.get(i);
-				String illString = ((EditText) illustrationViews.get(i)).getText().toString();
+		
+		ArrayList<Illustration> currentView = new ArrayList<Illustration>();
+		int top = illustrationViews.size();
+		for (int i = 0; i < top; i++) {
+			String illString = ((EditText) illustrationViews.get(i)).getText().toString();
+			if (illString.length() > 0) {
 				Log.d(illString, "DEBUG Contents of illustration");
-				if (illString.equals("")) {
-					// Existing illustration which had its contents removed
-					FCC.removeTextIllustration((TextIllustration) ill);
-				}
-				else {
-					// Existing illustration which has contents
-					FCC.removeTextIllustration((TextIllustration) ill);
-					FCC.addTextIllustration(illString);
-				}
+				currentView.add(new TextIllustration(illString));
 			}
 			else {
-				// New illustrations to be saved
-				String illString = ((EditText) illustrationViews.get(i)).getText().toString();
-				Log.d(illString, "DEBUG Contents of illustration");
-				if (illString.equals("")) {
-					// Empty EditText view
-				}
-				else {
-					// Create a new illustration
-					FCC.addTextIllustration(illString.toString());
-				}
+				illustrationViews.remove(i);
 			}
 		}
+
+		FCC.removeAllIllustrations();
+		FCC.setAllIllustrations(currentView);
 	}
 
 	@Override
@@ -225,6 +208,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		//display fragment contents
 		SF = SFL.get(FID);
 		loadFragmentContents();
+		displayFragment();
 	}
 
 	/**
@@ -236,7 +220,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		decisions = SF.getDecisionBranches();
 
 		illustrationViews = new ArrayList<View>();
-		for (Illustration i : illustrations){
+		for (Illustration i : illustrations) {
 			illustrationViews.add(((TextIllustration)i).getEditView());
 		}
 
@@ -260,7 +244,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			for (View t: illustrationViews){
 				t.setId(position + 1);
 				RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
-						WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
+						MATCH_PARENT,LayoutParams.WRAP_CONTENT); 
 				p.addRule(RelativeLayout.BELOW, position);
 				t.setLayoutParams(p);
 				registerForContextMenu(t);
@@ -321,14 +305,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 		case 1:
 			//Delete illustration
-			saveFragment();
-			displayFragment();
-			View v = illustrationViews.get(itemPos);
-			index = illustrationViews.indexOf(v);
-			Illustration i = illustrations.get(index);
-
-			FCC.removeTextIllustration((TextIllustration) i);
-
+			illustrationViews.remove(itemPos);
 			displayFragment();
 
 			break;
@@ -380,7 +357,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			x = (EditText) viewIterator.next();
 			x.setTextSize(20);
 			x.setTextColor(Color.BLACK);
-			x.setPaddingRelative(5, 0, 0, 10);
+			x.setPaddingRelative(7, 0, 0, 10);
 		}
 	}
 

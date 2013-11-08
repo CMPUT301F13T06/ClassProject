@@ -17,6 +17,8 @@
 
 package story.book;
 
+import java.util.ArrayList;
+
 /**
  * Controller responsible for adding and removing <code>Illustration</code>
  * objects of a <code>StoryFragment</code> object for the 
@@ -62,6 +64,24 @@ public class FragmentCreationController extends LocalEditingController {
 	 */
 	public void removeTextIllustration(TextIllustration textIllustration) {
 		storyFragment.removeIllustration(textIllustration);
+	}
+	
+	/**
+	 * Removes all the <code>Illustration</code> from the story
+	 * fragment.
+	 */
+	public void removeAllIllustrations() {
+		storyFragment.removeAllIllustrations();
+	}
+	
+	/**
+	 * Sets all the specified <code>Illustration</code> from the story
+	 * fragment.
+	 * 
+	 * @param 	textIllustration array to add
+	 */
+	public void setAllIllustrations(ArrayList<Illustration> illustrations) {
+		storyFragment.setAllIllustrations(illustrations);
 	}
 	
 }
