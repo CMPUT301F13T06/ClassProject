@@ -58,7 +58,6 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	int itemPos;
 	int FID;
 
-	//storyFragment passed as intent from FragmentList
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -90,7 +89,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		SF.addView(this);
 		illustrationViews = new ArrayList<View>();
 		loadFragmentContents();
-		
+
 	}
 
 	@Override
@@ -103,7 +102,10 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	@Override
 	public void onPause(){
 		super.onPause();
-		FCC.saveStory();
+		Log.d(String.valueOf(illustrations.size()), "# of illustrations");
+		saveFragment();
+		//FCC.saveStory();
+		Log.d(String.valueOf(illustrations.size()), "# of illustrations");
 	}
 
 	@Override
@@ -168,59 +170,35 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 */
 	private void addNewTextIllustration(View v) {
 		// TODO Auto-generated method stub
-		Log.d(String.valueOf(illustrationViews.size()), "Number of illustrations");
 		EditText newText = new EditText(v.getContext());
 		newText.setHint("Enter text here");
 		illustrationViews.add(newText);
-		Log.d(String.valueOf(illustrationViews.size()), "Number of illustrations");
 		displayFragment();
 	}
 
-	/**
-	 * formatView() (FOR TEXTVIEWS ONLY) formats illustration textViews in an array list
-	 * by changing:
-	 * 		- text size (20)
-	 * 		- text color (black)
-	 * 		- padding on the left side
-	 * 
-	 * @param v
-	 * 
-	 */
-	private void formatView(ArrayList<View> v) {
-		Iterator<View> viewIterator = v.iterator();
-		EditText x = null;
-		while(viewIterator.hasNext()) {
-			x = (EditText) viewIterator.next();
-			x.setTextSize(20);
-			x.setTextColor(Color.BLACK);
-			x.setPaddingRelative(5, 0, 0, 10);
+	public void saveFragment() {
+
+		int index = 0;
+		for (View t: illustrationViews){
+			index = illustrationViews.indexOf(t);
+
+			if (index < illustrations.size()) {
+				Illustration i = illustrations.get(index);
+				if (t.toString() == null) {
+					FCC.removeTextIllustration((TextIllustration) i);
+				}
+				else {
+					FCC.removeTextIllustration((TextIllustration) i);
+					FCC.addTextIllustration(t.toString());
+				}
+
+			}
+			
+			else {
+				FCC.addTextIllustration(t.toString());
+			}
 		}
-	}
-
-	/**
-	 * formatButton() creates a button with the corresponding decision branch text
-	 * for each decision branch in an array list of decision branches.
-	 * 
-	 * This returns method an array list of buttons.
-	 * 
-	 * @param db
-	 * @param c
-	 * @return ArrayList<Button>
-	 */
-	private ArrayList<Button> formatButton(ArrayList<DecisionBranch> db, Context c) {
-
-		buttonList = new ArrayList<Button>();
-
-		Iterator<DecisionBranch> dbIterator = db.iterator();
-		DecisionBranch d = null;
-		Button button;
-		while(dbIterator.hasNext()) {
-			d = dbIterator.next();
-			button = new Button(c);
-			button.setText(d.getDecisionText());
-			buttonList.add(button);
-		}
-		return buttonList;
+		
 	}
 
 	@Override
@@ -230,7 +208,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		SF = SFL.get(FID);
 		loadFragmentContents();
 	}
-	
+
 	private void loadFragmentContents() {
 
 		illustrations = SF.getIllustrations();
@@ -251,12 +229,12 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * 
 	 */
 	private void displayFragment() {
-		
+
 		RelativeLayout layout = (RelativeLayout) findViewById(R.id.reading_fragment);
 		((ViewGroup) layout).removeAllViews();
-		
+
 		int position = 0;
-		
+
 		formatView(illustrationViews);
 		for (View t: illustrationViews){
 			t.setId(position + 1);
@@ -311,6 +289,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		}
 	}
 
+
 	@Override  
 	public boolean onContextItemSelected(MenuItem item) {
 		int index; 
@@ -333,7 +312,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			DecisionBranch branch = decisions.get(index);
 			DBCC.removeDecisionBranch(branch);
 			displayFragment();
-			
+
 			break;
 
 		case 3:
@@ -348,5 +327,52 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 		return true; 
 
+	}
+
+	/**
+	 * formatView() (FOR TEXTVIEWS ONLY) formats illustration textViews in an array list
+	 * by changing:
+	 * 		- text size (20)
+	 * 		- text color (black)
+	 * 		- padding on the left side
+	 * 
+	 * @param v
+	 * 
+	 */
+	private void formatView(ArrayList<View> v) {
+		Iterator<View> viewIterator = v.iterator();
+		EditText x = null;
+		while(viewIterator.hasNext()) {
+			x = (EditText) viewIterator.next();
+			x.setTextSize(20);
+			x.setTextColor(Color.BLACK);
+			x.setPaddingRelative(5, 0, 0, 10);
+		}
+	}
+
+	/**
+	 * formatButton() creates a button with the corresponding decision branch text
+	 * for each decision branch in an array list of decision branches.
+	 * 
+	 * This returns method an array list of buttons.
+	 * 
+	 * @param db
+	 * @param c
+	 * @return ArrayList<Button>
+	 */
+	private ArrayList<Button> formatButton(ArrayList<DecisionBranch> db, Context c) {
+
+		buttonList = new ArrayList<Button>();
+
+		Iterator<DecisionBranch> dbIterator = db.iterator();
+		DecisionBranch d = null;
+		Button button;
+		while(dbIterator.hasNext()) {
+			d = dbIterator.next();
+			button = new Button(c);
+			button.setText(d.getDecisionText());
+			buttonList.add(button);
+		}
+		return buttonList;
 	}
 }
