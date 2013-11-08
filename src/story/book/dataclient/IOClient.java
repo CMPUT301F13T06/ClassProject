@@ -106,7 +106,9 @@ public class IOClient extends DataClient {
 	    Log.d(file, "List Of Files");
 	    Story s = getStory(Integer.valueOf(file).intValue());
 	    if (s != null)
-		listOfStoryInfo.add(s.getStoryInfo());
+	    	listOfStoryInfo.add(s.getStoryInfo());
+	    else
+	    	deleteStory(Integer.valueOf(file));
 	}
 	return listOfStoryInfo;
     }

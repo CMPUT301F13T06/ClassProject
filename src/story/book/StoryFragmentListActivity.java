@@ -75,8 +75,8 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 	}
 	
 	@Override
-	protected void onPause() {
-		super.onPause();
+	public void onStop() {
+		super.onStop();
 		
 		SCC.saveStory();
 	}
