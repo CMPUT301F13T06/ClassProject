@@ -68,7 +68,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 		SF = SFL.get(FID);
 
-		FCC = new FragmentCreationController(SF);
+		FCC = new FragmentCreationController(FID);
 		String title = SF.getFragmentTitle();
 
 		actionBar = getActionBar();
