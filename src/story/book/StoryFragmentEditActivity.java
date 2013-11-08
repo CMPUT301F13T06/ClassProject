@@ -34,7 +34,10 @@ import android.widget.TextView;
 /**
  * StoryFragmentEditActivity is the interface users can make changes
  * to illustrations contained in the story fragment which is currently
- * open. All text illustrations displayed as dynamically editable EditTexts.
+ * open. All text illustrations displayed dynamically as EditTexts.
+ * All decision branches are displayed as buttons. Remove illustrations
+ * or branches by long pressing and selecting the corresponding
+ * option from the context menu. 
  * 
  * @author Jessica Surya
  *
@@ -105,13 +108,14 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		Log.d(String.valueOf(illustrations.size()), "# of illustrations");
 		saveFragment();
 		//FCC.saveStory();
+		loadFragmentContents();
 		Log.d(String.valueOf(illustrations.size()), "# of illustrations");
 	}
 
 	@Override
 	public void onResume(){
 		super.onResume();
-
+		displayFragment();
 	}
 
 	@Override
@@ -130,7 +134,6 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		case R.id.text:
 			// TODO: Pass illustration to fragment for editing
 			addNewTextIllustration(this.findViewById(R.id.reading_fragment));
-
 			return true;
 
 		case R.id.take_photo:
@@ -176,29 +179,42 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		displayFragment();
 	}
 
+	/**
+	 * saveFragment() saves the current state and layout of the fragment
+	 */
 	public void saveFragment() {
 
-		int index = 0;
-		for (View t: illustrationViews){
-			index = illustrationViews.indexOf(t);
-
-			if (index < illustrations.size()) {
-				Illustration i = illustrations.get(index);
-				if (t.toString() == null) {
-					FCC.removeTextIllustration((TextIllustration) i);
+		Log.d(String.valueOf(illustrationViews.size()), "DEBUG number of views 1");
+		for (int i = 0; i < illustrationViews.size(); ++i) {
+			Log.d(String.valueOf(illustrationViews.size()), "DEBUG number of views 2");
+			Log.d(String.valueOf(i), "DEBUG view #");
+			if (i <= illustrations.size()) {
+				Illustration ill = illustrations.get(i);
+				String illString = ((EditText) illustrationViews.get(i)).getText().toString();
+				Log.d(illString, "DEBUG Contents of illustration");
+				if (illString.equals("")) {
+					// Existing illustration which had its contents removed
+					FCC.removeTextIllustration((TextIllustration) ill);
 				}
 				else {
-					FCC.removeTextIllustration((TextIllustration) i);
-					FCC.addTextIllustration(t.toString());
+					// Existing illustration which has contents
+					FCC.removeTextIllustration((TextIllustration) ill);
+					FCC.addTextIllustration(illString);
 				}
-
 			}
-			
 			else {
-				FCC.addTextIllustration(t.toString());
+				// New illustrations to be saved
+				String illString = ((EditText) illustrationViews.get(i)).getText().toString();
+				Log.d(illString, "DEBUG Contents of illustration");
+				if (illString.equals("")) {
+					// Empty EditText view
+				}
+				else {
+					// Create a new illustration
+					FCC.addTextIllustration(illString.toString());
+				}
 			}
 		}
-		
 	}
 
 	@Override
@@ -209,6 +225,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		loadFragmentContents();
 	}
 
+	/**
+	 * loadFragmentContents() loads illustration views from a saved story fragment
+	 */
 	private void loadFragmentContents() {
 
 		illustrations = SF.getIllustrations();
@@ -224,48 +243,51 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	/**
 	 * displayFragments() displays all text illustrations as views 
 	 * and decision branches as buttons by getting them from the containing 
-	 * fragment and formatting them by calling <code>formatView</code>
-	 * and <code>formatButton</code> respectively.
+	 * fragment with <code>loadFragmentContents()</code> and formatting them 
+	 * by calling <code>formatView</code> and <code>formatButton</code> respectively.
 	 * 
 	 */
 	private void displayFragment() {
 
 		RelativeLayout layout = (RelativeLayout) findViewById(R.id.reading_fragment);
 		((ViewGroup) layout).removeAllViews();
-
 		int position = 0;
-
-		formatView(illustrationViews);
-		for (View t: illustrationViews){
-			t.setId(position + 1);
-			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
-					WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
-			p.addRule(RelativeLayout.BELOW, position);
-			t.setLayoutParams(p);
-			registerForContextMenu(t);
-			((ViewGroup) layout).addView(t, p);
-			position++;
+		if (illustrationViews.isEmpty() == false ){
+			// Display illustrations
+			formatView(illustrationViews);
+			for (View t: illustrationViews){
+				t.setId(position + 1);
+				RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
+						WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
+				p.addRule(RelativeLayout.BELOW, position);
+				t.setLayoutParams(p);
+				registerForContextMenu(t);
+				((ViewGroup) layout).addView(t, p);
+				position++;
+			}
 		}
 
+		if (decisions.isEmpty() == false) {
+			int buttonIndex = 0;
+			// Display buttons
+			buttons = formatButton(decisions, this);
+			for (Button dbButton : buttons) {
+				dbButton.setId(position + 1);
+				buttonIndex++;
+				RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
+						LayoutParams.WRAP_CONTENT);
+				if (buttonIndex == 1) {
+					lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+				}
+				else {
+					lp.addRule(RelativeLayout.ABOVE, position);
+				}
 
-		int buttonIndex = 0;
-		buttons = formatButton(decisions, this);
-		for (Button dbButton : buttons) {
-			dbButton.setId(position + 1);
-			buttonIndex++;
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
-					LayoutParams.WRAP_CONTENT);
-			if (buttonIndex == 1) {
-				lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+				dbButton.setLayoutParams(lp);
+				registerForContextMenu(dbButton);
+				((ViewGroup) layout).addView(dbButton, lp);
+				position++;
 			}
-			else {
-				lp.addRule(RelativeLayout.ABOVE, position);
-			}
-
-			dbButton.setLayoutParams(lp);
-			registerForContextMenu(dbButton);
-			((ViewGroup) layout).addView(dbButton, lp);
-			position++;
 		}
 	}
 
@@ -297,17 +319,22 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 		case 1:
 			//Delete illustration
+			saveFragment();
+			displayFragment();
 			View v = illustrationViews.get(itemPos);
 			index = illustrationViews.indexOf(v);
 			Illustration i = illustrations.get(index);
+
 			FCC.removeTextIllustration((TextIllustration) i);
+
 			displayFragment();
 
 			break;
 
 		case 2:
 			// Delete decision branch
-			Button b = buttonList.get(itemPos);
+
+			Button b = buttonList.get(itemPos-illustrationViews.size());
 			index =  buttonList.indexOf(b);
 			DecisionBranch branch = decisions.get(index);
 			DBCC.removeDecisionBranch(branch);
