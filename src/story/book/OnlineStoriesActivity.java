@@ -14,13 +14,15 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.support.v4.app.NavUtils;
 
 /**
- * An activity that displays the stories stored on the device
+ * Activity that displays available stories that can be viewed or 
+ * downloaded from the Internet. 
+ * This activity has a controller called OnlineStoryController.
+ * 
  * 
  * @author Nancy Pham-Nguyen
  * @author Anthony Ou
@@ -96,12 +98,6 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 		switch (item.getItemId()) {
 		case R.id.read_story:
 			readStory(info.id);
-			return true;
-		case R.id.edit_story:
-			// editStory(info.id);
-			return true;
-		case R.id.delete_story:
-			//	deleteStory(info.id);
 			return true;
 		default:
 			return true;
