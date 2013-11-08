@@ -19,7 +19,7 @@ package story.book;
 
 /**
  * Controller responsible for adding and removing <code>DecisionBranch</code>
- * objects to a <code>StoryFragment</code> for the 
+ * objects to a <code>StoryFragment</code>.
  * <code>DecisionBranchListActivity</code>.
  * 
  * @author 	Alexander Cheung
@@ -31,15 +31,34 @@ public class DecisionBranchCreationController extends LocalEditingController {
 	
 	private StoryFragment storyFragment;
 	
-	public DecisionBranchCreationController(StoryFragment storyFragment) {
+	/**
+	 * Initializes the story fragment to the story fragment with the specified
+	 * ID.
+	 * 
+	 * @param 	storyFragmentID	the ID of the story fragment
+	 */
+	public DecisionBranchCreationController(int storyFragmentID) {
 		super();
-		this.storyFragment = storyFragment;
+		this.storyFragment = StoryApplication.getCurrentStory()
+				.getStoryFragments().get(storyFragmentID);
 	}
 	
+	/**
+	 * Adds the specified <code>DecisionBranch</code> object to the story
+	 * fragment.
+	 * 
+	 * @param 	decisionBranch	the <code>DecisionBranch</code> to add
+	 */
 	public void addDecisionBranch(DecisionBranch decisionBranch) {
 		storyFragment.addDecisionBranch(decisionBranch);
 	}
 	
+	/**
+	 * Removes the specified <code>DecisionBranch</code> from the story 
+	 * fragment.
+	 * 
+	 * @param decisionBranch
+	 */
 	public void removeDecisionBranch(DecisionBranch decisionBranch) {
 		storyFragment.removeDecisionBranch(decisionBranch);
 	}
