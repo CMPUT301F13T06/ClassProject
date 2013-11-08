@@ -62,7 +62,7 @@ public class StoryInfoActivity extends Activity  {
 		});
 		
 		//TODO
-		Boolean showDownload = true;//savedInstanceState.getBoolean("calledByOnline");
+		Boolean showDownload = getIntent().hasExtra("calledByOnline");
 		if (showDownload) {
 			Button downloadButton = (Button) findViewById(R.id.download);
 			final Intent intent2 = new Intent(this, StoryFragmentReadActivity.class);
