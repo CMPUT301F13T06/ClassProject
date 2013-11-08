@@ -177,7 +177,8 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 			}
 			return true;
 		case R.id.change_info:
-
+			Intent intent2 = new Intent(this, EditStoryInformationActivity.class);
+			startActivity(intent2);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
