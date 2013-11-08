@@ -115,7 +115,6 @@ ActivityInstrumentationTestCase2<story.book.Dashboard> {
 		for (int i = 0; i < sample_story.size(); i++) {
 			for (int j = 0; j < list.size(); j++) {
 				if (list.get(j).getSID() == sample_story.get(i).getStoryInfo().getSID()) {
-				    	Log.d("are you running", "are you running?");
 					checkStoryInfo(list.get(j), sample_story.get(i).getStoryInfo());
 					break;
 				}

@@ -202,7 +202,6 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		for (int i = 0; i < top; i++) {
 			String illString = ((EditText) illustrationViews.get(i)).getText().toString();
 			if (illString.length() > 0) {
-				Log.d(illString, "DEBUG Contents of illustration");
 				currentView.add(new TextIllustration(illString));
 			}
 			else {

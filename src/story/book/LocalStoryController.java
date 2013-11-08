@@ -67,10 +67,8 @@ public class LocalStoryController implements StoryController {
 		StoryInfo info = new StoryInfo();
 		info.setAuthor(StoryApplication.getNickname());
 		info.setSID(io.getSID());
-		Log.d(String.valueOf(info.getSID()), "Story created");
 		Story s = new Story(info);
 		StoryApplication.setCurrentStory(s);
-		Log.d(String.valueOf(String.valueOf( StoryApplication.getCurrentStory().getStoryInfo().getSID())), "Story created");
 	}
 
 	/**
