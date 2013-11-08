@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -32,7 +33,7 @@ import android.widget.TextView;
  * @author Jessica Surya
  *
  */
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN) 
+@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1) 
 public class ReadingFragment extends Fragment {
 	StoryReadController SRC;
 	StoryFragment SF;
@@ -45,12 +46,13 @@ public class ReadingFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.reading_fragment, container, false);
+		
 		SRC = new StoryReadController();
 		SF = SRC.getStartingFragment();
 		displayFragment(SF, rootView);
 		return rootView;
 	}
-	
+
 	/**
 	 * formatView() (FOR TEXTVIEWS ONLY) formats illustration textViews in an array list
 	 * by changing:
@@ -67,10 +69,10 @@ public class ReadingFragment extends Fragment {
 			x = (TextView) viewIterator.next();
 			x.setTextSize(20);
 			x.setTextColor(Color.BLACK);
-			x.setPaddingRelative(5, 0, 0, 5);
+			x.setPaddingRelative(5, 0, 0, 10);
 		}
 	}
-	
+
 	/**
 	 * formatButton() creates a button with the corresponding decision branch text
 	 * for each decision branch in an array list of decision branches.
@@ -99,7 +101,7 @@ public class ReadingFragment extends Fragment {
 
 		return buttonList;
 	}
-	
+
 	/**
 	 * displayFragment() displays all text illustrations as views 
 	 * and decision branches as buttons by getting them from the containing 
@@ -108,7 +110,7 @@ public class ReadingFragment extends Fragment {
 	 * 
 	 */
 	private void displayFragment(StoryFragment SF, View rootView) {
-		
+
 		illustrations = SF.getIllustrations();
 		decisions = SF.getDecisionBranches();
 
@@ -120,7 +122,7 @@ public class ReadingFragment extends Fragment {
 
 		formatView(illustrationViews);
 		int pos = 0;
-		
+
 		for (View t: illustrationViews){
 			t.setId(pos + 1);
 			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
@@ -130,33 +132,39 @@ public class ReadingFragment extends Fragment {
 			((ViewGroup) rootView).addView(t, p);
 			pos++;
 		}
+
 		
-		int order = 0;
 		buttons = formatButton(decisions, rootView.getContext());
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
-				LayoutParams.WRAP_CONTENT);
-		lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		lp.addRule(RelativeLayout.BELOW, order);
-		
+		int buttonIndex = 0;
 		for (Button dbButton : buttons) {
-			dbButton.setId(order + 1);
+			dbButton.setId(pos + 1);
+			buttonIndex++;
+			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
+					LayoutParams.WRAP_CONTENT);
+			if (buttonIndex == 1) {
+				lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+			}
+			else {
+			lp.addRule(RelativeLayout.ABOVE, pos);
+			}
 			dbButton.setLayoutParams(lp);
 			((ViewGroup) rootView).addView(dbButton, lp);
-			order++;
+			pos++;
 		}
 
 	}
-	
+
 	private View.OnClickListener setListener(final Button b, final int destinationID) {
 		return new View.OnClickListener() {
 			public void onClick(View v) {
 				SF = SRC.getStoryFragment(destinationID);
-					
+				//TODO: set marquee :)
+				((StoryFragmentReadActivity) getActivity()).setActionBarTitle(SF.getFragmentTitle());
 				update();
 			}
 		};
 	}
-	
+
 	public void update() {
 		((ViewGroup) this.getView()).removeAllViews();
 		displayFragment(SF, rootView);
