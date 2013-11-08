@@ -7,22 +7,20 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
  * Activity that allows the user to edit the information of their story or enter
- * information for their newly created story
+ * information for their newly created story.
  * 
  * @author Nancy Pham-Nguyen
+ * @author Vina Nguyen
  * 
  */
 
@@ -82,7 +80,6 @@ public class EditStoryInformationActivity extends Activity  {
 	/**
 	 * Display the information that the the user has entered
 	 */
-	// TODO call onCreate AND onUpdate
 	private void displayStoryInfo() {
 		setTitle(storyInfo.getTitle());
 		
