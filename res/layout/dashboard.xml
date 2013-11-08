@@ -18,7 +18,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="50dp"
-        android:hint="@string/enter_name" />
+        android:ems="10"
+        android:hint="@string/enter_name"
+        android:minWidth="64dp"
+        android:paddingTop="10dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,20 +34,20 @@
             android:id="@+id/start_adventure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="35dp"
+            android:layout_marginBottom="20dp"
             android:gravity="center"
             android:text="@string/start_adventure"
             android:textSize="40sp" />
 
-        
         <Button
             android:id="@+id/online_stories"
             android:layout_width="189dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:layout_weight="0.3"
+            android:layout_marginBottom="25dp"
             android:background="#333333"
+            android:longClickable="false"
             android:text="@string/online_stories"
+            android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="35sp" />
 
@@ -52,13 +55,13 @@
             android:id="@+id/local_stories"
             android:layout_width="192dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginBottom="30dp"
-            android:layout_weight="0.3"
             android:background="#333333"
             android:text="@string/local_stories"
+            android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="35sp" />
+
     </LinearLayout>
 
 </LinearLayout>
