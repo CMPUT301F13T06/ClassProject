@@ -28,7 +28,7 @@ import android.widget.TabHost;
  *
  */
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
-public class StoryFragmentReadActivity extends FragmentActivity implements StoryView<Story> {
+public class StoryFragmentReadActivity extends FragmentActivity {
 	// Declare Tab Variable
 	ActionBar.Tab Tab1, Tab2;
 	Fragment readingTab1;
@@ -53,8 +53,8 @@ public class StoryFragmentReadActivity extends FragmentActivity implements Story
 		readingTab1 = new ReadingFragment();
 		annotationsTab2 = new AnnotationFragment();
 		actionBar = getActionBar();
-		actionBar.setTitle(title);
-
+		setActionBarTitle(title);
+		
 		// Create Actionbar Tabs
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -100,14 +100,12 @@ public class StoryFragmentReadActivity extends FragmentActivity implements Story
 		}
 	}
 
-	@Override
-	public void update(Story model) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public StoryReadController getController() {
 		return SRC;
+	}
+	
+	public void setActionBarTitle(String title) {
+		actionBar.setTitle(title);
 	}
 
 }
