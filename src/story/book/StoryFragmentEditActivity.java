@@ -245,6 +245,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * fragment with <code>loadFragmentContents()</code> and formatting them 
 	 * by calling <code>formatView</code> and <code>formatButton</code> respectively.
 	 * 
+	 * http://stackoverflow.com/questions/6583019/dynamic-textview-in-relative-layout
+	 * http://stackoverflow.com/questions/3995215/add-and-remove-views-in-android-dynamically
+	 * 
 	 */
 	private void displayFragment() {
 
