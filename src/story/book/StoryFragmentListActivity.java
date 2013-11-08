@@ -34,8 +34,8 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
  * in the story that is currently open. Selecting a story fragment
  * will allow user to:
  * 		1. Edit the story fragment
- * 		2. Set the story fragment as the starting fragment (TODO)
- * 		3. Delete the story fragment from the story (TODO)
+ * 		2. Set the story fragment as the starting fragment
+ * 		3. Delete the story fragment from the story
  * 
  * @author Jessica Surya
  *
