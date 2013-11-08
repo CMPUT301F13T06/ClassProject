@@ -16,6 +16,8 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,6 +43,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 	StoryFragment SF;
 	FragmentCreationController FCC;
+	DecisionBranchCreationController DBCC;
 	ArrayList<StoryFragment> SFL;
 	ArrayAdapter<StoryFragment> adapter;
 	StoryCreationController SCC;
@@ -49,6 +52,10 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	ArrayList<Illustration> illustrations;
 	ArrayList<DecisionBranch> decisions;
 	ArrayList<Button> buttons;
+	ArrayList<View> illustrationViews;
+	ArrayList<Button> buttonList;
+	
+	int itemPos;
 
 	//storyFragment passed as intent from FragmentList
 	@Override
@@ -59,6 +66,8 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		int FID = savedInstanceState.getInt("FID");
 
 		SCC = new StoryCreationController();
+		FCC = new FragmentCreationController(FID);
+		DBCC = new DecisionBranchCreationController(FID);
 		SFL = new ArrayList<StoryFragment>();
 
 		HashMap<Integer, StoryFragment> map = SCC.getFragments();
@@ -67,8 +76,8 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		}
 
 		SF = SFL.get(FID);
-
-		FCC = new FragmentCreationController(FID);
+		SF.notifyViews();
+		
 		String title = SF.getFragmentTitle();
 
 		actionBar = getActionBar();
@@ -175,7 +184,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 */
 	private ArrayList<Button> formatButton(ArrayList<DecisionBranch> db, Context c) {
 
-		ArrayList<Button> buttonList = new ArrayList<Button>();
+		buttonList = new ArrayList<Button>();
 
 		Iterator<DecisionBranch> dbIterator = db.iterator();
 		DecisionBranch d = null;
@@ -209,39 +218,96 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		illustrations = SF.getIllustrations();
 		decisions = SF.getDecisionBranches();
 
-		ArrayList<View> illustrationViews = new ArrayList<View>();
+		illustrationViews = new ArrayList<View>();
 
 		for (Illustration i : illustrations){
 			illustrationViews.add(((TextIllustration)i).getEditView());
 		}
 		
-		int pos = 0;
-		
 		formatView(illustrationViews);
-		for (View t: illustrationViews){
-			t.setId(pos + 1);
-			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
-					WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
-			p.addRule(RelativeLayout.BELOW, pos);
-			t.setLayoutParams(p);
+		int position = 0;
+		RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
+				FILL_PARENT, LayoutParams.WRAP_CONTENT); 
+		
+		for (View t: illustrationViews) {
+			t.setId(position + 1);
+			p.addRule(RelativeLayout.BELOW, position);
+			t.setLayoutParams(p);			
+			registerForContextMenu(t);
 			this.addContentView(t, p);
-			pos++;
+			position++;
 		}
 
-		buttons = formatButton(decisions, this);
 		int order = 0;
-
+		buttons = formatButton(decisions, this);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
 				LayoutParams.WRAP_CONTENT);
-		lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		lp.addRule(RelativeLayout.ALIGN_BOTTOM);
 		lp.addRule(RelativeLayout.BELOW, order);
-
+		
 		for (Button dbButton : buttons) {
 			dbButton.setId(order + 1);
 			dbButton.setLayoutParams(lp);
-			
-			order++;
+			registerForContextMenu(dbButton);
 			this.addContentView(dbButton, lp);
+			order++;
 		}
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		
+		itemPos = v.getId() - 1;
+		
+		if (v instanceof Button) {
+			menu.setHeaderTitle("Select an Option:");
+			menu.add(0, v.getId(), 2, "Delete decision branch");  
+			menu.add(0, v.getId(), 3, "Edit decision branch text"); 
+			menu.add(0, v.getId(), 4, "Cancel"); 
+		}
+		
+		else {
+			menu.setHeaderTitle("Select an Option:");
+			menu.add(0, v.getId(), 1, "Delete illustration");  
+			menu.add(0, v.getId(), 4, "Cancel"); 
+		}
+	}
+
+	@Override  
+	public boolean onContextItemSelected(MenuItem item) {
+		int index; 
+		switch (item.getOrder()) {
+		
+		case 1:
+			//Delete illustration
+			View v = illustrationViews.get(itemPos);
+			index = illustrationViews.indexOf(v);
+			Illustration i = illustrations.get(index);
+			FCC.removeTextIllustration((TextIllustration) i);
+			update(SF);
+			break;
+			
+		case 2:
+			// Delete decision branch
+			Button b = buttonList.get(itemPos);
+			index =  buttonList.indexOf(b);
+			DecisionBranch branch = decisions.get(index);
+			DBCC.removeDecisionBranch(branch);
+			update(SF);
+			break;
+			
+		case 3:
+			// Edit decision branch text
+			
+			break;
+			
+		case 4:
+			// Cancel options
+			return false;
+		}
+
+		return true; 
+
 	}
 }
