@@ -67,8 +67,6 @@ public class StoryInfoActivity extends Activity  {
 		
 		displayStoryInfo();
 		
-		int SID = getIntent().getIntExtra("intVariableName", 0);
-
 		final Intent intent = new Intent(this, StoryFragmentReadActivity.class);
 		Button viewButton = (Button) findViewById(R.id.view);
 		viewButton.setVisibility(View.VISIBLE);
@@ -78,7 +76,6 @@ public class StoryInfoActivity extends Activity  {
 			}
 		});
 		
-		//TODO
 		Boolean showDownload = getIntent().hasExtra("calledByOnline");
 		if (showDownload) {
 			Button downloadButton = (Button) findViewById(R.id.download);
@@ -92,7 +89,7 @@ public class StoryInfoActivity extends Activity  {
 				}
 			});
 		}
-		
+		//Switch to label view instead of edit view
 		ViewSwitcher switcher = (ViewSwitcher) findViewById(R.id.author_switch);
 		switcher.showNext();
 		switcher = (ViewSwitcher) findViewById(R.id.genre_switch);
@@ -101,6 +98,9 @@ public class StoryInfoActivity extends Activity  {
 		switcher.showNext();
 	}
 
+	/**
+	 * Display story information for current story.
+	 */
 	private void displayStoryInfo() {
 		
 		setTitle(storyInfo.getTitle());

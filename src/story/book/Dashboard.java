@@ -82,7 +82,7 @@ public class Dashboard extends Activity {
      */
     private void setNickname() {
 		String name = enterName.getText().toString();
-		if (name == "") {
+		if (name.equals("")) {
 			name = defaultName;
 		}
 		
@@ -102,7 +102,7 @@ public class Dashboard extends Activity {
     	SharedPreferences settings = getPreferences(MODE_PRIVATE);
     	String name = settings.getString("Nickname", defaultName );
     	
-        if (name != defaultName) {
+        if (!name.equals(defaultName)) {
     		enterName.setText(name);
     	}
         
