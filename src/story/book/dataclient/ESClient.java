@@ -95,8 +95,10 @@ public class ESClient extends DataClient {
 			Type type = new TypeToken<ESData<Story>>(){}.getType();
 			ESData<Story> es = (ESData<Story>) super.unSerialize(server_read, type);
 			
-			return es.getSource();
+			Story return_s = (Story) es.getSource();
 
+			//Need to re-generate the view list as it is killed during serialization
+			return return_s.copy();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
