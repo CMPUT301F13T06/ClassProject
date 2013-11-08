@@ -89,6 +89,8 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 		SF.addView(this);
 		illustrationViews = new ArrayList<View>();
+		loadFragmentContents();
+		
 	}
 
 	@Override
@@ -166,9 +168,11 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 */
 	private void addNewTextIllustration(View v) {
 		// TODO Auto-generated method stub
-		EditText newText = new EditText(this);
+		Log.d(String.valueOf(illustrationViews.size()), "Number of illustrations");
+		EditText newText = new EditText(v.getContext());
 		newText.setHint("Enter text here");
 		illustrationViews.add(newText);
+		Log.d(String.valueOf(illustrationViews.size()), "Number of illustrations");
 		displayFragment();
 	}
 
@@ -224,6 +228,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		// TODO Auto-generated method stub
 		//display fragment contents
 		SF = SFL.get(FID);
+		loadFragmentContents();
 	}
 	
 	private void loadFragmentContents() {
@@ -250,8 +255,6 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		RelativeLayout layout = (RelativeLayout) findViewById(R.id.reading_fragment);
 		((ViewGroup) layout).removeAllViews();
 		
-		loadFragmentContents();
-
 		int position = 0;
 		
 		formatView(illustrationViews);
