@@ -40,7 +40,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
  * @author Jessica Surya
  *
  */
-public class StoryFragmentListActivity extends Activity implements StoryView<Story> {
+public class StoryFragmentListActivity extends Activity implements StoryView<Story>, RequestingActivity {
 	ActionBar actionBar;
 	ArrayList<StoryFragment> SFL;
 	ArrayAdapter<StoryFragment> adapter;
@@ -65,7 +65,7 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 	protected void onPause() {
 		super.onPause();
 		
-		SCC.saveStory();
+		//SCC.saveStory();
 	}
 	
 	@Override
@@ -116,22 +116,19 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 	}
 	
 	private void addFragment() {
-	    DialogFragment newFragment = new AddFragment();
+	    DialogFragment newFragment = new RequestTextDialog();
+	    ((RequestTextDialog)newFragment).setParent(this);
+	    ((RequestTextDialog)newFragment).setHeader(this.getString(R.string.add_fragment_title));
+	    ((RequestTextDialog)newFragment).setWarning(this.getString(R.string.bad_frag_title_msg));
         newFragment.show(getFragmentManager(), "addFragment");
 	}
 
 	public void onUserSelectValue(String title) {
-		if (title == null) {
-			//Title vaildation failed, re-prompt
-			//addFragment();
-			//TODO change flow in mock-up? can't block in Android
-		} else {
+		if (title != null) {
 			//Create fragment with this title
 			StoryFragment fragment = SCC.newFragment(title);
 			
-			//Save the story before opening fragment to edit
-			SCC.saveStory();
-			//TODO want to change this flow in the mock-up?
+			//Open fragment for editing
 			editFragment(fragment.getFragmentID());
 		}
 	}
@@ -159,14 +156,14 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 			return true;
 		case R.id.publish:
 			if (checkInternetConnected()) {
-				SCC.saveStory();
+				//SCC.saveStory();
 				SCC.publishStory();
 			} else {
 				SimpleWarningDialog.getWarningDialog(this.getString(R.string.no_internet), this);
 			}
 			return true;
 		case R.id.change_info:
-			SCC.saveStory();
+			//SCC.saveStory();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

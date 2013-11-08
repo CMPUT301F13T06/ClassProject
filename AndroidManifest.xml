@@ -87,6 +87,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+                <activity
+            android:name="story.book.DecisionPickerActivity"
+            android:label="@string/title_decision_picker" >
+        </activity>
     </application>
 
 </manifest>

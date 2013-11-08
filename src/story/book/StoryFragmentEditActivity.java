@@ -9,6 +9,7 @@ import java.util.Iterator;
 
 import android.annotation.TargetApi;
 import android.app.ActionBar;
+import android.app.DialogFragment;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Context;
@@ -40,7 +41,7 @@ import android.widget.TextView;
  *
  */
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-public class StoryFragmentEditActivity extends FragmentActivity implements StoryView<StoryFragment> {
+public class StoryFragmentEditActivity extends FragmentActivity implements StoryView<StoryFragment>, RequestingActivity {
 	ActionBar actionBar;
 
 	StoryFragment SF;
@@ -140,7 +141,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 			return true;
 		case R.id.addDecisionBranch:
-
+			Intent intent2 = new Intent(this, DecisionPickerActivity.class);
+			intent2.putExtra("FID", FID);
+			startActivity(intent2);
 			return true;
 
 		case R.id.audio:
@@ -203,7 +206,6 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 	@Override
 	public void update(StoryFragment model) {
-		// TODO Auto-generated method stub
 		//display fragment contents
 		SF = SFL.get(FID);
 		loadFragmentContents();
@@ -317,7 +319,12 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 		case 3:
 			// Edit decision branch text
-
+		    DialogFragment newFragment = new RequestTextDialog();
+		    ((RequestTextDialog)newFragment).setParent(StoryFragmentEditActivity.this);
+		    ((RequestTextDialog)newFragment).setParent(this);
+		    ((RequestTextDialog)newFragment).setHeader(this.getString(R.string.add_branch_title));
+		    ((RequestTextDialog)newFragment).setWarning(this.getString(R.string.bad_branch_msg));
+	        newFragment.show(getFragmentManager(), "addFragment");
 			break;
 
 		case 4:
@@ -374,5 +381,17 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			buttonList.add(button);
 		}
 		return buttonList;
+	}
+
+	@Override
+	public void onUserSelectValue(String title) {
+		Button b = buttonList.get(itemPos);
+		int index =  buttonList.indexOf(b);
+		// Remove the edited Decision Branch
+		DecisionBranch branch = decisions.get(index);
+		DBCC.removeDecisionBranch(branch);
+		// Re-add the Decision Branch
+		branch.setDecisionText(title);
+		DBCC.addDecisionBranch(branch);
 	}
 }
