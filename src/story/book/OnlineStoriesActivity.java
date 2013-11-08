@@ -69,7 +69,6 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 	    public void  onItemClick
 	    (AdapterView<?> parent , View view, int pos, long id) {
 		onlineController.getStory(adapter.getItem(pos).getSID());
-		Log.d(StoryApplication.getCurrentStory().getStoryInfo().getAuthor(), "Online control");
 		Intent intent = new Intent(parent.getContext(), StoryInfoActivity.class);
 		intent.putExtra("calledByOnline", true);
 		startActivity(intent);

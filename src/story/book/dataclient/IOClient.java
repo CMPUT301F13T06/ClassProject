@@ -1,17 +1,12 @@
 package story.book.dataclient;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 
 import story.book.Story;
 import story.book.StoryInfo;
 import android.content.Context;
 import android.os.Environment;
-import android.util.Log;
 
 /**
  * This class is used mainly to save stories on device, retrieve a list of stories on device,
@@ -39,7 +34,6 @@ public class IOClient extends DataClient {
 	this.story_dir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/StoryBook";
 	new File(story_dir).mkdir();
 	story_dir += "/story/";
-	Log.d(story_dir, "storage dir");
 	new File(story_dir).mkdir(); // make the directory if it doesn't exist
     }
 
@@ -103,10 +97,11 @@ public class IOClient extends DataClient {
     public ArrayList<StoryInfo> getStoryInfoList() {
 	ArrayList<StoryInfo> listOfStoryInfo = new ArrayList<StoryInfo>();
 	for (String file : getStoryList()) {
-	    Log.d(file, "List Of Files");
 	    Story s = getStory(Integer.valueOf(file).intValue());
 	    if (s != null)
-		listOfStoryInfo.add(s.getStoryInfo());
+	    	listOfStoryInfo.add(s.getStoryInfo());
+	    else
+	    	deleteStory(Integer.valueOf(file));
 	}
 	return listOfStoryInfo;
     }
