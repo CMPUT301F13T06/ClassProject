@@ -10,12 +10,14 @@ import java.util.Iterator;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.ActionBar.LayoutParams;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -37,7 +39,7 @@ import android.widget.TextView;
  * @author Jessica Surya
  *
  */
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 public class StoryFragmentEditActivity extends FragmentActivity implements StoryView<StoryFragment> {
 	ActionBar actionBar;
 
@@ -54,16 +56,20 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	ArrayList<Button> buttons;
 	ArrayList<View> illustrationViews;
 	ArrayList<Button> buttonList;
-	
+
 	int itemPos;
+	int FID;
 
 	//storyFragment passed as intent from FragmentList
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.reading_fragment);
+
 		savedInstanceState = getIntent().getExtras();
-		int FID = savedInstanceState.getInt("FID");
+
+		FID = savedInstanceState.getInt("FID");
 
 		SCC = new StoryCreationController();
 		FCC = new FragmentCreationController(FID);
@@ -77,7 +83,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 		SF = SFL.get(FID);
 		SF.notifyViews();
-		
+
 		String title = SF.getFragmentTitle();
 
 		actionBar = getActionBar();
@@ -101,7 +107,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	@Override
 	public void onResume(){
 		super.onResume();
-		displayFragment();
+
 	}
 
 	@Override
@@ -146,6 +152,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		case R.id.title_activity_dashboard:
 			Intent intent = new Intent(this, Dashboard.class);
 			startActivity(intent);
+			finish();
 			return true;
 
 		default:
@@ -169,7 +176,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			x = (EditText) viewIterator.next();
 			x.setTextSize(20);
 			x.setTextColor(Color.BLACK);
-			x.setPaddingRelative(5, 0, 0, 0);
+			x.setPaddingRelative(5, 0, 0, 10);
 		}
 	}
 	/**
@@ -204,7 +211,16 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	public void update(StoryFragment model) {
 		// TODO Auto-generated method stub
 		//display fragment contents
-		displayFragment();
+		SF = SFL.get(FID);
+
+		for (View v : illustrationViews) {
+			v.invalidate();
+		}
+
+		for (Button b : buttonList) {
+			b.invalidate();
+		}
+		
 	}
 
 	/**
@@ -215,6 +231,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * 
 	 */
 	private void displayFragment() {
+
 		illustrations = SF.getIllustrations();
 		decisions = SF.getDecisionBranches();
 
@@ -223,50 +240,62 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		for (Illustration i : illustrations){
 			illustrationViews.add(((TextIllustration)i).getEditView());
 		}
-		
+
 		formatView(illustrationViews);
 		int position = 0;
-		RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
-				FILL_PARENT, LayoutParams.WRAP_CONTENT); 
-		
-		for (View t: illustrationViews) {
+
+		RelativeLayout layout = (RelativeLayout) findViewById(R.id.reading_fragment);
+
+		for (View t: illustrationViews){
 			t.setId(position + 1);
+			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
+					WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
 			p.addRule(RelativeLayout.BELOW, position);
-			t.setLayoutParams(p);			
+			t.setLayoutParams(p);
 			registerForContextMenu(t);
-			this.addContentView(t, p);
+			((ViewGroup) layout).addView(t, p);
 			position++;
 		}
 
-		int order = 0;
-		buttons = formatButton(decisions, this);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
-				LayoutParams.WRAP_CONTENT);
-		lp.addRule(RelativeLayout.ALIGN_BOTTOM);
-		lp.addRule(RelativeLayout.BELOW, order);
 		
+		//parent.addView(layout);
+		
+		//setContentView(this.findViewById(R.id.reading_fragment));
+
+		buttons = formatButton(decisions, this);
+		int buttonIndex = 0;
 		for (Button dbButton : buttons) {
-			dbButton.setId(order + 1);
+			dbButton.setId(position + 1);
+			buttonIndex++;
+			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
+					LayoutParams.WRAP_CONTENT);
+			if (buttonIndex == 1) {
+				lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+			}
+			else {
+			lp.addRule(RelativeLayout.ABOVE, position);
+			}
+			
 			dbButton.setLayoutParams(lp);
 			registerForContextMenu(dbButton);
-			this.addContentView(dbButton, lp);
-			order++;
+			((ViewGroup) layout).addView(dbButton, lp);
+			position++;
 		}
 	}
-	
+
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		
+
 		itemPos = v.getId() - 1;
-		
+
 		if (v instanceof Button) {
 			menu.setHeaderTitle("Select an Option:");
 			menu.add(0, v.getId(), 2, "Delete decision branch");  
 			menu.add(0, v.getId(), 3, "Edit decision branch text"); 
 			menu.add(0, v.getId(), 4, "Cancel"); 
 		}
-		
+
 		else {
 			menu.setHeaderTitle("Select an Option:");
 			menu.add(0, v.getId(), 1, "Delete illustration");  
@@ -278,30 +307,32 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	public boolean onContextItemSelected(MenuItem item) {
 		int index; 
 		switch (item.getOrder()) {
-		
+
 		case 1:
 			//Delete illustration
 			View v = illustrationViews.get(itemPos);
 			index = illustrationViews.indexOf(v);
 			Illustration i = illustrations.get(index);
 			FCC.removeTextIllustration((TextIllustration) i);
-			update(SF);
+
+			SF.notifyViews();
+
 			break;
-			
+
 		case 2:
 			// Delete decision branch
 			Button b = buttonList.get(itemPos);
 			index =  buttonList.indexOf(b);
 			DecisionBranch branch = decisions.get(index);
 			DBCC.removeDecisionBranch(branch);
-			update(SF);
+			SF.notifyViews();
 			break;
-			
+
 		case 3:
 			// Edit decision branch text
-			
+
 			break;
-			
+
 		case 4:
 			// Cancel options
 			return false;
