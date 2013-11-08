@@ -13,9 +13,11 @@ import android.widget.ViewSwitcher;
 
 /**
  * Activity that allows the user to view the information of their story and then
- * view the story
+ * view the story. When the user is in the Online Stories, this activity will allow them
+ * to download the story that they are viewing.
  * 
  * @author Nancy Pham-Nguyen
+ * @author Vina Nguyen
  * 
  */
 
