@@ -60,6 +60,7 @@ public class StoryInfo {
 		setGenre("");
 		setSynopsis("");
 		setPublishState(PublishState.UNPUBLISHED);
+		setStartingFragmentID(-1);
 	}
 	
 	/**
@@ -159,7 +160,8 @@ public class StoryInfo {
 	
 	/**
 	 * 
-	 * @return the fragment ID of the starting fragment
+	 * @return the fragment ID of the starting fragment,
+	 * -1 if none
 	 */
 	public int getStartingFragmentID() {
 		return startingFragmentID;

@@ -50,6 +50,7 @@
     <string name="bad_branch_msg">Cannot create branch with empty label.</string>
     <string name="no_internet">Action could not be completed because no internet connectivity.</string>
     <string name="title_decision_picker">Create Decision Branch</string>
+    <string name="no_fragments">There are no story fragments to read.</string>
     <string name="StoryTitle"/>
 
 </resources>

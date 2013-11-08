@@ -17,6 +17,8 @@
 
 package story.book;
 
+import android.util.Log;
+
 /**
  * Controller for accessing the current story and starting fragment for 
  * reading and adding annotations.
@@ -39,7 +41,12 @@ public class StoryReadController {
 	 * @return returns the fragment ID of the starting fragment
 	 */
 	public StoryFragment getStartingFragment() {
-		return story.getStoryFragments().get(story.getStoryInfo().getStartingFragmentID());
+		int FID = story.getStoryInfo().getStartingFragmentID();
+		if (FID != -1 ) {
+			return story.getStoryFragments().get(FID);
+		} else {
+			return null;
+		}
 	}
 	
 	/**

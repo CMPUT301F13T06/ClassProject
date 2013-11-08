@@ -28,7 +28,7 @@ import java.util.ArrayList;
  */
 public abstract class StoryModel<V extends StoryView> {
 	
-	private ArrayList<V> views;
+	transient private ArrayList<V> views;
 	
 	/**
 	 * Default constructor initializes an empty <code>ArrayList</code> of

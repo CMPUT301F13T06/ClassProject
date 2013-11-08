@@ -32,6 +32,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 /**
  * StoryFragmentReadActivity is an interface for users to read a story
@@ -60,7 +61,14 @@ public class StoryFragmentReadActivity extends FragmentActivity {
 
 		SRC = new StoryReadController();
 		SF = SRC.getStartingFragment();
-		SF.notifyViews();
+		
+		if (SF == null) {
+			//If there are no fragments to read, do not instantiate this class
+			Toast.makeText(getApplicationContext(), R.string.no_fragments, Toast.LENGTH_SHORT).show();
+			finish();
+			return;
+		}
+		
 		String title = SF.getFragmentTitle();
 		illustrations = SF.getIllustrations();
 
