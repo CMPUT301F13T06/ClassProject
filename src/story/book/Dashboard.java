@@ -1,11 +1,26 @@
-package story.book;
+/* CMPUT301F13T06-Adventure Club: A choose-your-own-adventure story platform
+ * Copyright (C) 2013 Alexander Cheung, Jessica Surya, Vina Nguyen, Anthony Ou,
+ * Nancy Pham-Nguyen
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
+package story.book;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -61,13 +76,6 @@ public class Dashboard extends Activity {
 		setNickname();
 	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-	// Inflate the menu; this adds items to the action bar if it is present.
-	getMenuInflater().inflate(R.menu.main, menu);
-	return true;
-    }
-    
     /**
      * Method where the user can set their nickname. If 
      * they do not enter anything, set the name to "Anonymous"
