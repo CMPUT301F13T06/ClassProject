@@ -145,6 +145,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	public void deleteStory() {
 		// if long click on story then give option to delete
 		localController.deleteStory(adapter.getItem(position).getSID());
+		refreshList();
 	}
 
 	private void openSearch() {
@@ -170,7 +171,8 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-		localController.getStory(adapter.getItem(info.position).getSID());
+		position = info.position;
+		localController.getStory(adapter.getItem(position).getSID());
 		
 		switch (item.getItemId()) {
 		case R.id.read_story:
