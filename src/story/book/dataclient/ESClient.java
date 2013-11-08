@@ -19,7 +19,7 @@ import com.google.gson.reflect.TypeToken;
  */
 
 public class ESClient extends DataClient {	
-	protected String def_folder = "testing/"; //"stories/";
+	protected String def_folder = "stories/";
 	private String SID_folder = "SIDs/0";
 	
 	/**
