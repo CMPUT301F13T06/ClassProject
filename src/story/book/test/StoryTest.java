@@ -44,6 +44,18 @@ public class StoryTest extends ActivityInstrumentationTestCase2
 	}
 	
 	@Test
+	public void testGetStoryFragments() {
+		StoryFragment testFragment1 = new StoryFragment("Test fragment 1");
+		StoryFragment testFragment2 = new StoryFragment("Test fragment 2");
+		
+		story.addFragment(testFragment1);
+		story.addFragment(testFragment2);
+		
+		assertNotNull(story.getStoryFragments());
+		assertEquals(story.getStoryFragments().size(), 2);
+	}
+	
+	@Test
 	public void testDeepFragmentRemoval() {
 		StoryFragment testFragment1 = new StoryFragment("Test fragment 1");
 		StoryFragment testFragment2 = new StoryFragment("Test fragment 2");
