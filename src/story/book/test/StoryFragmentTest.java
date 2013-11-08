@@ -53,6 +53,36 @@ public class StoryFragmentTest extends ActivityInstrumentationTestCase2
 	}
 	
 	@Test
+	public void testAddRemoveImageIllustration() {
+		// TODO: ImageIllustration not implemented
+		fail("Not yet implemented");
+	}
+	
+	@Test
+	public void testAddRemoveVideoIllustration() {
+		// TODO: VideoIllustration not implemented
+		fail("Not yet implemented");
+	}
+	
+	@Test
+	public void testAddRemoveAudioIllustration() {
+		// TODO: AudioIllustration not implemented
+		fail("Not yet implemented");
+	}
+	
+	@Test
+	public void testCombinationIllustrationTypes() {
+		// TODO: All illustrations not implemented
+		fail("Not yet implemented");
+	}
+	
+	@Test
+	public void testAddRemoveAnnotation() {
+		// TODO: Annotations not implemented
+		fail("Not yet implemented");
+	}
+	
+	@Test
 	public void testAddRemoveDecisionBranch() {
 		DecisionBranch branch1 = new DecisionBranch("Branch to storyFragment2",
 				storyFragment2.getFragmentID());
