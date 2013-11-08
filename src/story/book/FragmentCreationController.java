@@ -15,10 +15,16 @@ public class FragmentCreationController extends LocalEditingController {
 
 	private StoryFragment storyFragment;
 	
-	// public FragmentCreationController(int fragmentID) {
-	public FragmentCreationController(StoryFragment storyFragment) {
+	/**
+	 * Initializes the controller with the story fragment with the specified
+	 * fragment ID.
+	 * 
+	 * @param 	fragmentID	the ID of the story fragment
+	 */
+	public FragmentCreationController(int fragmentID) {
 		super();
-		this.storyFragment = storyFragment;
+		this.storyFragment = StoryApplication.getCurrentStory()
+				.getStoryFragments().get(fragmentID);
 	}
 	
 	/**
@@ -31,6 +37,12 @@ public class FragmentCreationController extends LocalEditingController {
 		storyFragment.addIllustration(new TextIllustration(content));
 	}
 	
+	/**
+	 * Removes the specified <code>TextIllustration</code> from the story
+	 * fragment.
+	 * 
+	 * @param 	textIllustration	the <code>TextIllustration</code> to remove
+	 */
 	public void removeTextIllustration(TextIllustration textIllustration) {
 		storyFragment.removeIllustration(textIllustration);
 	}
