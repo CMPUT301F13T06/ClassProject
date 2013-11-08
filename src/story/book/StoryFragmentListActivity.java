@@ -51,7 +51,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
  * 		3. Delete the story fragment from the story
  * 
  * @author Jessica Surya
- *
+ * @author Vina Nguyen
  */
 public class StoryFragmentListActivity extends Activity implements StoryView<Story>, RequestingActivity {
 	ActionBar actionBar;
@@ -78,7 +78,7 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 	protected void onPause() {
 		super.onPause();
 		
-		//SCC.saveStory();
+		SCC.saveStory();
 	}
 	
 	@Override
@@ -127,7 +127,9 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 		i.putExtra("FID", FID);
 		startActivity(i);
 	}
-	
+	/*
+	 * addFragment() adds a new fragment to the current story.
+	 */
 	private void addFragment() {
 	    DialogFragment newFragment = new RequestTextDialog();
 	    ((RequestTextDialog)newFragment).setParent(this);
@@ -169,14 +171,13 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 			return true;
 		case R.id.publish:
 			if (checkInternetConnected()) {
-				//SCC.saveStory();
 				SCC.publishStory();
 			} else {
 				SimpleWarningDialog.getWarningDialog(this.getString(R.string.no_internet), this);
 			}
 			return true;
 		case R.id.change_info:
-			//SCC.saveStory();
+
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
