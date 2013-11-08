@@ -18,11 +18,12 @@ import android.util.Log;
  * or to simply retrieve a story.
  * @author Anthony Ou
  * 
+ * 
  */
 public class IOClient extends DataClient {
 
     private String story_dir;
-    private Context context;
+    //private Context context;
     /**
      * Unbuffered IO for writing a serialized story. Buffered IO for read a
      * serialized story string.
@@ -33,7 +34,8 @@ public class IOClient extends DataClient {
      */
     public IOClient(Context c) {
 	super();
-	context = c; //I dont need to context but its nice to have for the future
+	//context = c; //I dont need to context but its nice to have for the future
+	
 	this.story_dir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/StoryBook";
 	new File(story_dir).mkdir();
 	story_dir += "/story/";
