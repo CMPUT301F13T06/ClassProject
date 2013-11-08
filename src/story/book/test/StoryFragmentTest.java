@@ -2,16 +2,16 @@ package story.book.test;
 
 import org.junit.Test;
 
-import story.book.Dashboard;
-import story.book.DecisionBranch;
-import story.book.Story;
-import story.book.StoryFragment;
-import story.book.StoryInfo;
-import story.book.TextIllustration;
+import story.book.model.DecisionBranch;
+import story.book.model.Story;
+import story.book.model.StoryFragment;
+import story.book.model.StoryInfo;
+import story.book.model.TextIllustration;
+import story.book.view.Dashboard;
 import android.test.ActivityInstrumentationTestCase2;
 
 public class StoryFragmentTest extends ActivityInstrumentationTestCase2
-		<story.book.Dashboard> {
+		<story.book.view.Dashboard> {
 
 	private StoryFragment storyFragment1;
 	private StoryFragment storyFragment2;

@@ -6,11 +6,11 @@ import java.util.Date;
 import org.junit.Test;
 
 import story.book.dataclient.IOClient;
-import story.book.Dashboard;
-import story.book.Story;
-import story.book.StoryFragment;
-import story.book.StoryInfo;
-import story.book.TextIllustration;
+import story.book.model.Story;
+import story.book.model.StoryFragment;
+import story.book.model.StoryInfo;
+import story.book.model.TextIllustration;
+import story.book.view.Dashboard;
 import android.test.ActivityInstrumentationTestCase2;
 
 /**
@@ -19,7 +19,7 @@ import android.test.ActivityInstrumentationTestCase2;
  * 
  */
 public class IOClientTest extends
-ActivityInstrumentationTestCase2<story.book.Dashboard> {
+ActivityInstrumentationTestCase2<story.book.view.Dashboard> {
 	Story s;
 	StoryInfo info;
 

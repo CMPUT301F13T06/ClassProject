@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import story.book.dataclient.ESClient;
-import story.book.Dashboard;
-import story.book.DecisionBranch;
-import story.book.Story;
-import story.book.StoryFragment;
-import story.book.StoryInfo;
-import story.book.TextIllustration;
+import story.book.model.DecisionBranch;
+import story.book.model.Story;
+import story.book.model.StoryFragment;
+import story.book.model.StoryInfo;
+import story.book.model.TextIllustration;
+import story.book.view.Dashboard;
 
 /**
  * Unit testing for the ESClient and related classes.
@@ -24,7 +24,7 @@ import story.book.TextIllustration;
  */
 
 public class ESClientTest extends
-ActivityInstrumentationTestCase2<story.book.Dashboard> {
+ActivityInstrumentationTestCase2<story.book.view.Dashboard> {
 
 	private ESClient es;
 	private ArrayList<Story> sample_story;

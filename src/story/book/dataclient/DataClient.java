@@ -4,6 +4,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import story.book.*;
+import story.book.model.Illustration;
+import story.book.model.Story;
+import story.book.model.StoryInfo;
 
 import com.google.gson.*;
 

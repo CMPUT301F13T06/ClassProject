@@ -4,14 +4,14 @@ import org.junit.After;
 import org.junit.Test;
 
 import android.test.ActivityInstrumentationTestCase2;
-import story.book.Dashboard;
-import story.book.DecisionBranch;
-import story.book.Story;
-import story.book.StoryFragment;
-import story.book.StoryInfo;
+import story.book.model.DecisionBranch;
+import story.book.model.Story;
+import story.book.model.StoryFragment;
+import story.book.model.StoryInfo;
+import story.book.view.Dashboard;
 
 public class StoryTest extends ActivityInstrumentationTestCase2
-<story.book.Dashboard> {
+<story.book.view.Dashboard> {
 
 	private Story story;
 	

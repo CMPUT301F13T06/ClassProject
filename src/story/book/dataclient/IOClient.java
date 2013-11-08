@@ -4,9 +4,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import story.book.Story;
-import story.book.StoryFragment;
-import story.book.StoryInfo;
+import story.book.model.Story;
+import story.book.model.StoryFragment;
+import story.book.model.StoryInfo;
 import android.content.Context;
 import android.os.Environment;
 

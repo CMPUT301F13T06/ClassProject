@@ -2,12 +2,12 @@ package story.book.test;
 
 import org.junit.Test;
 
-import story.book.Dashboard;
-import story.book.TextIllustration;
+import story.book.model.TextIllustration;
+import story.book.view.Dashboard;
 import android.test.ActivityInstrumentationTestCase2;
 
 public class TextIllustrationTest extends ActivityInstrumentationTestCase2
-		<story.book.Dashboard> {
+		<story.book.view.Dashboard> {
 	
 	private TextIllustration textIllustration;
 	

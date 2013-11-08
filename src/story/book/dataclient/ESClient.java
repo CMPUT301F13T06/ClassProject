@@ -4,8 +4,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-import story.book.Story;
-import story.book.StoryInfo;
+import story.book.model.Story;
+import story.book.model.StoryInfo;
 
 import com.google.gson.reflect.TypeToken;
 
