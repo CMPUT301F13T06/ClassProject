@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,8 +31,6 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 
     protected ArrayAdapter<StoryInfo> adapter;
 
-    int position;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
@@ -47,11 +46,14 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 
 	listView.setOnItemClickListener(new OnItemClickListener() {
 	    @Override
-	    public void  onItemClick(AdapterView<?> parent , View view,
-		    int pos, long id) {
-		position = pos;
-	    }
-	});
+	    public void  onItemClick
+	    (AdapterView<?> parent , View view, int pos, long id) {
+		onlineController.getStory(adapter.getItem(pos).getSID());
+		Log.d(StoryApplication.getCurrentStory().getStoryInfo().getAuthor(), "Online control");
+		Intent intent = new Intent(parent.getContext(), StoryInfoActivity.class);
+		intent.putExtra("calledByOnline", true);
+		startActivity(intent);
+	    }});
 	// Show the Up button in the action bar.
 	setupActionBar();
     }
@@ -64,26 +66,10 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
     }
 
     /**
-     * http://developer.android.com/guide/topics/ui/menus.html#context-menu
-     */
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-	onlineController.getStory(adapter.getItem(position).getSID());
-	Intent intent = new Intent(this, StoryInfoActivity.class);
-	intent.putExtra("calledByOnline", true);
-	startActivity(intent);
-	return true;
-    }
-
-
-    /**
      * Set up the {@link android.app.ActionBar}.
      */
     private void setupActionBar() {
-
 	getActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     @Override

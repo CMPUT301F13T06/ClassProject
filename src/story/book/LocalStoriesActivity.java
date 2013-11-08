@@ -50,11 +50,9 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
     protected void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.library_activity);
-
-	// localController.getStory();
-
+	
 	localController = new LocalStoryController();
-
+	
 	sList = new ArrayList<HashMap<String, String>>();
 
 	String[] from = new String[] { KEY_TITLE, KEY_ID };
@@ -78,11 +76,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	listView.setOnItemClickListener(new OnItemClickListener() {
 	    @Override
 	    public void onItemClick(AdapterView<?> parent, View view, int pos,
-		    long id) {
-		position = pos;
-
-	    }
-	});
+		    long id) {}});
 	// Show the Up button in the action bar.
 	getActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -94,7 +88,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
     
     @Override
     public void onResume() {
-	super.onStart();
+	super.onResume();
 	refresh();
     }
     /**
@@ -102,7 +96,6 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
      **/
     public void createStory() {
 	localController.createStory();
-	localController.saveStory();
 	Intent intent = new Intent(this, EditStoryInformationActivity.class);
 	startActivity(intent);
     }
@@ -129,7 +122,6 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
     public void deleteStory() {
 	// if long click on story then give option to delete
 	localController.deleteStory(adapter.getItem(position).getSID());
-	
     }
 
     private void openSearch() {
@@ -155,7 +147,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
      */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-	localController.getStory(adapter.getItem(position).getSID());
+	localController.getStory(adapter.getItem(item.getOrder()).getSID());
 	switch (item.getItemId()) {
 	case R.id.read_story:
 	    readStory();
