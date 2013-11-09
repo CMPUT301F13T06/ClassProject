@@ -117,7 +117,7 @@ public class IOClient extends DataClient {
 	 * @return a free SID or -1 on failure
 	 */
 	public int getSID() {
-		ArrayList<StoryInfo> StoryInfo = getStoryInfoList();
+		ArrayList<String> StoryInfo = getStoryList();
 		for (int i = 1; i < Integer.MAX_VALUE; ++i) {
 			if (!StoryInfo.contains(String.valueOf(i))) {
 				return i;
