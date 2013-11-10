@@ -31,10 +31,11 @@ public abstract class DataClient {
 		.setPrettyPrinting();
 		Gsonclient = gsonBuilder.create();
 	}
+	
 	/**
 	 * 
 	 * Custom deserailizer for illustration class
-	 *
+	 * http://stackoverflow.com/questions/3629596/deserializing-an-abstract-class-in-gson
 	 */
 	public class IllustrationDeserialiser implements JsonDeserializer<Illustration<?>>, JsonSerializer<Illustration<?>> {
 
