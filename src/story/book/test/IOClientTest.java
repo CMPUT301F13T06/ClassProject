@@ -48,11 +48,12 @@ ActivityInstrumentationTestCase2<story.book.view.Dashboard> {
 		s = new Story(info);
 		s.addFragment(fragment1);
 		s.addFragment(fragment2);
+		
 	}
-
+	IOClient io;
 	@Test
 	public void testIOClient() throws Exception {
-		IOClient io = new IOClient(getActivity());
+		io = new IOClient(getActivity());
 		io.saveStory(s);
 		StoryInfo sample_info = io.getStory((s.getStoryInfo().getSID()))
 				.getStoryInfo();
@@ -77,5 +78,10 @@ ActivityInstrumentationTestCase2<story.book.view.Dashboard> {
 		// io.saveStory(null);
 		// assertEquals(io.getStory(600), null);
 
+	}
+	@Test
+	public void testSearch() throws Exception {
+		io = new IOClient(getActivity());
+		assertTrue(io.search("Daniel").size()==1);
 	}
 }

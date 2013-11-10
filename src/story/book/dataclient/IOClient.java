@@ -129,6 +129,20 @@ public class IOClient extends DataClient {
 	}
 
 	/**
+	 * 
+	 * @param searchTerm
+	 * @return
+	 */
+	public ArrayList<StoryInfo> search(String searchTerm) {
+		ArrayList<StoryInfo> hits = new ArrayList<StoryInfo>();
+		for(StoryInfo i : getStoryInfoList()) {
+			if((i.getAuthor() + i.getGenre() + i.getSynopsis() + 
+					i.getTitle()).contains(searchTerm))
+				hits.add(i);
+		}
+		return hits;
+	}
+	/**
 	 * http://stackoverflow.com/questions/14376807/how-to-read-write-string-from
 	 * -a-file-in-android
 	 * 
