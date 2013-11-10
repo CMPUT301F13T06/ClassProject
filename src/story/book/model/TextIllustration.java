@@ -27,7 +27,7 @@ import android.widget.TextView;
  * 
  * @author Alexander Cheung
  */
-public class TextIllustration extends Illustration {
+public class TextIllustration extends Illustration<String> {
 	
 	/**
 	 * Initialize content in constructor.

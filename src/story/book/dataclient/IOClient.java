@@ -9,6 +9,7 @@ import story.book.model.StoryFragment;
 import story.book.model.StoryInfo;
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
 /**
  * This class is used mainly to save stories on device, retrieve a list of stories on device,
@@ -57,6 +58,7 @@ public class IOClient extends DataClient {
 			fos.flush();
 			fos.close();
 		} catch (IOException e) {
+			Log.d("error saving a story", "IOclient errors");
 		}
 
 	}

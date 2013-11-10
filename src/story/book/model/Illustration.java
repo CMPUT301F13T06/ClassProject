@@ -27,14 +27,14 @@ import android.view.View;
  *
  * @param <T> the type of the content to be held by the Illustration.
  */
-public abstract class Illustration {
+public abstract class Illustration<T> {
 	
 	
 	/**
 	 * Gets the content of the Illustration.
 	 * @return T the content of the Illustration.
 	 */
-	public abstract String getContent();
+	public abstract T getContent();
 	
 	/**
 	 * Sets the content of the Illustration to object of type T.

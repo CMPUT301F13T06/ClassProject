@@ -7,6 +7,7 @@ import story.book.*;
 import story.book.model.Illustration;
 import story.book.model.Story;
 import story.book.model.StoryInfo;
+import android.util.Log;
 
 import com.google.gson.*;
 
@@ -26,38 +27,42 @@ public abstract class DataClient {
 
 	protected DataClient() {
 		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(Illustration.class, new IllustrationDeserialiser());
+		gsonBuilder.registerTypeAdapter(Illustration.class, new IllustrationDeserialiser())
+		.setPrettyPrinting();
 		Gsonclient = gsonBuilder.create();
 	}
 	/**
 	 * 
-	 * 
+	 * Custom deserailizer for illustration class
 	 *
 	 */
-	public class IllustrationDeserialiser implements JsonDeserializer<Illustration>, JsonSerializer<Illustration> {
+	public class IllustrationDeserialiser implements JsonDeserializer<Illustration<?>>, JsonSerializer<Illustration<?>> {
 
 		@Override
-		public Illustration deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) {
+		public Illustration<?> deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) {
 
-	        JsonObject jsonObj = jsonElement.getAsJsonObject();
-	        String className = jsonObj.get("ILLUSTRATIONSTORY").getAsString();
-	        try {
-	            Class<?> clz = Class.forName(className);
-	            return context.deserialize(jsonElement, clz);
-	        } catch (ClassNotFoundException e) {
-	            throw new JsonParseException(e);
-	        }
+			JsonObject jsonObj = jsonElement.getAsJsonObject();
+			String className = jsonObj.get("ILLUSTRATIONSTORY").getAsString();
+			try {
+				Class<?> clz = Class.forName(className);
+				return context.deserialize(jsonElement, clz);
+			} catch (ClassNotFoundException e) {
+				Log.d("error parsing Illustration", "DataClient");
+				return null;
+				//throw new JsonParseException(e);
+			}
 		}
 
 		@Override
-		 public JsonElement serialize(Illustration object, Type type,
-		            JsonSerializationContext jsonSerializationContext) {
-	        JsonElement jsonEle = jsonSerializationContext.serialize(object, object.getClass());
-	        jsonEle.getAsJsonObject().addProperty("ILLUSTRATIONSTORY",
-	                object.getClass().getCanonicalName());
-	        return jsonEle;
+		public JsonElement serialize(Illustration<?> object, Type type,
+				JsonSerializationContext jsonSerializationContext) {
+				JsonElement jsonEle = jsonSerializationContext.serialize(object, object.getClass());
+				jsonEle.getAsJsonObject().addProperty("ILLUSTRATIONSTORY",
+						object.getClass().getCanonicalName());
+				return jsonEle;
 		}
 	}
+	
 	/**
 	 * 
 	 * @param an object
