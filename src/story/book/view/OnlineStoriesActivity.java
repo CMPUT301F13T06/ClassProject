@@ -48,84 +48,84 @@ import android.support.v4.app.NavUtils;
  */
 public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 
-    private StoryController onlineController;
-    ArrayList<StoryInfo> storyInfo;
-    ListView listView;
+	private StoryController onlineController;
+	ArrayList<StoryInfo> storyInfo;
+	ListView listView;
 
-    protected ArrayAdapter<StoryInfo> adapter;
+	protected ArrayAdapter<StoryInfo> adapter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-	super.onCreate(savedInstanceState);
-	setContentView(R.layout.library_activity);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.library_activity);
 
-	onlineController = new OnlineStoryController();
+		onlineController = new OnlineStoryController();
 
-	adapter = new ArrayAdapter<StoryInfo>(this, android.R.layout.simple_list_item_1, onlineController.getStoryList());
-	listView = (ListView) findViewById(R.id.listView);
-	registerForContextMenu(listView);
+		adapter = new ArrayAdapter<StoryInfo>(this, android.R.layout.simple_list_item_1, onlineController.getStoryList());
+		listView = (ListView) findViewById(R.id.listView);
+		registerForContextMenu(listView);
 
-	listView.setAdapter(adapter);
+		listView.setAdapter(adapter);
 
-	listView.setOnItemClickListener(new OnItemClickListener() {
-	    /*
-	     * on click of an online story to display the story info immdiately. 
-	     */
-	    @Override
-	    public void  onItemClick
-	    (AdapterView<?> parent , View view, int pos, long id) {
-		onlineController.getStory(adapter.getItem(pos).getSID());
-		Intent intent = new Intent(parent.getContext(), StoryInfoActivity.class);
-		intent.putExtra("calledByOnline", true);
-		startActivity(intent);
-	    }});
-	// Show the Up button in the action bar.
-	setupActionBar();
-    }
-
-    @Override
-    public void onResume() {
-	super.onResume();
-	adapter.clear();
-	adapter.addAll(onlineController.getStoryList());
-    }
-
-    /**
-     * Set up the {@link android.app.ActionBar}.
-     */
-    private void setupActionBar() {
-	getActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-	// Inflate the menu; this adds items to the action bar if it is present.
-	getMenuInflater().inflate(R.menu.online_stories, menu);
-	return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-	switch (item.getItemId()) {
-	case R.id.action_search:
-	    openSearch();
-	case R.id.title_activity_dashboard:
-	    NavUtils.navigateUpFromSameTask(this);
-	    finish();
-	    return true;
+		listView.setOnItemClickListener(new OnItemClickListener() {
+			/*
+			 * on click of an online story to display the story info immdiately. 
+			 */
+			@Override
+			public void  onItemClick
+			(AdapterView<?> parent , View view, int pos, long id) {
+				onlineController.getStory(adapter.getItem(pos).getSID());
+				Intent intent = new Intent(parent.getContext(), StoryInfoActivity.class);
+				intent.putExtra("calledByOnline", true);
+				startActivity(intent);
+			}});
+		// Show the Up button in the action bar.
+		setupActionBar();
 	}
-	return super.onOptionsItemSelected(item);
-    }
 
-    private void openSearch() {
-	// TODO Auto-generated method stub
+	@Override
+	public void onResume() {
+		super.onResume();
+		adapter.clear();
+		adapter.addAll(onlineController.getStoryList());
+	}
 
-    }
+	/**
+	 * Set up the {@link android.app.ActionBar}.
+	 */
+	private void setupActionBar() {
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+	}
 
-    @Override
-    public void update(Story model) {
-	// TODO Auto-generated method stub
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.online_stories, menu);
+		return true;
+	}
 
-    }
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_search:
+			openSearch();
+		case R.id.title_activity_dashboard:
+			NavUtils.navigateUpFromSameTask(this);
+			finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void openSearch() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void update(Story model) {
+		// TODO Auto-generated method stub
+
+	}
 
 }

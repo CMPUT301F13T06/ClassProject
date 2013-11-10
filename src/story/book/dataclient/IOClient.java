@@ -114,10 +114,7 @@ public class IOClient extends DataClient {
 		return getStoryList().contains(String.valueOf(SID)) ? false : true;
 	}
 
-	/**
-	 * 
-	 * @return a free SID or -1 on failure
-	 */
+
 	public int getSID() {
 		ArrayList<String> StoryInfo = getStoryList();
 		for (int i = 1; i < Integer.MAX_VALUE; ++i) {
@@ -153,7 +150,7 @@ public class IOClient extends DataClient {
 	public Story getStory(int SID) {
 
 		char[] inputBuffer = new char[1024];
-		StringBuilder sb = new StringBuilder(4096); // set the initial size
+		StringBuilder sb = new StringBuilder(1024); // set the initial size
 		// of string builder to be
 		// same size as the buffer
 		try {
