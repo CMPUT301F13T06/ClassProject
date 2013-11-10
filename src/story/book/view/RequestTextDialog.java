@@ -54,11 +54,11 @@ public class RequestTextDialog extends DialogFragment {
 		warning = w;
 	}
 	
-    /**
-     * Ref:
-     * http://developer.android.com/guide/topics/ui/dialogs.html,
-     * http://stackoverflow.com/questions/12622742/get-value-from-dialogfragment
-     */
+	/**
+	 * Ref:
+	 * http://developer.android.com/guide/topics/ui/dialogs.html,
+	 * http://stackoverflow.com/questions/12622742/get-value-from-dialogfragment
+	 */
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		final EditText title = new EditText(getActivity());
 		final RequestingActivity callingActivity = parentActivity;
@@ -67,26 +67,26 @@ public class RequestTextDialog extends DialogFragment {
 		builder.setTitle(header);
 		builder.setView(title);
 		builder.setPositiveButton(R.string.set, new DialogInterface.OnClickListener() {
-		    public void onClick(DialogInterface dialog, int id) {
-		    	
-		    	String value = title.getText().toString();
-		    	
-		    	// Return text if non-empty, other-wise prompt warning
-		    	if (value.equals("")) {
-		    		SimpleWarningDialog.getWarningDialog(warning, ((Activity)callingActivity));
-		    		callingActivity.onUserSelectValue(null);
-		    	} else {
-			        callingActivity.onUserSelectValue(value);
-			        dialog.dismiss();
-		    	}
-		    }
+			public void onClick(DialogInterface dialog, int id) {
+				
+				String value = title.getText().toString();
+				
+				// Return text if non-empty, other-wise prompt warning
+				if (value.equals("")) {
+					SimpleWarningDialog.getWarningDialog(warning, ((Activity)callingActivity));
+					callingActivity.onUserSelectValue(null);
+				} else {
+					callingActivity.onUserSelectValue(value);
+					dialog.dismiss();
+				}
+			}
 		})
 		.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-		    public void onClick(DialogInterface dialog, int id) {
+			public void onClick(DialogInterface dialog, int id) {
 			// User cancelled the dialog
-		    }
+			}
 		});
 		// Create the AlertDialog object and return it
 		return builder.create();
-    }
+	}
 }
