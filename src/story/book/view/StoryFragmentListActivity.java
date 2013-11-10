@@ -59,14 +59,14 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
  * @author Vina Nguyen
  */
 public class StoryFragmentListActivity extends Activity implements StoryView<Story>, RequestingActivity {
-    ActionBar actionBar;
-    ArrayList<StoryFragment> SFL;
-    ArrayAdapter<StoryFragment> adapter;
-    StoryCreationController SCC;
+	ActionBar actionBar;
+	ArrayList<StoryFragment> SFL;
+	ArrayAdapter<StoryFragment> adapter;
+	StoryCreationController SCC;
 
-    int pos;
+	int pos;
 
-    public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 
 	setContentView(R.layout.story_fragment_read_activity);
@@ -77,14 +77,14 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 	updateFragmentList();
 
 	return;
-    }
+	}
 
-    @Override
-    public void onPause() {
+	@Override
+	public void onPause() {
 	super.onPause();
 	if(SCC != null)
-	    SCC.saveStory();
-    }
+		SCC.saveStory();
+	}
 
 	@Override
 	public void onDestroy() {
@@ -93,18 +93,18 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 		if (s != null)
 			s.deleteView(this);
 	}
-    
-    @Override
-    public void update(Story model) {
+	
+	@Override
+	public void update(Story model) {
 	updateFragmentList(); 
-    }
+	}
 
-    private void updateFragmentList() {
+	private void updateFragmentList() {
 	SFL = new ArrayList<StoryFragment>();
 
 	HashMap<Integer, StoryFragment> map = SCC.getFragments();
 	for (Integer key : map.keySet()){
-	    SFL.add(map.get(key));
+		SFL.add(map.get(key));
 	}
 
 	String title = SCC.getStory().getStoryInfo().getTitle();
@@ -123,133 +123,133 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 
 	registerForContextMenu(listview);
 	listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-	    @Override
-	    public void onItemClick(AdapterView parent, View v, int position, long id) {
+		@Override
+		public void onItemClick(AdapterView parent, View v, int position, long id) {
 		pos = position;
 		Intent i = new Intent(parent.getContext(), StoryFragmentEditActivity.class);
 		i.putExtra("FID", SFL.get(pos).getFragmentID());
 		startActivity(i);
-	    }
+		}
 
 	});
-    }
+	}
 
-    private void editFragment(int FID) {
+	private void editFragment(int FID) {
 	Intent i = new Intent(this, StoryFragmentEditActivity.class);
 
 	i.putExtra("FID", FID);
 	startActivity(i);
-    }
-    /*
-     * addFragment() adds a new fragment to the current story.
-     */
-    private void addFragment() {
+	}
+	/*
+	 * addFragment() adds a new fragment to the current story.
+	 */
+	private void addFragment() {
 	DialogFragment newFragment = new RequestTextDialog();
 	((RequestTextDialog)newFragment).setParent(this);
 	((RequestTextDialog)newFragment).setHeader(this.getString(R.string.add_fragment_title));
 	((RequestTextDialog)newFragment).setWarning(this.getString(R.string.bad_frag_title_msg));
 	newFragment.show(getFragmentManager(), "addFragment");
-    }
-
-    public void onUserSelectValue(String title) {
-	if (title != null) {
-	    //Create fragment with this title
-	    StoryFragment fragment = SCC.newFragment(title);
-
-	    //Open fragment for editing
-	    editFragment(fragment.getFragmentID());
 	}
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+	public void onUserSelectValue(String title) {
+	if (title != null) {
+		//Create fragment with this title
+		StoryFragment fragment = SCC.newFragment(title);
+
+		//Open fragment for editing
+		editFragment(fragment.getFragmentID());
+	}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
 	// Inflate the menu items for use in the action bar
 	MenuInflater inflater = getMenuInflater();
 	inflater.inflate(R.menu.fragment_list_menu, menu);
 	inflater.inflate(R.menu.standard_menu, menu);
 	return super.onCreateOptionsMenu(menu);
-    }
+	}
 
-    public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(MenuItem item) {
 	// Handle item selection
 	switch (item.getItemId()) {
 	case R.id.title_activity_dashboard:
-	    Intent intent = new Intent(this, Dashboard.class);
-	    startActivity(intent);
-	    finish();
-	    return true;
+		Intent intent = new Intent(this, Dashboard.class);
+		startActivity(intent);
+		finish();
+		return true;
 
 	case R.id.add_fragment:
-	    addFragment();
-	    return true;
+		addFragment();
+		return true;
 	case R.id.publish:
-	    if (checkInternetConnected()) {
+		if (checkInternetConnected()) {
 		SCC.publishStory();
-	    } else {
+		} else {
 		SimpleWarningDialog.getWarningDialog(this.getString(R.string.no_internet), this);
-	    }
-	    return true;
+		}
+		return true;
 	case R.id.change_info:
-	    Intent intent2 = new Intent(this, EditStoryInformationActivity.class);
-	    startActivity(intent2);
-	    return true;
+		Intent intent2 = new Intent(this, EditStoryInformationActivity.class);
+		startActivity(intent2);
+		return true;
 	default:
-	    return super.onOptionsItemSelected(item);
+		return super.onOptionsItemSelected(item);
 	}
-    }
+	}
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 	super.onCreateContextMenu(menu, v, menuInfo);
 	menu.setHeaderTitle("Select an Option:");
 	menu.add(0, v.getId(), 1, "Edit");  
 	menu.add(0, v.getId(), 2, "Set as Starting Story Fragment"); 
 	menu.add(0, v.getId(), 3, "Delete");
 	menu.add(0, v.getId(), 4, "Cancel");
-    }
+	}
 
-    @Override  
-    public boolean onContextItemSelected(MenuItem item) {
+	@Override  
+	public boolean onContextItemSelected(MenuItem item) {
 	AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 	pos = info.position;
 
 	switch (item.getOrder()) {
 	case 1:
-	    // Edit story fragment
-	    editFragment(SFL.get(pos).getFragmentID());
-	    break;
+		// Edit story fragment
+		editFragment(SFL.get(pos).getFragmentID());
+		break;
 
 	case 2:
-	    // Set as starting story fragment
-	    SCC.setStartingFragment(SFL.get(pos).getFragmentID());
-	    break;
+		// Set as starting story fragment
+		SCC.setStartingFragment(SFL.get(pos).getFragmentID());
+		break;
 	case 3:
-	    //Delete
-	    int FID = SFL.get(pos).getFragmentID();
-	    if (FID == SCC.getStartingFragment()) {
+		//Delete
+		int FID = SFL.get(pos).getFragmentID();
+		if (FID == SCC.getStartingFragment()) {
 		//fragmentDeleteDialog();
 		SimpleWarningDialog.getWarningDialog(this.getString(R.string.bad_frag_delete_msg), this);
-	    } else {
+		} else {
 		SCC.deleteFragment(FID);
-	    }
-	    break;
+		}
+		break;
 	case 4:
-	    // Cancel options
-	    return false;
+		// Cancel options
+		return false;
 	}
 
 	return true; 
 
-    }
+	}
 
-    /**
-     * http://stackoverflow.com/questions/4238921/android-detect-whether-there-is-an-internet-connection-available
-     */
-    //TODO put this also when click onlinelibrary button
-    private Boolean checkInternetConnected() {
+	/**
+	 * http://stackoverflow.com/questions/4238921/android-detect-whether-there-is-an-internet-connection-available
+	 */
+	//TODO put this also when click onlinelibrary button
+	private Boolean checkInternetConnected() {
 	ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 	NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 	return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+	}
 
 }
