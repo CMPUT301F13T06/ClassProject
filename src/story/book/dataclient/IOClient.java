@@ -117,8 +117,8 @@ public class IOClient extends DataClient {
 
 	public int getSID() {
 		ArrayList<String> StoryInfo = getStoryList();
-		for (int i = 1; i < Integer.MAX_VALUE; ++i) {
-			if (!StoryInfo.contains(String.valueOf(i))) {
+		for (Integer i = 1; i < Integer.MAX_VALUE; ++i) {
+			if (!StoryInfo.contains(i.toString())) {
 				return i;
 			}
 		}
@@ -127,8 +127,8 @@ public class IOClient extends DataClient {
 
 	/**
 	 * 
-	 * @param searchTerm
-	 * @return
+	 * @param search term
+	 * @return an arraylist of storyinfos that match this search term
 	 */
 	public ArrayList<StoryInfo> search(String searchTerm) {
 		ArrayList<StoryInfo> hits = new ArrayList<StoryInfo>();
@@ -172,6 +172,6 @@ public class IOClient extends DataClient {
 		Story return_s = (Story) super.unSerialize(sb.toString(), Story.class);
 
 		//Need to re-generate the view list as it is killed during serialization
-		return return_s.copy();
+		return return_s;
 	}
 }
