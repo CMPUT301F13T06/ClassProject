@@ -172,6 +172,6 @@ public class IOClient extends DataClient {
 		Story return_s = (Story) super.unSerialize(sb.toString(), Story.class);
 
 		//Need to re-generate the view list as it is killed during serialization
-		return return_s;
+		return return_s.copy();
 	}
 }
