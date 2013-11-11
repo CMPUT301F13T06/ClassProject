@@ -167,6 +167,7 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.fragment_list_menu, menu);
 		inflater.inflate(R.menu.standard_menu, menu);
+		inflater.inflate(R.menu.search_bar, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 

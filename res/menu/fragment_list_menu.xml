@@ -4,14 +4,14 @@
      <item
         android:id="@+id/add_fragment"
         android:icon="@drawable/ic_action_new"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/change_info">
      </item>
      
      <item
         android:id="@+id/add_new"
         android:icon="@drawable/ic_action_edit"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/Blank">
         <menu>
             <item
