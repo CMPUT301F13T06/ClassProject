@@ -100,6 +100,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int pos,
 					long id) {
+				localController.getStory(adapter.getItem(pos).getSID());
 				Intent intent = new Intent(parent.getContext(), StoryInfoActivity.class);
 				intent.putExtra("calledByOffline", false);
 				startActivity(intent);

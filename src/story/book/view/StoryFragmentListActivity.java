@@ -72,26 +72,24 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 		setContentView(R.layout.story_fragment_read_activity);
 
 		SCC = new StoryCreationController();
-		SCC.getStory().addView(this);
-
-		updateFragmentList();
-
 		return;
 	}
 
 	@Override
-	public void onPause() {
+	public void onStart() {
 		super.onPause();
-		if(SCC != null)
-			SCC.saveStory();
+		SCC.getStory().addView(this);
+
+		updateFragmentList();
+
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		Story s = SCC.getStory();
-		if (s != null)
-			s.deleteView(this);
+		SCC.saveStory();
+		s.deleteView(this);
 	}
 
 	@Override
