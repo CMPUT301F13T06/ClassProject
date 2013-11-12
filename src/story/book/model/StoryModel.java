@@ -44,26 +44,26 @@ public abstract class StoryModel<V extends StoryView> {
 	 * Add a <code>V</code> object to the list of views.
 	 * @param 	view	the <code>V</code> object to add
 	 */
-    public void addView(V view) {
-        if (!views.contains(view)) {
-            views.add(view);
-        }
-    }
+	public void addView(V view) {
+		if (!views.contains(view)) {
+			views.add(view);
+		}
+	}
 
 	/**
 	 * Remove a <code>V</code> object from the list of views.
 	 * @param 	view	the <code>V</code> object to remove
 	 */
-    public void deleteView(V view) {
-        views.remove(view);
-    }
+	public void deleteView(V view) {
+		views.remove(view);
+	}
 
-    /**
-     * Notifies all views that the model has changed.
-     */
-    public void notifyViews() {
-        for (V view : views) {
-            view.update(this);
-        }
-    }
+	/**
+	 * Notifies all views that the model has changed.
+	 */
+	public void notifyViews() {
+		for (V view : views) {
+			view.update(this);
+		}
+	}
 }
