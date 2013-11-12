@@ -143,7 +143,7 @@ public class StoryInfo {
 	 */
 	public String getPublishDateString() {
 		if (publishDate != null) {
-			SimpleDateFormat stringForm = new SimpleDateFormat("MMMM dd yyyy");
+			SimpleDateFormat stringForm = new SimpleDateFormat("MMMM dd, yyyy");
 			
 			return stringForm.format(publishDate);
 		} else
