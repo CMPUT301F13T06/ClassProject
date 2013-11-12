@@ -26,14 +26,13 @@ public abstract class DataClient {
 	protected static Gson Gsonclient;
 
 	protected DataClient() {
-		if(Gsonclient == null)
-			Gsonclient = new GsonBuilder()
-			.registerTypeAdapter(Illustration.class, new IllustrationDeserialiser())
-			.excludeFieldsWithModifiers(Modifier.TRANSIENT)
-			.setPrettyPrinting()
-			.create();
+		Gsonclient = new GsonBuilder()
+		.registerTypeAdapter(Illustration.class, new IllustrationDeserialiser())
+		.excludeFieldsWithModifiers(Modifier.TRANSIENT)
+		.setPrettyPrinting()
+		.create();
 	}
-	
+
 	/**
 	 * Custom deserializer for illustration class
 	 * http://stackoverflow.com/questions/3629596/deserializing-an-abstract-class-in-gson
@@ -64,13 +63,13 @@ public abstract class DataClient {
 		@Override
 		public JsonElement serialize(Illustration<?> object, Type type,
 				JsonSerializationContext jsonSerializationContext) {
-				JsonElement jsonEle = jsonSerializationContext.serialize(object, object.getClass());
-				jsonEle.getAsJsonObject().addProperty("ILLUSTRATIONSTORY",
-						object.getClass().getCanonicalName());
-				return jsonEle;
+			JsonElement jsonEle = jsonSerializationContext.serialize(object, object.getClass());
+			jsonEle.getAsJsonObject().addProperty("ILLUSTRATIONSTORY",
+					object.getClass().getCanonicalName());
+			return jsonEle;
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param an object
@@ -88,7 +87,7 @@ public abstract class DataClient {
 	protected <T> T unSerialize(String serial, Type type){
 		return Gsonclient.fromJson(serial, type);
 	}
-
+	
 	/**
 	 * 
 	 * @param searchTerm 
@@ -98,15 +97,15 @@ public abstract class DataClient {
 	public ArrayList<StoryInfo> search(String searchTerm) {
 		ArrayList<StoryInfo> hits = new ArrayList<StoryInfo>();
 		for(StoryInfo i : getStoryInfoList()) {
-			if(	i.getAuthor().contains(searchTerm) 		||
-				i.getGenre().contains(searchTerm) 		||
-				i.getSynopsis().contains(searchTerm) 	||
-				i.getTitle().contains(searchTerm))
-					hits.add(i);
+			if(	i.getAuthor().contains(searchTerm) 			||
+					i.getGenre().contains(searchTerm) 		||
+					i.getSynopsis().contains(searchTerm) 	||
+					i.getTitle().contains(searchTerm))
+				hits.add(i);
 		}
 		return hits;
 	}
-	
+
 	/**
 	 * 
 	 * @param aStory, the story to be saved

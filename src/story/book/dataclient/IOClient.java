@@ -17,9 +17,9 @@ import android.util.Log;
  */
 public class IOClient extends DataClient {
 
-	private String story_dir;
+	private File story_dir;
 	private Context context;
-	
+
 	/**
 	 * Unbuffered IO for writing a serialized story. Buffered IO for read a
 	 * serialized story string.
@@ -32,10 +32,10 @@ public class IOClient extends DataClient {
 		super();
 		context = c; //I dont need to context but its nice to have for the future
 
-		this.story_dir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/StoryBook";
-		new File(story_dir).mkdir();
-		story_dir += "/story/";
-		new File(story_dir).mkdir(); // make the directory if it doesn't exist
+		this.story_dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/StoryBook");
+		this.story_dir.mkdir();
+		this.story_dir = new File(this.story_dir, "story");
+		story_dir.mkdir(); // make the directory if it doesn't exist
 	}
 
 	/**
@@ -70,14 +70,12 @@ public class IOClient extends DataClient {
 	public boolean deleteStory(int SID) {
 		File dir = new File(story_dir + "/" +String.valueOf(SID));
 		String[] children = dir.list();
-		if(children != null){
-			for (String i : children) {
-				new File(dir, i).delete();
-			}
-			return dir.delete();
+
+		for (String i : children) {
+			new File(dir, i).delete();
 		}
-		else
-			return false;
+		return dir.delete();
+
 	}
 
 	/**
@@ -86,7 +84,7 @@ public class IOClient extends DataClient {
 	 */
 	public ArrayList<String> getStoryList() {
 		ArrayList<String> listOfFileNames = new ArrayList<String>();
-		for (String temp : new File(story_dir).list()) {
+		for (String temp : (story_dir).list()) {
 			listOfFileNames.add(temp);
 		}
 		return listOfFileNames;
@@ -98,12 +96,9 @@ public class IOClient extends DataClient {
 	 */
 	public ArrayList<StoryInfo> getStoryInfoList() {
 		ArrayList<StoryInfo> listOfStoryInfo = new ArrayList<StoryInfo>();
-		for (String file : new File(story_dir).list()) {
+		for (String file : getStoryList()) {
 			Story s = getStory(Integer.valueOf(file).intValue());
-			if (s != null)
-				listOfStoryInfo.add(s.getStoryInfo());
-			else
-				deleteStory(Integer.valueOf(file));
+			listOfStoryInfo.add(s.getStoryInfo());
 		}
 		return listOfStoryInfo;
 	}
