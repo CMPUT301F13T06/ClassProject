@@ -2,10 +2,7 @@ package story.book.dataclient;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import story.book.model.Story;
-import story.book.model.StoryFragment;
 import story.book.model.StoryInfo;
 import android.content.Context;
 import android.os.Environment;
@@ -21,7 +18,7 @@ import android.util.Log;
 public class IOClient extends DataClient {
 
 	private String story_dir;
-	//private Context context;
+	private Context context;
 	/**
 	 * Unbuffered IO for writing a serialized story. Buffered IO for read a
 	 * serialized story string.
@@ -32,7 +29,7 @@ public class IOClient extends DataClient {
 	 */
 	public IOClient(Context c) {
 		super();
-		//context = c; //I dont need to context but its nice to have for the future
+		context = c; //I dont need to context but its nice to have for the future
 
 		this.story_dir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/StoryBook";
 		new File(story_dir).mkdir();
@@ -127,18 +124,22 @@ public class IOClient extends DataClient {
 
 	/**
 	 * 
-	 * @param search term
-	 * @return an arraylist of storyinfos that match this search term
+	 * @param searchTerm 
+	 * 					the term to search for as a string
+	 * @return an array list of story info's that match this search term
 	 */
 	public ArrayList<StoryInfo> search(String searchTerm) {
 		ArrayList<StoryInfo> hits = new ArrayList<StoryInfo>();
 		for(StoryInfo i : getStoryInfoList()) {
-			if((i.getAuthor() + i.getGenre() + i.getSynopsis() + 
-					i.getTitle()).contains(searchTerm))
-				hits.add(i);
+			if(	i.getAuthor().contains(searchTerm) 		||
+				i.getGenre().contains(searchTerm) 		||
+				i.getSynopsis().contains(searchTerm) 	||
+				i.getTitle().contains(searchTerm))
+					hits.add(i);
 		}
 		return hits;
 	}
+
 	/**
 	 * http://stackoverflow.com/questions/14376807/how-to-read-write-string-from
 	 * -a-file-in-android
@@ -165,13 +166,11 @@ public class IOClient extends DataClient {
 			fis.close();
 			isr.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			Log.d("reading file error", "getStory() error");
+			e.printStackTrace();
 			return null;
 		}
 
-		Story return_s = (Story) super.unSerialize(sb.toString(), Story.class);
-
-		//Need to re-generate the view list as it is killed during serialization
-		return return_s.copy();
+		return super.unSerialize(sb.toString(), Story.class);
 	}
 }

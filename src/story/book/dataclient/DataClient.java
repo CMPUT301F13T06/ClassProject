@@ -4,7 +4,6 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import story.book.*;
 import story.book.model.Illustration;
 import story.book.model.Story;
 import story.book.model.StoryInfo;
@@ -15,7 +14,7 @@ import com.google.gson.*;
 /**
  * DataClient is an abstract class that represents 
  * a storage location that contains Stories. Stories
- * can be saved and retrieved using a DataClient.
+ * can be serialized and deserialized using a DataClient.
  * 
  * @author Anthony Ou
  * 
@@ -27,22 +26,27 @@ public abstract class DataClient {
 	protected static Gson Gsonclient;
 
 	protected DataClient() {
-		Gsonclient = new GsonBuilder()
-		.registerTypeAdapter(Illustration.class, new IllustrationDeserialiser())
-		.excludeFieldsWithModifiers(Modifier.TRANSIENT)
-		.setPrettyPrinting()
-		.create();
+		if(Gsonclient == null)
+			Gsonclient = new GsonBuilder()
+			.registerTypeAdapter(Illustration.class, new IllustrationDeserialiser())
+			.excludeFieldsWithModifiers(Modifier.TRANSIENT)
+			.setPrettyPrinting()
+			.create();
 	}
 	
 	/**
-	 * 
 	 * Custom deserailizer for illustration class
 	 * http://stackoverflow.com/questions/3629596/deserializing-an-abstract-class-in-gson
+	 * 
 	 */
-	public class IllustrationDeserialiser implements JsonDeserializer<Illustration<?>>, JsonSerializer<Illustration<?>> {
+	public class IllustrationDeserialiser 
+	implements JsonDeserializer<Illustration<?>>, JsonSerializer<Illustration<?>> {
 
 		@Override
-		public Illustration<?> deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) {
+		public Illustration<?> deserialize(
+				JsonElement jsonElement, 
+				Type typeOfT, 
+				JsonDeserializationContext context) {
 
 			JsonObject jsonObj = jsonElement.getAsJsonObject();
 			String className = jsonObj.get("ILLUSTRATIONSTORY").getAsString();
@@ -51,6 +55,7 @@ public abstract class DataClient {
 				return context.deserialize(jsonElement, clz);
 			} catch (ClassNotFoundException e) {
 				Log.d("error parsing Illustration", "DataClient");
+				e.printStackTrace();
 				return null;
 				//throw new JsonParseException(e);
 			}
@@ -80,7 +85,7 @@ public abstract class DataClient {
 	 * @param Serial is a string of serialized object of Type type
 	 * @return a null on failure or an object (responsibility of caller to cast it)
 	 */
-	protected Object unSerialize(String serial, Type type){
+	protected <T> T unSerialize(String serial, Type type){
 		return Gsonclient.fromJson(serial, type);
 	}
 
