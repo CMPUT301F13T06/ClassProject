@@ -15,29 +15,32 @@
             <item
                 android:id="@+id/take_photo"
                 android:showAsAction="never"
-                android:title="Take Photo" android:enabled="false">
+                android:title="Take Photo">
             </item>
             <item
                 android:id="@+id/addGalleryPhoto"
                 android:showAsAction="never"
-                android:title="Add photo from gallery" android:enabled="false">
+                android:title="Add photo from gallery">
             </item>
-            
             <item
                 android:id="@+id/audio"
                 android:showAsAction="never"
-                android:title="Add audio" android:enabled="false">
+                android:title="Add audio">
             </item>
             <item
                 android:id="@+id/video"
                 android:showAsAction="never"
-                android:title="Add video" android:enabled="false">
+                android:title="Add video">
             </item>
             <item
                 android:id="@+id/record_video"
                 android:showAsAction="never"
-                android:title="Record video" android:enabled="false">
-            </item><item android:id="@+id/addDecisionBranch" android:showAsAction="never" android:title="Add decision branch">
+                android:title="Record video">
+            </item>
+            <item
+                android:id="@+id/addDecisionBranch"
+                android:showAsAction="never"
+                android:title="Add decision branch">
             </item>
         </menu>
     </item>
