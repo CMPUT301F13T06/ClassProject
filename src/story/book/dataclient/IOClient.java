@@ -17,7 +17,7 @@ import android.util.Log;
  */
 public class IOClient extends DataClient {
 
-	private File story_dir;
+	private String story_dir;
 	private Context context;
 
 	/**
@@ -32,10 +32,10 @@ public class IOClient extends DataClient {
 		super();
 		context = c; //I dont need to context but its nice to have for the future
 
-		this.story_dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/StoryBook");
-		this.story_dir.mkdir();
-		this.story_dir = new File(this.story_dir, "story");
-		story_dir.mkdir(); // make the directory if it doesn't exist
+		this.story_dir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/StoryBook";
+		new File(story_dir).mkdir();
+		story_dir += "/story/";
+		new File(story_dir).mkdir(); // make the directory if it doesn't exist
 	}
 
 	/**
@@ -70,12 +70,10 @@ public class IOClient extends DataClient {
 	public boolean deleteStory(int SID) {
 		File dir = new File(story_dir + "/" +String.valueOf(SID));
 		String[] children = dir.list();
-
 		for (String i : children) {
 			new File(dir, i).delete();
 		}
 		return dir.delete();
-
 	}
 
 	/**
@@ -84,7 +82,7 @@ public class IOClient extends DataClient {
 	 */
 	public ArrayList<String> getStoryList() {
 		ArrayList<String> listOfFileNames = new ArrayList<String>();
-		for (String temp : (story_dir).list()) {
+		for (String temp : new File(story_dir).list()) {
 			listOfFileNames.add(temp);
 		}
 		return listOfFileNames;
