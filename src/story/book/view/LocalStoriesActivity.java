@@ -99,7 +99,11 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int pos,
-					long id) {}});
+					long id) {
+				Intent intent = new Intent(parent.getContext(), StoryInfoActivity.class);
+				intent.putExtra("calledByOffline", false);
+				startActivity(intent);
+			}});
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
