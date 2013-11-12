@@ -64,7 +64,7 @@ ActivityInstrumentationTestCase2<story.book.view.Dashboard> {
 		assertTrue(sample_info.getGenre().equals(info.getGenre()));
 		assertTrue(sample_info.getSynopsis().equals(info.getSynopsis()));
 		assertEquals(sample_info.getSID(), info.getSID());
-
+		io.URIhandler(600);
 		assertTrue(io.getStoryList().contains("600"));
 		Log.d(String.valueOf(io.getSID()), "some free sid");
 		assertTrue(io.search("Daniel").size()==1);

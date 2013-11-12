@@ -1,6 +1,7 @@
 package story.book.dataclient;
 
 import java.io.*;
+import java.net.URI;
 import java.util.ArrayList;
 import story.book.model.Story;
 import story.book.model.StoryInfo;
@@ -19,6 +20,7 @@ public class IOClient extends DataClient {
 
 	private String story_dir;
 	private Context context;
+	private File story_dir_file;
 
 	/**
 	 * Unbuffered IO for writing a serialized story. Buffered IO for read a
@@ -75,7 +77,18 @@ public class IOClient extends DataClient {
 		}
 		return dir.delete();
 	}
-
+	
+	/**
+	 * 
+	 * @param SID
+	 * @return
+	 */
+	public URI URIhandler(int SID) {
+		URI f = new File(story_dir + String.valueOf(SID)).toURI();
+		Log.d(f.toString(), "URI");
+		return f;
+	}
+	
 	/**
 	 * 
 	 * @return a list of all the SIDs on the internal device.
