@@ -1,5 +1,6 @@
 package story.book.dataclient;
 
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -26,10 +27,11 @@ public abstract class DataClient {
 	protected static Gson Gsonclient;
 
 	protected DataClient() {
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(Illustration.class, new IllustrationDeserialiser())
-		.setPrettyPrinting();
-		Gsonclient = gsonBuilder.create();
+		Gsonclient = new GsonBuilder()
+		.registerTypeAdapter(Illustration.class, new IllustrationDeserialiser())
+		.excludeFieldsWithModifiers(Modifier.TRANSIENT)
+		.setPrettyPrinting()
+		.create();
 	}
 	
 	/**

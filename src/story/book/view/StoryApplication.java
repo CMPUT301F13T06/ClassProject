@@ -39,89 +39,89 @@ import story.book.model.Story;
  */
 public class StoryApplication extends Application {
 	
-    // Singleton IO and ES clients
-    transient private static IOClient io = null;
-    transient private static ESClient es = null;
-    
-    private static Story currentStory;
-    private static Context context;
-    private static String nickname;
+	// Singleton IO and ES clients
+	transient private static IOClient io = null;
+	transient private static ESClient es = null;
+	
+	private static Story currentStory;
+	private static Context context;
+	private static String nickname;
 
-    public void onCreate(){
-        super.onCreate();
-        context = getApplicationContext();
-    }
-    
-    /**
-     * Returns the application's <code>IOClient</code>.
-     * 
-     * @return	the application's <code>IOClient</code>
-     */
-    public static IOClient getIOClient() {
-    	if (io == null) {
-    		io = new IOClient(context);
-    	}
-    	return io;
-    }
-    
-    /**
-     * Returns the application's <code>ESClient</code>.
-     * 
-     * @return	the application's <code>ESclient</code>
-     */
-    public static ESClient getESClient() {
-    	if (es == null) {
-    		es = new ESClient();
-    	}
-    	return es;
-    }
-    
-    /**
-     * Returns the current application story
-     * 
-     * @return	the current <code>Story</code>
-     */
-    public static Story getCurrentStory() {
-    	return currentStory;
-    }
-    
-    /** 
-     * Sets the current application story
-     * 
-     * @param 	story	the <code>Story</code> object to set as current
-     */
-    public static void setCurrentStory(Story story) {
-    	currentStory = story;
-    }
-    
-    /**
-     * Returns the <code>Context</code> of the application.
-     * 
-     * @return	the application </code>Context</code>
-     */
-    public static Context getContext() {
-    	return context;
-    }
-    
-    /**
-     * Sets the user's nickname to the specified <code>String</code>
-     * 
-     * @param 	name	the nickname of the user
-     */
-    public static void setNickname(String name) {
-    	nickname = name;
-    }
-    
-    /**
-     * Returns the user's nickname
-     * 
-     * @return	the nickname of the user
-     */
-    public static String getNickname() {
-    	if (nickname == null) {
-    		return "Anonymous";
-    	} else {
-    		return nickname;
-    	}
-    }
+	public void onCreate(){
+		super.onCreate();
+		context = getApplicationContext();
+	}
+	
+	/**
+	 * Returns the application's <code>IOClient</code>.
+	 * 
+	 * @return	the application's <code>IOClient</code>
+	 */
+	public static IOClient getIOClient() {
+		if (io == null) {
+			io = new IOClient(context);
+		}
+		return io;
+	}
+	
+	/**
+	 * Returns the application's <code>ESClient</code>.
+	 * 
+	 * @return	the application's <code>ESclient</code>
+	 */
+	public static ESClient getESClient() {
+		if (es == null) {
+			es = new ESClient();
+		}
+		return es;
+	}
+	
+	/**
+	 * Returns the current application story
+	 * 
+	 * @return	the current <code>Story</code>
+	 */
+	public static Story getCurrentStory() {
+		return currentStory;
+	}
+	
+	/** 
+	 * Sets the current application story
+	 * 
+	 * @param 	story	the <code>Story</code> object to set as current
+	 */
+	public static void setCurrentStory(Story story) {
+		currentStory = story;
+	}
+	
+	/**
+	 * Returns the <code>Context</code> of the application.
+	 * 
+	 * @return	the application </code>Context</code>
+	 */
+	public static Context getContext() {
+		return context;
+	}
+	
+	/**
+	 * Sets the user's nickname to the specified <code>String</code>
+	 * 
+	 * @param 	name	the nickname of the user
+	 */
+	public static void setNickname(String name) {
+		nickname = name;
+	}
+	
+	/**
+	 * Returns the user's nickname
+	 * 
+	 * @return	the nickname of the user
+	 */
+	public static String getNickname() {
+		if (nickname == null) {
+			return "Anonymous";
+		} else {
+			return nickname;
+		}
+	}
 }
