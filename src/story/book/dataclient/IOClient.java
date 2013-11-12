@@ -19,6 +19,7 @@ public class IOClient extends DataClient {
 
 	private String story_dir;
 	private Context context;
+	
 	/**
 	 * Unbuffered IO for writing a serialized story. Buffered IO for read a
 	 * serialized story string.
@@ -97,7 +98,7 @@ public class IOClient extends DataClient {
 	 */
 	public ArrayList<StoryInfo> getStoryInfoList() {
 		ArrayList<StoryInfo> listOfStoryInfo = new ArrayList<StoryInfo>();
-		for (String file : getStoryList()) {
+		for (String file : new File(story_dir).list()) {
 			Story s = getStory(Integer.valueOf(file).intValue());
 			if (s != null)
 				listOfStoryInfo.add(s.getStoryInfo());
@@ -123,29 +124,11 @@ public class IOClient extends DataClient {
 	}
 
 	/**
-	 * 
-	 * @param searchTerm 
-	 * 					the term to search for as a string
-	 * @return an array list of story info's that match this search term
-	 */
-	public ArrayList<StoryInfo> search(String searchTerm) {
-		ArrayList<StoryInfo> hits = new ArrayList<StoryInfo>();
-		for(StoryInfo i : getStoryInfoList()) {
-			if(	i.getAuthor().contains(searchTerm) 		||
-				i.getGenre().contains(searchTerm) 		||
-				i.getSynopsis().contains(searchTerm) 	||
-				i.getTitle().contains(searchTerm))
-					hits.add(i);
-		}
-		return hits;
-	}
-
-	/**
 	 * http://stackoverflow.com/questions/14376807/how-to-read-write-string-from
 	 * -a-file-in-android
 	 * 
 	 * @param SID
-	 *            Likely to the SID of the story or any other string
+	 *            The SID of a story
 	 * @returns A string representing a serialized story;
 	 */
 	public Story getStory(int SID) {

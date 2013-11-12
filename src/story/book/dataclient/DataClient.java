@@ -35,7 +35,7 @@ public abstract class DataClient {
 	}
 	
 	/**
-	 * Custom deserailizer for illustration class
+	 * Custom deserializer for illustration class
 	 * http://stackoverflow.com/questions/3629596/deserializing-an-abstract-class-in-gson
 	 * 
 	 */
@@ -89,6 +89,24 @@ public abstract class DataClient {
 		return Gsonclient.fromJson(serial, type);
 	}
 
+	/**
+	 * 
+	 * @param searchTerm 
+	 * 					the term to search for as a string
+	 * @return an array list of story info's that match this search term
+	 */
+	public ArrayList<StoryInfo> search(String searchTerm) {
+		ArrayList<StoryInfo> hits = new ArrayList<StoryInfo>();
+		for(StoryInfo i : getStoryInfoList()) {
+			if(	i.getAuthor().contains(searchTerm) 		||
+				i.getGenre().contains(searchTerm) 		||
+				i.getSynopsis().contains(searchTerm) 	||
+				i.getTitle().contains(searchTerm))
+					hits.add(i);
+		}
+		return hits;
+	}
+	
 	/**
 	 * 
 	 * @param aStory, the story to be saved

@@ -68,10 +68,11 @@ ActivityInstrumentationTestCase2<story.book.view.Dashboard> {
 		assertTrue(io.getStoryList().contains("600"));
 		Log.d(String.valueOf(io.getSID()), "some free sid");
 		assertTrue(io.search("Daniel").size()==1);
+		assertTrue(io.search("fewa rewrwe").size()==0);
 //		ArrayList<StoryInfo> storyinfos = io.getStoryInfoList();
 //		assertEquals(storyinfos.get(0).getAuthor(), "Daniel");
-//		assertFalse(io.checkSID(600));
-//		assertTrue(io.getSID() != 600);
+		assertFalse(io.checkSID(600));
+		assertTrue(io.getSID() != 600);
 		//	assertTrue(io.deleteStory(600));
 		//	assertTrue(io.checkSID(600));
 		//	assertFalse(io.deleteStory(600));
@@ -80,9 +81,4 @@ ActivityInstrumentationTestCase2<story.book.view.Dashboard> {
 		// assertEquals(io.getStory(600), null);
 
 	}
-//	@Test
-//	public void testSearch() throws Exception {
-//		io = new IOClient(getActivity());
-//		
-//	}
 }
