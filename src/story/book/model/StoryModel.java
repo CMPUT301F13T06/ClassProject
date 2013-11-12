@@ -17,7 +17,7 @@
 
 package story.book.model;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import story.book.view.StoryView;
 
@@ -30,14 +30,14 @@ import story.book.view.StoryView;
  */
 public abstract class StoryModel<V extends StoryView> {
 	
-	transient private ArrayList<V> views;
+	transient private Set<V> views;
 	
 	/**
 	 * Default constructor initializes an empty <code>ArrayList</code> of
 	 * <code>V</code> objects.
 	 */
 	public StoryModel () {
-		   views = new ArrayList<V>();
+		views = new HashSet<V>();
 	}
 
 	/**
@@ -45,9 +45,8 @@ public abstract class StoryModel<V extends StoryView> {
 	 * @param 	view	the <code>V</code> object to add
 	 */
 	public void addView(V view) {
-		if (!views.contains(view)) {
-			views.add(view);
-		}
+		views.add(view);
+		
 	}
 
 	/**
