@@ -19,6 +19,8 @@ package story.book.model;
 
 import java.util.*;
 
+import android.util.Log;
+
 import story.book.view.StoryView;
 
 /**
@@ -68,5 +70,6 @@ public abstract class StoryModel<V extends StoryView> {
 		for (V view : views) {
 			view.update(this);
 		}
+		Log.d(String.valueOf(views.size()), "Size of views");
 	}
 }

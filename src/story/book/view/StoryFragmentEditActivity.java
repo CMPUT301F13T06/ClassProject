@@ -349,12 +349,12 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 		case 3:
 			// Edit decision branch text
-		    DialogFragment newFragment = new RequestTextDialog();
-		    ((RequestTextDialog)newFragment).setParent(StoryFragmentEditActivity.this);
-		    ((RequestTextDialog)newFragment).setParent(this);
-		    ((RequestTextDialog)newFragment).setHeader(this.getString(R.string.add_branch_title));
-		    ((RequestTextDialog)newFragment).setWarning(this.getString(R.string.bad_branch_msg));
-	        newFragment.show(getFragmentManager(), "addFragment");
+			DialogFragment newFragment = new RequestTextDialog();
+			((RequestTextDialog)newFragment).setParent(StoryFragmentEditActivity.this);
+				((RequestTextDialog)newFragment).setParent(this);
+				((RequestTextDialog)newFragment).setHeader(this.getString(R.string.add_branch_title));
+				((RequestTextDialog)newFragment).setWarning(this.getString(R.string.bad_branch_msg));
+				newFragment.show(getFragmentManager(), "addFragment");
 			break;
 
 		case 4:
