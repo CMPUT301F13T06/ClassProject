@@ -45,6 +45,8 @@ public abstract class StoryModel<V extends StoryView> {
 	 * @param 	view	the <code>V</code> object to add
 	 */
 	public void addView(V view) {
+		if(views == null) //when IO creates a new story from disk story Model constructor is never called
+			views = new HashSet<V>();
 		views.add(view);
 		
 	}
