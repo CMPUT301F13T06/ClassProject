@@ -71,7 +71,7 @@
         </activity>
         <activity
             android:name="story.book.view.StoryFragmentEditActivity"
-            android:label="@string/FragmentTitle" >
+            android:label="@string/Blank" >
         </activity>
         <activity
             android:name="story.book.view.StoryFragmentReadActivity"
