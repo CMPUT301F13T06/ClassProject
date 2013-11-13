@@ -113,12 +113,12 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 
 	/**
 	 * Displays the list of local stories.
-	 **/
+	 */
 	public void refreshList() {
-	//	adapter = new ArrayAdapter<StoryInfo>(this,
-			//	android.R.layout.simple_list_item_1,
-			//	localController.getStoryList());
-	//	listView.setAdapter(adapter);
+		adapter = new ArrayAdapter<StoryInfo>(this,
+				android.R.layout.simple_list_item_1,
+				localController.getStoryList());
+		listView.setAdapter(adapter);
 	}
 
 	@Override
@@ -189,17 +189,17 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		localController.getStory(adapter.getItem(position).getSID());
 
 		switch (item.getItemId()) {
-		case R.id.read_story:
-			readStory();
-			return true;
-		case R.id.edit_story:
-			editStory();
-			return true;
-		case R.id.delete_story:
-			deleteStory();
-			return true;
-		default:
-			return true;
+			case R.id.read_story:
+				readStory();
+				return true;
+			case R.id.edit_story:
+				editStory();
+				return true;
+			case R.id.delete_story:
+				deleteStory();
+				return true;
+			default:
+				return true;
 		}
 	}
 
@@ -222,7 +222,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		searchView.setSearchableInfo(searchManager
 				.getSearchableInfo(getComponentName()));
 		searchView.setIconifiedByDefault(false); // Do not iconify the widget
-													// expand it by default
+		// expand it by default
 
 		return true;
 	}
@@ -230,16 +230,16 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.action_search:
-			// openSearch();
-			return true;
-		case R.id.action_create_story:
-			createStory();
-			return true;
-		case R.id.title_activity_dashboard:
-			finish();
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
+			case R.id.action_search:
+				// openSearch();
+				return true;
+			case R.id.action_create_story:
+				createStory();
+				return true;
+			case R.id.title_activity_dashboard:
+				finish();
+				NavUtils.navigateUpFromSameTask(this);
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
