@@ -63,6 +63,8 @@ public abstract class StoryModel<V extends StoryView> {
 	 * Notifies all views that the model has changed.
 	 */
 	public void notifyViews() {
+		if(views == null) //when IO creates a new story from disk story Model constructor is never called
+			views = new HashSet<V>();
 		for (V view : views) {
 			view.update(this);
 		}
