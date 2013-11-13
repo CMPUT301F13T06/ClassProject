@@ -72,26 +72,24 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 		setContentView(R.layout.story_fragment_read_activity);
 
 		SCC = new StoryCreationController();
-		SCC.getStory().addView(this);
-
-		updateFragmentList();
-
 		return;
 	}
 
 	@Override
-	public void onPause() {
-		super.onPause();
-		if(SCC != null)
-			SCC.saveStory();
+	public void onStart() {
+		super.onStart();
+		SCC.getStory().addView(this);
+
+		updateFragmentList();
+
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		Story s = SCC.getStory();
-		if (s != null)
-			s.deleteView(this);
+		SCC.saveStory();
+		s.deleteView(this);
 	}
 
 	@Override
@@ -204,9 +202,10 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 		super.onCreateContextMenu(menu, v, menuInfo);
 		menu.setHeaderTitle("Select an Option:");
 		menu.add(0, v.getId(), 1, "Edit");  
-		menu.add(0, v.getId(), 2, "Set as Starting Story Fragment"); 
-		menu.add(0, v.getId(), 3, "Delete");
-		menu.add(0, v.getId(), 4, "Cancel");
+		menu.add(0, v.getId(), 2, "Change Fragment Title");  
+		menu.add(0, v.getId(), 3, "Set as Starting Story Fragment"); 
+		menu.add(0, v.getId(), 4, "Delete");
+		menu.add(0, v.getId(), 5, "Cancel");
 	}
 
 	@Override  
@@ -219,12 +218,17 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 			// Edit story fragment
 			editFragment(SFL.get(pos).getFragmentID());
 			break;
-
+			
 		case 2:
+			// TODO: Edit story fragment title
+
+			break;
+			
+		case 3:
 			// Set as starting story fragment
 			SCC.setStartingFragment(SFL.get(pos).getFragmentID());
 			break;
-		case 3:
+		case 4:
 			//Delete
 			int FID = SFL.get(pos).getFragmentID();
 			if (FID == SCC.getStartingFragment()) {
@@ -234,7 +238,7 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 				SCC.deleteFragment(FID);
 			}
 			break;
-		case 4:
+		case 5:
 			// Cancel options
 			return false;
 		}

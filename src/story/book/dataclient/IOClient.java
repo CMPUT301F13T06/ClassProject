@@ -1,11 +1,9 @@
 package story.book.dataclient;
 
 import java.io.*;
+import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import story.book.model.Story;
-import story.book.model.StoryFragment;
 import story.book.model.StoryInfo;
 import android.content.Context;
 import android.os.Environment;
@@ -21,7 +19,9 @@ import android.util.Log;
 public class IOClient extends DataClient {
 
 	private String story_dir;
-	//private Context context;
+	private Context context;
+	private File story_dir_file;
+
 	/**
 	 * Unbuffered IO for writing a serialized story. Buffered IO for read a
 	 * serialized story string.
@@ -32,7 +32,7 @@ public class IOClient extends DataClient {
 	 */
 	public IOClient(Context c) {
 		super();
-		//context = c; //I dont need to context but its nice to have for the future
+		context = c; //I dont need to context but its nice to have for the future
 
 		this.story_dir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/StoryBook";
 		new File(story_dir).mkdir();
@@ -72,16 +72,23 @@ public class IOClient extends DataClient {
 	public boolean deleteStory(int SID) {
 		File dir = new File(story_dir + "/" +String.valueOf(SID));
 		String[] children = dir.list();
-		if(children != null){
-			for (String i : children) {
-				new File(dir, i).delete();
-			}
-			return dir.delete();
+		for (String i : children) {
+			new File(dir, i).delete();
 		}
-		else
-			return false;
+		return dir.delete();
 	}
-
+	
+	/**
+	 * 
+	 * @param SID
+	 * @return
+	 */
+	public URI URIhandler(int SID) {
+		URI f = new File(story_dir + String.valueOf(SID)).toURI();
+		Log.d(f.toString(), "URI");
+		return f;
+	}
+	
 	/**
 	 * 
 	 * @return a list of all the SIDs on the internal device.
@@ -102,10 +109,7 @@ public class IOClient extends DataClient {
 		ArrayList<StoryInfo> listOfStoryInfo = new ArrayList<StoryInfo>();
 		for (String file : getStoryList()) {
 			Story s = getStory(Integer.valueOf(file).intValue());
-			if (s != null)
-				listOfStoryInfo.add(s.getStoryInfo());
-			else
-				deleteStory(Integer.valueOf(file));
+			listOfStoryInfo.add(s.getStoryInfo());
 		}
 		return listOfStoryInfo;
 	}
@@ -126,25 +130,11 @@ public class IOClient extends DataClient {
 	}
 
 	/**
-	 * 
-	 * @param search term
-	 * @return an arraylist of storyinfos that match this search term
-	 */
-	public ArrayList<StoryInfo> search(String searchTerm) {
-		ArrayList<StoryInfo> hits = new ArrayList<StoryInfo>();
-		for(StoryInfo i : getStoryInfoList()) {
-			if((i.getAuthor() + i.getGenre() + i.getSynopsis() + 
-					i.getTitle()).contains(searchTerm))
-				hits.add(i);
-		}
-		return hits;
-	}
-	/**
 	 * http://stackoverflow.com/questions/14376807/how-to-read-write-string-from
 	 * -a-file-in-android
 	 * 
 	 * @param SID
-	 *            Likely to the SID of the story or any other string
+	 *            The SID of a story
 	 * @returns A string representing a serialized story;
 	 */
 	public Story getStory(int SID) {
@@ -165,13 +155,11 @@ public class IOClient extends DataClient {
 			fis.close();
 			isr.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			Log.d("reading file error", "getStory() error");
+			e.printStackTrace();
 			return null;
 		}
 
-		Story return_s = (Story) super.unSerialize(sb.toString(), Story.class);
-
-		//Need to re-generate the view list as it is killed during serialization
-		return return_s.copy();
+		return super.unSerialize(sb.toString(), Story.class);
 	}
 }

@@ -78,8 +78,6 @@ public class EditStoryInformationActivity extends Activity  {
 		editSynopsis = (EditText) findViewById(R.id.enter_synopsis);
 
 		displayStoryInfo();
-
-		
 		
 		Button doneButton = (Button) findViewById(R.id.done);
 		doneButton.setVisibility(View.VISIBLE);

@@ -17,7 +17,9 @@
 
 package story.book.model;
 
-import java.util.ArrayList;
+import java.util.*;
+
+import android.util.Log;
 
 import story.book.view.StoryView;
 
@@ -30,40 +32,44 @@ import story.book.view.StoryView;
  */
 public abstract class StoryModel<V extends StoryView> {
 	
-	transient private ArrayList<V> views;
+	transient private Set<V> views;
 	
 	/**
 	 * Default constructor initializes an empty <code>ArrayList</code> of
 	 * <code>V</code> objects.
 	 */
 	public StoryModel () {
-		   views = new ArrayList<V>();
+		views = new HashSet<V>();
 	}
 
 	/**
 	 * Add a <code>V</code> object to the list of views.
 	 * @param 	view	the <code>V</code> object to add
 	 */
-    public void addView(V view) {
-        if (!views.contains(view)) {
-            views.add(view);
-        }
-    }
+	public void addView(V view) {
+		if(views == null) //when IO creates a new story from disk story Model constructor is never called
+			views = new HashSet<V>();
+		views.add(view);
+		
+	}
 
 	/**
 	 * Remove a <code>V</code> object from the list of views.
 	 * @param 	view	the <code>V</code> object to remove
 	 */
-    public void deleteView(V view) {
-        views.remove(view);
-    }
+	public void deleteView(V view) {
+		views.remove(view);
+	}
 
-    /**
-     * Notifies all views that the model has changed.
-     */
-    public void notifyViews() {
-        for (V view : views) {
-            view.update(this);
-        }
-    }
+	/**
+	 * Notifies all views that the model has changed.
+	 */
+	public void notifyViews() {
+		if(views == null) //when IO creates a new story from disk story Model constructor is never called
+			views = new HashSet<V>();
+		for (V view : views) {
+			view.update(this);
+		}
+		Log.d(String.valueOf(views.size()), "Size of views");
+	}
 }

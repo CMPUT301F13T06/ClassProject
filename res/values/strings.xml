@@ -34,7 +34,7 @@
     <string name="dialog_title">Warning!</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="title_activity_online_stories">OnlineStoriesActivity</string>
+    <string name="title_activity_online_stories">Online Stories</string>
     <string name="view">View</string>
     <string name="read_story">Read</string>
     <string name="edit_story">Edit</string>

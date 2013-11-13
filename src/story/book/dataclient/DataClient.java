@@ -4,7 +4,6 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import story.book.*;
 import story.book.model.Illustration;
 import story.book.model.Story;
 import story.book.model.StoryInfo;
@@ -15,7 +14,7 @@ import com.google.gson.*;
 /**
  * DataClient is an abstract class that represents 
  * a storage location that contains Stories. Stories
- * can be saved and retrieved using a DataClient.
+ * can be serialized and deserialized using a DataClient.
  * 
  * @author Anthony Ou
  * 
@@ -33,16 +32,20 @@ public abstract class DataClient {
 		.setPrettyPrinting()
 		.create();
 	}
-	
+
 	/**
-	 * 
-	 * Custom deserailizer for illustration class
+	 * Custom deserializer for illustration class
 	 * http://stackoverflow.com/questions/3629596/deserializing-an-abstract-class-in-gson
+	 * 
 	 */
-	public class IllustrationDeserialiser implements JsonDeserializer<Illustration<?>>, JsonSerializer<Illustration<?>> {
+	public class IllustrationDeserialiser 
+	implements JsonDeserializer<Illustration<?>>, JsonSerializer<Illustration<?>> {
 
 		@Override
-		public Illustration<?> deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) {
+		public Illustration<?> deserialize(
+				JsonElement jsonElement, 
+				Type typeOfT, 
+				JsonDeserializationContext context) {
 
 			JsonObject jsonObj = jsonElement.getAsJsonObject();
 			String className = jsonObj.get("ILLUSTRATIONSTORY").getAsString();
@@ -51,6 +54,7 @@ public abstract class DataClient {
 				return context.deserialize(jsonElement, clz);
 			} catch (ClassNotFoundException e) {
 				Log.d("error parsing Illustration", "DataClient");
+				e.printStackTrace();
 				return null;
 				//throw new JsonParseException(e);
 			}
@@ -59,13 +63,13 @@ public abstract class DataClient {
 		@Override
 		public JsonElement serialize(Illustration<?> object, Type type,
 				JsonSerializationContext jsonSerializationContext) {
-				JsonElement jsonEle = jsonSerializationContext.serialize(object, object.getClass());
-				jsonEle.getAsJsonObject().addProperty("ILLUSTRATIONSTORY",
-						object.getClass().getCanonicalName());
-				return jsonEle;
+			JsonElement jsonEle = jsonSerializationContext.serialize(object, object.getClass());
+			jsonEle.getAsJsonObject().addProperty("ILLUSTRATIONSTORY",
+					object.getClass().getCanonicalName());
+			return jsonEle;
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param an object
@@ -80,8 +84,26 @@ public abstract class DataClient {
 	 * @param Serial is a string of serialized object of Type type
 	 * @return a null on failure or an object (responsibility of caller to cast it)
 	 */
-	protected Object unSerialize(String serial, Type type){
+	protected <T> T unSerialize(String serial, Type type){
 		return Gsonclient.fromJson(serial, type);
+	}
+	
+	/**
+	 * 
+	 * @param searchTerm 
+	 * 					the term to search for as a string
+	 * @return an array list of story info's that match this search term
+	 */
+	public ArrayList<StoryInfo> search(String searchTerm) {
+		ArrayList<StoryInfo> hits = new ArrayList<StoryInfo>();
+		for(StoryInfo i : getStoryInfoList()) {
+			if(	i.getAuthor().contains(searchTerm) 			||
+					i.getGenre().contains(searchTerm) 		||
+					i.getSynopsis().contains(searchTerm) 	||
+					i.getTitle().contains(searchTerm))
+				hits.add(i);
+		}
+		return hits;
 	}
 
 	/**
