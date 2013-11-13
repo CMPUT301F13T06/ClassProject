@@ -100,8 +100,12 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		registerForContextMenu(listView);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int pos,
-					long id) {
+			public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+				// read story with a single tap do not change this.
+				localController.getStory(adapter.getItem(pos).getSID());
+				Intent intent = new Intent(parent.getContext(), StoryInfoActivity.class);
+				intent.putExtra("calledByOffline", false);
+				startActivity(intent);
 			}
 		});
 
