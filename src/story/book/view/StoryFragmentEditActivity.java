@@ -160,6 +160,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		case R.id.take_photo:
 
 			return true;
+
 		case R.id.addGalleryPhoto:
 
 			return true;
@@ -190,6 +191,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
 	/**
 	 * addNewTextIllustration() creates a new EditText for users to enter the text
 	 * for a TextIllustration.
@@ -265,7 +267,6 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		int position = 0;
 		if (illustrationViews.isEmpty() == false ){
 			// Display illustrations
-			formatView(illustrationViews);
 			for (View t: illustrationViews){
 				t.setId(position + 1);
 				RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
@@ -389,25 +390,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 	}
 
-	/**
-	 * formatView() (FOR TEXTVIEWS ONLY) formats illustration textViews in an array list
-	 * by changing:
-	 * 		- text size (20)
-	 * 		- text color (black)
-	 * 		- padding on the left side
-	 * 
-	 * @param View		illustrations displayed as Views
-	 */
-	private void formatView(ArrayList<View> v) {
-		Iterator<View> viewIterator = v.iterator();
-		EditText x = null;
-		while(viewIterator.hasNext()) {
-			x = (EditText) viewIterator.next();
-			x.setTextSize(20);
-			x.setTextColor(Color.BLACK);
-			x.setPaddingRelative(7, 0, 0, 10);
-		}
-	}
+
 
 	/**
 	 * formatButton() creates a button with the corresponding decision branch text

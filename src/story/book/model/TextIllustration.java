@@ -17,7 +17,13 @@
 
 package story.book.model;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Iterator;
 import story.book.view.StoryApplication;
+import android.annotation.TargetApi;
+import android.graphics.Color;
+import android.os.Build;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,8 +33,9 @@ import android.widget.TextView;
  * 
  * @author Alexander Cheung
  */
+@TargetApi(Build.VERSION_CODES.JELLY_BEAN) 
 public class TextIllustration extends Illustration<String> {
-	
+
 	/**
 	 * Initialize content in constructor.
 	 * @param content is the String containing the text of the TextIllustration
@@ -38,7 +45,7 @@ public class TextIllustration extends Illustration<String> {
 		super();
 		setContent(content);
 	}
-	
+
 	/**
 	 * Sets the content of the content of the <code>TextIllustration</code> to
 	 * the specified <code>String</code>.
@@ -51,7 +58,7 @@ public class TextIllustration extends Illustration<String> {
 	public String getContent() {
 		return this.content;
 	}
-	
+
 	/**
 	 * Returns a <code>TextView</code> object initialized with the contents of
 	 * the illustration.
@@ -62,19 +69,38 @@ public class TextIllustration extends Illustration<String> {
 	public View getView() {
 		TextView textView = new TextView(StoryApplication.getContext());
 		textView.setText(this.content);
-		return textView;
+		return formatView(textView, TextView.class);
 	}
-	
+
 	/**
 	 * Returns a <code>EditText</code> object initialized with the contents of
 	 * the illustration.
 	 * 
 	 * @return	the <code>EditText</code> object with text set
 	 */
-	
+
 	public EditText getEditView() {
 		EditText editView = new EditText(StoryApplication.getContext());
 		editView.setText(this.content);
-		return editView;
+		return formatView(editView, EditText.class);
+	}
+
+	/**
+	 * formatView() (FOR TEXTVIEWS ONLY) formats illustration textViews in an array list
+	 * by changing:
+	 * 		- text size (20)
+	 * 		- text color (black)
+	 * 		- padding on the left side
+	 * @param <T>
+	 * 
+	 * @param View		illustrations displayed as Views
+	 * @return 
+	 */
+	private <T> T formatView(View v, Type T) {
+		T x = (T) v;
+		((EditText) x).setTextSize(20);
+		((EditText) x).setTextColor(Color.BLACK);
+		((EditText) x).setPaddingRelative(7, 0, 0, 10);
+		return x;
 	}
 }
