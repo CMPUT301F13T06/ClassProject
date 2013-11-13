@@ -26,6 +26,8 @@ import story.book.model.Story;
 import story.book.model.StoryInfo;
 
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -40,14 +42,16 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 
 /**
- * Activity that allows the user to create new stories, delete stories, edit stories, 
- * or select a story to read from a list of their locally stored stories.
- * This activity uses a controller LocalStoryController to get the story information
- * to display in the list. The controller is also used to save stories.
- *
+ * Activity that allows the user to create new stories, delete stories, edit
+ * stories, or select a story to read from a list of their locally stored
+ * stories. This activity uses a controller LocalStoryController to get the
+ * story information to display in the list. The controller is also used to save
+ * stories.
+ * 
  * @author Nancy Pham-Nguyen
  * @author Anthony Ou
  */
@@ -64,7 +68,6 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	ArrayList<HashMap<String, String>> sList;
 	HashMap<String, String> testMap;
 
-
 	private LocalStoryController localController;
 	ArrayAdapter<StoryInfo> adapter;
 	int position;
@@ -76,21 +79,20 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 
 		localController = new LocalStoryController();
 
-		//TODO Will move to SimpleAdapter in the future
-		/*sList = new ArrayList<HashMap<String, String>>();
-
-		String[] from = new String[] { KEY_TITLE, KEY_ID };
-		int[] to = new int[] { R.id.textTest, R.id.textTest2 };
-
-		// for (int i = 0; i < from.length; i++) {
-		testMap = new HashMap<String, String>();
-		testMap.put(KEY_TITLE, from[0]);
-		testMap.put(KEY_ID, "" + "\n" + "hello");
-		sList.add(testMap);
-		// }
-
-		sAdapter = new SimpleAdapter(this, sList, R.layout.stories_list, from,
-				to);*/
+		// TODO Will move to SimpleAdapter in the future
+		/*
+		 * sList = new ArrayList<HashMap<String, String>>();
+		 * 
+		 * String[] from = new String[] { KEY_TITLE, KEY_ID }; int[] to = new
+		 * int[] { R.id.textTest, R.id.textTest2 };
+		 * 
+		 * // for (int i = 0; i < from.length; i++) { testMap = new
+		 * HashMap<String, String>(); testMap.put(KEY_TITLE, from[0]);
+		 * testMap.put(KEY_ID, "" + "\n" + "hello"); sList.add(testMap); // }
+		 * 
+		 * sAdapter = new SimpleAdapter(this, sList, R.layout.stories_list,
+		 * from, to);
+		 */
 
 		listView = (ListView) findViewById(R.id.listView);
 		refreshList();
@@ -100,11 +102,11 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int pos,
 					long id) {
-				localController.getStory(adapter.getItem(pos).getSID());
-				Intent intent = new Intent(parent.getContext(), StoryInfoActivity.class);
-				intent.putExtra("calledByOffline", false);
-				startActivity(intent);
-			}});
+			}
+		});
+
+		// openSearch();
+
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
@@ -112,10 +114,11 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	/**
 	 * Displays the list of local stories.
 	 **/
-	public void refreshList(){
-		adapter = new ArrayAdapter<StoryInfo>(this, 
-				android.R.layout.simple_list_item_1, localController.getStoryList());
-		listView.setAdapter(adapter);
+	public void refreshList() {
+	//	adapter = new ArrayAdapter<StoryInfo>(this,
+			//	android.R.layout.simple_list_item_1,
+			//	localController.getStoryList());
+	//	listView.setAdapter(adapter);
 	}
 
 	@Override
@@ -123,7 +126,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		super.onResume();
 		refreshList();
 	}
-	
+
 	/**
 	 * Add the newly created story to the list with it's story information
 	 **/
@@ -180,10 +183,11 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	 */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
+				.getMenuInfo();
 		position = info.position;
 		localController.getStory(adapter.getItem(position).getSID());
-		
+
 		switch (item.getItemId()) {
 		case R.id.read_story:
 			readStory();
@@ -199,10 +203,27 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		}
 	}
 
+	/**
+	 * http://stackoverflow.com/questions/18832890/android-nullpointerexception-on-searchview-in-action-bar
+	 * 
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		// MenuInflater inflater = getMenuInflater();
+		// inflater.inflate(R.menu.local_stories, menu);
+
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.local_stories, menu);
+
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
+				.getActionView();
+		// Assumes current activity is the searchable activity
+		searchView.setSearchableInfo(searchManager
+				.getSearchableInfo(getComponentName()));
+		searchView.setIconifiedByDefault(false); // Do not iconify the widget
+													// expand it by default
+
 		return true;
 	}
 
@@ -210,7 +231,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_search:
-			openSearch();
+			// openSearch();
 			return true;
 		case R.id.action_create_story:
 			createStory();
