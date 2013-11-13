@@ -154,7 +154,6 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.text:
-			// TODO: Pass illustration to fragment for editing
 			addNewTextIllustration(this.findViewById(R.id.reading_fragment));
 			return true;
 
@@ -313,13 +312,15 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			menu.setHeaderTitle("Select an Option:");
 			menu.add(0, v.getId(), 2, "Delete decision branch");  
 			menu.add(0, v.getId(), 3, "Edit decision branch text"); 
-			menu.add(0, v.getId(), 4, "Cancel"); 
+			menu.add(0, v.getId(), 6, "Cancel"); 
 		}
 
 		else {
 			menu.setHeaderTitle("Select an Option:");
 			menu.add(0, v.getId(), 1, "Delete illustration");  
-			menu.add(0, v.getId(), 4, "Cancel"); 
+			menu.add(0, v.getId(), 4, "Move illustration up"); 
+			menu.add(0, v.getId(), 5, "Move illustration down"); 
+			menu.add(0, v.getId(), 6, "Cancel"); 
 		}
 	}
 
@@ -356,8 +357,30 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 				((RequestTextDialog)newFragment).setWarning(this.getString(R.string.bad_branch_msg));
 				newFragment.show(getFragmentManager(), "addFragment");
 			break;
-
+			
 		case 4:
+			// Move illustration up
+			if (itemPos > 0){
+				View above = illustrationViews.get(itemPos-1);
+				illustrationViews.set(itemPos-1, illustrationViews.get(itemPos));
+				illustrationViews.set(itemPos, above);
+				displayFragment();
+			}
+			
+			break;
+			
+		case 5:
+			// Move illustration down
+			if (itemPos < illustrationViews.size()-1) {
+				View below = illustrationViews.get(itemPos+1);
+				illustrationViews.set(itemPos+1, illustrationViews.get(itemPos));
+				illustrationViews.set(itemPos, below);
+				displayFragment();
+			}
+			
+			break;
+			
+		case 6:
 			// Cancel options
 			return false;
 		}
