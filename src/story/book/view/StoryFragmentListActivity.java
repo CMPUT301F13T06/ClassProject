@@ -77,7 +77,7 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 
 	@Override
 	public void onStart() {
-		super.onPause();
+		super.onStart();
 		SCC.getStory().addView(this);
 
 		updateFragmentList();
