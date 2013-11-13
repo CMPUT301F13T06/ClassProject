@@ -72,27 +72,7 @@ public class ReadingFragment extends Fragment {
 		displayFragment(SF, rootView);
 		return rootView;
 	}
-
-	/**
-	 * formatView() (FOR TEXTVIEWS ONLY) formats illustration textViews in an array list
-	 * by changing:
-	 * 		- text size (20)
-	 * 		- text color (black)
-	 * 		- padding on the left side
-	 * 
-	 * @param View		illustrations displayed as Views
-	 */
-	private void formatView(ArrayList<View> v) {
-		Iterator<View> viewIterator = v.iterator();
-		TextView x = null;
-		while(viewIterator.hasNext()) {
-			x = (TextView) viewIterator.next();
-			x.setTextSize(20);
-			x.setTextColor(Color.BLACK);
-			x.setPaddingRelative(5, 0, 0, 10);
-		}
-	}
-
+	
 	/**
 	 * formatButton() creates a button with the corresponding decision branch text
 	 * for each decision branch in an array list of decision branches.
@@ -142,7 +122,6 @@ public class ReadingFragment extends Fragment {
 			illustrationViews.add(((TextIllustration)i).getView());
 		}
 
-		formatView(illustrationViews);
 		int pos = 0;
 
 		for (View t: illustrationViews){
