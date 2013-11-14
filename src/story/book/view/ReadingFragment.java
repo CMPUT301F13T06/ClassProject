@@ -104,9 +104,8 @@ public class ReadingFragment extends Fragment {
 
 	/**
 	 * displayFragment() displays all text illustrations as views 
-	 * and decision branches as buttons by getting them from the containing 
-	 * fragment and formatting them by calling <code>formatView</code>
-	 * and <code>formatButton</code> respectively.
+	 * and decision branches as buttons by getting them from 
+	 * the containing fragment 
 	 * 
 	 * @param StoryFragment 	StoryFragment object
 	 * @param View	 where illustrations will be displayed
