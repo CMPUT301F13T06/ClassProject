@@ -32,6 +32,8 @@ import android.widget.TextView;
  * Illustration class with textual content.
  * 
  * @author Alexander Cheung
+ * @author Anthony Ou
+ * @author Jessica Surya
  */
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN) 
 public class TextIllustration extends Illustration<String> {
@@ -41,6 +43,7 @@ public class TextIllustration extends Illustration<String> {
 	 * @param content is the String containing the text of the TextIllustration
 	 */
 	String content;
+	
 	public TextIllustration(String content) {
 		super();
 		setContent(content);
@@ -55,6 +58,7 @@ public class TextIllustration extends Illustration<String> {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	
 	public String getContent() {
 		return this.content;
 	}
@@ -78,7 +82,6 @@ public class TextIllustration extends Illustration<String> {
 	 * 
 	 * @return	the <code>EditText</code> object with text set
 	 */
-
 	public EditText getEditView() {
 		EditText editView = new EditText(StoryApplication.getContext());
 		editView.setText(this.content);

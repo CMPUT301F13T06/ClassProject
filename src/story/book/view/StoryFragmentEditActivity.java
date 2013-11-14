@@ -17,6 +17,7 @@
 package story.book.view;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,9 +28,9 @@ import story.book.controller.FragmentCreationController;
 import story.book.controller.StoryCreationController;
 import story.book.model.DecisionBranch;
 import story.book.model.Illustration;
+import story.book.model.ImageIllustration;
 import story.book.model.StoryFragment;
 import story.book.model.TextIllustration;
-
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.DialogFragment;
@@ -38,8 +39,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -52,6 +56,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -123,8 +128,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if (SF != null)
-			SF.deleteView(this);
+		SF.deleteView(this);
 	}
 
 	@Override
@@ -158,7 +162,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			return true;
 
 		case R.id.take_photo:
-
+			Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File("/storage/sdcard/test.jpg")));
+			startActivityForResult(i, 100);
 			return true;
 
 		case R.id.addGalleryPhoto:
@@ -192,6 +198,14 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		}
 	}
 	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == 100 && resultCode == RESULT_OK) {
+			ImageView a = new ImageView(this);
+			a.setImageURI(Uri.fromFile(new File("/storage/sdcard/test.jpg")));
+			illustrationViews.add(a);
+			displayFragment();
+		}
+	}
 	/**
 	 * addNewTextIllustration() creates a new EditText for users to enter the text
 	 * for a TextIllustration.
@@ -389,8 +403,6 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		return true; 
 
 	}
-
-
 
 	/**
 	 * formatButton() creates a button with the corresponding decision branch text
