@@ -1,6 +1,14 @@
 package story.book.model;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+
 import story.book.view.StoryApplication;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.view.DragEvent;
 import android.view.View;
@@ -14,6 +22,13 @@ public class ImageIllustration extends Illustration<Uri> {
 	public ImageIllustration(Uri content) {
 		super();
 		setContent(content);
+		Bitmap bmp =  BitmapFactory.decodeFile(content.getEncodedPath());
+		try {
+			bmp.compress(CompressFormat.JPEG, 0, new FileOutputStream(content.getPath()));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public Uri getContent() {
@@ -26,6 +41,7 @@ public class ImageIllustration extends Illustration<Uri> {
 	}
 
 	public View getView() {
+		
 		ImageView a = new ImageView(StoryApplication.getContext());
 		a.setImageURI(content);
 		a.setAdjustViewBounds(true);
@@ -41,5 +57,10 @@ public class ImageIllustration extends Illustration<Uri> {
 		});
 
 		return a;
+	}
+
+	@Override
+	public void deleteContent() {	
+		new File(content.getPath()).delete();
 	}
 }

@@ -19,4 +19,10 @@ public class AudioIllustration extends Illustration{
 		return null;
 	}
 
+	@Override
+	public void deleteContent() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

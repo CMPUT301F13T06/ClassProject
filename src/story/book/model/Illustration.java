@@ -50,4 +50,6 @@ public abstract class Illustration<T> {
 	 * @return the View object containing the contents of the illustration
 	 */
 	public abstract View getView();
+	
+	public abstract void deleteContent();
 }

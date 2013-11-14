@@ -28,4 +28,10 @@ public class VideoIllustration extends Illustration<Uri> {
 		this.content = content;	
 	}
 
+	@Override
+	public void deleteContent() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

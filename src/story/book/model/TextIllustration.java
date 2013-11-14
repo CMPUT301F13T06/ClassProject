@@ -106,4 +106,10 @@ public class TextIllustration extends Illustration<String> {
 		((TextView) x).setPaddingRelative(7, 0, 0, 10);
 		return x;
 	}
+
+	@Override
+	public void deleteContent() {
+		// TODO Auto-generated method stub
+		
+	}
 }

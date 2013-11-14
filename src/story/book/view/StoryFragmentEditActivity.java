@@ -26,11 +26,7 @@ import story.book.view.R;
 import story.book.controller.DecisionBranchCreationController;
 import story.book.controller.FragmentCreationController;
 import story.book.controller.StoryCreationController;
-import story.book.model.DecisionBranch;
-import story.book.model.Illustration;
-import story.book.model.ImageIllustration;
-import story.book.model.StoryFragment;
-import story.book.model.TextIllustration;
+import story.book.model.*;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.DialogFragment;
@@ -48,6 +44,8 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View.OnDragListener;
+import android.view.DragEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -166,6 +164,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		case R.id.take_photo:
 			Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/test.jpg")));
+			
 			startActivityForResult(i, Actions.PHOTO.ordinal());
 			return true;
 
@@ -189,6 +188,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		case R.id.record_video:
 			i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 			i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/test.avi")));
+			i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
 			startActivityForResult(i, Actions.VIDEO.ordinal());
 			return true;
 		case R.id.title_activity_dashboard:
@@ -204,15 +204,13 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(requestCode == Actions.PHOTO.ordinal() && resultCode == RESULT_OK) {
-			ImageView a = new ImageView(this);
-			a.setImageURI(Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/test.jpg")));
-			illustrationViews.add(a);
+			ImageIllustration a = new ImageIllustration(data.getData());
+			illustrationViews.add(a.getView());
 			displayFragment();
 		}
 		if(requestCode == Actions.VIDEO.ordinal() && resultCode == RESULT_OK) {
-			VideoView a = new VideoView(this);
-			a.setVideoURI(Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/test.avi")));
-			illustrationViews.add(a);
+			VideoIllustration a = new VideoIllustration(data.getData());
+			illustrationViews.add(a.getView());
 			displayFragment();
 		}
 			
