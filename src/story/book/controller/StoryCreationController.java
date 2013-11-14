@@ -20,6 +20,8 @@ package story.book.controller;
 import java.util.Date;
 import java.util.HashMap;
 
+import android.net.Uri;
+
 import story.book.dataclient.ESClient;
 import story.book.dataclient.IOClient;
 import story.book.model.Story;
@@ -43,6 +45,8 @@ public class StoryCreationController extends LocalEditingController {
 	
 	public StoryCreationController() {
 		super();
+		es = StoryApplication.getESClient();
+		io = StoryApplication.getIOClient();
 		this.story = StoryApplication.getCurrentStory();
 	}
 	
@@ -95,6 +99,10 @@ public class StoryCreationController extends LocalEditingController {
 		story.getStoryInfo().setStartingFragmentID(fragmentID);
 	}
 	
+	public Uri getFreeUri(String Extension) {
+		return io.URIhandler(story.getStoryInfo().getSID(), Extension);
+	}
+	
 	/**
 	 * Get the starting fragment of the current Story.
 	 * 
@@ -115,8 +123,7 @@ public class StoryCreationController extends LocalEditingController {
 	 * Publishes the Story with the specified SID to the server.
 	 */
 	public void publishStory() {
-		es = StoryApplication.getESClient();
-		io = StoryApplication.getIOClient();
+
 		
 		Story story = StoryApplication.getCurrentStory();
 		StoryInfo storyInfo = story.getStoryInfo();

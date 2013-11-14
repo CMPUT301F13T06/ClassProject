@@ -9,6 +9,7 @@ import story.book.view.StoryApplication;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.view.DragEvent;
 import android.view.View;
@@ -29,7 +30,11 @@ public class ImageIllustration extends Illustration<Uri> {
 		setContent(content);
 		Bitmap bmp =  BitmapFactory.decodeFile(content.getEncodedPath());
 		try {
+			Matrix matrix = new Matrix();
+			matrix.postRotate(90);
+			Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
 			bmp.compress(CompressFormat.JPEG, 0, new FileOutputStream(content.getPath()));
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

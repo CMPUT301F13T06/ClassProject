@@ -152,7 +152,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		return super.onCreateOptionsMenu(menu);
 	}
 	
-	private enum Actions {PHOTO, VIDEO, SELECTIMAGE}
+	private enum Actions {PHOTO, VIDEO}
 	
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
@@ -163,23 +163,21 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 		case R.id.take_photo:
 			Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/test.jpg")));
-			
+			i.putExtra(MediaStore.EXTRA_OUTPUT, SCC.getFreeUri(".jpg"));
 			startActivityForResult(i, Actions.PHOTO.ordinal());
 			return true;
-
 		case R.id.addGalleryPhoto:
 			i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-			startActivityForResult(i, Actions.SELECTIMAGE.ordinal());
+			startActivityForResult(i, Actions.PHOTO.ordinal());
 			return true;
 		case R.id.addDecisionBranch:
 			i = new Intent(this, DecisionPickerActivity.class);
 			i.putExtra("FID", FID);
 			startActivity(i);
 			return true;
-
 		case R.id.audio:
-
+			AudioIllustration audio = new AudioIllustration();
+			illustrationViews.add(audio.getView());
 			return true;
 
 		case R.id.video:
@@ -188,7 +186,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 		case R.id.record_video:
 			i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-			i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/test.avi")));
+			i.putExtra(MediaStore.EXTRA_OUTPUT, SCC.getFreeUri(".mp4"));
 			i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
 			startActivityForResult(i, Actions.VIDEO.ordinal());
 			return true;
@@ -204,18 +202,20 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	}
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(requestCode == Actions.PHOTO.ordinal() && resultCode == RESULT_OK) {
-			ImageIllustration a = new ImageIllustration(data.getData());
-			illustrationViews.add(a.getView());
-			displayFragment();
+		if(resultCode == RESULT_OK) {
+			if(requestCode == Actions.PHOTO.ordinal()) {
+				ImageIllustration image = new ImageIllustration(data.getData());
+				illustrationViews.add(image.getView());
+				displayFragment();
+			}
+			if(requestCode == Actions.VIDEO.ordinal()) {
+				VideoIllustration video = new VideoIllustration(data.getData());
+				illustrationViews.add(video.getView());
+				displayFragment();
+			}
 		}
-		if(requestCode == Actions.VIDEO.ordinal() && resultCode == RESULT_OK) {
-			VideoIllustration a = new VideoIllustration(data.getData());
-			illustrationViews.add(a.getView());
-			displayFragment();
-		}
-			
 	}
+	
 	/**
 	 * addNewTextIllustration() creates a new EditText for users to enter the text
 	 * for a TextIllustration.

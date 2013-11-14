@@ -2,10 +2,14 @@ package story.book.dataclient;
 
 import java.io.*;
 import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 import story.book.model.Story;
 import story.book.model.StoryInfo;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
@@ -83,10 +87,15 @@ public class IOClient extends DataClient {
 	 * @param SID
 	 * @return
 	 */
-	public URI URIhandler(int SID) {
-		URI f = new File(story_dir + String.valueOf(SID)).toURI();
-		Log.d(f.toString(), "URI");
-		return f;
+	public Uri URIhandler(int SID, String Extension) {
+		File dir = new File(story_dir+String.valueOf(SID));
+		ArrayList<String> listOfFiles = new ArrayList<String>();
+		String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
+		for(String i : dir.list())
+			if(i.contains(date))
+				listOfFiles.add(i);
+
+		return Uri.fromFile(new File(dir, "ID-"+listOfFiles.size()+"-"+date+Extension));
 	}
 	
 	/**
