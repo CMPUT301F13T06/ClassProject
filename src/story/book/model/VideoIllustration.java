@@ -1,5 +1,7 @@
 package story.book.model;
 
+import java.io.File;
+
 import story.book.view.StoryApplication;
 import android.net.Uri;
 import android.view.View;
@@ -28,10 +30,8 @@ public class VideoIllustration extends Illustration<Uri> {
 		this.content = content;	
 	}
 
-	@Override
 	public void deleteContent() {
-		// TODO Auto-generated method stub
-		
+		new File(content.getPath()).delete();
 	}
 
 }

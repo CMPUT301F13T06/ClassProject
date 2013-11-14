@@ -19,6 +19,11 @@ public class ImageIllustration extends Illustration<Uri> {
 
 	private Uri content;
 	
+	/**
+	 * The picture at the specified location will be formated here 
+	 * for reduced size and correct orrientation.
+	 * @param content
+	 */
 	public ImageIllustration(Uri content) {
 		super();
 		setContent(content);
@@ -40,6 +45,9 @@ public class ImageIllustration extends Illustration<Uri> {
 		this.content = content;
 	}
 
+	/**
+	 * return an ImageView 
+	 */
 	public View getView() {
 		
 		ImageView a = new ImageView(StoryApplication.getContext());

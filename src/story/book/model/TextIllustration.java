@@ -107,7 +107,6 @@ public class TextIllustration extends Illustration<String> {
 		return x;
 	}
 
-	@Override
 	public void deleteContent() {
 		// TODO Auto-generated method stub
 		
