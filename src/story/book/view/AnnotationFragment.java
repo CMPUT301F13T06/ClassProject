@@ -51,51 +51,51 @@ import android.widget.RelativeLayout;
 public class AnnotationFragment extends Fragment {
 	StoryReadController SRC;
 	StoryFragment SF;
-//	ArrayList<Annotation> annotation;
+	//	ArrayList<Annotation> annotation;
 	ArrayList<DecisionBranch> decisions;
 	ArrayList<Button> buttons;
 	View rootView;
 	int nextFragmentID;
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
+
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		View rootView = inflater.inflate(R.layout.annotation_fragment, container, false);
 		SRC = new StoryReadController();
 		SF = SRC.getStartingFragment();
 		displayAnnotations(SF, rootView);
-		
+
 		return rootView;
 
 	}
-	
+
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-	    // Inflate the menu items for use in the action bar
+		// Inflate the menu items for use in the action bar
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.add_annotation_menu, menu);
-	   
+
 	}
-	
+
 	public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-        case R.id.fromCamera:
-            return true;
-            
-        case R.id.fromGallery:
-            
-            return true;
-        case R.id.add_new:
-            Intent intent = new Intent();
-            startActivity(intent);
-            return true;
-            
-        default:
-            return super.onOptionsItemSelected(item);
-        }
+		// Handle item selection
+		switch (item.getItemId()) {
+		case R.id.fromCamera:
+			return true;
+
+		case R.id.fromGallery:
+
+			return true;
+		case R.id.add_new:
+			Intent intent = new Intent();
+			startActivity(intent);
+			return true;
+
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 	/**
 	 * displayAnnotations() displays all annotations as views 
@@ -106,33 +106,33 @@ public class AnnotationFragment extends Fragment {
 	 */
 	private void displayAnnotations(StoryFragment SF, View rootView) {
 
-//		annotation = SF.getAnnotations();
-//
-//		ArrayList<View> AnnotationViews = new ArrayList<View>();
-//
-//		for (Annotation i : annotations){
-//			AnnotationViews.add(((TextIllustration)i).getView());
-//		}
-//
-//		int pos = 0;
-//
-//		for (View t: AnnotationViews){
-//			t.setId(pos + 1);
-//			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
-//					WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
-//			p.addRule(RelativeLayout.BELOW, pos);
-//			t.setLayoutParams(p);
-//			((ViewGroup) rootView).addView(t, p);
-//			pos++;
-//		}
-		
+		//		annotation = SF.getAnnotations();
+		//
+		//		ArrayList<View> AnnotationViews = new ArrayList<View>();
+		//
+		//		for (Annotation i : annotations){
+		//			AnnotationViews.add(((TextIllustration)i).getView());
+		//		}
+		//
+		//		int pos = 0;
+		//
+		//		for (View t: AnnotationViews){
+		//			t.setId(pos + 1);
+		//			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
+		//					WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
+		//			p.addRule(RelativeLayout.BELOW, pos);
+		//			t.setLayoutParams(p);
+		//			((ViewGroup) rootView).addView(t, p);
+		//			pos++;
+		//		}
+
 	}
-	
+
 	public void update() {
 		((ViewGroup) this.getView()).removeAllViews();
 		displayAnnotations(SF, rootView);
 	}
-	
+
 	/*
 	 * Loads the annotations for the next fragment (after a decision branch
 	 * has been selected in the <code>ReadingFragment</code>
