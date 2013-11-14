@@ -2,7 +2,9 @@ package story.book.model;
 
 import story.book.view.StoryApplication;
 import android.net.Uri;
+import android.view.DragEvent;
 import android.view.View;
+import android.view.View.OnDragListener;
 import android.widget.ImageView;
 
 public class ImageIllustration extends Illustration<Uri> {
@@ -27,8 +29,17 @@ public class ImageIllustration extends Illustration<Uri> {
 		ImageView a = new ImageView(StoryApplication.getContext());
 		a.setImageURI(content);
 		a.setAdjustViewBounds(true);
-		if(a.getHeight() > a.getWidth())
-			a.setRotation(90);
+		a.setOnDragListener(new OnDragListener() {
+			
+			@Override
+			public boolean onDrag(View v, DragEvent event) {
+				// TODO Auto-generated method stub
+				((ImageView)v).setMaxHeight((int) event.getX());
+				((ImageView)v).setMaxWidth((int) event.getY());
+				return false;
+			}
+		});
+
 		return a;
 	}
 }

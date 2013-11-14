@@ -113,7 +113,6 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		}
 
 		SF = SFL.get(FID);
-		SF.notifyViews();
 
 		String title = SF.getFragmentTitle();
 
@@ -154,7 +153,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		inflater.inflate(R.menu.standard_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-
+	
+	private enum Actions {PHOTO, VIDEO}
+	
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
@@ -165,7 +166,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		case R.id.take_photo:
 			Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/test.jpg")));
-			startActivityForResult(i, 100);
+			startActivityForResult(i, Actions.PHOTO.ordinal());
 			return true;
 
 		case R.id.addGalleryPhoto:
@@ -188,7 +189,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		case R.id.record_video:
 			i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 			i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/test.avi")));
-			startActivityForResult(i, 99);
+			startActivityForResult(i, Actions.VIDEO.ordinal());
 			return true;
 		case R.id.title_activity_dashboard:
 			i = new Intent(this, Dashboard.class);
@@ -202,15 +203,15 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	}
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(requestCode == 100 && resultCode == RESULT_OK) {
+		if(requestCode == Actions.PHOTO.ordinal() && resultCode == RESULT_OK) {
 			ImageView a = new ImageView(this);
-			a.setImageURI(Uri.fromFile(new File("/storage/sdcard/test.jpg")));
+			a.setImageURI(Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/test.jpg")));
 			illustrationViews.add(a);
 			displayFragment();
 		}
-		if(requestCode == 99 && resultCode == RESULT_OK) {
+		if(requestCode == Actions.VIDEO.ordinal() && resultCode == RESULT_OK) {
 			VideoView a = new VideoView(this);
-			a.setVideoURI(Uri.fromFile(new File("/storage/sdcard/test.avi")));
+			a.setVideoURI(Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/test.avi")));
 			illustrationViews.add(a);
 			displayFragment();
 		}
