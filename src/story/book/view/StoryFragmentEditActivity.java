@@ -152,7 +152,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		return super.onCreateOptionsMenu(menu);
 	}
 	
-	private enum Actions {PHOTO, VIDEO}
+	private enum Actions {PHOTO, VIDEO, SELECTIMAGE}
 	
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
@@ -169,7 +169,8 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			return true;
 
 		case R.id.addGalleryPhoto:
-
+			i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+			startActivityForResult(i, Actions.SELECTIMAGE.ordinal());
 			return true;
 		case R.id.addDecisionBranch:
 			i = new Intent(this, DecisionPickerActivity.class);
