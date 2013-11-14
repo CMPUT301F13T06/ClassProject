@@ -59,6 +59,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 /**
  * StoryFragmentEditActivity is the interface users can make changes
@@ -163,7 +164,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 		case R.id.take_photo:
 			Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File("/storage/sdcard/test.jpg")));
+			i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/test.jpg")));
 			startActivityForResult(i, 100);
 			return true;
 
@@ -171,9 +172,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 			return true;
 		case R.id.addDecisionBranch:
-			Intent intent2 = new Intent(this, DecisionPickerActivity.class);
-			intent2.putExtra("FID", FID);
-			startActivity(intent2);
+			i = new Intent(this, DecisionPickerActivity.class);
+			i.putExtra("FID", FID);
+			startActivity(i);
 			return true;
 
 		case R.id.audio:
@@ -181,15 +182,17 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			return true;
 
 		case R.id.video:
-
+			
 			return true;
 
 		case R.id.record_video:
-
+			i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+			i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/test.avi")));
+			startActivityForResult(i, 99);
 			return true;
 		case R.id.title_activity_dashboard:
-			Intent intent = new Intent(this, Dashboard.class);
-			startActivity(intent);
+			i = new Intent(this, Dashboard.class);
+			startActivity(i);
 			finish();
 			return true;
 
@@ -205,6 +208,13 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			illustrationViews.add(a);
 			displayFragment();
 		}
+		if(requestCode == 99 && resultCode == RESULT_OK) {
+			VideoView a = new VideoView(this);
+			a.setVideoURI(Uri.fromFile(new File("/storage/sdcard/test.avi")));
+			illustrationViews.add(a);
+			displayFragment();
+		}
+			
 	}
 	/**
 	 * addNewTextIllustration() creates a new EditText for users to enter the text

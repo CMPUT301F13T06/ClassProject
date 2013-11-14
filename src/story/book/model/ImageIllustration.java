@@ -26,6 +26,9 @@ public class ImageIllustration extends Illustration<Uri> {
 	public View getView() {
 		ImageView a = new ImageView(StoryApplication.getContext());
 		a.setImageURI(content);
+		a.setAdjustViewBounds(true);
+		if(a.getHeight() > a.getWidth())
+			a.setRotation(90);
 		return a;
 	}
 }
