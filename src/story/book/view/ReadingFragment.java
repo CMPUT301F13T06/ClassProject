@@ -111,7 +111,8 @@ public class ReadingFragment extends Fragment {
 	 * @param View	 where illustrations will be displayed
 	 */
 	private void displayFragment(StoryFragment SF, View rootView) {
-
+		
+		RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.reading_fragment);
 		illustrations = SF.getIllustrations();
 		decisions = SF.getDecisionBranches();
 
@@ -129,7 +130,7 @@ public class ReadingFragment extends Fragment {
 					WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
 			p.addRule(RelativeLayout.BELOW, pos);
 			t.setLayoutParams(p);
-			((ViewGroup) rootView).addView(t, p);
+			((ViewGroup) layout).addView(t, p);
 			pos++;
 		}
 
@@ -142,13 +143,12 @@ public class ReadingFragment extends Fragment {
 			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
 					LayoutParams.WRAP_CONTENT);
 			if (buttonIndex == 1) {
-				lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+				lp.setMargins(0, 50, 0, 0);
 			}
-			else {
-			lp.addRule(RelativeLayout.ABOVE, pos);
-			}
+			lp.setMargins(0, 10, 0, 0);
+			lp.addRule(RelativeLayout.BELOW, pos);
 			dbButton.setLayoutParams(lp);
-			((ViewGroup) rootView).addView(dbButton, lp);
+			((ViewGroup) layout).addView(dbButton, lp);
 			pos++;
 		}
 
