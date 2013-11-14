@@ -40,7 +40,7 @@ public abstract class Illustration<T> {
 	 * Sets the content of the Illustration to object of type T.
 	 * @param content the content to be stored in the Illustration, of type T.
 	 */
-	public abstract void setContent(String content);
+	public abstract void setContent(T content);
 	
 	/**
 	 * Returns the contents of the illustration in a View object for Activities
