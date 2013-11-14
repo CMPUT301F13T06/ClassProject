@@ -101,9 +101,9 @@ public class TextIllustration extends Illustration<String> {
 	 */
 	private <T> T formatView(View v, Type T) {
 		T x = (T) v;
-		((EditText) x).setTextSize(20);
-		((EditText) x).setTextColor(Color.BLACK);
-		((EditText) x).setPaddingRelative(7, 0, 0, 10);
+		((TextView) x).setTextSize(20);
+		((TextView) x).setTextColor(Color.BLACK);
+		((TextView) x).setPaddingRelative(7, 0, 0, 10);
 		return x;
 	}
 }
