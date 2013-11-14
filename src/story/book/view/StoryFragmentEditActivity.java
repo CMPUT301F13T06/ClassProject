@@ -302,12 +302,10 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 				RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
 						LayoutParams.WRAP_CONTENT);
 				if (buttonIndex == 1) {
-					lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+					lp.setMargins(0, 50, 0, 0);
 				}
-				else {
-					lp.addRule(RelativeLayout.ABOVE, position);
-				}
-
+				lp.setMargins(0, 10, 0, 0);
+				lp.addRule(RelativeLayout.BELOW, position);
 				dbButton.setLayoutParams(lp);
 				registerForContextMenu(dbButton);
 				((ViewGroup) layout).addView(dbButton, lp);
