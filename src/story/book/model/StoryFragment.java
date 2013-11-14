@@ -42,7 +42,7 @@ public class StoryFragment extends StoryModel<StoryView> {
 	private Integer fragmentID;
 	private ArrayList<Illustration> illustrations;
 	private ArrayList<DecisionBranch> decisionBranches;
-	// private ArrayList<Annotation> annotations;
+	private ArrayList<Annotation> annotations;
 	
 	private String fragmentTitle;
 	
@@ -55,6 +55,7 @@ public class StoryFragment extends StoryModel<StoryView> {
 	public StoryFragment(String fragmentTitle) {
 		setFragmentTitle(fragmentTitle);
 		illustrations = new ArrayList<Illustration>();
+		annotations = new ArrayList<Annotation>();
 		decisionBranches = new ArrayList<DecisionBranch>();
 	}
 	
@@ -90,6 +91,17 @@ public class StoryFragment extends StoryModel<StoryView> {
 	}
 	
 	/**
+	 * Adds the specified <code>Annotation</code> to the fragment.
+	 * 
+	 * @param 	annotation	the <code>Annotation</code> to add
+	 * @see 	Annotation
+	 */
+	public void addAnnotation(Annotation annotation) {
+		this.annotations.add(annotation);
+		notifyViews();
+	}
+	
+	/**
 	 * Returns the title of the fragment.
 	 * 
 	 * @return	the title of the fragment
@@ -120,6 +132,17 @@ public class StoryFragment extends StoryModel<StoryView> {
 	}
 	
 	/**
+	 * Removes the specified <code>Annotation</code> from the fragment.
+	 * 
+	 * @param 	annotation	the <code>Annotation</code> to add
+	 * @see 	Annotation
+	 */
+	public void removeAnnotation(Annotation annotation) {
+		this.annotations.remove(annotation);
+		notifyViews();
+	}
+	
+	/**
 	 * Returns an <code>ArrayList</code> containing all 
 	 * <code>Illustration</code> objects from the fragment.
 	 * 
@@ -137,6 +160,16 @@ public class StoryFragment extends StoryModel<StoryView> {
 	 */
 	public ArrayList<DecisionBranch> getDecisionBranches() {
 		return this.decisionBranches;
+	}
+	
+	/** 
+	 * Returns an <code>ArrayList</code> containing all 
+	 * <code>Annotation</code> objects from the fragment.
+	 * 
+	 * @return
+	 */
+	public ArrayList<Annotation> getAnnotations() {
+		return this.annotations;
 	}
 	
 	/**
@@ -203,14 +236,5 @@ public class StoryFragment extends StoryModel<StoryView> {
 		notifyViews();
 		
 	}
-
-	/** 
-	 * Returns all the annotations.
-	 * 
-	 * @param currentView
-	 */
-	public ArrayList<Illustration> getAnnotations() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 }
