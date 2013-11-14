@@ -265,8 +265,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	/**
 	 * displayFragments() displays all text illustrations as views 
 	 * and decision branches as buttons by getting them from the containing 
-	 * fragment with <code>loadFragmentContents()</code> and formatting them 
-	 * by calling <code>formatView</code> and <code>formatButton</code> respectively.
+	 * fragment.
 	 * 
 	 * Used for updating all views in the activity.
 	 * 

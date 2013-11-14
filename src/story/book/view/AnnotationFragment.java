@@ -16,9 +16,17 @@
  */
 package story.book.view;
 
+import java.util.ArrayList;
+
+import story.book.controller.StoryReadController;
+import story.book.model.DecisionBranch;
+import story.book.model.Illustration;
+import story.book.model.StoryFragment;
+import story.book.model.TextIllustration;
 import story.book.view.R;
 import android.annotation.TargetApi;
 import android.app.Fragment;
+import android.app.ActionBar.LayoutParams;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +36,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 
 /**
  * Annotation fragment is the right tab in <code>StoryFragmentReadActivity</code> 
@@ -39,7 +49,14 @@ import android.view.ViewGroup;
  */
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
 public class AnnotationFragment extends Fragment {
-
+	StoryReadController SRC;
+	StoryFragment SF;
+//	ArrayList<Annotation> annotation;
+	ArrayList<DecisionBranch> decisions;
+	ArrayList<Button> buttons;
+	View rootView;
+	int nextFragmentID;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -47,8 +64,12 @@ public class AnnotationFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		View rootView = inflater.inflate(R.layout.annotation_fragment, container, false);
+		SRC = new StoryReadController();
+		SF = SRC.getStartingFragment();
+		displayAnnotations(SF, rootView);
 		
 		return rootView;
+
 	}
 	
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -75,5 +96,50 @@ public class AnnotationFragment extends Fragment {
         default:
             return super.onOptionsItemSelected(item);
         }
+	}
+	/**
+	 * displayAnnotations() displays all annotations as views 
+	 * by getting them from the corresponding fragment 
+	 * 
+	 * @param StoryFragment 	StoryFragment object
+	 * @param View	 where annotations will be displayed
+	 */
+	private void displayAnnotations(StoryFragment SF, View rootView) {
+
+//		annotation = SF.getAnnotations();
+//
+//		ArrayList<View> AnnotationViews = new ArrayList<View>();
+//
+//		for (Annotation i : annotations){
+//			AnnotationViews.add(((TextIllustration)i).getView());
+//		}
+//
+//		int pos = 0;
+//
+//		for (View t: AnnotationViews){
+//			t.setId(pos + 1);
+//			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
+//					WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
+//			p.addRule(RelativeLayout.BELOW, pos);
+//			t.setLayoutParams(p);
+//			((ViewGroup) rootView).addView(t, p);
+//			pos++;
+//		}
+		
+	}
+	
+	public void update() {
+		((ViewGroup) this.getView()).removeAllViews();
+		displayAnnotations(SF, rootView);
+	}
+	
+	/*
+	 * Loads the annotations for the next fragment (after a decision branch
+	 * has been selected in the <code>ReadingFragment</code>
+	 */
+	public void getNextAnnotations() {
+		nextFragmentID = ((StoryFragmentReadActivity) getActivity()).getNextFragmentID();
+		SF = SRC.getStoryFragment(nextFragmentID);
+		update();
 	}
 }

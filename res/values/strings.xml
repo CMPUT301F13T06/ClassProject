@@ -3,8 +3,8 @@
 
     <string name="app_name">Adventure Club</string>
     <string name="action_settings">Settings</string>
-    <string name="action_search"></string>
-    <string name="action_create_story"></string>
+    <string name="action_search">Search</string>
+    <string name="action_create_story">Create new story</string>
     <string name="hello_adventurer">Hello, Adventurer </string>
     <string name="enter_name">Enter a nickname</string>
      <string name="default_nickname">Anonymous</string>
@@ -25,7 +25,6 @@
     <string name="title_activity_edit_story_information">Edit Story Info</string>
     <string name="done">Done</string>
     <string name="Blank" />
-    <string name="FragmentTitle" />
     <string name="hint_text_field">Enter text here</string>
     <string name="Button_SaveEditText">Save</string>
     <string name="Title_Annotations">Annotations</string>

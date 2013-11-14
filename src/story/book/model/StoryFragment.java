@@ -203,4 +203,14 @@ public class StoryFragment extends StoryModel<StoryView> {
 		notifyViews();
 		
 	}
+
+	/** 
+	 * Returns all the annotations.
+	 * 
+	 * @param currentView
+	 */
+	public ArrayList<Illustration> getAnnotations() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
