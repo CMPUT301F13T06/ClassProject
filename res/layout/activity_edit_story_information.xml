@@ -224,7 +224,8 @@
             android:layout_height="0dip"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:paddingTop="30dp" >
 
             <Button
                 android:id="@+id/view"
@@ -260,6 +261,7 @@
                 android:textColor="#FFFFFF"
                 android:textSize="15sp"
                 android:visibility="gone" />
+            
         </LinearLayout>
     </LinearLayout>
 
