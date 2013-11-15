@@ -28,7 +28,7 @@ public class ImageIllustration extends Illustration<Uri> {
 	public ImageIllustration(Uri content) {
 		super();
 		setContent(content);
-		Bitmap bmp =  BitmapFactory.decodeFile(content.getEncodedPath());
+		Bitmap bmp =  BitmapFactory.decodeFile(content.getPath());
 		try {
 			Matrix matrix = new Matrix();
 			matrix.postRotate(90);
