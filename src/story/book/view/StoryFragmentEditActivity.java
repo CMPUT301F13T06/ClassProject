@@ -89,6 +89,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 	int itemPos;
 	int FID;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -150,35 +151,19 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		inflater.inflate(R.menu.standard_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-
+	
 	private enum Actions {PHOTO, VIDEO}
 	
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		if (auri != null) {
-			outState.putString("cameraImageUri", auri.toString());
-		}
-	}
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		if (savedInstanceState.containsKey("cameraImageUri")) {
-			auri = Uri.parse(savedInstanceState.getString("cameraImageUri"));
-		}
-	}
-	
-	Uri auri;
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.text:
 			addNewTextIllustration(this.findViewById(R.id.reading_fragment));
 			return true;
+
 		case R.id.take_photo:
 			Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			auri = SCC.getFreeUri(".jpg");
-			i.putExtra(MediaStore.EXTRA_OUTPUT, auri);
+			i.putExtra(MediaStore.EXTRA_OUTPUT, SCC.getFreeUri(".jpg"));
 			startActivityForResult(i, Actions.PHOTO.ordinal());
 			return true;
 		case R.id.addGalleryPhoto:
@@ -191,12 +176,13 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			startActivity(i);
 			return true;
 		case R.id.audio:
-			AudioIllustration audio = new AudioIllustration();
-			illustrationViews.add(audio.getView());
+			//AudioIllustration audio = new AudioIllustration();
+			//illustrationViews.add(audio.getView());
+			addNewAudioIllustration(this.findViewById(R.id.reading_fragment));
 			return true;
 
 		case R.id.video:
-
+			
 			return true;
 
 		case R.id.record_video:
@@ -215,39 +201,49 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			return super.onOptionsItemSelected(item);
 		}
 	}
-
+	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(resultCode == RESULT_OK) {
 			if(requestCode == Actions.PHOTO.ordinal()) {
-				ImageIllustration image = new ImageIllustration(auri);
+				ImageIllustration image = new ImageIllustration(data.getData());
 				illustrationViews.add(image.getView());
 				displayFragment();
 			}
 			if(requestCode == Actions.VIDEO.ordinal()) {
-				VideoIllustration video = new VideoIllustration(auri);
+				VideoIllustration video = new VideoIllustration(data.getData());
 				illustrationViews.add(video.getView());
 				displayFragment();
 			}
 		}
 	}
-
+	
 	/**
 	 * addNewTextIllustration() creates a new EditText for users to enter the text
 	 * for a TextIllustration.
 	 */
 	private void addNewTextIllustration(View v) {
-		// TODO Auto-generated method stub
 		EditText newText = new EditText(v.getContext());
 		newText.setHint("Enter text here");
 		illustrationViews.add(newText);
 		displayFragment();
 	}
+	
+	/**
+	 * addNewAudioIllustration() creates a new EditText for users to enter the text
+	 * for a TextIllustration.
+	 */
+	private void addNewAudioIllustration(View v) {
+		AudioIllustration audio = new AudioIllustration(null);
+		illustrationViews.add(audio.getView());
+		displayFragment();
+	}
+
 
 	/**
 	 * saveFragment() saves the current state and layout of the fragment
 	 */
 	public void saveFragment() {
-
+		
 		ArrayList<Illustration> currentView = new ArrayList<Illustration>();
 		int top = illustrationViews.size();
 		for (int i = 0; i < top; i++) {
@@ -389,12 +385,12 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			// Edit decision branch text
 			DialogFragment newFragment = new RequestTextDialog();
 			((RequestTextDialog)newFragment).setParent(StoryFragmentEditActivity.this);
-			((RequestTextDialog)newFragment).setParent(this);
-			((RequestTextDialog)newFragment).setHeader(this.getString(R.string.add_branch_title));
-			((RequestTextDialog)newFragment).setWarning(this.getString(R.string.bad_branch_msg));
-			newFragment.show(getFragmentManager(), "addFragment");
+				((RequestTextDialog)newFragment).setParent(this);
+				((RequestTextDialog)newFragment).setHeader(this.getString(R.string.add_branch_title));
+				((RequestTextDialog)newFragment).setWarning(this.getString(R.string.bad_branch_msg));
+				newFragment.show(getFragmentManager(), "addFragment");
 			break;
-
+			
 		case 4:
 			// Move illustration up
 			if (itemPos > 0){
@@ -403,9 +399,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 				illustrationViews.set(itemPos, above);
 				displayFragment();
 			}
-
+			
 			break;
-
+			
 		case 5:
 			// Move illustration down
 			if (itemPos < illustrationViews.size()-1) {
@@ -414,9 +410,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 				illustrationViews.set(itemPos, below);
 				displayFragment();
 			}
-
+			
 			break;
-
+			
 		case 6:
 			// Cancel options
 			return false;

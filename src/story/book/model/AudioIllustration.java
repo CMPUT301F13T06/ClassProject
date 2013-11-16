@@ -19,6 +19,8 @@ package story.book.model;
 
 import java.io.File;
 
+import story.book.view.AudioButton;
+import story.book.view.AudioRecorderButton;
 import story.book.view.StoryApplication;
 import android.net.Uri;
 import android.view.DragEvent;
@@ -31,20 +33,23 @@ import android.widget.Button;
 /**
  * 
  * @author Anthony Ou
+ * 
+ * @author Vina Nguyen
  *
  */
 public class AudioIllustration extends Illustration<Uri>{
 
 	Uri content;
-
-	public Uri getContent() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	AudioRecorderButton recorderView;
+	
+	public AudioIllustration(Uri data) {
+		super();
+		setContent(data);
 	}
 
-	public void setContent(Uri content) {
-		// TODO Auto-generated method stub
-
+	public Uri getContent() {
+		return content;
 	}
 
 	/**
@@ -52,41 +57,30 @@ public class AudioIllustration extends Illustration<Uri>{
 	 * wants to record audio or play audio
 	 */
 	public View getView() {
-		Button b = new Button(StoryApplication.getContext());
-		b.setOnTouchListener(new View.OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if(content == null) {
-					if(event.getAction() == MotionEvent.ACTION_DOWN){
-
-					}
-					if(event.getAction() == MotionEvent.ACTION_UP){
-					}
-				}
-				return false;
+		if (recorderView == null && content == null) {
+			// Use an AudioRecorderButton view to allow 
+			// recording if AudioIllustration was not initialized with content
+			// and if an AudioRecorderButton was not already called
+			recorderView = new AudioRecorderButton(null, StoryApplication.getContext());
+			return recorderView;
+		} else {
+			if (recorderView != null) { 
+				// If AudioRecorderButton was used, set the content
+				// to the results
+				Uri data = recorderView.getContent();
+				this.setContent(data);
 			}
-		});
-		
-		b.setOnClickListener(new OnClickListener() {
 			
-			@Override
-			public void onClick(View v) {
-				
-				
-			}
-		});
-		
-		b.setOnDragListener(new OnDragListener() {
-
-			@Override
-			public boolean onDrag(View v, DragEvent event) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-		});
-		return null;
+			// Return an AudioButton to play the Illustration's content
+			AudioButton playView = new AudioButton(content, StoryApplication.getContext());
+			return playView;
+		}		
 	}
 
+	public void setContent(Uri content) {
+		this.content = content;
+	}
+	
 	public void deleteContent() {
 		new File(content.getPath()).delete();
 	}
