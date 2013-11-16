@@ -24,6 +24,7 @@ import android.view.View;
  * Illustrations for different forms of media.
  * 
  * @author Alexander Cheung
+ * @author Anthony Ou
  *
  * @param <T> the type of the content to be held by the Illustration.
  */

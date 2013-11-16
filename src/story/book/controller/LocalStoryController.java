@@ -18,14 +18,9 @@
 package story.book.controller;
 
 import java.util.ArrayList;
-import java.util.Date;
-
-import android.util.Log;
 import story.book.dataclient.IOClient;
-import story.book.dataclient.ESClient;
 import story.book.model.Story;
 import story.book.model.StoryInfo;
-import story.book.model.StoryInfo.PublishState;
 import story.book.view.StoryApplication;
 
 /**
@@ -74,6 +69,15 @@ public class LocalStoryController implements StoryController {
 		StoryApplication.setCurrentStory(s);
 	}
 
+	/**
+	 * 
+	 * @param term
+	 * @return
+	 */
+	public ArrayList<StoryInfo> search(String term) {
+		return io.search(term);
+	}
+	
 	/**
 	 * Deletes the locally stored Story with the specified SID.
 	 * 
