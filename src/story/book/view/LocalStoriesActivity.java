@@ -152,7 +152,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	}
 
 	public void editStory() {
-		Intent intent = new Intent(this, EditStoryInformationActivity.class);
+		Intent intent = new Intent(this, StoryFragmentListActivity.class);
 		startActivity(intent);
 	}
 
