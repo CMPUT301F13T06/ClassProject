@@ -17,7 +17,6 @@ import com.google.gson.*;
  * can be serialized and deserialized using a DataClient.
  * 
  * @author Anthony Ou
- * 
  * @author Vina Nguyen
  * 
  */
@@ -89,6 +88,8 @@ public abstract class DataClient {
 	}
 	
 	/**
+	 * Really basic search of some search term which depends on 
+	 * subclasses implementing getStoryInfoList()
 	 * 
 	 * @param searchTerm 
 	 * 					the term to search for as a string
