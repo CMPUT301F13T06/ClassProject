@@ -35,7 +35,7 @@ public class TextIllustrationTest extends ActivityInstrumentationTestCase2
 	
 	@Test
 	public void testGetView() {
-		assertNotNull(textIllustration.getView());
+		assertNotNull(textIllustration.getView(false));
 	}
 	
 }
