@@ -51,7 +51,9 @@ public class AudioIllustration extends Illustration<Uri>{
 	 * return a buttonview that can listen for presses when the user
 	 * wants to record audio or play audio
 	 */
-	public View getView() {
+	public View getView(Boolean editMode) {
+		// If editMode is True, return a view that can play and record audio illustrations
+		// If editMode is False, return a view that can only play back audio illustrations
 		Button b = new Button(StoryApplication.getContext());
 		b.setOnTouchListener(new View.OnTouchListener() {
 			@Override

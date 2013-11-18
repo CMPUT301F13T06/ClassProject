@@ -16,7 +16,7 @@ public class Annotation<T extends Illustration> {
 		return this.author;
 	}
 	
-	public View getView() {
-		return this.illustration.getView();
+	public View getView(Boolean editMode) {
+		return this.illustration.getView(editMode);
 	}
 }

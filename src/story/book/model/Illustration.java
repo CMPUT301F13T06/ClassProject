@@ -46,11 +46,15 @@ public abstract class Illustration<T> {
 	/**
 	 * Returns the contents of the illustration in a View object for Activities
 	 * to display.
+	 * 
+	 * If editMode is True, the illustration will return an editable view.
+	 * If editMode is False, the illustration will return a non-editable view.
+	 * 
 	 * XXX: Needs review; should use generic types
 	 * 
 	 * @return the View object containing the contents of the illustration
 	 */
-	public abstract View getView();
+	public abstract View getView(Boolean editMode);
 	
 	public abstract void deleteContent();
 }

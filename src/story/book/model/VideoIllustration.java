@@ -42,7 +42,7 @@ public class VideoIllustration extends Illustration<Uri> {
 		return content;
 	}
 
-	public View getView() {
+	public View getView(Boolean editMode) {
 		VideoView a = new VideoView(StoryApplication.getContext());
 		a.setVideoURI(content);
 		return a;

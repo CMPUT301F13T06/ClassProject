@@ -20,6 +20,7 @@ package story.book.model;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import story.book.view.StoryApplication;
 import android.annotation.TargetApi;
 import android.graphics.Color;
@@ -70,10 +71,19 @@ public class TextIllustration extends Illustration<String> {
 	 * 
 	 * @return	the <code>TextView</code> object with text set
 	 */
-	public View getView() {
-		TextView textView = new TextView(StoryApplication.getContext());
-		textView.setText(this.content);
-		return formatView(textView, TextView.class);
+	public View getView(Boolean editMode) {
+		// If editMode is True, return an Edit Text view
+		// If editMode is False, return a Text View
+		if (editMode == false) {
+			TextView textView = new TextView(StoryApplication.getContext());
+			textView.setText(this.content);
+			return formatView(textView, TextView.class);
+		}
+		
+		else {
+			return getEditView();
+		}
+		
 	}
 
 	/**
@@ -82,7 +92,7 @@ public class TextIllustration extends Illustration<String> {
 	 * 
 	 * @return	the <code>EditText</code> object with text set
 	 */
-	public EditText getEditView() {
+	private EditText getEditView() {
 		EditText editView = new EditText(StoryApplication.getContext());
 		editView.setText(this.content);
 		return formatView(editView, EditText.class);

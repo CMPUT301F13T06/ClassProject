@@ -73,7 +73,7 @@ public class ImageIllustration extends Illustration<Uri> {
 	/**
 	 * return an ImageView 
 	 */
-	public View getView() {
+	public View getView(Boolean editMode) {
 		
 		ImageView a = new ImageView(StoryApplication.getContext());
 		a.setImageURI(content);
