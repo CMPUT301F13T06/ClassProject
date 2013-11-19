@@ -173,7 +173,8 @@ public class AnnotationFragment extends Fragment {
 			for (Pair <View, Annotation> t: annotationList) {
 				
 				t.first.setId(position + 1);
-				((EditText)t.first).setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+				((EditText)t.first).setInputType(InputType.TYPE_CLASS_TEXT 
+						| InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 				RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
 						MATCH_PARENT,LayoutParams.WRAP_CONTENT); 
 				p.addRule(RelativeLayout.BELOW, position);
