@@ -18,7 +18,7 @@
             android:id="@+id/hello_adventurer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="-65dp"
+            android:layout_marginLeft="-95dp"
             android:layout_marginTop="20dp"
             android:text="@string/hello_adventurer" />
 
@@ -46,7 +46,7 @@
         <Button
             android:id="@+id/online_stories"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_marginBottom="25dp"
             android:layout_marginLeft="65dp"
             android:layout_marginRight="65dp"
@@ -60,7 +60,7 @@
         <Button
             android:id="@+id/local_stories"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_marginBottom="30dp"
             android:layout_marginLeft="65dp"
             android:layout_marginRight="65dp"
