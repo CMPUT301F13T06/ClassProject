@@ -18,6 +18,7 @@ package story.book.view;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 import story.book.view.R;
 import story.book.controller.StoryReadController;
@@ -25,7 +26,6 @@ import story.book.model.DecisionBranch;
 import story.book.model.Illustration;
 import story.book.model.StoryFragment;
 import story.book.model.TextIllustration;
-
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.ActionBar.LayoutParams;
@@ -66,13 +66,13 @@ public class ReadingFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.reading_fragment, container, false);
-		
+
 		SRC = ((StoryFragmentReadActivity)this.getActivity()).getController();
 		SF = SRC.getStartingFragment();
-		displayFragment(SF, rootView);
+		displayFragment(SF);
 		return rootView;
 	}
-	
+
 	/**
 	 * formatButton() creates a button with the corresponding decision branch text
 	 * for each decision branch in an array list of decision branches.
@@ -99,6 +99,16 @@ public class ReadingFragment extends Fragment {
 			buttonList.add(button);
 		}
 
+		if (db.size() > 1) {
+			// Set "I'm feeling lucky" button only if there are more than 1 decision branches
+			Random rand = new Random();
+			int n = rand.nextInt(db.size()-1);
+
+			Button luckyButton = new Button(c);
+			luckyButton.setText("I'm feeling lucky");
+			luckyButton.setOnClickListener(setListener(luckyButton, n));
+			buttonList.add(luckyButton);
+		}
 		return buttonList;
 	}
 
@@ -110,21 +120,21 @@ public class ReadingFragment extends Fragment {
 	 * @param StoryFragment 	StoryFragment object
 	 * @param View	 where illustrations will be displayed
 	 */
-	private void displayFragment(StoryFragment SF, View rootView) {
-		
+	private void displayFragment(StoryFragment SF) {
+
 		RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.reading_fragment);
 		illustrations = SF.getIllustrations();
 		decisions = SF.getDecisionBranches();
 
-		ArrayList<View> illustrationViews = new ArrayList<View>();
+		ArrayList<View> annotationViews = new ArrayList<View>();
 
 		for (Illustration i : illustrations){
-			illustrationViews.add(((TextIllustration)i).getView(false));
+			annotationViews.add(i.getView(false));
 		}
 
 		int pos = 0;
 
-		for (View t: illustrationViews) {
+		for (View t: annotationViews) {
 			t.setId(pos + 1);
 			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
 					WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
@@ -134,7 +144,6 @@ public class ReadingFragment extends Fragment {
 			pos++;
 		}
 
-		
 		buttons = formatButton(decisions, rootView.getContext());
 		int buttonIndex = 0;
 		for (Button dbButton : buttons) {
@@ -143,7 +152,7 @@ public class ReadingFragment extends Fragment {
 			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
 					LayoutParams.WRAP_CONTENT);
 			if (buttonIndex == 1) {
-				lp.setMargins(0, 50, 0, 0);
+				lp.setMargins(0, 50, 0, 10);
 			}
 			lp.setMargins(0, 10, 0, 0);
 			lp.addRule(RelativeLayout.BELOW, pos);
@@ -166,7 +175,8 @@ public class ReadingFragment extends Fragment {
 	}
 
 	public void update() {
-		((ViewGroup) this.getView()).removeAllViews();
-		displayFragment(SF, rootView);
+		rootView = this.getView().findViewById(R.id.reading_fragment);
+		((ViewGroup) rootView).removeAllViews();
+		displayFragment(SF);
 	}
 }
