@@ -24,7 +24,6 @@ public class IOClient extends DataClient {
 
 	private String story_dir;
 	private Context context;
-	private File story_dir_file;
 
 	/**
 	 * Unbuffered IO for writing a serialized story. Buffered IO for read a
@@ -38,10 +37,8 @@ public class IOClient extends DataClient {
 		super();
 		context = c; //I dont need to context but its nice to have for the future
 
-		this.story_dir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/StoryBook";
+		this.story_dir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/StoryBook/";
 		new File(story_dir).mkdir();
-		story_dir += "/story/";
-		new File(story_dir).mkdir(); // make the directory if it doesn't exist
 	}
 
 	/**
