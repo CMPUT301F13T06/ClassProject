@@ -1,19 +1,26 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-    
-    
+
+    <Button
+        android:id="@+id/luckyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:text="I&apos;m feeling lucky" />
+
     <ListView
         android:id="@+id/listView"
-        android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:dividerHeight="2dp"
-        android:layout_weight="1"
-        android:scrollbars="vertical"
-        android:divider="#C0C0C0">   
-         </ListView>
-         
- 
-</LinearLayout>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/luckyButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" >
+    </ListView>
+
+</RelativeLayout>

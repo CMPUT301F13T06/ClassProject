@@ -163,7 +163,8 @@ public class AnnotationFragment extends Fragment {
 		
 		RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.annotation_fragment);
 		if ((ViewGroup)this.getView() != null) {
-			((ViewGroup) this.getView()).removeAllViews();
+			rootView = this.getView().findViewById(R.id.annotation_fragment);
+			((ViewGroup) rootView).removeAllViews();
 		}
 		int position = 0;
 		if (annotationList.isEmpty() == false) {

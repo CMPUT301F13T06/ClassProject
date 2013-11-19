@@ -19,28 +19,32 @@ package story.book.view;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import story.book.view.R;
 import story.book.controller.LocalStoryController;
 import story.book.model.Story;
 import story.book.model.StoryInfo;
-
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
@@ -103,13 +107,20 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 			public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
 				// read story with a single tap do not change this.
 				localController.getStory(adapter.getItem(pos).getSID());
-				Intent intent = new Intent(parent.getContext(), StoryInfoActivity.class);
-				intent.putExtra("calledByOffline", false);
-				startActivity(intent);
+				readStory();
 			}
 		});
 
-		// openSearch();
+		Button luckyButton = (Button) findViewById(R.id.luckyButton);
+		luckyButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(adapter.getCount() > 0) {
+					localController.getStory(adapter.getItem( new Random().nextInt(adapter.getCount())).getSID());
+					readStory();
+				}
+			}
+		});
 
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -193,17 +204,17 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		localController.getStory(adapter.getItem(position).getSID());
 
 		switch (item.getItemId()) {
-			case R.id.read_story:
-				readStory();
-				return true;
-			case R.id.edit_story:
-				editStory();
-				return true;
-			case R.id.delete_story:
-				deleteStory();
-				return true;
-			default:
-				return true;
+		case R.id.read_story:
+			readStory();
+			return true;
+		case R.id.edit_story:
+			editStory();
+			return true;
+		case R.id.delete_story:
+			deleteStory();
+			return true;
+		default:
+			return true;
 		}
 	}
 
@@ -234,16 +245,16 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.action_search:
-				// openSearch();
-				return true;
-			case R.id.action_create_story:
-				createStory();
-				return true;
-			case R.id.title_activity_dashboard:
-				finish();
-				NavUtils.navigateUpFromSameTask(this);
-				return true;
+		case R.id.action_search:
+			// openSearch();
+			return true;
+		case R.id.action_create_story:
+			createStory();
+			return true;
+		case R.id.title_activity_dashboard:
+			finish();
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
