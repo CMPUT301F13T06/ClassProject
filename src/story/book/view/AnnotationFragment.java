@@ -59,6 +59,7 @@ public class AnnotationFragment extends Fragment {
 	View rootView;
 	int nextFragmentID;
 	StoryCreationController SCC;
+	ArrayList<Annotation> annotations;
 
 	String author;
 	Boolean editMode = true;
@@ -69,12 +70,15 @@ public class AnnotationFragment extends Fragment {
 
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		View rootView = inflater.inflate(R.layout.annotation_fragment, container, false);
+		rootView = inflater.inflate(R.layout.annotation_fragment, container, false);
 
 		author = StoryApplication.getNickname();
 		SRC = ((StoryFragmentReadActivity)this.getActivity()).getController();
-		SF = SRC.getStartingFragment();
+//		SF = SRC.getStartingFragment();
 		SCC = new StoryCreationController();
+		
+		getAnnotations();
+		loadAnnotations();
 		annotationList = new ArrayList<Pair<View, Annotation>>();
 		
 		displayAnnotations(SF, rootView);
@@ -84,6 +88,7 @@ public class AnnotationFragment extends Fragment {
 	
 	@Override
 	public void onResume() {
+		super.onResume();
 		getAnnotations();
 		displayAnnotations(SF, rootView);
 	}
@@ -101,7 +106,7 @@ public class AnnotationFragment extends Fragment {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.text:
-			addNewTextAnnotation(this.getActivity().findViewById(R.id.reading_fragment));
+			addNewTextAnnotation(rootView);
 			return true;
 		case R.id.take_photo:
 			Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -156,9 +161,10 @@ public class AnnotationFragment extends Fragment {
 	 */
 	private void displayAnnotations(StoryFragment SF, View rootView) {
 		
-		RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.reading_fragment);
-		ArrayList<Annotation> annotations = SF.getAnnotations();
-		
+		RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.annotation_fragment);
+		if ((ViewGroup)this.getView() != null) {
+			((ViewGroup) this.getView()).removeAllViews();
+		}
 		int position = 0;
 		if (annotationList.isEmpty() == false) {
 			// Display illustrations
@@ -196,7 +202,7 @@ public class AnnotationFragment extends Fragment {
 	 * update() removes all views in the annotation fragment and redisplays them to show changes
 	 */
 	public void update() {
-		((ViewGroup) this.getView()).removeAllViews();
+		loadAnnotations();
 		displayAnnotations(SF, rootView);
 	}
 	
@@ -209,7 +215,7 @@ public class AnnotationFragment extends Fragment {
 		EditText newText = new EditText(v.getContext());
 		newText.setHint("Enter text here");
 		annotationList.add(new Pair<View, Annotation>(newText, null));
-		update();
+		displayAnnotations(SF, v);
 	}
 
 	/**
