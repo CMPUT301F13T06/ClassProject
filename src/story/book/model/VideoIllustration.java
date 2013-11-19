@@ -29,26 +29,25 @@ import android.widget.VideoView;
  * @author Anthony Ou
  *
  */
-public class VideoIllustration extends Illustration<Uri> {
+public class VideoIllustration extends Illustration<String> {
 
-	private Uri content;
+	private String content;
 	
 	public VideoIllustration(Uri data) {
 		super();
-		setContent(data);
+		String[] splitstring = data.getPath().split("/");
+		setContent(splitstring[splitstring.length-1]);
 	}
 	
-	public Uri getContent() {
+	public String getContent() {
 		return content;
 	}
 
 	public View getView(Boolean editMode) {
-		VideoView a = new VideoView(StoryApplication.getContext());
-		a.setVideoURI(content);
-		return a;
+		return new VideoView(StoryApplication.getContext());
 	}
 
-	public void setContent(Uri content) {
+	public void setContent(String content) {
 		this.content = content;	
 	}
 

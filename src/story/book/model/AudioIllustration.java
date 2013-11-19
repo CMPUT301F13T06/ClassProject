@@ -37,16 +37,17 @@ import android.widget.Button;
  * @author Vina Nguyen
  *
  */
-public class AudioIllustration extends Illustration<Uri>{
+public class AudioIllustration extends Illustration<String>{
 
-	Uri content;
+	String content;
 	
 	public AudioIllustration(Uri data) {
 		super();
-		setContent(data);
+		String[] splitstring = data.getPath().split("/");
+		setContent(splitstring[splitstring.length-1]);
 	}
 
-	public Uri getContent() {
+	public String getContent() {
 		return content;
 	}
 
@@ -58,18 +59,14 @@ public class AudioIllustration extends Illustration<Uri>{
 		// If editMode is True, return a view that can play and record audio illustrations
 		// If editMode is False, return a view that can only play back audio illustrations
 		if (editMode) {
-			return new AudioRecorderButton(content, StoryApplication.getContext());
+			return null;//new AudioRecorderButton(content, StoryApplication.getContext());
 		} else {
-			return new AudioButton(content, StoryApplication.getContext());
+			return null;//new AudioButton(content, StoryApplication.getContext());
 		}
 	}
 
-	public void setContent(Uri content) {
+	public void setContent(String content) {
 		this.content = content;
-	}
-	
-	public void deleteContent() {
-		new File(content.getPath()).delete();
 	}
 
 }
