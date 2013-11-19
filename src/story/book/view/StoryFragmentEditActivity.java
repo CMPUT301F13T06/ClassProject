@@ -153,7 +153,6 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	private enum Actions {PHOTO, VIDEO}
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -171,6 +170,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	}
 	
 	Uri auri;
+	private enum Actions {PHOTO, VIDEO}
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
@@ -200,7 +200,6 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		case R.id.video:
 
 			return true;
-
 		case R.id.record_video:
 			i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 			i.putExtra(MediaStore.EXTRA_OUTPUT, SCC.getFreeUri(".mp4"));
@@ -361,8 +360,6 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 
-		itemPos = v.getId() - 1;
-
 		if (v instanceof Button) {
 			menu.setHeaderTitle("Select an Option:");
 			menu.add(0, v.getId(), 2, "Delete decision branch");  
@@ -452,7 +449,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * 
 	 * @param DecisionBranch 	the decision branches associated with the fragment
 	 * @param Context 	the context where the button will be displayed
-	 * @return an custom ArrayList<Button> corresponding to the decision branches in a fragment
+	 * @return a custom ArrayList<Button> corresponding to the decision branches in a fragment
 	 */
 	private ArrayList<Button> formatButton(ArrayList<DecisionBranch> db, Context c) {
 
