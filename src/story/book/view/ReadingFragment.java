@@ -67,7 +67,7 @@ public class ReadingFragment extends Fragment {
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.reading_fragment, container, false);
 		
-		SRC = new StoryReadController();
+		SRC = ((StoryFragmentReadActivity)this.getActivity()).getController();
 		SF = SRC.getStartingFragment();
 		displayFragment(SF, rootView);
 		return rootView;
