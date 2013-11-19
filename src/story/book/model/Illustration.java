@@ -56,5 +56,4 @@ public abstract class Illustration<T> {
 	 */
 	public abstract View getView(Boolean editMode);
 	
-	public abstract void deleteContent();
 }

@@ -193,8 +193,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			startActivity(i);
 			return true;
 		case R.id.audio:
-			AudioIllustration audio = new AudioIllustration();
-			illustrationList.add(new Pair<View, Illustration>(audio.getView(editMode), audio));
+			addNewAudioIllustration(this.findViewById(R.id.reading_fragment));
 			return true;
 
 		case R.id.video:
@@ -237,13 +236,24 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * for a TextIllustration.
 	 */
 	private void addNewTextIllustration(View v) {
-		// TODO Auto-generated method stub
 		EditText newText = new EditText(v.getContext());
 		newText.setHint("Enter text here");
 		illustrationList.add(new Pair<View, Illustration>(newText, null));
 		displayFragment();
 	}
 
+	/**
+	 * addNewAudioIllustration() creates a new AudioRecorderButton for users
+	 * to record audio for a AudioIllustration
+	 */
+	private void addNewAudioIllustration(View v) {
+		auri = SCC.getFreeUri(".mp4");
+		AudioIllustration audio = new AudioIllustration(auri);
+		illustrationList.add(new Pair<View, Illustration>(audio.getView(editMode), audio));
+		displayFragment();
+	}
+
+	
 	/**
 	 * saveFragment() saves the current state and layout of the fragment
 	 */
