@@ -124,7 +124,7 @@ public class ReadingFragment extends Fragment {
 
 		int pos = 0;
 
-		for (View t: illustrationViews){
+		for (View t: illustrationViews) {
 			t.setId(pos + 1);
 			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
 					WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
