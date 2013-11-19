@@ -33,9 +33,9 @@ import android.view.View;
 import android.view.View.OnDragListener;
 import android.widget.ImageView;
 
-public class ImageIllustration extends Illustration<Uri> {
+public class ImageIllustration extends Illustration<String> {
 
-	private Uri content;
+	private String content;
 	
 	/**
 	 * The picture at the specified location will be formated here 
@@ -47,13 +47,14 @@ public class ImageIllustration extends Illustration<Uri> {
 	 */
 	public ImageIllustration(Uri content) {
 		super();
-		setContent(content);
+		String[] splitstring = content.getPath().split("/");
+		setContent(splitstring[splitstring.length-1]);
 		Bitmap bmp =  BitmapFactory.decodeFile(content.getPath());
 		try {
 			Matrix matrix = new Matrix();
 			matrix.postRotate(90);
 			Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
-			bmp.compress(CompressFormat.JPEG, 0, new FileOutputStream(content.getPath()));
+			bmp.compress(CompressFormat.JPEG, 90, new FileOutputStream(content.getPath()));
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -61,12 +62,12 @@ public class ImageIllustration extends Illustration<Uri> {
 		}
 	}
 	
-	public Uri getContent() {
+	public String getContent() {
 		// TODO Auto-generated method stub
 		return content;
 	}
 	
-	public void setContent(Uri content) {
+	public void setContent(String content) {
 		this.content = content;
 	}
 
@@ -76,7 +77,6 @@ public class ImageIllustration extends Illustration<Uri> {
 	public View getView(Boolean editMode) {
 		
 		ImageView a = new ImageView(StoryApplication.getContext());
-		a.setImageURI(content);
 		a.setAdjustViewBounds(true);
 		a.setOnDragListener(new OnDragListener() {
 			
@@ -90,10 +90,5 @@ public class ImageIllustration extends Illustration<Uri> {
 		});
 
 		return a;
-	}
-
-	@Override
-	public void deleteContent() {	
-		new File(content.getPath()).delete();
 	}
 }
