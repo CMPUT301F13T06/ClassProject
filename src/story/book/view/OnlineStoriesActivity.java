@@ -18,13 +18,13 @@
 package story.book.view;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import story.book.view.R;
 import story.book.controller.OnlineStoryController;
 import story.book.controller.StoryController;
 import story.book.model.Story;
 import story.book.model.StoryInfo;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -32,8 +32,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.support.v4.app.NavUtils;
@@ -75,12 +77,33 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 			public void  onItemClick
 			(AdapterView<?> parent , View view, int pos, long id) {
 				onlineController.getStory(adapter.getItem(pos).getSID());
-				Intent intent = new Intent(parent.getContext(), StoryInfoActivity.class);
-				intent.putExtra("calledByOnline", true);
-				startActivity(intent);
+				readStory();
 			}});
+
+		Button luckyButton = (Button) findViewById(R.id.luckyButton);
+		luckyButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(adapter.getCount() > 0) {
+					onlineController.getStory(adapter.getItem( new Random().nextInt(adapter.getCount())).getSID());
+					readStory();
+				}
+			}
+		});
+
 		// Show the Up button in the action bar.
 		setupActionBar();
+	}
+
+	/**
+	 * Method that is called when a user chooses to read the story
+	 * 
+	 * @param SID
+	 */
+	public void readStory() {
+		Intent intent = new Intent(this, StoryInfoActivity.class);
+		intent.putExtra("calledByOnline", false);
+		startActivity(intent);
 	}
 
 	@Override
