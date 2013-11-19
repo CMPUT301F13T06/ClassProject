@@ -63,7 +63,7 @@ public class StoryFragment extends StoryModel<StoryView> {
 	 * Sets the title of the fragment to the specified <code>String</code>.
 	 * @param 	fragmentTitle	the desired title of the fragment
 	 */
-	private void setFragmentTitle(String fragmentTitle) {
+	public void setFragmentTitle(String fragmentTitle) {
 		this.fragmentTitle = fragmentTitle;
 		notifyViews();
 	}
