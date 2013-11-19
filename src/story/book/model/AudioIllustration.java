@@ -88,9 +88,4 @@ public class AudioIllustration extends Illustration<Uri>{
 		});
 		return null;
 	}
-
-	public void deleteContent() {
-		new File(content.getPath()).delete();
-	}
-
 }

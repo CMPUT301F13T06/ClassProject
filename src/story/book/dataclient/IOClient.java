@@ -114,8 +114,14 @@ public class IOClient extends DataClient {
 	public ArrayList<StoryInfo> getStoryInfoList() {
 		ArrayList<StoryInfo> listOfStoryInfo = new ArrayList<StoryInfo>();
 		for (String file : getStoryList()) {
-			Story s = getStory(Integer.valueOf(file).intValue());
-			listOfStoryInfo.add(s.getStoryInfo());
+			try{
+				Story s = getStory(Integer.valueOf(file).intValue());
+				listOfStoryInfo.add(s.getStoryInfo());
+			}
+			catch (Exception e)
+			{
+				new File(story_dir,file).delete();
+			}
 		}
 		return listOfStoryInfo;
 	}

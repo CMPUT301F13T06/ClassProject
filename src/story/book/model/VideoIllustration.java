@@ -52,8 +52,4 @@ public class VideoIllustration extends Illustration<Uri> {
 		this.content = content;	
 	}
 
-	public void deleteContent() {
-		new File(content.getPath()).delete();
-	}
-
 }
