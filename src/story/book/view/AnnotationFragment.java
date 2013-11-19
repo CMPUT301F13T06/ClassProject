@@ -120,7 +120,7 @@ public class AnnotationFragment extends Fragment {
 			return true;
 		
 		case R.id.audio:
-			AudioIllustration audio = new AudioIllustration();
+//			AudioIllustration audio = new AudioIllustration();
 //			annotationList.add(new Pair<View, Annotation>(audio.getView(editMode), audio));
 			return true;
 
