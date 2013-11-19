@@ -143,4 +143,8 @@ public class StoryFragmentReadActivity extends FragmentActivity {
 	public void setActionBarTitle(String title) {
 		actionBar.setTitle(title);
 	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		annotationsTab2.onActivityResult(requestCode, resultCode, data);
+	}
 }
