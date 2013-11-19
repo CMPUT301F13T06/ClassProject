@@ -79,6 +79,10 @@ public class ReadingFragment extends Fragment {
 	 * 
 	 * This returns method an array list of buttons.
 	 * 
+	 * If there is more than one decision branch, an "I'm feeling lucky" button will be 
+	 * added as a decision branch for the reader choose. It will randomly choose 
+	 * between the other decision branches and display it.
+	 * 
 	 * @param DecisionBranch 	the decision branches associated with the fragment
 	 * @param Context 	the context where the button will be displayed
 	 * @return an custom ArrayList<Button> corresponding to the decision branches in a fragment
