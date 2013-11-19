@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 /**
  * Activity that serves as the main menu where the user can 
@@ -64,7 +65,12 @@ public class Dashboard extends Activity {
 		onlineButton.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {
 		    	//Navigate to the Online Stories
-				startActivity(onlineIntent);
+		    	if (StoryApplication.checkInternetConnected()) {
+		    		startActivity(onlineIntent);
+		    	} else {
+		    		//Tell user to connect to internet
+		    		Toast.makeText(getApplicationContext(), R.string.no_internet_library, Toast.LENGTH_SHORT).show();
+		    	}
 			}
 		});
 	}

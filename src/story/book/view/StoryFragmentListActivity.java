@@ -196,7 +196,7 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 			changeFragmentTitle();
 			return true;
 		case R.id.publish:
-			if (checkInternetConnected()) {
+			if (StoryApplication.checkInternetConnected()) {
 				SCC.publishStory();
 			} else {
 				SimpleWarningDialog.getWarningDialog(this.getString(R.string.no_internet), this);
@@ -234,7 +234,7 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 			break;
 			
 		case 2:
-			// TODO: Edit story fragment title
+			// Edit story fragment title
 			changeFragmentTitle();
 			break;
 			
@@ -246,7 +246,6 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 			//Delete
 			int FID = SFL.get(pos).getFragmentID();
 			if (FID == SCC.getStartingFragment()) {
-				//fragmentDeleteDialog();
 				SimpleWarningDialog.getWarningDialog(this.getString(R.string.bad_frag_delete_msg), this);
 			} else {
 				SCC.deleteFragment(FID);
@@ -260,15 +259,4 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 		return true; 
 
 	}
-
-	/**
-	 * http://stackoverflow.com/questions/4238921/android-detect-whether-there-is-an-internet-connection-available
-	 */
-	//TODO put this also when click onlinelibrary button
-	private Boolean checkInternetConnected() {
-		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-	}
-
 }

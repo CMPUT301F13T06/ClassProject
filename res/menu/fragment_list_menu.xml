@@ -5,26 +5,19 @@
         android:id="@+id/add_fragment"
         android:icon="@drawable/ic_action_new"
         android:showAsAction="ifRoom"
-        android:title="@string/change_info">
+        android:title="@string/add_fragment">
      </item>
      
      <item
-        android:id="@+id/add_new"
-        android:icon="@drawable/ic_action_edit"
-        android:showAsAction="ifRoom"
-        android:title="@string/Blank">
-        <menu>
-            <item
-                android:id="@+id/publish"
-                android:showAsAction="never"
-                android:title="@string/publish">
-            </item>
-            <item
-                android:id="@+id/change_info"
-                android:showAsAction="never"
-                android:title="@string/change_info">
-            </item>
-        </menu>
+        android:id="@+id/publish"
+        android:showAsAction="never"
+        android:title="@string/publish">
      </item>
+     
+     <item
+        android:id="@+id/change_info"
+        android:showAsAction="never"
+        android:title="@string/change_info">
+    </item>
 
 </menu>

@@ -47,7 +47,8 @@
     <string name="bad_frag_delete_msg">Cannot delete fragment that is the starting fragment.</string>
     <string name="add_branch_title">New Decision Branch Label</string>
     <string name="bad_branch_msg">Cannot create branch with empty label.</string>
-    <string name="no_internet">Action could not be completed because no internet connectivity.</string>
+    <string name="no_internet">Action could not be completed because internet not connected.</string>
+    <string name="no_internet_library">Connect to the internet to view online stories!</string>
     <string name="title_decision_picker">Create Decision Branch</string>
     <string name="no_fragments">There are no story fragments to read.</string>
     <string name="StoryTitle"/>

@@ -21,6 +21,8 @@ import java.util.Date;
 
 import android.app.Application;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import story.book.dataclient.IOClient;
 import story.book.dataclient.ESClient;
@@ -123,5 +125,18 @@ public class StoryApplication extends Application {
 		} else {
 			return nickname;
 		}
+	}
+	
+	/**
+	 * Check if the user is connected to the Internet.
+	 * 
+	 * @return true if user is connected, false otherwise
+	 * 
+	 * Ref: http://stackoverflow.com/questions/4238921/android-detect-whether-there-is-an-internet-connection-available
+	 */
+	public static Boolean checkInternetConnected() {
+		ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 }
