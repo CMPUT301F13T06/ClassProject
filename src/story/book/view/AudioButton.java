@@ -45,7 +45,7 @@ public class AudioButton extends ImageButton {
 		this.setOnClickListener(stateClick);
 	}
 	
-	 OnClickListener stateClick = new OnClickListener() {
+	OnClickListener stateClick = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			ImageButton b = (ImageButton) v;
@@ -56,15 +56,15 @@ public class AudioButton extends ImageButton {
 			b.setImageResource(currentState.getImage());
 		}
 
-     };
-   
-    protected interface ButtonState {	 
-    	 public void clickResponse();
-    	 public ButtonState nextState();
-    	 public int getImage();
-     }
+	};
+
+	protected interface ButtonState {	 
+		public void clickResponse();
+		public ButtonState nextState();
+		public int getImage();
+	}
      
-     protected class StopPlayState implements  ButtonState {
+	protected class StopPlayState implements  ButtonState {
 		@Override
 		public void clickResponse() {
 			if (player != null ) {
@@ -82,28 +82,26 @@ public class AudioButton extends ImageButton {
 		public int getImage() {
 			return R.drawable.ic_action_stop;
 		}
-     }
+	}
      
-     protected class PlayState implements ButtonState {
+	protected class PlayState implements ButtonState {
 		@Override
 		public void clickResponse() {
-	         if (audioData == null) {
-	        	 // nothing to play
-	        	 return;
-	         }
-	         
-	         player = new MediaPlayer();
-	         
-	         try {
-	             //player.setDataSource(filename);
-	             player.setDataSource(StoryApplication.getContext(), audioData);
-	             
-	             player.prepare();
-	             player.start();
-	         } catch (Exception e) {
-	        	 //TODO
-	        	 e.printStackTrace();
-	         }
+			if (audioData == null) {
+				// nothing to play
+				return;
+			}
+ 
+			player = new MediaPlayer();
+ 
+			try {
+				player.setDataSource(StoryApplication.getContext(), audioData);
+				player.prepare();
+				player.start();
+			} catch (Exception e) {
+				//TODO
+				e.printStackTrace();
+			}
 		}
 
 		@Override
@@ -115,6 +113,6 @@ public class AudioButton extends ImageButton {
 		public int getImage() {
 			return R.drawable.ic_action_play;
 		}
-     }
+	}
    
 }

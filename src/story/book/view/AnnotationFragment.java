@@ -18,25 +18,29 @@ package story.book.view;
 
 import java.util.ArrayList;
 
+import story.book.controller.StoryCreationController;
 import story.book.controller.StoryReadController;
-import story.book.model.DecisionBranch;
+import story.book.model.Annotation;
+import story.book.model.AudioIllustration;
 import story.book.model.Illustration;
 import story.book.model.StoryFragment;
 import story.book.model.TextIllustration;
-import story.book.view.R;
 import android.annotation.TargetApi;
-import android.app.Fragment;
 import android.app.ActionBar.LayoutParams;
+import android.app.Fragment;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 /**
@@ -51,11 +55,14 @@ import android.widget.RelativeLayout;
 public class AnnotationFragment extends Fragment {
 	StoryReadController SRC;
 	StoryFragment SF;
-	//	ArrayList<Annotation> annotation;
-	ArrayList<DecisionBranch> decisions;
-	ArrayList<Button> buttons;
+	ArrayList<Pair<View, Annotation>> annotationList;
 	View rootView;
 	int nextFragmentID;
+	StoryCreationController SCC;
+	ArrayList<Annotation> annotations;
+
+	String author;
+	Boolean editMode = true;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,15 +70,29 @@ public class AnnotationFragment extends Fragment {
 
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		View rootView = inflater.inflate(R.layout.annotation_fragment, container, false);
-		SRC = new StoryReadController();
-		SF = SRC.getStartingFragment();
-		displayAnnotations(SF, rootView);
+		rootView = inflater.inflate(R.layout.annotation_fragment, container, false);
 
+		author = StoryApplication.getNickname();
+		SRC = ((StoryFragmentReadActivity)this.getActivity()).getController();
+//		SF = SRC.getStartingFragment();
+		SCC = new StoryCreationController();
+		
+		getAnnotations();
+		loadAnnotations();
+		annotationList = new ArrayList<Pair<View, Annotation>>();
+		
+		displayAnnotations(SF, rootView);
 		return rootView;
 
 	}
-
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		getAnnotations();
+		displayAnnotations(SF, rootView);
+	}
+	
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		// Inflate the menu items for use in the action bar
 		super.onCreateOptionsMenu(menu, inflater);
@@ -79,24 +100,58 @@ public class AnnotationFragment extends Fragment {
 
 	}
 
+	Uri auri;
+	private enum Actions {PHOTO, VIDEO}
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
-		case R.id.fromCamera:
+		case R.id.text:
+			addNewTextAnnotation(rootView);
+			return true;
+		case R.id.take_photo:
+			Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			auri = SCC.getFreeUri(".jpg");
+			i.putExtra(MediaStore.EXTRA_OUTPUT, auri);
+			startActivityForResult(i, Actions.PHOTO.ordinal());
+			return true;
+		case R.id.addGalleryPhoto:
+			i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+			startActivityForResult(i, Actions.PHOTO.ordinal());
+			return true;
+		
+		case R.id.audio:
+//			AudioIllustration audio = new AudioIllustration();
+//			annotationList.add(new Pair<View, Annotation>(audio.getView(editMode), audio));
 			return true;
 
-		case R.id.fromGallery:
+		case R.id.video:
 
 			return true;
-		case R.id.add_new:
-			Intent intent = new Intent();
-			startActivity(intent);
+
+		case R.id.record_video:
+			i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+			i.putExtra(MediaStore.EXTRA_OUTPUT, SCC.getFreeUri(".mp4"));
+			i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
+			startActivityForResult(i, Actions.VIDEO.ordinal());
 			return true;
 
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	/**
+	 * loadAnnotations() loads annotation views from the current story fragment
+	 */
+	private void loadAnnotations() {
+		ArrayList<Annotation> annotations = SF.getAnnotations();
+
+		annotationList = new ArrayList<Pair<View, Annotation>>();
+		for (Annotation i : annotations) {
+			annotationList.add(new Pair<View, Annotation>(i.getView(editMode), i));
+		}
+	}
+	
 	/**
 	 * displayAnnotations() displays all annotations as views 
 	 * by getting them from the corresponding fragment 
@@ -105,41 +160,98 @@ public class AnnotationFragment extends Fragment {
 	 * @param View	 where annotations will be displayed
 	 */
 	private void displayAnnotations(StoryFragment SF, View rootView) {
-
-		//		annotation = SF.getAnnotations();
-		//
-		//		ArrayList<View> AnnotationViews = new ArrayList<View>();
-		//
-		//		for (Annotation i : annotations){
-		//			AnnotationViews.add(((TextIllustration)i).getView());
-		//		}
-		//
-		//		int pos = 0;
-		//
-		//		for (View t: AnnotationViews){
-		//			t.setId(pos + 1);
-		//			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
-		//					WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
-		//			p.addRule(RelativeLayout.BELOW, pos);
-		//			t.setLayoutParams(p);
-		//			((ViewGroup) rootView).addView(t, p);
-		//			pos++;
-		//		}
+		
+		RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.annotation_fragment);
+		if ((ViewGroup)this.getView() != null) {
+			rootView = this.getView().findViewById(R.id.annotation_fragment);
+			((ViewGroup) rootView).removeAllViews();
+		}
+		int position = 0;
+		if (annotationList.isEmpty() == false) {
+			// Display illustrations
+			for (Pair <View, Annotation> t: annotationList) {
+				
+				t.first.setId(position + 1);
+				
+				RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
+						MATCH_PARENT,LayoutParams.WRAP_CONTENT); 
+				p.addRule(RelativeLayout.BELOW, position);
+				t.first.setLayoutParams(p);
+				((ViewGroup) layout).addView(t.first, p);
+				position++;
+			}
+		}
 
 	}
-
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(resultCode == android.app.Activity.RESULT_OK ) {
+			if(requestCode == Actions.PHOTO.ordinal()) {
+//				ImageIllustration image = new ImageIllustration(auri);
+//				annotationList.add(new Pair<View, Annotation>(image.getView(editMode), image));
+				update();
+			}
+			if(requestCode == Actions.VIDEO.ordinal()) {
+//				VideoIllustration video = new VideoIllustration(auri);
+//				annotationList.add(new Pair<View, Annotation>(video.getView(editMode), video));
+				update();
+			}
+		}
+	}
+	
+	/**
+	 * update() removes all views in the annotation fragment and redisplays them to show changes
+	 */
 	public void update() {
-		((ViewGroup) this.getView()).removeAllViews();
+		loadAnnotations();
 		displayAnnotations(SF, rootView);
 	}
+	
+	/**
+	 * addNewTextIllustration() creates a new EditText for users to enter the text
+	 * for a TextIllustration.
+	 */
+	private void addNewTextAnnotation(View v) {
+		// TODO Auto-generated method stub
+		EditText newText = new EditText(v.getContext());
+		newText.setHint("Enter text here");
+		annotationList.add(new Pair<View, Annotation>(newText, null));
+		displayAnnotations(SF, v);
+	}
 
-	/*
-	 * Loads the annotations for the next fragment (after a decision branch
+	/**
+	 * Loads the annotations for the fragment; used after a decision branch
 	 * has been selected in the <code>ReadingFragment</code>
 	 */
-	public void getNextAnnotations() {
-		nextFragmentID = ((StoryFragmentReadActivity) getActivity()).getNextFragmentID();
-		SF = SRC.getStoryFragment(nextFragmentID);
+	public void getAnnotations() {
+		SF = SRC.getStoryFragment((StoryFragmentReadActivity.SF).getFragmentID());
 		update();
+	}
+	
+	/**
+	 * saveAnnotation() saves any new annotations
+	 */
+	public void saveFragment() {
+		int top = annotationList.size();
+		for (int i = 0; i < top; i++) {
+			if (annotationList.get(i).second == null) {
+				// Saving a text illustration
+				String illString = ((EditText)annotationList.get(i).first).getText().toString();
+				TextIllustration text = new TextIllustration(illString);
+				if(illString.length() > 0) {
+					Annotation <TextIllustration> a = new Annotation<TextIllustration>(author, text);
+					SF.addAnnotation(a);
+				}
+				else {
+					annotationList.remove(i);
+				}
+	
+			}
+			else {
+				// Saving an audio, image, or view illustration
+//				Annotation<?> a = new Annotation(author, annotationList.get(i).second);
+//				SF.addAnnotation((annotationList.get(i)));
+			}
+		}
 	}
 }

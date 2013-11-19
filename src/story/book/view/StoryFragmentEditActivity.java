@@ -42,6 +42,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnDragListener;
@@ -84,11 +85,12 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	ArrayList<Illustration> illustrations;
 	ArrayList<DecisionBranch> decisions;
 	ArrayList<Button> buttons;
-	ArrayList<View> illustrationViews;
+	ArrayList<Pair<View,Illustration>> illustrationList;
 	ArrayList<Button> buttonList;
 
 	int itemPos;
 	int FID;
+	Boolean editMode = true;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -117,7 +119,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		actionBar.setTitle(title);
 
 		SF.addView(this);
-		illustrationViews = new ArrayList<View>();
+		illustrationList = new ArrayList<Pair<View, Illustration>>();
 		loadFragmentContents();
 
 	}
@@ -151,7 +153,6 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	private enum Actions {PHOTO, VIDEO}
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -169,6 +170,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	}
 	
 	Uri auri;
+	private enum Actions {PHOTO, VIDEO}
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
@@ -197,7 +199,6 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		case R.id.video:
 
 			return true;
-
 		case R.id.record_video:
 			i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 			i.putExtra(MediaStore.EXTRA_OUTPUT, SCC.getFreeUri(".mp4"));
@@ -219,12 +220,12 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		if(resultCode == RESULT_OK) {
 			if(requestCode == Actions.PHOTO.ordinal()) {
 				ImageIllustration image = new ImageIllustration(auri);
-				illustrationViews.add(image.getView());
+				illustrationList.add(new Pair<View, Illustration>(image.getView(editMode), image));
 				displayFragment();
 			}
 			if(requestCode == Actions.VIDEO.ordinal()) {
 				VideoIllustration video = new VideoIllustration(auri);
-				illustrationViews.add(video.getView());
+				illustrationList.add(new Pair<View, Illustration>(video.getView(editMode), video));
 				displayFragment();
 			}
 		}
@@ -237,39 +238,55 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	private void addNewTextIllustration(View v) {
 		EditText newText = new EditText(v.getContext());
 		newText.setHint("Enter text here");
-		illustrationViews.add(newText);
-		displayFragment();
-	}
-	
-	/**
-	 * addNewAudioIllustration() creates a new EditText for users to enter the text
-	 * for a TextIllustration.
-	 */
-	private void addNewAudioIllustration(View v) {
-		AudioIllustration audio = new AudioIllustration(null);
-		illustrationViews.add(audio.getView());
+		illustrationList.add(new Pair<View, Illustration>(newText, null));
 		displayFragment();
 	}
 
+	/**
+	 * addNewAudioIllustration() creates a new AudioRecorderButton for users
+	 * to record audio for a AudioIllustration
+	 */
+	private void addNewAudioIllustration(View v) {
+		auri = SCC.getFreeUri(".mp4");
+		AudioIllustration audio = new AudioIllustration(auri);
+		illustrationList.add(new Pair<View, Illustration>(audio.getView(editMode), audio));
+		displayFragment();
+	}
+
+	
 	/**
 	 * saveFragment() saves the current state and layout of the fragment
 	 */
 	public void saveFragment() {
 
-		ArrayList<Illustration> currentView = new ArrayList<Illustration>();
-		int top = illustrationViews.size();
+		ArrayList<Pair<View, Illustration>> currentView = new ArrayList<Pair<View, Illustration>>();
+		int top = illustrationList.size();
 		for (int i = 0; i < top; i++) {
-			String illString = ((EditText) illustrationViews.get(i)).getText().toString();
-			if (illString.length() > 0) {
-				currentView.add(new TextIllustration(illString));
+			if (illustrationList.get(i).second == null) {
+				// Saving a text illustration
+				String illString = ((EditText)illustrationList.get(i).first).getText().toString();
+				if(illString.length() > 0) {
+					currentView.add(new Pair<View, Illustration>(illustrationList.get(i).first, new TextIllustration(illString)));
+				}
+				
+				else {
+					illustrationList.remove(i);
+				}
 			}
 			else {
-				illustrationViews.remove(i);
+				// Saving an audio, image, or view illustration
+				currentView.add(illustrationList.get(i));
 			}
 		}
 
 		FCC.removeAllIllustrations();
-		FCC.setAllIllustrations(currentView);
+		// Extract all illustrations from currentView for saving
+		ArrayList<Illustration> illus =  new ArrayList<Illustration>();
+		for (Pair<View, Illustration> p : currentView) {
+			illus.add(p.second);
+		}
+		
+		FCC.setAllIllustrations(illus);
 	}
 
 	@Override
@@ -288,9 +305,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		illustrations = SF.getIllustrations();
 		decisions = SF.getDecisionBranches();
 
-		illustrationViews = new ArrayList<View>();
+		illustrationList = new ArrayList<Pair<View, Illustration>>();
 		for (Illustration i : illustrations) {
-			illustrationViews.add(((TextIllustration)i).getEditView());
+			illustrationList.add(new Pair<View, Illustration>(i.getView(editMode), i));
 		}
 
 	}
@@ -311,16 +328,18 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		RelativeLayout layout = (RelativeLayout) findViewById(R.id.reading_fragment);
 		((ViewGroup) layout).removeAllViews();
 		int position = 0;
-		if (illustrationViews.isEmpty() == false ){
+		if (illustrationList.isEmpty() == false) {
 			// Display illustrations
-			for (View t: illustrationViews){
-				t.setId(position + 1);
+			for (Pair <View, Illustration> t: illustrationList) {
+				
+				t.first.setId(position + 1);
+				
 				RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
 						MATCH_PARENT,LayoutParams.WRAP_CONTENT); 
 				p.addRule(RelativeLayout.BELOW, position);
-				t.setLayoutParams(p);
-				registerForContextMenu(t);
-				((ViewGroup) layout).addView(t, p);
+				t.first.setLayoutParams(p);
+				registerForContextMenu(t.first);
+				((ViewGroup) layout).addView(t.first, p);
 				position++;
 			}
 		}
@@ -351,8 +370,6 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 
-		itemPos = v.getId() - 1;
-
 		if (v instanceof Button) {
 			menu.setHeaderTitle("Select an Option:");
 			menu.add(0, v.getId(), 2, "Delete decision branch");  
@@ -377,7 +394,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 		case 1:
 			//Delete illustration
-			illustrationViews.remove(itemPos);
+			illustrationList.remove(itemPos);
 			displayFragment();
 
 			break;
@@ -385,7 +402,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		case 2:
 			// Delete decision branch
 
-			Button b = buttonList.get(itemPos-illustrationViews.size());
+			Button b = buttonList.get(itemPos-illustrationList.size());
 			index =  buttonList.indexOf(b);
 			DecisionBranch branch = decisions.get(index);
 			DBCC.removeDecisionBranch(branch);
@@ -406,9 +423,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		case 4:
 			// Move illustration up
 			if (itemPos > 0){
-				View above = illustrationViews.get(itemPos-1);
-				illustrationViews.set(itemPos-1, illustrationViews.get(itemPos));
-				illustrationViews.set(itemPos, above);
+				Pair<View, Illustration> above = illustrationList.get(itemPos-1);
+				illustrationList.set(itemPos-1, illustrationList.get(itemPos));
+				illustrationList.set(itemPos, above);
 				displayFragment();
 			}
 
@@ -416,10 +433,10 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 		case 5:
 			// Move illustration down
-			if (itemPos < illustrationViews.size()-1) {
-				View below = illustrationViews.get(itemPos+1);
-				illustrationViews.set(itemPos+1, illustrationViews.get(itemPos));
-				illustrationViews.set(itemPos, below);
+			if (itemPos < illustrationList.size()-1) {
+				Pair<View, Illustration> below = illustrationList.get(itemPos+1);
+				illustrationList.set(itemPos+1, illustrationList.get(itemPos));
+				illustrationList.set(itemPos, below);
 				displayFragment();
 			}
 
@@ -442,7 +459,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * 
 	 * @param DecisionBranch 	the decision branches associated with the fragment
 	 * @param Context 	the context where the button will be displayed
-	 * @return an custom ArrayList<Button> corresponding to the decision branches in a fragment
+	 * @return a custom ArrayList<Button> corresponding to the decision branches in a fragment
 	 */
 	private ArrayList<Button> formatButton(ArrayList<DecisionBranch> db, Context c) {
 
@@ -462,7 +479,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 	@Override
 	public void onUserSelectValue(String title) {
-		Button b = buttonList.get(itemPos - illustrationViews.size());
+		Button b = buttonList.get(itemPos - illustrationList.size());
 		int index =  buttonList.indexOf(b);
 		// Remove the edited Decision Branch
 		DecisionBranch branch = decisions.get(index);

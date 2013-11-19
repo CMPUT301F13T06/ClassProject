@@ -11,7 +11,7 @@ import android.os.Environment;
  * AudioRecorderButton extends AudioButton. Clicking it
  * allows the user to play and stop audio (as in AudioButton),
  * but with the additionally functionality to first record 
- * the audio.
+ * the audio before playback. Currently only records once.
  * 
  * @author Vina Nguyen
  * 
@@ -20,8 +20,6 @@ import android.os.Environment;
 
 public class AudioRecorderButton extends AudioButton {
 
-	String filename;
-	
 	MediaRecorder recorder;
 	
 	RecordState recorderButton;
@@ -35,29 +33,24 @@ public class AudioRecorderButton extends AudioButton {
 		
 		currentState = recorderButton;
 		this.setImageResource(currentState.getImage());
-		
-
-		//filename = "../sdcard/test.3gpp";
-		
-		filename = Environment.getExternalStorageDirectory().getPath() + "/tmp.3gpp";
 	}
 	
 	 private class RecordState implements ButtonState {
 			@Override
 			public void clickResponse() {
-				 recorder = new MediaRecorder();
-		         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-		         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-		         recorder.setOutputFile(filename);
-		         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+				recorder = new MediaRecorder();
+				recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+				recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+				recorder.setOutputFile(audioData.getPath());
+				recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
-		         try {
-		             recorder.prepare();
-		             recorder.start();
-		         } catch (Exception e) {
-		        	 //TODO
-		        	 e.printStackTrace();
-		         }
+				try {
+					recorder.prepare();
+					recorder.start();
+				} catch (Exception e) {
+					//TODO
+					e.printStackTrace();
+				}
 			}
 
 			@Override
@@ -69,16 +62,14 @@ public class AudioRecorderButton extends AudioButton {
 			public int getImage() {
 				return R.drawable.ic_action_mic;
 			}
-	     }
+		}
 	     
-	     private class StopRecordState implements  ButtonState {
+		private class StopRecordState implements  ButtonState {
 			@Override
 			public void clickResponse() {
 				recorder.stop();
-		        recorder.release();
-		        recorder = null;
-				
-		        audioData = Uri.parse(new File(filename).toString());
+				recorder.release();
+				recorder = null;
 			}
 
 			@Override
@@ -90,7 +81,7 @@ public class AudioRecorderButton extends AudioButton {
 			public int getImage() {
 				return R.drawable.ic_action_stop;
 			}
-	     }
+		}
 
 		public Uri getContent() {
 			return audioData;
