@@ -78,10 +78,10 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	ActionBar actionBar;
 
 	StoryFragment SF;
+	StoryCreationController SCC;
 	FragmentCreationController FCC;
 	DecisionBranchCreationController DBCC;
 	ArrayList<StoryFragment> SFL;
-	StoryCreationController SCC;
 
 	ArrayList<Illustration> illustrations;
 	ArrayList<DecisionBranch> decisions;
@@ -180,7 +180,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			return true;
 		case R.id.take_photo:
 			Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			auri = SCC.getFreeUri(".jpg");
+			auri = FCC.getFreeUri(".jpg");
 			i.putExtra(MediaStore.EXTRA_OUTPUT, auri);
 			startActivityForResult(i, Actions.PHOTO.ordinal());
 			return true;
@@ -202,7 +202,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			return true;
 		case R.id.record_video:
 			i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-			i.putExtra(MediaStore.EXTRA_OUTPUT, SCC.getFreeUri(".mp4"));
+			i.putExtra(MediaStore.EXTRA_OUTPUT, FCC.getFreeUri(".mp4"));
 			i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
 			startActivityForResult(i, Actions.VIDEO.ordinal());
 			return true;
@@ -248,7 +248,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * to record audio for a AudioIllustration
 	 */
 	private void addNewAudioIllustration(View v) {
-		auri = SCC.getFreeUri(".mp4");
+		auri = FCC.getFreeUri(".mp4");
 		AudioIllustration audio = new AudioIllustration(auri);
 		illustrationList.add(new Pair<View, Illustration>(audio.getView(editMode), audio));
 		displayFragment();

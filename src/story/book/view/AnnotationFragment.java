@@ -18,7 +18,7 @@ package story.book.view;
 
 import java.util.ArrayList;
 
-import story.book.controller.StoryCreationController;
+import story.book.controller.FragmentCreationController;
 import story.book.controller.StoryReadController;
 import story.book.model.Annotation;
 import story.book.model.AudioIllustration;
@@ -59,7 +59,7 @@ public class AnnotationFragment extends Fragment {
 	ArrayList<Pair<View, Annotation>> annotationList;
 	View rootView;
 	int nextFragmentID;
-	StoryCreationController SCC;
+	FragmentCreationController FCC;
 	ArrayList<Annotation> annotations;
 
 	String author;
@@ -76,7 +76,7 @@ public class AnnotationFragment extends Fragment {
 		author = StoryApplication.getNickname();
 		SRC = ((StoryFragmentReadActivity)this.getActivity()).getController();
 //		SF = SRC.getStartingFragment();
-		SCC = new StoryCreationController();
+		FCC = new FragmentCreationController(SF.getFragmentID());
 		
 		getAnnotations();
 		loadAnnotations();
@@ -111,7 +111,7 @@ public class AnnotationFragment extends Fragment {
 			return true;
 		case R.id.take_photo:
 			Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			auri = SCC.getFreeUri(".jpg");
+			auri = FCC.getFreeUri(".jpg");
 			i.putExtra(MediaStore.EXTRA_OUTPUT, auri);
 			startActivityForResult(i, Actions.PHOTO.ordinal());
 			return true;
@@ -131,7 +131,7 @@ public class AnnotationFragment extends Fragment {
 
 		case R.id.record_video:
 			i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-			i.putExtra(MediaStore.EXTRA_OUTPUT, SCC.getFreeUri(".mp4"));
+			i.putExtra(MediaStore.EXTRA_OUTPUT, FCC.getFreeUri(".mp4"));
 			i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
 			startActivityForResult(i, Actions.VIDEO.ordinal());
 			return true;
