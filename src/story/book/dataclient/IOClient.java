@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import story.book.model.Story;
@@ -92,7 +93,10 @@ public class IOClient extends DataClient {
 			if(i.contains(date))
 				listOfFiles.add(i);
 
-		return Uri.fromFile(new File(dir, "ID-"+listOfFiles.size()+"-"+date+Extension));
+		return Uri.fromFile(
+				new File(dir, 
+						"ID-"+listOfFiles.size()+"-"+date+'-'+
+						Calendar.getInstance().getTimeInMillis()+Extension));
 	}
 	
 	/**
