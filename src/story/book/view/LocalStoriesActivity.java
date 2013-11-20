@@ -29,18 +29,19 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
@@ -48,7 +49,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SearchView.OnCloseListener;
+import android.widget.SearchView.OnQueryTextListener;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 
 /**
@@ -64,11 +68,6 @@ import android.widget.SimpleAdapter;
 
 public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 
-	CharSequence text;
-	
-	private ArrayList<String> list;
-	private ArrayAdapter<String>testAdapter;
-	ListView testView;
 	
 	ListView listView;
 
@@ -86,7 +85,21 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.library_activity);
 
+		/*
+		Intent intent = getIntent();
+		if(Intent.ACTION_SEARCH.equals(intent.getAction())){
+		String query = intent.getStringExtra(SearchManager.QUERY);
+
+		doMySearch(query);
+		}*/
+		
 		localController = new LocalStoryController();
+		
+		
+		
+			
+			
+		
 
 		// TODO Will move to SimpleAdapter in the future
 		/*
@@ -127,6 +140,9 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 			}
 		});
 
+		
+		
+		
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
@@ -181,44 +197,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		refreshList();
 	}
 
-	private void openSearch() {
 
-		//Get the intent, verify the action and get the query
-		//Intent intent = getIntent();
-		//if(Intent.ACTION_SEARCH.equals(intent.getAction())){
-		//String query = intent.getStringExtra(SearchManager.QUERY);
-
-		//doMySearch(query);
-		
-		/*
-		list = new ArrayList<String>();
-		list.add("YAY");
-		testAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
-		testView = (ListView) findViewById(R.id.listView);
-		testView.setAdapter(testAdapter);
-		
-		testAdapter.notifyDataSetChanged();*/
-		//}
-	}
-	
-	private void doMySearch(String query){
-		/*
-		list = new ArrayList<String>();
-		list.add("YAY");
-		testAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
-		listView.setAdapter(testAdapter);
-		
-		testAdapter.notifyDataSetChanged();
-		
-		//if(localController.search(query).equals(query)){
-			
-			
-			
-			
-			//refreshList();
-		//}*/
-		
-	}
 
 	/**
 	 * Method to create a floating context menu when an item in the list is
@@ -260,7 +239,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 
 	/**
 	 * http://stackoverflow.com/questions/18832890/android-nullpointerexception-on-searchview-in-action-bar
-	 * 
+	 * http://stackoverflow.com/questions/17874951/searchview-onquerytextsubmit-runs-twice-while-i-pressed-once
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -279,20 +258,79 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		searchView.setIconifiedByDefault(true); //iconify the widget
 		searchView.setSubmitButtonEnabled(true);
 
-		/*text = searchView.getQuery();
-		searchView.setOnQueryTextListener(new OnQueryTextListener());
-		.onQueryTextSubmit();*/
+		
+		searchView.setOnQueryTextListener(new OnQueryTextListener(){
+			
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				// TODO Auto-generated method stub
+				
+				return false;
+			}
+			
+
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				// TODO Auto-generated method stub
+				//Do something when the user selects the submit button
+				//if(localController.search(query).equals(query)){
+				doMySearch(query);
+				return true;
+			}
+		});
+		
+		searchView.setOnCloseListener(new OnCloseListener(){
+			@Override
+			public boolean onClose() {
+				// TODO Auto-generated method stub
+				
+				refreshList();
+				return true;
+			}
+			
+		});
+		searchView.setIconifiedByDefault(true); //iconify the widget
 		return true;
 	}
 	
+
+	private void doMySearch(String query){	
+		adapter.clear();
+		//show the list with just the search results
+		adapter = new ArrayAdapter<StoryInfo>(this,android.R.layout.simple_list_item_1,localController.search(query));
+		listView.setAdapter(adapter);
+	}
 	
+	private void openSearch() {
+
+		//Get the intent, verify the action and get the query
+		Intent intent = getIntent();
+		if(Intent.ACTION_SEARCH.equals(intent.getAction())){
+		String query = intent.getStringExtra(SearchManager.QUERY);
+
+		doMySearch(query);
+		
+		
+		//list = new ArrayList<String>();
+		//list.add("YAY");
+		//testAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
+		//testView = (ListView) findViewById(R.id.listView);
+		//testView.setAdapter(testAdapter);
+		
+		//testAdapter.notifyDataSetChanged();
+		
+		
+		}
+	}
+	
+
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.action_search:
-			openSearch();
-			return true;
+	//	case R.id.action_search:
+			//openSearch();
+		//	return true;
 		case R.id.action_create_story:
 			createStory();
 			return true;
