@@ -39,6 +39,7 @@
                         android:id="@+id/enter_title"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:inputType="textCapSentences"
                         android:visibility="gone" />
                 </LinearLayout>
 
@@ -85,7 +86,8 @@
                     <EditText
                         android:id="@+id/enter_author"
                         android:layout_width="242dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapSentences" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -154,6 +156,7 @@
                         android:id="@+id/enter_genre"
                         android:layout_width="246dp"
                         android:layout_height="wrap_content"
+                        android:inputType="textCapSentences"
                         android:paddingLeft="20dp" />
                 </LinearLayout>
 
@@ -201,7 +204,8 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp" />
+                        android:layout_marginRight="10dp"
+                        android:inputType="textCapSentences" />
                 </LinearLayout>
 
                 <LinearLayout
