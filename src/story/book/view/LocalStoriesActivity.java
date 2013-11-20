@@ -29,6 +29,7 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -49,6 +50,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 
+
 /**
  * Activity that allows the user to create new stories, delete stories, edit
  * stories, or select a story to read from a list of their locally stored
@@ -62,9 +64,12 @@ import android.widget.SimpleAdapter;
 
 public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 
-	public static final String KEY_TITLE = "Title";
-	public static final String KEY_ID = "id";
-
+	CharSequence text;
+	
+	private ArrayList<String> list;
+	private ArrayAdapter<String>testAdapter;
+	ListView testView;
+	
 	ListView listView;
 
 	SimpleAdapter sAdapter;
@@ -178,6 +183,41 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 
 	private void openSearch() {
 
+		//Get the intent, verify the action and get the query
+		//Intent intent = getIntent();
+		//if(Intent.ACTION_SEARCH.equals(intent.getAction())){
+		//String query = intent.getStringExtra(SearchManager.QUERY);
+
+		//doMySearch(query);
+		
+		/*
+		list = new ArrayList<String>();
+		list.add("YAY");
+		testAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
+		testView = (ListView) findViewById(R.id.listView);
+		testView.setAdapter(testAdapter);
+		
+		testAdapter.notifyDataSetChanged();*/
+		//}
+	}
+	
+	private void doMySearch(String query){
+		/*
+		list = new ArrayList<String>();
+		list.add("YAY");
+		testAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
+		listView.setAdapter(testAdapter);
+		
+		testAdapter.notifyDataSetChanged();
+		
+		//if(localController.search(query).equals(query)){
+			
+			
+			
+			
+			//refreshList();
+		//}*/
+		
 	}
 
 	/**
@@ -236,17 +276,22 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		// Assumes current activity is the searchable activity
 		searchView.setSearchableInfo(searchManager
 				.getSearchableInfo(getComponentName()));
-		searchView.setIconifiedByDefault(false); // Do not iconify the widget
-		// expand it by default
+		searchView.setIconifiedByDefault(true); //iconify the widget
+		searchView.setSubmitButtonEnabled(true);
 
+		/*text = searchView.getQuery();
+		searchView.setOnQueryTextListener(new OnQueryTextListener());
+		.onQueryTextSubmit();*/
 		return true;
 	}
+	
+	
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_search:
-			// openSearch();
+			openSearch();
 			return true;
 		case R.id.action_create_story:
 			createStory();
