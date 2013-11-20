@@ -148,20 +148,20 @@ public class StoryCreationController extends LocalEditingController {
 	}
 	
 	/**
-	 * 
-	 * @param term
-	 * @return
+	 * Returns a <code>HashMap</code> containing all story fragments whose
+	 * title attributes contain the specified <code>String</code>.
+	 * @param 	term	the <code>String</code> to search for
+	 * @return	<code>HashMap</code> containing matching fragments
 	 */
-	@SuppressLint("UseSparseArrays")
 	public HashMap<Integer, StoryFragment> searchFragments(String term) {
+		
 		HashMap<Integer, StoryFragment> matchingFragments = new HashMap<Integer, StoryFragment>();
 		Collection<StoryFragment> allFragments = story.getStoryFragments().values();
-		
 		Iterator<StoryFragment> fragmentIterator = allFragments.iterator();
 		
 		while (fragmentIterator.hasNext()) {
 			StoryFragment fragment = fragmentIterator.next();
-			if (fragment.getFragmentTitle().contains(term)) {
+			if (fragment.getFragmentTitle().toLowerCase().contains(term.toLowerCase())) {
 				matchingFragments.put(fragment.getFragmentID(), fragment);
 			}
 		}
