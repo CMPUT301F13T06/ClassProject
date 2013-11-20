@@ -109,10 +109,6 @@ public class StoryCreationController extends LocalEditingController {
 		story.getStoryInfo().setStartingFragmentID(fragmentID);
 	}
 	
-	public Uri getFreeUri(String Extension) {
-		return io.URIhandler(story.getStoryInfo().getSID(), Extension);
-	}
-	
 	/**
 	 * Get the starting fragment of the current Story.
 	 * 

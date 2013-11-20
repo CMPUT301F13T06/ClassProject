@@ -19,6 +19,7 @@ package story.book.controller;
 
 import java.util.ArrayList;
 
+import android.net.Uri;
 import story.book.model.Illustration;
 import story.book.model.StoryFragment;
 import story.book.model.TextIllustration;
@@ -51,24 +52,9 @@ public class FragmentCreationController extends LocalEditingController {
 				.getStoryFragments().get(fragmentID);
 	}
 	
-	/**
-	 * Adds a TextIllustration to the fragment. Consider revising using java
-	 * generics to incorporate different illustration types.
-	 * 
-	 * @param content
-	 */
-	public void addTextIllustration(String content) {
-		storyFragment.addIllustration(new TextIllustration(content));
-	}
-	
-	/**
-	 * Removes the specified <code>TextIllustration</code> from the story
-	 * fragment.
-	 * 
-	 * @param 	textIllustration	the <code>TextIllustration</code> to remove
-	 */
-	public void removeTextIllustration(TextIllustration textIllustration) {
-		storyFragment.removeIllustration(textIllustration);
+	public Uri getFreeUri(String Extension) {
+		return io.URIhandler(StoryApplication.getCurrentStory().getStoryInfo()
+				.getSID(), Extension);
 	}
 	
 	/**
