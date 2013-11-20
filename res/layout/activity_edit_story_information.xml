@@ -157,7 +157,7 @@
                         android:layout_width="246dp"
                         android:layout_height="wrap_content"
                         android:inputType="textCapSentences"
-                        android:paddingLeft="20dp" />
+                        android:paddingLeft="10dp" />
                 </LinearLayout>
 
                 <LinearLayout
