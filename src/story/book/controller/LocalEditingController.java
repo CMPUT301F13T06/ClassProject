@@ -28,7 +28,7 @@ import story.book.view.StoryApplication;
  *
  */
 public abstract class LocalEditingController {
-	private IOClient io;
+	protected IOClient io;
 	
 	public LocalEditingController() {
 		io = StoryApplication.getIOClient();

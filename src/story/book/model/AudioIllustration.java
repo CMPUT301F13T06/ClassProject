@@ -19,6 +19,8 @@ package story.book.model;
 
 import java.io.File;
 
+import story.book.view.AudioButton;
+import story.book.view.AudioRecorderButton;
 import story.book.view.StoryApplication;
 import android.net.Uri;
 import android.view.DragEvent;
@@ -31,20 +33,22 @@ import android.widget.Button;
 /**
  * 
  * @author Anthony Ou
+ * 
+ * @author Vina Nguyen
  *
  */
-public class AudioIllustration extends Illustration<Uri>{
+public class AudioIllustration extends Illustration<String>{
 
-	Uri content;
-
-	public Uri getContent() {
-		// TODO Auto-generated method stub
-		return null;
+	String content;
+	
+	public AudioIllustration(Uri data) {
+		super();
+		String[] splitstring = data.getPath().split("/");
+		setContent(splitstring[splitstring.length-1]);
 	}
 
-	public void setContent(Uri content) {
-		// TODO Auto-generated method stub
-
+	public String getContent() {
+		return content;
 	}
 
 	/**
@@ -54,43 +58,15 @@ public class AudioIllustration extends Illustration<Uri>{
 	public View getView(Boolean editMode) {
 		// If editMode is True, return a view that can play and record audio illustrations
 		// If editMode is False, return a view that can only play back audio illustrations
-		Button b = new Button(StoryApplication.getContext());
-		b.setOnTouchListener(new View.OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if(content == null) {
-					if(event.getAction() == MotionEvent.ACTION_DOWN){
-
-					}
-					if(event.getAction() == MotionEvent.ACTION_UP){
-					}
-				}
-				return false;
-			}
-		});
-		
-		b.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				
-				
-			}
-		});
-		
-		b.setOnDragListener(new OnDragListener() {
-
-			@Override
-			public boolean onDrag(View v, DragEvent event) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-		});
-		return null;
+		if (editMode) {
+			return null;//new AudioRecorderButton(content, StoryApplication.getContext());
+		} else {
+			return null;//new AudioButton(content, StoryApplication.getContext());
+		}
 	}
 
-	public void deleteContent() {
-		new File(content.getPath()).delete();
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 }

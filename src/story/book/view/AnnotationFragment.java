@@ -18,7 +18,7 @@ package story.book.view;
 
 import java.util.ArrayList;
 
-import story.book.controller.StoryCreationController;
+import story.book.controller.FragmentCreationController;
 import story.book.controller.StoryReadController;
 import story.book.model.Annotation;
 import story.book.model.AudioIllustration;
@@ -33,6 +33,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -58,7 +59,7 @@ public class AnnotationFragment extends Fragment {
 	ArrayList<Pair<View, Annotation>> annotationList;
 	View rootView;
 	int nextFragmentID;
-	StoryCreationController SCC;
+	FragmentCreationController FCC;
 	ArrayList<Annotation> annotations;
 
 	String author;
@@ -75,7 +76,7 @@ public class AnnotationFragment extends Fragment {
 		author = StoryApplication.getNickname();
 		SRC = ((StoryFragmentReadActivity)this.getActivity()).getController();
 //		SF = SRC.getStartingFragment();
-		SCC = new StoryCreationController();
+		FCC = new FragmentCreationController(SF.getFragmentID());
 		
 		getAnnotations();
 		loadAnnotations();
@@ -110,7 +111,7 @@ public class AnnotationFragment extends Fragment {
 			return true;
 		case R.id.take_photo:
 			Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			auri = SCC.getFreeUri(".jpg");
+			auri = FCC.getFreeUri(".jpg");
 			i.putExtra(MediaStore.EXTRA_OUTPUT, auri);
 			startActivityForResult(i, Actions.PHOTO.ordinal());
 			return true;
@@ -120,7 +121,7 @@ public class AnnotationFragment extends Fragment {
 			return true;
 		
 		case R.id.audio:
-			AudioIllustration audio = new AudioIllustration();
+//			AudioIllustration audio = new AudioIllustration();
 //			annotationList.add(new Pair<View, Annotation>(audio.getView(editMode), audio));
 			return true;
 
@@ -130,7 +131,7 @@ public class AnnotationFragment extends Fragment {
 
 		case R.id.record_video:
 			i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-			i.putExtra(MediaStore.EXTRA_OUTPUT, SCC.getFreeUri(".mp4"));
+			i.putExtra(MediaStore.EXTRA_OUTPUT, FCC.getFreeUri(".mp4"));
 			i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
 			startActivityForResult(i, Actions.VIDEO.ordinal());
 			return true;
@@ -172,7 +173,8 @@ public class AnnotationFragment extends Fragment {
 			for (Pair <View, Annotation> t: annotationList) {
 				
 				t.first.setId(position + 1);
-				
+				((EditText)t.first).setInputType(InputType.TYPE_CLASS_TEXT 
+						| InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 				RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
 						MATCH_PARENT,LayoutParams.WRAP_CONTENT); 
 				p.addRule(RelativeLayout.BELOW, position);

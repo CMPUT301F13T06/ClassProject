@@ -41,6 +41,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.util.Pair;
 import android.view.ContextMenu;
@@ -77,10 +78,10 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	ActionBar actionBar;
 
 	StoryFragment SF;
+	StoryCreationController SCC;
 	FragmentCreationController FCC;
 	DecisionBranchCreationController DBCC;
 	ArrayList<StoryFragment> SFL;
-	StoryCreationController SCC;
 
 	ArrayList<Illustration> illustrations;
 	ArrayList<DecisionBranch> decisions;
@@ -179,7 +180,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			return true;
 		case R.id.take_photo:
 			Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			auri = SCC.getFreeUri(".jpg");
+			auri = FCC.getFreeUri(".jpg");
 			i.putExtra(MediaStore.EXTRA_OUTPUT, auri);
 			startActivityForResult(i, Actions.PHOTO.ordinal());
 			return true;
@@ -193,8 +194,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			startActivity(i);
 			return true;
 		case R.id.audio:
-			AudioIllustration audio = new AudioIllustration();
-			illustrationList.add(new Pair<View, Illustration>(audio.getView(editMode), audio));
+			addNewAudioIllustration(this.findViewById(R.id.reading_fragment));
 			return true;
 
 		case R.id.video:
@@ -202,7 +202,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			return true;
 		case R.id.record_video:
 			i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-			i.putExtra(MediaStore.EXTRA_OUTPUT, SCC.getFreeUri(".mp4"));
+			i.putExtra(MediaStore.EXTRA_OUTPUT, FCC.getFreeUri(".mp4"));
 			i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
 			startActivityForResult(i, Actions.VIDEO.ordinal());
 			return true;
@@ -237,13 +237,24 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * for a TextIllustration.
 	 */
 	private void addNewTextIllustration(View v) {
-		// TODO Auto-generated method stub
 		EditText newText = new EditText(v.getContext());
 		newText.setHint("Enter text here");
 		illustrationList.add(new Pair<View, Illustration>(newText, null));
 		displayFragment();
 	}
 
+	/**
+	 * addNewAudioIllustration() creates a new AudioRecorderButton for users
+	 * to record audio for a AudioIllustration
+	 */
+	private void addNewAudioIllustration(View v) {
+		auri = FCC.getFreeUri(".mp4");
+		AudioIllustration audio = new AudioIllustration(auri);
+		illustrationList.add(new Pair<View, Illustration>(audio.getView(editMode), audio));
+		displayFragment();
+	}
+
+	
 	/**
 	 * saveFragment() saves the current state and layout of the fragment
 	 */
@@ -323,7 +334,8 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			for (Pair <View, Illustration> t: illustrationList) {
 				
 				t.first.setId(position + 1);
-				
+				((EditText)t.first).setInputType(InputType.TYPE_CLASS_TEXT 
+						| InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 				RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
 						MATCH_PARENT,LayoutParams.WRAP_CONTENT); 
 				p.addRule(RelativeLayout.BELOW, position);

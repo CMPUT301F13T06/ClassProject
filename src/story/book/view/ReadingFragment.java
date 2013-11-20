@@ -34,6 +34,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,15 +103,20 @@ public class ReadingFragment extends Fragment {
 			button.setOnClickListener(setListener(button, d.getDestinationID()));
 			buttonList.add(button);
 		}
-
+		Log.d(String.valueOf(db.size()), "DEBUG: Number of decision branches");
 		if (db.size() > 1) {
 			// Set "I'm feeling lucky" button only if there are more than 1 decision branches
 			Random rand = new Random();
-			int n = rand.nextInt(db.size()-1);
-
+			int n = SF.getFragmentID();
+			while (n == SF.getFragmentID()) {
+				n = rand.nextInt(db.size()+1);
+			}
+			
 			Button luckyButton = new Button(c);
 			luckyButton.setText("I'm feeling lucky");
+			
 			luckyButton.setOnClickListener(setListener(luckyButton, n));
+			Log.d(String.valueOf(n), "DEBUG: Decision branch taken");
 			buttonList.add(luckyButton);
 		}
 		return buttonList;

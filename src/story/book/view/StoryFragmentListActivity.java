@@ -58,7 +58,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
  * @author Jessica Surya
  * @author Vina Nguyen
  */
-public class StoryFragmentListActivity extends Activity implements StoryView<Story>, RequestingActivity {
+public class StoryFragmentListActivity extends Activity implements StoryView, RequestingActivity {
 	ActionBar actionBar;
 	ArrayList<StoryFragment> SFL;
 	ArrayAdapter<StoryFragment> adapter;
@@ -79,8 +79,16 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 	public void onStart() {
 		super.onStart();			
 		SCC.getStory().addView(this);
+		
+		SFL = new ArrayList<StoryFragment>();
+		HashMap<Integer, StoryFragment> map = SCC.getFragments();
+		for (Integer key : map.keySet()){
+			StoryFragment f = map.get(key);
+			SFL.add(f);
+			f.addView(this);
+		}
+		
 		updateFragmentList();
-
 	}
 
 	@Override
@@ -92,7 +100,7 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 	}
 
 	@Override
-	public void update(Story model) {
+	public void update(Object model) {
 		updateFragmentList(); 
 	}
 
@@ -138,9 +146,9 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 		startActivity(i);
 	}
 	/*
-	 * addFragment() adds a new fragment to the current story.
+	 * changeFragmentTitle() adds a new fragment to the current story.
 	 */
-	private void addFragment() {
+	private void changeFragmentTitle() {
 		DialogFragment newFragment = new RequestTextDialog();
 		((RequestTextDialog)newFragment).setParent(this);
 		((RequestTextDialog)newFragment).setHeader(this.getString(R.string.add_fragment_title));
@@ -150,11 +158,17 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 
 	public void onUserSelectValue(String title) {
 		if (title != null) {
-			//Create fragment with this title
-			StoryFragment fragment = SCC.newFragment(title);
-
-			//Open fragment for editing
-			editFragment(fragment.getFragmentID());
+			if (pos != - 1) {
+				//Update fragment title
+				SCC.changeFragmentTitle(SFL.get(pos), title);
+			} else
+			{
+				//Create fragment with this title
+				StoryFragment fragment = SCC.newFragment(title);
+	
+				//Open fragment for editing
+				editFragment(fragment.getFragmentID());
+			}
 		}
 	}
 
@@ -178,10 +192,11 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 			return true;
 
 		case R.id.add_fragment:
-			addFragment();
+			pos = -1;
+			changeFragmentTitle();
 			return true;
 		case R.id.publish:
-			if (checkInternetConnected()) {
+			if (StoryApplication.checkInternetConnected()) {
 				SCC.publishStory();
 			} else {
 				SimpleWarningDialog.getWarningDialog(this.getString(R.string.no_internet), this);
@@ -219,8 +234,8 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 			break;
 			
 		case 2:
-			// TODO: Edit story fragment title
-
+			// Edit story fragment title
+			changeFragmentTitle();
 			break;
 			
 		case 3:
@@ -231,7 +246,6 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 			//Delete
 			int FID = SFL.get(pos).getFragmentID();
 			if (FID == SCC.getStartingFragment()) {
-				//fragmentDeleteDialog();
 				SimpleWarningDialog.getWarningDialog(this.getString(R.string.bad_frag_delete_msg), this);
 			} else {
 				SCC.deleteFragment(FID);
@@ -245,15 +259,4 @@ public class StoryFragmentListActivity extends Activity implements StoryView<Sto
 		return true; 
 
 	}
-
-	/**
-	 * http://stackoverflow.com/questions/4238921/android-detect-whether-there-is-an-internet-connection-available
-	 */
-	//TODO put this also when click onlinelibrary button
-	private Boolean checkInternetConnected() {
-		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-	}
-
 }

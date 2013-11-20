@@ -81,6 +81,16 @@ public class StoryCreationController extends LocalEditingController {
 	}
 	
 	/**
+	 * Updates StoryFragment title for the current Story.
+	 * 
+	 * @param storyFragment the instance of StoryFragment to update
+	 * @param title the title to set
+	 */
+	public void changeFragmentTitle(StoryFragment storyFragment, String title) {
+		storyFragment.setFragmentTitle(title);
+	}
+	
+	/**
 	 * Returns an ArrayList of StoryFragment objects from the current Story.
 	 * 
 	 * @return the ArrayList of StoryFragment objects
@@ -97,10 +107,6 @@ public class StoryCreationController extends LocalEditingController {
 	 */
 	public void setStartingFragment(int fragmentID) {
 		story.getStoryInfo().setStartingFragmentID(fragmentID);
-	}
-	
-	public Uri getFreeUri(String Extension) {
-		return io.URIhandler(story.getStoryInfo().getSID(), Extension);
 	}
 	
 	/**
