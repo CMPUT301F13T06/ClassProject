@@ -17,11 +17,11 @@
 
 package story.book.controller;
 
+import android.annotation.SuppressLint;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-
-import android.net.Uri;
-
+import java.util.Iterator;
 import story.book.dataclient.ESClient;
 import story.book.dataclient.IOClient;
 import story.book.model.Story;
@@ -145,6 +145,28 @@ public class StoryCreationController extends LocalEditingController {
 		
 		// Publish the story
 		es.saveStory(story);
+	}
+	
+	/**
+	 * 
+	 * @param term
+	 * @return
+	 */
+	@SuppressLint("UseSparseArrays")
+	public HashMap<Integer, StoryFragment> searchFragments(String term) {
+		HashMap<Integer, StoryFragment> matchingFragments = new HashMap<Integer, StoryFragment>();
+		Collection<StoryFragment> allFragments = story.getStoryFragments().values();
+		
+		Iterator<StoryFragment> fragmentIterator = allFragments.iterator();
+		
+		while (fragmentIterator.hasNext()) {
+			StoryFragment fragment = fragmentIterator.next();
+			if (fragment.getFragmentTitle().contains(term)) {
+				matchingFragments.put(fragment.getFragmentID(), fragment);
+			}
+		}
+		
+		return matchingFragments;
 	}
 	
 	/**
