@@ -39,7 +39,7 @@ import android.widget.Toast;
 public class Dashboard extends Activity {
 
 	private EditText enterName;
-    private String defaultName;
+	private String defaultName;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,14 +63,14 @@ public class Dashboard extends Activity {
 
 		Button onlineButton = (Button) findViewById(R.id.online_stories);
 		onlineButton.setOnClickListener(new OnClickListener() {
-		    public void onClick(View v) {
-		    	//Navigate to the Online Stories
-		    	if (StoryApplication.checkInternetConnected()) {
-		    		startActivity(onlineIntent);
-		    	} else {
-		    		//Tell user to connect to internet
-		    		Toast.makeText(getApplicationContext(), R.string.no_internet_library, Toast.LENGTH_SHORT).show();
-		    	}
+			public void onClick(View v) {
+				//Navigate to the Online Stories
+				if (StoryApplication.checkInternetConnected()) {
+					startActivity(onlineIntent);
+				} else {
+					//Tell user to connect to internet
+					Toast.makeText(getApplicationContext(), R.string.no_internet_library, Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
 	}
@@ -78,41 +78,40 @@ public class Dashboard extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		
 		setNickname();
 	}
 
-    /**
-     * Method where the user can set their nickname. If 
-     * they do not enter anything, set the name to "Anonymous"
-     */
-    private void setNickname() {
+	/**
+	 * Method where the user can set their nickname. If 
+	 * they do not enter anything, set the name to "Anonymous"
+	 */
+	private void setNickname() {
 		String name = enterName.getText().toString();
 		if (name.equals("")) {
 			name = defaultName;
 		}
 		
-    	SharedPreferences settings = getPreferences(MODE_PRIVATE);
-    	SharedPreferences.Editor editor = settings.edit();
-    	editor.putString("Nickname", name);
-    	editor.commit();
-    	
-    	StoryApplication.setNickname(name);
-    }
-    
-    /**
-     * Displays the nickname of the user whether it is the one
-     * they entered or "Anonymous"
-     */
-    private void displayNickname() {
-    	SharedPreferences settings = getPreferences(MODE_PRIVATE);
-    	String name = settings.getString("Nickname", defaultName );
-    	
-        if (!name.equals(defaultName)) {
-    		enterName.setText(name);
-    	}
-        
-        StoryApplication.setNickname(name);
-    }
+		SharedPreferences settings = getPreferences(MODE_PRIVATE);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putString("Nickname", name);
+		editor.commit();
+		
+		StoryApplication.setNickname(name);
+	}
+	
+	/**
+	 * Displays the nickname of the user whether it is the one
+	 * they entered or "Anonymous"
+	 */
+	private void displayNickname() {
+		SharedPreferences settings = getPreferences(MODE_PRIVATE);
+		String name = settings.getString("Nickname", defaultName );
+		
+		if (!name.equals(defaultName)) {
+			enterName.setText(name);
+		}
+		
+		StoryApplication.setNickname(name);
+	}
 
 }

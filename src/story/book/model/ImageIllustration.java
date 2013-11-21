@@ -51,19 +51,36 @@ public class ImageIllustration extends Illustration<String> {
 		setContent(content.getLastPathSegment());
 		Bitmap bmp =  BitmapFactory.decodeFile(content.getPath());
 		try {
-			Matrix matrix = new Matrix();
-			matrix.postRotate(90);
-			Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
+			if(bmp.getWidth() > bmp.getHeight()) {
+				Matrix matrix = new Matrix();
+				matrix.postRotate(90);
+				Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
+			}
 			bmp.compress(CompressFormat.JPEG, 90, new FileOutputStream(content.getPath()));
 			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public ImageIllustration(Uri content, Uri savePath) {
+		super();
+		setContent(savePath.getLastPathSegment());
+		Bitmap bmp =  BitmapFactory.decodeFile(content.getPath());
+		try {
+			if(bmp.getWidth() > bmp.getHeight()) {
+				Matrix matrix = new Matrix();
+				matrix.postRotate(90);
+				Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
+			}
+			bmp.compress(CompressFormat.JPEG, 90, new FileOutputStream(savePath.getPath()));
+			
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public String getContent() {
-		// TODO Auto-generated method stub
 		return content;
 	}
 	
