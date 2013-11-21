@@ -72,7 +72,7 @@ import android.widget.VideoView;
  * 
  * @author Jessica Surya
  * @author Vina Nguyen
- *
+ * @author Anthony Ou
  */
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 public class StoryFragmentEditActivity extends FragmentActivity implements StoryView<StoryFragment>, RequestingActivity {
@@ -204,7 +204,8 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			return true;
 		case R.id.record_video:
 			i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-			i.putExtra(MediaStore.EXTRA_OUTPUT, FCC.getFreeUri(".mp4"));
+			auri = FCC.getFreeUri(".mp4");
+			i.putExtra(MediaStore.EXTRA_OUTPUT, auri);
 			i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
 			startActivityForResult(i, Actions.VIDEO.ordinal());
 			return true;
