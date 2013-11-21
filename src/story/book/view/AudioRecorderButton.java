@@ -1,11 +1,8 @@
 package story.book.view;
 
-import java.io.File;
-
 import android.content.Context;
 import android.media.MediaRecorder;
 import android.net.Uri;
-import android.os.Environment;
 
 /**
  * AudioRecorderButton extends AudioButton. Clicking it
@@ -63,7 +60,7 @@ public class AudioRecorderButton extends AudioButton {
 				return R.drawable.ic_action_mic;
 			}
 		}
-	     
+
 		private class StopRecordState implements  ButtonState {
 			@Override
 			public void clickResponse() {

@@ -17,7 +17,6 @@
 
 package story.book.controller;
 
-import android.util.Log;
 import story.book.dataclient.IOClient;
 import story.book.model.StoryInfo;
 import story.book.view.StoryApplication;

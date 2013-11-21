@@ -1,7 +1,6 @@
 package story.book.dataclient;
 
 import java.io.*;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,7 +35,7 @@ public class IOClient extends DataClient {
 	 */
 	public IOClient(Context c) {
 		super();
-		context = c; //I dont need to context but its nice to have for the future
+		context = c; //I dont need the context but its nice to have for the future
 
 		this.story_dir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/StoryBook/";
 		new File(story_dir).mkdir();

@@ -3,14 +3,10 @@ package story.book.view;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 
 /**
  * AudioButton extends ImageButton. Clicking it
@@ -63,7 +59,7 @@ public class AudioButton extends ImageButton {
 		public ButtonState nextState();
 		public int getImage();
 	}
-     
+
 	protected class StopPlayState implements  ButtonState {
 		@Override
 		public void clickResponse() {
@@ -83,7 +79,7 @@ public class AudioButton extends ImageButton {
 			return R.drawable.ic_action_stop;
 		}
 	}
-     
+
 	protected class PlayState implements ButtonState {
 		@Override
 		public void clickResponse() {
@@ -91,9 +87,9 @@ public class AudioButton extends ImageButton {
 				// nothing to play
 				return;
 			}
- 
+
 			player = new MediaPlayer();
- 
+
 			try {
 				player.setDataSource(StoryApplication.getContext(), audioData);
 				player.prepare();
@@ -114,5 +110,5 @@ public class AudioButton extends ImageButton {
 			return R.drawable.ic_action_play;
 		}
 	}
-   
+
 }
