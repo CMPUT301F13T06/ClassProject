@@ -203,8 +203,8 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items for use in the action bar
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.fragment_list_menu, menu);
 		inflater.inflate(R.menu.search_bar, menu);
+		inflater.inflate(R.menu.fragment_list_menu, menu);
 		inflater.inflate(R.menu.standard_menu, menu);
 
 		// Get the SearchView and set the searchable configuration
