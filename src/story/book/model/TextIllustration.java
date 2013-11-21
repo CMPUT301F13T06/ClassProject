@@ -23,8 +23,10 @@ import java.util.Iterator;
 
 import story.book.view.StoryApplication;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -71,13 +73,13 @@ public class TextIllustration extends Illustration<String> {
 	 * 
 	 * @return	the <code>TextView</code> object with text set
 	 */
-	public View getView(Boolean editMode) {
+	public View getView(String path, Boolean editMode, Context C) {
 		// If editMode is True, return an Edit Text view
 		// If editMode is False, return a Text View
 		if (editMode == false) {
-			TextView textView = new TextView(StoryApplication.getContext());
+			TextView textView = new TextView(C);
 			textView.setText(this.content);
-			return formatView(textView, TextView.class);
+			return formatView(textView);
 		}
 		
 		else {
@@ -95,7 +97,9 @@ public class TextIllustration extends Illustration<String> {
 	private EditText getEditView() {
 		EditText editView = new EditText(StoryApplication.getContext());
 		editView.setText(this.content);
-		return formatView(editView, EditText.class);
+		editView.setInputType(InputType.TYPE_CLASS_TEXT 
+				| InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+		return formatView(editView);
 	}
 
 	/**
@@ -109,11 +113,10 @@ public class TextIllustration extends Illustration<String> {
 	 * @param View		illustrations displayed as Views
 	 * @return 
 	 */
-	private <T> T formatView(View v, Type T) {
-		T x = (T) v;
-		((TextView) x).setTextSize(20);
-		((TextView) x).setTextColor(Color.BLACK);
-		((TextView) x).setPaddingRelative(7, 0, 0, 10);
-		return x;
+	private <T> T formatView(T v) {
+		((TextView) v).setTextSize(20);
+		((TextView) v).setTextColor(Color.BLACK);
+		((TextView) v).setPaddingRelative(7, 0, 0, 10);
+		return v;
 	}
 }

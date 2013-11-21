@@ -25,6 +25,7 @@ import java.util.Iterator;
 import story.book.view.R;
 import story.book.controller.DecisionBranchCreationController;
 import story.book.controller.FragmentCreationController;
+import story.book.controller.LocalEditingController;
 import story.book.controller.StoryCreationController;
 import story.book.model.*;
 import android.annotation.TargetApi;
@@ -82,6 +83,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	FragmentCreationController FCC;
 	DecisionBranchCreationController DBCC;
 	ArrayList<StoryFragment> SFL;
+	
 
 	ArrayList<Illustration> illustrations;
 	ArrayList<DecisionBranch> decisions;
@@ -221,12 +223,14 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		if(resultCode == RESULT_OK) {
 			if(requestCode == Actions.PHOTO.ordinal()) {
 				ImageIllustration image = new ImageIllustration(auri);
-				illustrationList.add(new Pair<View, Illustration>(image.getView(editMode), image));
+				illustrationList.add(new Pair<View, Illustration>(
+						image.getView(SCC.getStoryPath(),editMode,this.getApplication()), image));
 				displayFragment();
 			}
 			if(requestCode == Actions.VIDEO.ordinal()) {
 				VideoIllustration video = new VideoIllustration(auri);
-				illustrationList.add(new Pair<View, Illustration>(video.getView(editMode), video));
+				illustrationList.add(new Pair<View, Illustration>(
+						video.getView(SCC.getStoryPath(),editMode, this.getApplication()), video));
 				displayFragment();
 			}
 		}
@@ -250,7 +254,8 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	private void addNewAudioIllustration(View v) {
 		auri = FCC.getFreeUri(".mp4");
 		AudioIllustration audio = new AudioIllustration(auri);
-		illustrationList.add(new Pair<View, Illustration>(audio.getView(editMode), audio));
+		illustrationList.add(new Pair<View, Illustration>(
+				audio.getView(SCC.getStoryPath(),editMode, this.getApplication()), audio));
 		displayFragment();
 	}
 
@@ -308,7 +313,8 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 		illustrationList = new ArrayList<Pair<View, Illustration>>();
 		for (Illustration i : illustrations) {
-			illustrationList.add(new Pair<View, Illustration>(i.getView(editMode), i));
+			illustrationList.add(new Pair<View, Illustration>(
+					i.getView(SCC.getStoryPath(),editMode,this.getApplication()), i));
 		}
 
 	}
@@ -334,8 +340,6 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			for (Pair <View, Illustration> t: illustrationList) {
 				
 				t.first.setId(position + 1);
-				((EditText)t.first).setInputType(InputType.TYPE_CLASS_TEXT 
-						| InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 				RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
 						MATCH_PARENT,LayoutParams.WRAP_CONTENT); 
 				p.addRule(RelativeLayout.BELOW, position);

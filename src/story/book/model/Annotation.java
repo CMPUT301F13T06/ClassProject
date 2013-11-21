@@ -1,5 +1,6 @@
 package story.book.model;
 
+import android.content.Context;
 import android.view.View;
 
 public class Annotation<T extends Illustration> {
@@ -16,7 +17,7 @@ public class Annotation<T extends Illustration> {
 		return this.author;
 	}
 	
-	public View getView(Boolean editMode) {
-		return this.illustration.getView(editMode);
+	public View getView(String path, Boolean editMode, Context C) {
+		return this.illustration.getView(path, editMode, C);
 	}
 }

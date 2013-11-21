@@ -22,6 +22,7 @@ import java.io.File;
 import story.book.view.AudioButton;
 import story.book.view.AudioRecorderButton;
 import story.book.view.StoryApplication;
+import android.content.Context;
 import android.net.Uri;
 import android.view.DragEvent;
 import android.view.MotionEvent;
@@ -43,8 +44,7 @@ public class AudioIllustration extends Illustration<String>{
 	
 	public AudioIllustration(Uri data) {
 		super();
-		String[] splitstring = data.getPath().split("/");
-		setContent(splitstring[splitstring.length-1]);
+		setContent(data.getLastPathSegment());
 	}
 
 	public String getContent() {
@@ -55,13 +55,13 @@ public class AudioIllustration extends Illustration<String>{
 	 * return a buttonview that can listen for presses when the user
 	 * wants to record audio or play audio
 	 */
-	public View getView(Boolean editMode) {
+	public View getView(String path, Boolean editMode, Context C) {
 		// If editMode is True, return a view that can play and record audio illustrations
 		// If editMode is False, return a view that can only play back audio illustrations
 		if (editMode) {
-			return null;//new AudioRecorderButton(content, StoryApplication.getContext());
+			return new AudioRecorderButton(Uri.parse(path+content), C);
 		} else {
-			return null;//new AudioButton(content, StoryApplication.getContext());
+			return new AudioButton(Uri.parse(path+content), C);
 		}
 	}
 

@@ -149,7 +149,7 @@ public class AnnotationFragment extends Fragment {
 
 		annotationList = new ArrayList<Pair<View, Annotation>>();
 		for (Annotation i : annotations) {
-			annotationList.add(new Pair<View, Annotation>(i.getView(editMode), i));
+			annotationList.add(new Pair<View, Annotation>(i.getView(SRC.getStoryPath(),editMode,this.getActivity()), i));
 		}
 	}
 	

@@ -20,6 +20,7 @@ package story.book.model;
 import java.io.File;
 
 import story.book.view.StoryApplication;
+import android.content.Context;
 import android.net.Uri;
 import android.view.View;
 import android.widget.VideoView;
@@ -35,16 +36,17 @@ public class VideoIllustration extends Illustration<String> {
 	
 	public VideoIllustration(Uri data) {
 		super();
-		String[] splitstring = data.getPath().split("/");
-		setContent(splitstring[splitstring.length-1]);
+		setContent(data.getLastPathSegment());
 	}
 	
 	public String getContent() {
 		return content;
 	}
 
-	public View getView(Boolean editMode) {
-		return new VideoView(StoryApplication.getContext());
+	public View getView(String path, Boolean editMode, Context C) {
+		VideoView video =  new VideoView(C);
+		video.setVideoPath(path+content);
+		return video;
 	}
 
 	public void setContent(String content) {

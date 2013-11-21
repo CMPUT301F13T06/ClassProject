@@ -139,7 +139,7 @@ public class ReadingFragment extends Fragment {
 		ArrayList<View> annotationViews = new ArrayList<View>();
 
 		for (Illustration i : illustrations){
-			annotationViews.add(i.getView(false));
+			annotationViews.add(i.getView(SRC.getStoryPath(),false,this.getActivity()));
 		}
 
 		int pos = 0;

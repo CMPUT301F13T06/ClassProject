@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 import story.book.view.StoryApplication;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -47,8 +48,7 @@ public class ImageIllustration extends Illustration<String> {
 	 */
 	public ImageIllustration(Uri content) {
 		super();
-		String[] splitstring = content.getPath().split("/");
-		setContent(splitstring[splitstring.length-1]);
+		setContent(content.getLastPathSegment());
 		Bitmap bmp =  BitmapFactory.decodeFile(content.getPath());
 		try {
 			Matrix matrix = new Matrix();
@@ -74,10 +74,11 @@ public class ImageIllustration extends Illustration<String> {
 	/**
 	 * return an ImageView 
 	 */
-	public View getView(Boolean editMode) {
+	public View getView(String path, Boolean editMode, Context C) {
 		
-		ImageView a = new ImageView(StoryApplication.getContext());
+		ImageView a = new ImageView(C);
 		a.setAdjustViewBounds(true);
+		a.setImageURI(Uri.parse(path+content));
 		a.setOnDragListener(new OnDragListener() {
 			
 			@Override

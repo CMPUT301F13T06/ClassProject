@@ -17,6 +17,7 @@
 
 package story.book.model;
 
+import android.content.Context;
 import android.view.View;
 
 /**
@@ -54,6 +55,6 @@ public abstract class Illustration<T> {
 	 * 
 	 * @return the View object containing the contents of the illustration
 	 */
-	public abstract View getView(Boolean editMode);
+	public abstract View getView(String path, Boolean editMode, Context context);
 	
 }
