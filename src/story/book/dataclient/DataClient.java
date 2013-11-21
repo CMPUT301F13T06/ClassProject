@@ -91,17 +91,20 @@ public abstract class DataClient {
 	 * Really basic search of some search term which depends on 
 	 * subclasses implementing getStoryInfoList()
 	 * 
-	 * @param searchTerm 
-	 * 					the term to search for as a string
+	 * @param searchTerm the term to search for as a string
 	 * @return an array list of story info's that match this search term
 	 */
 	public ArrayList<StoryInfo> search(String searchTerm) {
 		ArrayList<StoryInfo> hits = new ArrayList<StoryInfo>();
 		for(StoryInfo i : getStoryInfoList()) {
-			if(	i.getAuthor().contains(searchTerm) 			||
-					i.getGenre().contains(searchTerm) 		||
-					i.getSynopsis().contains(searchTerm) 	||
-					i.getTitle().contains(searchTerm))
+			if(	i.getAuthor().toLowerCase().contains(
+					searchTerm.toLowerCase()) 			||
+					i.getGenre().toLowerCase().contains(
+							searchTerm.toLowerCase()) 	||
+					i.getSynopsis().toLowerCase().contains(
+							searchTerm.toLowerCase()) 	||
+					i.getTitle().toLowerCase().contains(
+							searchTerm.toLowerCase()))
 				hits.add(i);
 		}
 		return hits;
