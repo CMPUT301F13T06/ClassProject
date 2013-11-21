@@ -9,8 +9,8 @@
     <string name="enter_name">Enter a nickname</string>
      <string name="default_nickname">Anonymous</string>
     <string name="title_activity_dashboard">Dashboard</string>
-    <string name="local_stories">Local Stories</string>
-    <string name="online_stories">Online Stories</string>
+    <string name="local_stories">Local \n Story Nook</string>
+    <string name="online_stories">Online \n Story Club</string>
     <string name="start_adventure">Start your adventure..</string>
     <string name="title_activity_story_list">StoryListActivity</string>
     <string name="author">Author: </string>
