@@ -70,13 +70,15 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 		setContentView(R.layout.story_fragment_read_activity);
 		SCC = new StoryCreationController();
 		SFL = new ArrayList<StoryFragment>();
+		
+		SCC.getStory().addView(this);
+		
 		return;
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();			
-		SCC.getStory().addView(this);
 		Log.d(String.valueOf(
 				SFL.isEmpty()), "DEBUG: SFL is empty");
 		getFragmentTitles();
@@ -88,6 +90,10 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 		Story s = SCC.getStory();
 		SCC.saveStory();
 		s.deleteView(this);
+		
+		for (StoryFragment f: SFL) {
+			f.deleteView(this);
+		}
 	}
 	
 	/**
@@ -99,7 +105,9 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 		SFL = new ArrayList<StoryFragment>();
 		HashMap<Integer, StoryFragment> map = SCC.getFragments();
 		for (Integer key : map.keySet()){
-			SFL.add(map.get(key));
+			StoryFragment f = map.get(key);
+			SFL.add(f);
+			f.addView(this);
 		}
 		updateFragmentList();
 	}
@@ -315,6 +323,6 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 	@Override
 	public void update(Object model) {
 		// TODO Auto-generated method stub
-		
+		getFragmentTitles(); 
 	}
 }

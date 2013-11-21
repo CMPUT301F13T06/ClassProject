@@ -73,7 +73,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	FragmentCreationController FCC;
 	DecisionBranchCreationController DBCC;
 	ArrayList<StoryFragment> SFL;
-	
+	HashMap<Integer, StoryFragment> fragmentMap; 
 
 	ArrayList<Illustration> illustrations;
 	ArrayList<DecisionBranch> decisions;
@@ -101,12 +101,12 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		DBCC = new DecisionBranchCreationController(FID);
 		SFL = new ArrayList<StoryFragment>();
 
-		HashMap<Integer, StoryFragment> map = SCC.getFragments();
-		for (Integer key : map.keySet()){
-			SFL.add(map.get(key));
+		fragmentMap = SCC.getFragments();
+		for (Integer key : fragmentMap.keySet()){
+			SFL.add(fragmentMap.get(key));
 		}
 
-		SF = SFL.get(FID);
+		SF =  fragmentMap.get(FID);
 
 		String title = SF.getFragmentTitle();
 
@@ -317,7 +317,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	@Override
 	public void update(StoryFragment model) {
 		//display fragment contents
-		SF = SFL.get(FID);
+		SF = fragmentMap.get(FID);
 		loadFragmentContents();
 		displayFragment();
 	}
