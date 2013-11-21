@@ -77,23 +77,7 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 		setContentView(R.layout.story_fragment_read_activity);
 		SCC = new StoryCreationController();
 		SFL = new ArrayList<StoryFragment>();
-//	    handleIntent(getIntent());
 		return;
-	}
-	
-	@Override
-	protected void onNewIntent(Intent intent) {
-	    handleIntent(intent);
-	}
-
-	private void handleIntent(Intent intent) {
-	    if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-	      String query = intent.getStringExtra(SearchManager.QUERY);
-	      doMySearch(query);
-	    }
-	    else {
-			getFragmentTitles();
-	    }
 	}
 
 	@Override
@@ -203,15 +187,6 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 
 		// Get the SearchView and set the searchable configuration
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		searchManager.setOnDismissListener(new OnDismissListener() {
-
-			@Override
-			public void onDismiss() {
-				Log.d("Close", "DEBUG: Search closed");
-				getFragmentTitles();
-			}
-		});
-
 		SearchView searchView = (SearchView) menu.findItem(R.id.search_bar).getActionView();
 		searchView.setSubmitButtonEnabled(true);
 		// Assumes current activity is the searchable activity
@@ -228,20 +203,18 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 
 			@Override
 			public boolean onQueryTextChange(String newText) {
-				// TODO Auto-generated method stub
-				return false;
+				if (newText.isEmpty()) {
+					Log.d("Close", "DEBUG: Search closed");
+					SFL = new ArrayList<StoryFragment>();
+					getFragmentTitles();
+					return true;
+				}
+				else {
+					return false;
+				}
 			}
 		});
-		searchView.setOnCloseListener(new OnCloseListener() {
-			
-			@Override
-			public boolean onClose() {
-				Log.d("Close", "DEBUG: Search closed");
-				SFL = new ArrayList<StoryFragment>();
-				getFragmentTitles();
-				return false;
-			}
-		});
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 	
