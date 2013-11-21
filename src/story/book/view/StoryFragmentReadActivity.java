@@ -94,7 +94,8 @@ public class StoryFragmentReadActivity extends FragmentActivity {
 		// Add tabs to action bar
 		actionBar.addTab(Tab1);
 		actionBar.addTab(Tab2);
-
+		
+		
 	}
 
 	@Override
@@ -102,7 +103,7 @@ public class StoryFragmentReadActivity extends FragmentActivity {
 		super.onStart();
 
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items for use in the action bar
