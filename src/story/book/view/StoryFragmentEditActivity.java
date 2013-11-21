@@ -116,7 +116,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		SF.addView(this);
 		illustrationList = new ArrayList<Pair<View, Illustration>>();
 		loadFragmentContents();
-
+		
 	}
 
 	@Override

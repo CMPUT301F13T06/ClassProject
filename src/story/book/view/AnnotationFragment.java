@@ -36,6 +36,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputType;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -77,14 +78,18 @@ public class AnnotationFragment extends Fragment {
 
 		author = StoryApplication.getNickname();
 		SRC = ((StoryFragmentReadActivity)this.getActivity()).getController();
-//		SF = SRC.getStartingFragment();
+		SF = SRC.getStartingFragment();
 		FCC = new FragmentCreationController(SF.getFragmentID());
 		
 		getAnnotations();
 		loadAnnotations();
 		annotationList = new ArrayList<Pair<View, Annotation>>();
 		
-		displayAnnotations(SF, rootView);
+		if (savedInstanceState != null && savedInstanceState.containsKey("cameraImageUri")) {
+			auri = Uri.parse(savedInstanceState.getString("cameraImageUri"));
+		}
+		if(auri != null)
+			Log.v("some uri", auri.toString());
 		return rootView;
 
 	}
@@ -102,22 +107,14 @@ public class AnnotationFragment extends Fragment {
 		inflater.inflate(R.menu.add_annotation_menu, menu);
 
 	}
-
-	@Override
+	
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		if (auri != null) {
 			outState.putString("cameraImageUri", auri.toString());
 		}
 	}
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		if (savedInstanceState.containsKey("cameraImageUri")) {
-			auri = Uri.parse(savedInstanceState.getString("cameraImageUri"));
-		}
-	}
-	
+
 	Uri auri;
 	private enum Actions {PHOTO, VIDEO}
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -189,10 +186,7 @@ public class AnnotationFragment extends Fragment {
 		if (annotationList.isEmpty() == false) {
 			// Display illustrations
 			for (Pair <View, Annotation> t: annotationList) {
-				
 				t.first.setId(position + 1);
-				((EditText)t.first).setInputType(InputType.TYPE_CLASS_TEXT 
-						| InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 				RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
 						MATCH_PARENT,LayoutParams.WRAP_CONTENT); 
 				p.addRule(RelativeLayout.BELOW, position);
@@ -201,7 +195,6 @@ public class AnnotationFragment extends Fragment {
 				position++;
 			}
 		}
-
 	}
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -273,8 +266,8 @@ public class AnnotationFragment extends Fragment {
 			}
 			else {
 				// Saving an audio, image, or view illustration
-//				Annotation<?> a = new Annotation(author, annotationList.get(i).second);
-//				SF.addAnnotation((annotationList.get(i)));
+				Annotation a = new Annotation(author, annotationList.get(i).second.getIllustration());
+				SF.addAnnotation((annotationList.get(i).second));
 			}
 		}
 	}
