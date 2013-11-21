@@ -23,8 +23,10 @@ import story.book.controller.StoryReadController;
 import story.book.model.Annotation;
 import story.book.model.AudioIllustration;
 import story.book.model.Illustration;
+import story.book.model.ImageIllustration;
 import story.book.model.StoryFragment;
 import story.book.model.TextIllustration;
+import story.book.model.VideoIllustration;
 import android.annotation.TargetApi;
 import android.app.ActionBar.LayoutParams;
 import android.app.Fragment;
@@ -101,6 +103,21 @@ public class AnnotationFragment extends Fragment {
 
 	}
 
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (auri != null) {
+			outState.putString("cameraImageUri", auri.toString());
+		}
+	}
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		if (savedInstanceState.containsKey("cameraImageUri")) {
+			auri = Uri.parse(savedInstanceState.getString("cameraImageUri"));
+		}
+	}
+	
 	Uri auri;
 	private enum Actions {PHOTO, VIDEO}
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -119,10 +136,11 @@ public class AnnotationFragment extends Fragment {
 			i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
 			startActivityForResult(i, Actions.PHOTO.ordinal());
 			return true;
-		
 		case R.id.audio:
-//			AudioIllustration audio = new AudioIllustration();
-//			annotationList.add(new Pair<View, Annotation>(audio.getView(editMode), audio));
+			AudioIllustration audio = new AudioIllustration(FCC.getFreeUri(".3gp"));
+			annotationList.add(new Pair<View, Annotation>(
+					audio.getView(FCC.getStoryPath(),editMode,this.getActivity()), 
+					new Annotation(StoryApplication.getNickname(),audio)));
 			return true;
 
 		case R.id.video:
@@ -189,13 +207,17 @@ public class AnnotationFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(resultCode == android.app.Activity.RESULT_OK ) {
 			if(requestCode == Actions.PHOTO.ordinal()) {
-//				ImageIllustration image = new ImageIllustration(auri);
-//				annotationList.add(new Pair<View, Annotation>(image.getView(editMode), image));
+				ImageIllustration image = new ImageIllustration(auri);
+				annotationList.add(
+						new Pair<View, Annotation>(image.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
+								new Annotation(StoryApplication.getNickname(),image)));
 				update();
 			}
 			if(requestCode == Actions.VIDEO.ordinal()) {
-//				VideoIllustration video = new VideoIllustration(auri);
-//				annotationList.add(new Pair<View, Annotation>(video.getView(editMode), video));
+				VideoIllustration video = new VideoIllustration(auri);
+				annotationList.add(
+						new Pair<View, Annotation>(video.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
+								new Annotation(StoryApplication.getNickname(),video)));
 				update();
 			}
 		}
