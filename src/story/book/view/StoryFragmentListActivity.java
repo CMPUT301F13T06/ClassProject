@@ -97,6 +97,11 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 		s.deleteView(this);
 	}
 	
+	/**
+	 * getFragmentTitles() loads fragment titles from the story using the
+	 * <code>StoryCreationController</code> and displays them in the list
+	 * by calling <code>updateFragmentList()</code> method
+	 */
 	private void getFragmentTitles() {
 		SFL = new ArrayList<StoryFragment>();
 		HashMap<Integer, StoryFragment> map = SCC.getFragments();
@@ -105,7 +110,10 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 		}
 		updateFragmentList();
 	}
-
+	
+	/**
+	 * updateFragmentList() displays a story fragment titles in the list
+	 */
 	private void updateFragmentList() {
 		
 		String title = SCC.getStory().getStoryInfo().getTitle();
@@ -133,14 +141,21 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 
 		});
 	}
-
+	
+	/**
+	 * editFragment() passes the FragmentID from the selected story fragment in the list
+	 * and starts a new <code>StoryFragmentEditActivity</code> for edit the contents of 
+	 * the fragment
+	 * 
+	 * @param FragmentID (FID) which will be passed to <code>StoryFragmentEditActivity</code>
+	 */
 	private void editFragment(int FID) {
 		Intent i = new Intent(this, StoryFragmentEditActivity.class);
 		i.putExtra("FID", FID);
 		startActivity(i);
 	}
 	
-	/*
+	/**
 	 * changeFragmentTitle() adds a new fragment to the current story.
 	 */
 	private void changeFragmentTitle() {
@@ -166,7 +181,13 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 			}
 		}
 	}
-	
+	/**
+	 * doMySearch() takes a query from the search bar, passes it to
+	 * <code>StoryCreationController</code>, and display the set of results 
+	 * returned by the controller in the listView
+	 * 
+	 * @param query returned by SearchView (search bar)
+	 */
 	private void doMySearch(String query) {
 		SFL = new ArrayList<StoryFragment>();
 		//show the list with just the search results
