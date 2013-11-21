@@ -35,6 +35,7 @@ import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -93,7 +94,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 	int itemPos;
 	int FID;
-	Boolean editMode = true;
+	
+	static final private Boolean editMode = true;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -173,7 +176,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	}
 	
 	Uri auri;
-	private enum Actions {PHOTO, VIDEO}
+	private enum Actions {PHOTO, VIDEO, GALLERY}
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
@@ -188,7 +191,10 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			return true;
 		case R.id.addGalleryPhoto:
 			i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-			startActivityForResult(i, Actions.PHOTO.ordinal());
+			// TODO uri recived from gallery looks something like this:
+			// dat=content://media/external/images/media/19
+
+			startActivityForResult(i, Actions.GALLERY.ordinal());
 			return true;
 		case R.id.addDecisionBranch:
 			i = new Intent(this, DecisionPickerActivity.class);
@@ -198,9 +204,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		case R.id.audio:
 			addNewAudioIllustration(this.findViewById(R.id.reading_fragment));
 			return true;
-
 		case R.id.video:
-
 			return true;
 		case R.id.record_video:
 			i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
@@ -225,13 +229,29 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			if(requestCode == Actions.PHOTO.ordinal()) {
 				ImageIllustration image = new ImageIllustration(auri);
 				illustrationList.add(new Pair<View, Illustration>(
-						image.getView(SCC.getStoryPath(),editMode,this.getApplication()), image));
+						image.getView(SCC.getStoryPath(),editMode,this), image));
 				displayFragment();
 			}
 			if(requestCode == Actions.VIDEO.ordinal()) {
 				VideoIllustration video = new VideoIllustration(auri);
 				illustrationList.add(new Pair<View, Illustration>(
-						video.getView(SCC.getStoryPath(),editMode, this.getApplication()), video));
+						video.getView(SCC.getStoryPath(),editMode, this), video));
+				displayFragment();
+			}
+			//http://stackoverflow.com/questions/2789276/android-get-real-path-by-uri-getpath
+			if(requestCode == Actions.GALLERY.ordinal()) {
+				File f;
+				Cursor cursor = getContentResolver().query(data.getData(), null, null, null, null);
+				if (cursor == null) { // Source is Dropbox or other similar local file path
+					f = new File((data.getData().getPath()));
+				} else { 
+					cursor.moveToFirst(); 
+					int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+					f = new File(cursor.getString(idx));
+				}
+				ImageIllustration image = new ImageIllustration(Uri.fromFile(f), FCC.getFreeUri(".jpg"));
+				illustrationList.add(new Pair<View, Illustration>(
+						image.getView(SCC.getStoryPath(),editMode,this), image));
 				displayFragment();
 			}
 		}
@@ -256,7 +276,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		auri = FCC.getFreeUri(".mp4");
 		AudioIllustration audio = new AudioIllustration(auri);
 		illustrationList.add(new Pair<View, Illustration>(
-				audio.getView(SCC.getStoryPath(),editMode, this.getApplication()), audio));
+				audio.getView(SCC.getStoryPath(),editMode, this), audio));
 		displayFragment();
 	}
 
@@ -315,7 +335,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		illustrationList = new ArrayList<Pair<View, Illustration>>();
 		for (Illustration i : illustrations) {
 			illustrationList.add(new Pair<View, Illustration>(
-					i.getView(SCC.getStoryPath(),editMode,this.getApplication()), i));
+					i.getView(SCC.getStoryPath(),editMode,this), i));
 		}
 
 	}
