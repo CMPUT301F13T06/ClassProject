@@ -17,10 +17,10 @@
 
 package story.book.controller;
 
+import story.book.dataclient.IOClient;
 import story.book.model.Story;
 import story.book.model.StoryFragment;
 import story.book.view.StoryApplication;
-import android.util.Log;
 
 /**
  * Controller for accessing the current story and starting fragment for 
@@ -31,12 +31,14 @@ import android.util.Log;
  */
 public class StoryReadController {
 	private Story story;
+	private IOClient io;
 	
 	/**
 	 * Initializes the story to the current application story
 	 */
 	public StoryReadController() {
 		story = StoryApplication.getCurrentStory();
+		io = StoryApplication.getIOClient();
 	}
 	
 	/**
@@ -61,5 +63,14 @@ public class StoryReadController {
 	 */
 	public StoryFragment getStoryFragment(int storyFragmentID) {
 		return story.getStoryFragments().get(storyFragmentID);
+	}
+	
+	/**
+	 * @return the local file path to the current story's directory
+	 */
+	public String getStoryPath() {
+		return io.getLocalDirectory() 
+				+ StoryApplication.getCurrentStory().getStoryInfo().getSID() 
+				+ "/";
 	}
 }

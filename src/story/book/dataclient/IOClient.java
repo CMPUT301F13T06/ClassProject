@@ -125,6 +125,13 @@ public class IOClient extends DataClient {
 		}
 		return listOfStoryInfo;
 	}
+	
+	/**
+	 * @return the file path to the application's storage directory
+	 */
+	public String getLocalDirectory() {
+		return this.story_dir;
+	}
 
 	public Boolean checkSID(int SID) {
 		return getStoryList().contains(String.valueOf(SID)) ? false : true;

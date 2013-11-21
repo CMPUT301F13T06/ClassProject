@@ -41,4 +41,14 @@ public abstract class LocalEditingController {
 	public void saveStory() {
 		io.saveStory(StoryApplication.getCurrentStory());
 	}
+	
+	/**
+	 * TODO: Duplicated method from StoryReadController; consider extracting
+	 * @return the local file path to the current story's directory
+	 */
+	public String getStoryPath() {
+		return io.getLocalDirectory() 
+				+ StoryApplication.getCurrentStory().getStoryInfo().getSID() 
+				+ "/";
+	}
 }
