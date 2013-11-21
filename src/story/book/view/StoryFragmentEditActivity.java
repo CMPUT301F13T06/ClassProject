@@ -218,13 +218,13 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			if(requestCode == Actions.PHOTO.ordinal()) {
 				ImageIllustration image = new ImageIllustration(auri);
 				illustrationList.add(new Pair<View, Illustration>(
-						image.getView(SCC.getStoryPath(),editMode,this), image));
+						image.getView(SCC.getStoryPath(), editMode, this), image));
 				displayFragment();
 			}
 			if(requestCode == Actions.VIDEO.ordinal()) {
 				VideoIllustration video = new VideoIllustration(auri);
 				illustrationList.add(new Pair<View, Illustration>(
-						video.getView(SCC.getStoryPath(),editMode, this), video));
+						video.getView(SCC.getStoryPath(), editMode, this), video));
 				displayFragment();
 			}
 			//http://stackoverflow.com/questions/2789276/android-get-real-path-by-uri-getpath
@@ -240,7 +240,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 				}
 				ImageIllustration image = new ImageIllustration(Uri.fromFile(f), FCC.getFreeUri(".jpg"));
 				illustrationList.add(new Pair<View, Illustration>(
-						image.getView(SCC.getStoryPath(),editMode,this), image));
+						image.getView(SCC.getStoryPath(), editMode, this), image));
 				displayFragment();
 			}
 		}
@@ -265,7 +265,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		auri = FCC.getFreeUri(".mp4");
 		AudioIllustration audio = new AudioIllustration(auri);
 		illustrationList.add(new Pair<View, Illustration>(
-				audio.getView(SCC.getStoryPath(),editMode, this), audio));
+				audio.getView(SCC.getStoryPath(), editMode, this), audio));
 		displayFragment();
 	}
 
