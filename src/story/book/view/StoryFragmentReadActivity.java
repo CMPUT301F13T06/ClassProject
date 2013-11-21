@@ -27,7 +27,6 @@ import story.book.model.StoryFragment;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Fragment;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,8 +34,6 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.TabHost;
 import android.widget.Toast;
 
 /**

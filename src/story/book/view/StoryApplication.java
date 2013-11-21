@@ -17,8 +17,6 @@
 
 package story.book.view;
 
-import java.util.Date;
-
 import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
