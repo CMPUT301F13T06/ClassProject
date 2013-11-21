@@ -308,6 +308,7 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 			} else {
 				SCC.deleteFragment(FID);
 			}
+			getFragmentTitles();
 			break;
 		case 5:
 			// Cancel options
