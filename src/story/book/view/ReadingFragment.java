@@ -155,15 +155,15 @@ public class ReadingFragment extends Fragment {
 		illustrations = SF.getIllustrations();
 		decisions = SF.getDecisionBranches();
 
-		ArrayList<View> annotationViews = new ArrayList<View>();
+		ArrayList<View> illustrationViews = new ArrayList<View>();
 
 		for (Illustration i : illustrations){
-			annotationViews.add(i.getView(SRC.getStoryPath(),false,this.getActivity()));
+			illustrationViews.add(i.getView(SRC.getStoryPath(),false,this.getActivity()));
 		}
 
 		int pos = 0;
 
-		for (View t: annotationViews) {
+		for (View t: illustrationViews) {
 			t.setId(pos + 1);
 			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
 					WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
