@@ -97,8 +97,9 @@ public class TextIllustration extends Illustration<String> {
 	private EditText getEditView() {
 		EditText editView = new EditText(StoryApplication.getContext());
 		editView.setText(this.content);
-		editView.setInputType(InputType.TYPE_CLASS_TEXT 
-				| InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+		editView.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+		editView.setRawInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+		editView.setSingleLine(false);
 		return formatView(editView);
 	}
 
