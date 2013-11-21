@@ -23,11 +23,13 @@ import story.book.view.R;
 import story.book.controller.StoryCreationController;
 import story.book.model.Story;
 import story.book.model.StoryFragment;
-
+import story.book.model.StoryInfo;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.app.SearchManager;
+import android.app.SearchManager.OnDismissListener;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,6 +48,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.SearchView.OnCloseListener;
+import android.widget.SearchView.OnQueryTextListener;
+import android.widget.SearchView;
 
 /**
  * StoryFragmentListActivity displays all story fragments contained
@@ -68,27 +73,36 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		setContentView(R.layout.story_fragment_read_activity);
 		SCC = new StoryCreationController();
-		
+		SFL = new ArrayList<StoryFragment>();
+//	    handleIntent(getIntent());
 		return;
+	}
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+	    handleIntent(intent);
+	}
+
+	private void handleIntent(Intent intent) {
+	    if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+	      String query = intent.getStringExtra(SearchManager.QUERY);
+	      doMySearch(query);
+	    }
+	    else {
+			getFragmentTitles();
+	    }
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();			
 		SCC.getStory().addView(this);
-		
-		SFL = new ArrayList<StoryFragment>();
-		HashMap<Integer, StoryFragment> map = SCC.getFragments();
-		for (Integer key : map.keySet()){
-			StoryFragment f = map.get(key);
-			SFL.add(f);
-			f.addView(this);
-		}
-		
-		updateFragmentList();
+		Log.d(String.valueOf(
+				SFL.isEmpty()), "DEBUG: SFL is empty");
+		getFragmentTitles();
 	}
 
 	@Override
@@ -98,20 +112,18 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 		SCC.saveStory();
 		s.deleteView(this);
 	}
-
-	@Override
-	public void update(Object model) {
-		updateFragmentList(); 
-	}
-
-	private void updateFragmentList() {
+	
+	private void getFragmentTitles() {
 		SFL = new ArrayList<StoryFragment>();
-
 		HashMap<Integer, StoryFragment> map = SCC.getFragments();
 		for (Integer key : map.keySet()){
 			SFL.add(map.get(key));
 		}
+		updateFragmentList();
+	}
 
+	private void updateFragmentList() {
+		
 		String title = SCC.getStory().getStoryInfo().getTitle();
 		actionBar = getActionBar();
 		actionBar.setTitle(title);
@@ -122,7 +134,6 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 		ListView listview = new ListView(this);
 
 		listview.setBackgroundColor(Color.WHITE);
-
 		listview.setAdapter(adapter);
 		setContentView(listview);
 
@@ -141,10 +152,10 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 
 	private void editFragment(int FID) {
 		Intent i = new Intent(this, StoryFragmentEditActivity.class);
-
 		i.putExtra("FID", FID);
 		startActivity(i);
 	}
+	
 	/*
 	 * changeFragmentTitle() adds a new fragment to the current story.
 	 */
@@ -165,11 +176,21 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 			{
 				//Create fragment with this title
 				StoryFragment fragment = SCC.newFragment(title);
-	
+
 				//Open fragment for editing
 				editFragment(fragment.getFragmentID());
 			}
 		}
+	}
+	
+	private void doMySearch(String query) {
+		SFL = new ArrayList<StoryFragment>();
+		//show the list with just the search results
+		HashMap<Integer, StoryFragment> map = SCC.searchFragments(query);
+		for (Integer key : map.keySet()){
+			SFL.add(map.get(key));
+		}
+		updateFragmentList();
 	}
 
 	@Override
@@ -177,20 +198,62 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 		// Inflate the menu items for use in the action bar
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.fragment_list_menu, menu);
-		inflater.inflate(R.menu.standard_menu, menu);
 		inflater.inflate(R.menu.search_bar, menu);
+		inflater.inflate(R.menu.standard_menu, menu);
+
+		// Get the SearchView and set the searchable configuration
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		searchManager.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss() {
+				Log.d("Close", "DEBUG: Search closed");
+				getFragmentTitles();
+			}
+		});
+
+		SearchView searchView = (SearchView) menu.findItem(R.id.search_bar).getActionView();
+		searchView.setSubmitButtonEnabled(true);
+		// Assumes current activity is the searchable activity
+		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+		searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+		
+		searchView.setOnQueryTextListener(new OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				Log.d(String.valueOf(query), "DEBUG: Query entered");
+				doMySearch(query);
+				return true;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		});
+		searchView.setOnCloseListener(new OnCloseListener() {
+			
+			@Override
+			public boolean onClose() {
+				Log.d("Close", "DEBUG: Search closed");
+				SFL = new ArrayList<StoryFragment>();
+				getFragmentTitles();
+				return false;
+			}
+		});
 		return super.onCreateOptionsMenu(menu);
 	}
-
+	
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
+		Intent intent;
 		switch (item.getItemId()) {
 		case R.id.title_activity_dashboard:
-			Intent intent = new Intent(this, Dashboard.class);
+			intent = new Intent(this, Dashboard.class);
 			startActivity(intent);
 			finish();
 			return true;
-
 		case R.id.add_fragment:
 			pos = -1;
 			changeFragmentTitle();
@@ -203,10 +266,11 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 			}
 			return true;
 		case R.id.change_info:
-			Intent intent2 = new Intent(this, EditStoryInformationActivity.class);
-			startActivity(intent2);
+			intent = new Intent(this, EditStoryInformationActivity.class);
+			startActivity(intent);
 			return true;
 		default:
+			
 			return super.onOptionsItemSelected(item);
 		}
 	}
@@ -232,12 +296,12 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 			// Edit story fragment
 			editFragment(SFL.get(pos).getFragmentID());
 			break;
-			
+
 		case 2:
 			// Edit story fragment title
 			changeFragmentTitle();
 			break;
-			
+
 		case 3:
 			// Set as starting story fragment
 			SCC.setStartingFragment(SFL.get(pos).getFragmentID());
@@ -258,5 +322,11 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 
 		return true; 
 
+	}
+
+	@Override
+	public void update(Object model) {
+		// TODO Auto-generated method stub
+		
 	}
 }
