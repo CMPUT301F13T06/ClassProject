@@ -33,9 +33,12 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -68,9 +71,10 @@ import android.widget.Toast;
 
 public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 
-	
+	boolean closed;
 	ListView listView;
 
+	SearchView searchView;
 	SimpleAdapter sAdapter;
 
 	ArrayList<HashMap<String, String>> sList;
@@ -223,9 +227,6 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		localController.getStory(adapter.getItem(position).getSID());
 
 		switch (item.getItemId()) {
-		case R.id.read_story:
-			readStory();
-			return true;
 		case R.id.edit_story:
 			editStory();
 			return true;
@@ -245,27 +246,45 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// MenuInflater inflater = getMenuInflater();
 		// inflater.inflate(R.menu.local_stories, menu);
-
+			
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.local_stories, menu);
 
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
+		 searchView = (SearchView) menu.findItem(R.id.action_search)
 				.getActionView();
 		// Assumes current activity is the searchable activity
 		searchView.setSearchableInfo(searchManager
 				.getSearchableInfo(getComponentName()));
 		searchView.setIconifiedByDefault(true); //iconify the widget
 		searchView.setSubmitButtonEnabled(true);
-
 		
+			
+		handleSearch();
+		return true;
+	}
+	
+	private void searchResults(String query){	
+		adapter.clear();
+		//show the list with just the search results
+		adapter = new ArrayAdapter<StoryInfo>(this,android.R.layout.simple_list_item_1,localController.search(query));
+		listView.setAdapter(adapter);
+	}
+	
+	
+	private void handleSearch(){
 		searchView.setOnQueryTextListener(new OnQueryTextListener(){
 			
 			@Override
 			public boolean onQueryTextChange(String newText) {
 				// TODO Auto-generated method stub
-				
+				if(newText.isEmpty()){
+					refreshList();
+					return true;
+				}
+				else{
 				return false;
+				}
 			}
 			
 
@@ -273,64 +292,20 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 			public boolean onQueryTextSubmit(String query) {
 				// TODO Auto-generated method stub
 				//Do something when the user selects the submit button
-				//if(localController.search(query).equals(query)){
-				doMySearch(query);
-				return true;
-			}
-		});
-		
-		searchView.setOnCloseListener(new OnCloseListener(){
-			@Override
-			public boolean onClose() {
-				// TODO Auto-generated method stub
 				
-				refreshList();
+				
+				searchResults(query);
+				
 				return true;
 			}
-			
 		});
-		searchView.setIconifiedByDefault(true); //iconify the widget
-		return true;
+		
 	}
 	
-
-	private void doMySearch(String query){	
-		adapter.clear();
-		//show the list with just the search results
-		adapter = new ArrayAdapter<StoryInfo>(this,android.R.layout.simple_list_item_1,localController.search(query));
-		listView.setAdapter(adapter);
-	}
-	
-	private void openSearch() {
-
-		//Get the intent, verify the action and get the query
-		Intent intent = getIntent();
-		if(Intent.ACTION_SEARCH.equals(intent.getAction())){
-		String query = intent.getStringExtra(SearchManager.QUERY);
-
-		doMySearch(query);
-		
-		
-		//list = new ArrayList<String>();
-		//list.add("YAY");
-		//testAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
-		//testView = (ListView) findViewById(R.id.listView);
-		//testView.setAdapter(testAdapter);
-		
-		//testAdapter.notifyDataSetChanged();
-		
-		
-		}
-	}
-	
-
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-	//	case R.id.action_search:
-			//openSearch();
-		//	return true;
 		case R.id.action_create_story:
 			createStory();
 			return true;
