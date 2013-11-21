@@ -333,7 +333,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		illustrationList = new ArrayList<Pair<View, Illustration>>();
 		for (Illustration i : illustrations) {
 			illustrationList.add(new Pair<View, Illustration>(
-					i.getView(SCC.getStoryPath(),editMode,this), i));
+					i.getView(SCC.getStoryPath(), editMode, this), i));
 		}
 
 	}
@@ -394,7 +394,10 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-
+		
+		// position of illustration selected
+		itemPos = v.getId() - 1;
+		
 		if (v instanceof Button) {
 			menu.setHeaderTitle("Select an Option:");
 			menu.add(0, v.getId(), 2, "Delete decision branch");  
@@ -419,6 +422,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 		case 1:
 			//Delete illustration
+			Log.d(String.valueOf(itemPos), "DEBUG: Item selected");
 			illustrationList.remove(itemPos);
 			displayFragment();
 
