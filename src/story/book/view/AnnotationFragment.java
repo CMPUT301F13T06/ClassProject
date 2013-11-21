@@ -16,6 +16,7 @@
  */
 package story.book.view;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import story.book.controller.FragmentCreationController;
@@ -31,6 +32,7 @@ import android.annotation.TargetApi;
 import android.app.ActionBar.LayoutParams;
 import android.app.Fragment;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -116,7 +118,7 @@ public class AnnotationFragment extends Fragment {
 	}
 
 	Uri auri;
-	private enum Actions {PHOTO, VIDEO}
+	private enum Actions {PHOTO, VIDEO, GALLERY}
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
@@ -131,7 +133,7 @@ public class AnnotationFragment extends Fragment {
 			return true;
 		case R.id.addGalleryPhoto:
 			i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-			startActivityForResult(i, Actions.PHOTO.ordinal());
+			startActivityForResult(i, Actions.GALLERY.ordinal());
 			return true;
 		case R.id.audio:
 			AudioIllustration audio = new AudioIllustration(FCC.getFreeUri(".3gp"));
@@ -211,6 +213,22 @@ public class AnnotationFragment extends Fragment {
 				annotationList.add(
 						new Pair<View, Annotation>(video.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
 								new Annotation(StoryApplication.getNickname(),video)));
+				update();
+			}
+			if(requestCode == Actions.GALLERY.ordinal()) {
+				File f;
+				Cursor cursor = this.getActivity().getContentResolver().query(data.getData(), null, null, null, null);
+				if (cursor == null) { // Source is Dropbox or other similar local file path
+					f = new File((data.getData().getPath()));
+				} else { 
+					cursor.moveToFirst(); 
+					int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+					f = new File(cursor.getString(idx));
+				}
+				ImageIllustration image = new ImageIllustration(Uri.fromFile(f), FCC.getFreeUri(".jpg"));
+				annotationList.add(
+						new Pair<View, Annotation>(image.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
+								new Annotation(StoryApplication.getNickname(),image)));
 				update();
 			}
 		}
