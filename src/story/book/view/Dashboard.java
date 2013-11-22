@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -44,6 +45,9 @@ public class Dashboard extends Activity {
 
 	private EditText enterName;
 	private String defaultName;
+	
+	TextView tView;
+	TextView tView2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,12 @@ public class Dashboard extends Activity {
 		Typeface ltf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/homey.ttf");
 		// font -- http://www.fonts101.com/fonts/view/Standard/697/Adventure
 		Typeface otf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/adventure.ttf");
+		
+		
+		tView = (TextView) findViewById(R.id.hello_adventurer);
+		tView.setTypeface(otf);
+		tView2 = (TextView) findViewById(R.id.start_adventure);
+		tView2.setTypeface(otf);
 		
 		String local = "Local";
 		String nook = "Story Nook";
