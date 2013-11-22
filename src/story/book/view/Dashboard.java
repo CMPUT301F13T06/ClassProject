@@ -65,12 +65,11 @@ public class Dashboard extends Activity {
 		Typeface ltf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/homey.ttf");
 		// font -- http://www.fonts101.com/fonts/view/Standard/697/Adventure
 		Typeface otf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/adventure.ttf");
+		// font -- http://www.1001fonts.com/roboto-slab-font.html
+		Typeface tf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/RobotoSlab-Light.ttf");
 		
-		
-		tView = (TextView) findViewById(R.id.hello_adventurer);
-		tView.setTypeface(otf);
 		tView2 = (TextView) findViewById(R.id.start_adventure);
-		tView2.setTypeface(otf);
+		tView2.setTypeface(tf);
 		
 		String local = "Local";
 		String nook = "Story Nook";
