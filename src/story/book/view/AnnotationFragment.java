@@ -292,7 +292,7 @@ public class AnnotationFragment extends Fragment implements StoryView {
 				FCC.addAnnotation(i.second);
 			}
 		}
-
+		FCC.saveStory();
 	}
 
 	/**
