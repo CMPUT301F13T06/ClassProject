@@ -105,6 +105,8 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 			public void onClick(View v) {
 				if(sAdapter.getCount() > 0) {
 					//onlineController.getStory(adapter.getItem( new Random().nextInt(adapter.getCount())).getSID());
+					onlineController.getStory(getFromAdapter(new Random()
+					.nextInt(sAdapter.getCount())));
 					readStory();
 				}
 			}
