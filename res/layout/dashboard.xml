@@ -41,6 +41,9 @@
             android:layout_marginBottom="20dp"
             android:gravity="center"
             android:text="@string/start_adventure"
+            android:textColor="#FF0000"
+            android:shadowRadius="10"
+            android:shadowColor="#CCFF33"
             android:textSize="40sp" />
 
         <Button
