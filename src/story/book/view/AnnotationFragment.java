@@ -62,7 +62,7 @@ import android.widget.RelativeLayout;
 public class AnnotationFragment extends Fragment implements StoryView {
 	StoryReadController SRC;
 	StoryFragment SF;
-	ArrayList<Pair<View, Annotation>> annotationList;
+	ArrayList<Pair<ArrayList<View>, Annotation>> annotationList;
 	View rootView;
 	int nextFragmentID;
 	FragmentCreationController FCC;
@@ -83,7 +83,7 @@ public class AnnotationFragment extends Fragment implements StoryView {
 		SF = SRC.getStartingFragment();
 		FCC = new FragmentCreationController(SF.getFragmentID());
 
-		annotationList = new ArrayList<Pair<View, Annotation>>();
+		annotationList = new ArrayList<Pair<ArrayList<View>, Annotation>>();
 		SF.addView(this);
 		getFragmentAnnotations();
 		loadAnnotations();
@@ -147,9 +147,9 @@ public class AnnotationFragment extends Fragment implements StoryView {
 			return true;
 		case R.id.audio:
 			AudioIllustration audio = new AudioIllustration(FCC.getFreeUri(".3gp"));
-			annotationList.add(new Pair<View, Annotation>(
-					audio.getView(FCC.getStoryPath(),editMode,this.getActivity()), 
-					new Annotation(StoryApplication.getNickname(),audio)));
+			Annotation audioAnn = new Annotation(StoryApplication.getNickname(), audio);
+			annotationList.add(new Pair<ArrayList<View>, Annotation>(
+					audioAnn.getView(FCC.getStoryPath(), editMode, this.getActivity()), audioAnn));
 			return true;
 
 		case R.id.video:
@@ -176,7 +176,7 @@ public class AnnotationFragment extends Fragment implements StoryView {
 
 		annotationList.clear();
 		for (Annotation i : annotations) {
-			annotationList.add(new Pair<View, Annotation>(i.getView(SRC.getStoryPath(),editMode,this.getActivity()), i));
+			annotationList.add(new Pair<ArrayList<View>, Annotation>(i.getView(SRC.getStoryPath(),editMode,this.getActivity()), i));
 		}
 	}
 
@@ -188,41 +188,45 @@ public class AnnotationFragment extends Fragment implements StoryView {
 	 * @param View	 where annotations will be displayed
 	 */
 	private void displayAnnotations() {
-
+		// TODO: Add captions and owner tags to annotations
 		RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.annotation_fragment);
 
 		int position = 0;
 		if (annotationList.isEmpty() == false) {
 			// Display illustrations
 			((ViewGroup) layout).removeAllViews();
-			for (Pair <View, Annotation> t: annotationList) {
-				t.first.setId(position + 1);
-				RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
-						MATCH_PARENT,LayoutParams.WRAP_CONTENT); 
-				p.addRule(RelativeLayout.BELOW, position);
-				t.first.setLayoutParams(p);
 
-				((ViewGroup) layout).addView(t.first, p);
-				position++;
+			for (Pair <ArrayList<View>, Annotation> t: annotationList) {
+				for (View v : t.first) {
+					v.setId(position + 1);
+					RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
+							MATCH_PARENT,LayoutParams.WRAP_CONTENT); 
+					p.addRule(RelativeLayout.BELOW, position);
+					v.setLayoutParams(p);
+
+					((ViewGroup) layout).addView(v, p);
+					position++;
+				}
 			}
 		}
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Annotation ann;
 		if(resultCode == android.app.Activity.RESULT_OK ) {
 			if(requestCode == Actions.PHOTO.ordinal()) {
 				ImageIllustration image = new ImageIllustration(auri);
+				ann = new Annotation(StoryApplication.getNickname(), image);
 				annotationList.add(
-						new Pair<View, Annotation>(image.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
-								new Annotation(StoryApplication.getNickname(),image)));
-				saveAnnotations();
+						new Pair<ArrayList<View>, Annotation>(ann.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
+								ann));
 			}
 			if(requestCode == Actions.VIDEO.ordinal()) {
 				VideoIllustration video = new VideoIllustration(auri);
+				ann = new Annotation(StoryApplication.getNickname(), video);
 				annotationList.add(
-						new Pair<View, Annotation>(video.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
-								new Annotation(StoryApplication.getNickname(),video)));
-				saveAnnotations();
+						new Pair<ArrayList<View>, Annotation>(ann.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
+								ann));
 			}
 			if(requestCode == Actions.GALLERY.ordinal()) {
 				File f;
@@ -235,11 +239,12 @@ public class AnnotationFragment extends Fragment implements StoryView {
 					f = new File(cursor.getString(idx));
 				}
 				ImageIllustration image = new ImageIllustration(Uri.fromFile(f), FCC.getFreeUri(".jpg"));
+				ann = new Annotation(StoryApplication.getNickname(), image);
 				annotationList.add(
-						new Pair<View, Annotation>(image.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
-								new Annotation(StoryApplication.getNickname(),image)));
-				saveAnnotations();
+						new Pair<ArrayList<View>, Annotation>(ann.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
+								ann));
 			}
+			saveAnnotations();
 		}
 	}
 
@@ -249,10 +254,8 @@ public class AnnotationFragment extends Fragment implements StoryView {
 	 * for a TextIllustration.
 	 */
 	private void addNewTextAnnotation() {
-		// TODO Auto-generated method stub
-		EditText newText = new EditText(rootView.getContext());
-		newText.setHint("Enter text here");
-		annotationList.add(new Pair<View, Annotation>(newText, null));
+		Annotation Ann = new Annotation(StoryApplication.getNickname(), null);
+		annotationList.add(new Pair<ArrayList<View>, Annotation>(Ann.getView(null, true, this.getActivity()), Ann));
 		displayAnnotations();
 	}
 
@@ -274,21 +277,20 @@ public class AnnotationFragment extends Fragment implements StoryView {
 
 		if(annotationList.size() > SF.getAnnotations().size()) {
 
-			Pair<View, Annotation> i = annotationList.get(top-1);
-
-			if (i.second == null) {
-				// Saving a text illustration
-				String illString = ((EditText)i.first).getText().toString();
-				Log.d("DEBUG: Text annotation to be saved", String.valueOf(illString));
-				if(illString.length() > 0) {
-					TextIllustration text = new TextIllustration(illString);
-					Annotation a = new Annotation(author, text);
-					FCC.addAnnotation(a);
+			Pair<ArrayList<View>, Annotation> i = annotationList.get(top-1);
+			String cap = ((EditText)i.first.get(i.first.size()-1)).getText().toString();
+			Log.d("DEBUG: Text annotation to be saved", String.valueOf(cap));
+			if (i.first.size() == 2 ) {
+				// Saving a text caption
+				if(cap.length() > 0) {
+					// Set caption
+					i.second.setCaption(cap);
+					FCC.addAnnotation(i.second);
 				}
+				
 			}
 			else {
-				// Saving an audio, image, or view illustration
-				Annotation a = new Annotation(author, i.second.getIllustration());
+				i.second.setCaption(cap);
 				FCC.addAnnotation(i.second);
 			}
 		}
