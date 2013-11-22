@@ -20,6 +20,7 @@ package story.book.controller;
 import java.util.ArrayList;
 
 import android.net.Uri;
+import story.book.model.Annotation;
 import story.book.model.Illustration;
 import story.book.model.StoryFragment;
 import story.book.model.TextIllustration;
@@ -73,6 +74,14 @@ public class FragmentCreationController extends LocalEditingController {
 	 */
 	public void setAllIllustrations(ArrayList<Illustration> illustrations) {
 		storyFragment.setAllIllustrations(illustrations);
+	}
+	
+	/**
+	 * Adds an <code>Annotation</code> to the story fragment.
+	 * @param 	annotation	the <code>Annotation</code> to add
+	 */
+	public void addAnnotation(Annotation annotation) {
+		storyFragment.addAnnotation(annotation);
 	}
 	
 }
