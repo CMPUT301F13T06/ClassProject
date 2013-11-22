@@ -203,17 +203,16 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items for use in the action bar
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.search_bar, menu);
 		inflater.inflate(R.menu.fragment_list_menu, menu);
 		inflater.inflate(R.menu.standard_menu, menu);
 
 		// Get the SearchView and set the searchable configuration
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		SearchView searchView = (SearchView) menu.findItem(R.id.search_bar).getActionView();
+		SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
 		searchView.setSubmitButtonEnabled(true);
 		// Assumes current activity is the searchable activity
 		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-		searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+		searchView.setIconifiedByDefault(true); // Do not iconify the widget; expand it by default
 		
 		searchView.setOnQueryTextListener(new OnQueryTextListener() {
 			@Override
