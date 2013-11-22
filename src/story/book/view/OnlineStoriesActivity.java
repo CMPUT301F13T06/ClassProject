@@ -23,7 +23,6 @@ import java.util.Random;
 
 import story.book.view.R;
 import story.book.controller.OnlineStoryController;
-import story.book.controller.StoryController;
 import story.book.model.Story;
 import story.book.model.StoryInfo;
 import android.os.Bundle;
@@ -36,7 +35,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -65,7 +63,6 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 	SearchView searchView;
 	
 	private OnlineStoryController onlineController;
-	//protected ArrayAdapter<StoryInfo> adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +72,7 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 		onlineController = new OnlineStoryController();
 		
 		sList = new ArrayList<HashMap<String,String>>();
-		
-		
-		
-		
-		
-		//adapter = new ArrayAdapter<StoryInfo>(this, android.R.layout.simple_list_item_1, onlineController.getStoryList());
+			
 		listView = (ListView) findViewById(R.id.listView);
 		refreshList(onlineController.getStoryList());
 		registerForContextMenu(listView);
@@ -89,12 +81,11 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			/*
-			 * on click of an online story to display the story info immdiately. 
+			 * on click of an online story to display the story info immediately. 
 			 */
 			@Override
 			public void  onItemClick
 			(AdapterView<?> parent , View view, int pos, long id) {
-				//onlineController.getStory(adapter.getItem(pos).getSID());
 				onlineController.getStory(getFromAdapter(pos));
 				readStory();
 			}});
@@ -104,17 +95,9 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 			@Override
 			public void onClick(View v) {
 				if(sAdapter.getCount() > 0) {
-
-
-					//onlineController.getStory(adapter.getItem( new Random().nextInt(adapter.getCount())).getSID());
+			
 					onlineController.getStory(getFromAdapter(new Random()
 					.nextInt(sAdapter.getCount())));
-
-					int index =  new Random().nextInt(sAdapter.getCount());
-					onlineController.getStory(getFromAdapter(index));
-
-
-					//onlineController.getStory(adapter.getItem( new Random().nextInt(adapter.getCount())).getSID());
 
 					readStory();
 				}
@@ -170,8 +153,6 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 	@Override
 	public void onResume() {
 		super.onResume();
-		//adapter.clear();
-		//adapter.addAll(onlineController.getStoryList());
 		refreshList(onlineController.getStoryList());
 	}
 
@@ -207,11 +188,6 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 	}
 	
 	private void searchResults(String query){	
-		//adapter.clear();
-		//show the list with just the search results
-		//adapter = new ArrayAdapter<StoryInfo>(this, android.R.layout.simple_list_item_1, onlineController.search(query));
-		//listView.setAdapter(adapter);
-		//refreshList(onlineController.getStoryList());
 		refreshList(onlineController.search(query));
 	}
 	
@@ -223,7 +199,6 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 			public boolean onQueryTextChange(String newText) {
 				// TODO Auto-generated method stub
 				if(newText.isEmpty()){
-					//adapter.addAll(onlineController.getStoryList());
 					refreshList(onlineController.getStoryList());
 					return true;
 				}
@@ -237,10 +212,7 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 			public boolean onQueryTextSubmit(String query) {
 				// TODO Auto-generated method stub
 				//Do something when the user selects the submit button
-				
-			
-				searchResults(query);
-				
+				searchResults(query);				
 				return true;
 			}
 		});
