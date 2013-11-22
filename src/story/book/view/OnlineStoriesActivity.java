@@ -94,6 +94,7 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 			@Override
 			public void  onItemClick
 			(AdapterView<?> parent , View view, int pos, long id) {
+				//onlineController.getStory(adapter.getItem(pos).getSID());
 				onlineController.getStory(getFromAdapter(pos));
 				readStory();
 			}});
@@ -104,12 +105,16 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 			public void onClick(View v) {
 				if(sAdapter.getCount() > 0) {
 
+
 					//onlineController.getStory(adapter.getItem( new Random().nextInt(adapter.getCount())).getSID());
 					onlineController.getStory(getFromAdapter(new Random()
 					.nextInt(sAdapter.getCount())));
 
 					int index =  new Random().nextInt(sAdapter.getCount());
 					onlineController.getStory(getFromAdapter(index));
+
+
+					//onlineController.getStory(adapter.getItem( new Random().nextInt(adapter.getCount())).getSID());
 
 					readStory();
 				}
