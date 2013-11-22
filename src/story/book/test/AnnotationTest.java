@@ -22,4 +22,9 @@ public class AnnotationTest extends ActivityInstrumentationTestCase2
 		assertNotNull(annotation);
 	}
 	
+	@Test
+	public void testGetAuthor() {
+		assertEquals(annotation.getAuthor(), "Zero");
+	}
+	
 }
