@@ -29,6 +29,7 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.ContextMenu;
@@ -52,7 +53,8 @@ import android.widget.SimpleAdapter;
  * stories, or select a story to read from a list of their locally stored
  * stories. This activity uses a controller LocalStoryController to get the
  * story information to display in the list. The controller is also used to save
- * stories.
+ * stories. There is a "I'm Feeling Lucky" ala Google button that chooses a random
+ * story for the user.
  * 
  * @author Nancy Pham-Nguyen
  * @author Anthony Ou
@@ -66,7 +68,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	ArrayList<HashMap<String, String>> sList;
 
 	SearchView searchView;
-	
+
 	private LocalStoryController localController;
 
 	int position;
@@ -77,7 +79,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		setContentView(R.layout.library_activity);
 
 		localController = new LocalStoryController();
-
+	
 		sList = new ArrayList<HashMap<String, String>>();
 
 		listView = (ListView) findViewById(R.id.listView);
@@ -88,8 +90,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int pos,
 					long id) {
-				// read story with a single tap do not change this.
-
+				// read story with a single tap.
 				localController.getStory(getFromAdapter(pos));
 				readStory();
 			}
@@ -100,6 +101,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 			@Override
 			public void onClick(View v) {
 				if (sAdapter.getCount() > 0) {
+					//generates a random story for the user
 					localController.getStory(getFromAdapter(new Random()
 							.nextInt(sAdapter.getCount())));
 					readStory();
@@ -137,7 +139,10 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		listView.setAdapter(sAdapter);
 
 	}
-
+	
+	/**
+     * This method gets the position of the item of the adapter
+     */
 	private int getFromAdapter(int pos) {
 		return Integer.parseInt(((HashMap<String, String>) sAdapter
 				.getItem(pos)).get("SID"));
@@ -161,8 +166,6 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 
 	/**
 	 * Method that is called when a user chooses to read the story
-	 * 
-	 * @param SID
 	 */
 	public void readStory() {
 		Intent intent = new Intent(this, StoryInfoActivity.class);
@@ -170,7 +173,11 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		startActivity(intent);
 	}
 
+	/**
+	 * Allows the user to edit an existing local story that was not downloaded.
+	 */
 	public void editStory() {
+		//if long click on story, give the option to edit the story
 		Intent intent = new Intent(this, StoryFragmentListActivity.class);
 		startActivity(intent);
 	}
@@ -179,7 +186,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	 * Delete the story at the correct SID
 	 */
 	public void deleteStory() {
-		// if long click on story then give option to delete
+		// if long click on story, give the option to delete the story
 		localController.deleteStory(getFromAdapter(position));
 		refreshList(localController.getStoryList());
 	}
@@ -220,6 +227,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	}
 
 	/**
+	 * http://developer.android.com/training/search/setup.html
 	 * http://stackoverflow.com/questions/18832890/android-nullpointerexception-
 	 * on-searchview-in-action-bar
 	 * http://stackoverflow.com/questions/17874951/searchview
@@ -244,11 +252,18 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		return true;
 	}
 
+	/**
+	 * Updates the adapter with only the search results
+	 * @param query
+	 */
 	private void searchResults(String query) {
 		// show the list with just the search results
 		refreshList(localController.search(query));
 	}
 
+	/**
+	 * Handle the search when the submit button is clicked on in the action bar
+	 */
 	private void handleSearch() {
 		searchView.setOnQueryTextListener(new OnQueryTextListener() {
 
@@ -256,6 +271,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 			public boolean onQueryTextChange(String newText) {
 				// TODO Auto-generated method stub
 				if (newText.isEmpty()) {
+					//refreshes the story list if there is no text entered to search
 					refreshList(localController.getStoryList());
 					return true;
 				} else {
@@ -266,7 +282,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 			@Override
 			public boolean onQueryTextSubmit(String query) {
 				// TODO Auto-generated method stub
-				// Do something when the user selects the submit button
+				// Show the search results when the user selects the submit button
 				searchResults(query);
 				return true;
 			}
