@@ -30,8 +30,11 @@ public class AnnotationTest extends ActivityInstrumentationTestCase2
 	@Test
 	public void testGetIllustration() {
 		assertNotNull(annotation.getIllustration());
-		assertEquals(annotation.getIllustration().getContent(), "Zero");
+		assertEquals(annotation.getIllustration().getContent(), "test text");
 	}
 	
-	
+	@Test
+	public void testGetView() {
+		assertNotNull(annotation.getView(null, false, getActivity()));
+	}
 }
