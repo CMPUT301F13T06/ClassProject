@@ -3,12 +3,12 @@ package story.book.model;
 import android.content.Context;
 import android.view.View;
 
-public class Annotation<T extends Illustration> {
+public class Annotation {
 	
 	private String author;
-	private T illustration;
+	private Illustration<?> illustration;
 	
-	public Annotation(String author, T illustration) {
+	public Annotation(String author, Illustration<?> illustration) {
 		this.author = author;
 		this.illustration = illustration;
 	}
@@ -17,7 +17,7 @@ public class Annotation<T extends Illustration> {
 		return this.author;
 	}
 	
-	public T getIllustration() {
+	public Illustration<?> getIllustration() {
 		return illustration;
 	}
 	

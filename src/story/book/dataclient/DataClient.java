@@ -4,9 +4,11 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import story.book.model.Annotation;
 import story.book.model.Illustration;
 import story.book.model.Story;
 import story.book.model.StoryInfo;
+import story.book.model.TextIllustration;
 import android.util.Log;
 
 import com.google.gson.*;
@@ -54,7 +56,7 @@ public abstract class DataClient {
 			} catch (ClassNotFoundException e) {
 				Log.d("error parsing Illustration", "DataClient");
 				e.printStackTrace();
-				return null;
+				return new TextIllustration("error deserializing");
 				//throw new JsonParseException(e);
 			}
 		}
@@ -68,7 +70,7 @@ public abstract class DataClient {
 			return jsonEle;
 		}
 	}
-
+	
 	/**
 	 * 
 	 * @param an object

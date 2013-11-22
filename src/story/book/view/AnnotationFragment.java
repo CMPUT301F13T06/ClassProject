@@ -282,7 +282,7 @@ public class AnnotationFragment extends Fragment implements StoryView {
 				Log.d("DEBUG: Text annotation to be saved", String.valueOf(illString));
 				if(illString.length() > 0) {
 					TextIllustration text = new TextIllustration(illString);
-					Annotation <TextIllustration> a = new Annotation<TextIllustration>(author, text);
+					Annotation a = new Annotation(author, text);
 					FCC.addAnnotation(a);
 				}
 			}
