@@ -29,34 +29,23 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.SearchView.OnCloseListener;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
-
 
 /**
  * Activity that allows the user to create new stories, delete stories, edit
@@ -71,17 +60,15 @@ import android.widget.Toast;
 
 public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 
-	boolean closed;
 	ListView listView;
 
-	SearchView searchView;
 	SimpleAdapter sAdapter;
-
 	ArrayList<HashMap<String, String>> sList;
-	HashMap<String, String> testMap;
 
+	SearchView searchView;
+	
 	private LocalStoryController localController;
-	ArrayAdapter<StoryInfo> adapter;
+
 	int position;
 
 	@Override
@@ -89,46 +76,21 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.library_activity);
 
-		/*
-		Intent intent = getIntent();
-		if(Intent.ACTION_SEARCH.equals(intent.getAction())){
-		String query = intent.getStringExtra(SearchManager.QUERY);
-
-		doMySearch(query);
-		}*/
-		
 		localController = new LocalStoryController();
-		
-		
-		
-			
-			
-		
 
-		// TODO Will move to SimpleAdapter in the future
-		/*
-		 * sList = new ArrayList<HashMap<String, String>>();
-		 * 
-		 * String[] from = new String[] { KEY_TITLE, KEY_ID }; int[] to = new
-		 * int[] { R.id.textTest, R.id.textTest2 };
-		 * 
-		 * // for (int i = 0; i < from.length; i++) { testMap = new
-		 * HashMap<String, String>(); testMap.put(KEY_TITLE, from[0]);
-		 * testMap.put(KEY_ID, "" + "\n" + "hello"); sList.add(testMap); // }
-		 * 
-		 * sAdapter = new SimpleAdapter(this, sList, R.layout.stories_list,
-		 * from, to);
-		 */
+		sList = new ArrayList<HashMap<String, String>>();
 
 		listView = (ListView) findViewById(R.id.listView);
-		refreshList();
+		refreshList(localController.getStoryList());
 
 		registerForContextMenu(listView);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+			public void onItemClick(AdapterView<?> parent, View view, int pos,
+					long id) {
 				// read story with a single tap do not change this.
-				localController.getStory(adapter.getItem(pos).getSID());
+
+				localController.getStory(getFromAdapter(pos));
 				readStory();
 			}
 		});
@@ -137,16 +99,14 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		luckyButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(adapter.getCount() > 0) {
-					localController.getStory(adapter.getItem( new Random().nextInt(adapter.getCount())).getSID());
+				if (sAdapter.getCount() > 0) {
+					localController.getStory(getFromAdapter(new Random()
+							.nextInt(sAdapter.getCount())));
 					readStory();
 				}
 			}
 		});
 
-		
-		
-		
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
@@ -154,17 +114,40 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	/**
 	 * Displays the list of local stories.
 	 */
-	public void refreshList() {
-		adapter = new ArrayAdapter<StoryInfo>(this,
-				android.R.layout.simple_list_item_1,
-				localController.getStoryList());
-		listView.setAdapter(adapter);
+	public void refreshList(ArrayList<StoryInfo> storyList) {
+		sList.clear();
+
+		for (StoryInfo storyInfo : storyList) {
+			HashMap<String, String> item = new HashMap<String, String>();
+
+			item.put("Title", storyInfo.getTitle());
+			item.put("Author", storyInfo.getAuthor());
+			item.put("Date", storyInfo.getPublishDateString());
+			item.put("SID", String.valueOf(storyInfo.getSID()));
+
+			sList.add(item);
+
+		}
+
+		String[] from = new String[] { "Title", "Author", "Date", "SID" };
+		int[] to = new int[] { R.id.listItem1, R.id.listItem2, R.id.listItem3 };
+
+		sAdapter = new SimpleAdapter(this, sList, R.layout.stories_list, from,
+				to);
+		listView.setAdapter(sAdapter);
+
+	}
+
+	private int getFromAdapter(int pos) {
+		return Integer.parseInt(((HashMap<String, String>) sAdapter
+				.getItem(pos)).get("SID"));
+
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		refreshList();
+		refreshList(localController.getStoryList());
 	}
 
 	/**
@@ -197,11 +180,9 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	 */
 	public void deleteStory() {
 		// if long click on story then give option to delete
-		localController.deleteStory(adapter.getItem(position).getSID());
-		refreshList();
+		localController.deleteStory(getFromAdapter(position));
+		refreshList(localController.getStoryList());
 	}
-
-
 
 	/**
 	 * Method to create a floating context menu when an item in the list is
@@ -224,7 +205,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
 				.getMenuInfo();
 		position = info.position;
-		localController.getStory(adapter.getItem(position).getSID());
+		localController.getStory(getFromAdapter(position));
 
 		switch (item.getItemId()) {
 		case R.id.edit_story:
@@ -239,69 +220,59 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	}
 
 	/**
-	 * http://stackoverflow.com/questions/18832890/android-nullpointerexception-on-searchview-in-action-bar
-	 * http://stackoverflow.com/questions/17874951/searchview-onquerytextsubmit-runs-twice-while-i-pressed-once
+	 * http://stackoverflow.com/questions/18832890/android-nullpointerexception-
+	 * on-searchview-in-action-bar
+	 * http://stackoverflow.com/questions/17874951/searchview
+	 * -onquerytextsubmit-runs-twice-while-i-pressed-once
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// MenuInflater inflater = getMenuInflater();
-		// inflater.inflate(R.menu.local_stories, menu);
-			
+
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.local_stories, menu);
 
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		 searchView = (SearchView) menu.findItem(R.id.action_search)
+		searchView = (SearchView) menu.findItem(R.id.action_search)
 				.getActionView();
 		// Assumes current activity is the searchable activity
 		searchView.setSearchableInfo(searchManager
 				.getSearchableInfo(getComponentName()));
-		searchView.setIconifiedByDefault(true); //iconify the widget
+		searchView.setIconifiedByDefault(true); // iconify the widget
 		searchView.setSubmitButtonEnabled(true);
-		
-			
+
 		handleSearch();
 		return true;
 	}
-	
-	private void searchResults(String query){	
-		adapter.clear();
-		//show the list with just the search results
-		adapter = new ArrayAdapter<StoryInfo>(this,android.R.layout.simple_list_item_1,localController.search(query));
-		listView.setAdapter(adapter);
+
+	private void searchResults(String query) {
+		// show the list with just the search results
+		refreshList(localController.search(query));
 	}
-	
-	
-	private void handleSearch(){
-		searchView.setOnQueryTextListener(new OnQueryTextListener(){
-			
+
+	private void handleSearch() {
+		searchView.setOnQueryTextListener(new OnQueryTextListener() {
+
 			@Override
 			public boolean onQueryTextChange(String newText) {
 				// TODO Auto-generated method stub
-				if(newText.isEmpty()){
-					refreshList();
+				if (newText.isEmpty()) {
+					refreshList(localController.getStoryList());
 					return true;
-				}
-				else{
-				return false;
+				} else {
+					return false;
 				}
 			}
-			
 
 			@Override
 			public boolean onQueryTextSubmit(String query) {
 				// TODO Auto-generated method stub
-				//Do something when the user selects the submit button
-				
-				
+				// Do something when the user selects the submit button
 				searchResults(query);
-				
 				return true;
 			}
 		});
-		
+
 	}
-	
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -320,7 +291,6 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	@Override
 	public void update(Story model) {
 		// TODO Auto-generated method stub
-		adapter.clear();
-		adapter.addAll(localController.getStoryList());
+		refreshList(localController.getStoryList());
 	}
 }
