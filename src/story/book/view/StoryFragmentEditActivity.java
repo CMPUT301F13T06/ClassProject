@@ -39,6 +39,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -115,7 +116,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		SF.addView(this);
 		illustrationList = new ArrayList<Pair<View, Illustration>>();
 		loadFragmentContents();
-
+		
 	}
 
 	@Override
@@ -217,13 +218,13 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			if(requestCode == Actions.PHOTO.ordinal()) {
 				ImageIllustration image = new ImageIllustration(auri);
 				illustrationList.add(new Pair<View, Illustration>(
-						image.getView(SCC.getStoryPath(),editMode,this), image));
+						image.getView(SCC.getStoryPath(), editMode, this), image));
 				displayFragment();
 			}
 			if(requestCode == Actions.VIDEO.ordinal()) {
 				VideoIllustration video = new VideoIllustration(auri);
 				illustrationList.add(new Pair<View, Illustration>(
-						video.getView(SCC.getStoryPath(),editMode, this), video));
+						video.getView(SCC.getStoryPath(), editMode, this), video));
 				displayFragment();
 			}
 			//http://stackoverflow.com/questions/2789276/android-get-real-path-by-uri-getpath
@@ -239,7 +240,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 				}
 				ImageIllustration image = new ImageIllustration(Uri.fromFile(f), FCC.getFreeUri(".jpg"));
 				illustrationList.add(new Pair<View, Illustration>(
-						image.getView(SCC.getStoryPath(),editMode,this), image));
+						image.getView(SCC.getStoryPath(), editMode, this), image));
 				displayFragment();
 			}
 		}
@@ -264,7 +265,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		auri = FCC.getFreeUri(".mp4");
 		AudioIllustration audio = new AudioIllustration(auri);
 		illustrationList.add(new Pair<View, Illustration>(
-				audio.getView(SCC.getStoryPath(),editMode, this), audio));
+				audio.getView(SCC.getStoryPath(), editMode, this), audio));
 		displayFragment();
 	}
 
@@ -276,6 +277,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 		ArrayList<Pair<View, Illustration>> currentView = new ArrayList<Pair<View, Illustration>>();
 		int top = illustrationList.size();
+		Log.d(String.valueOf(top), "DEBUG: Number of illustrations to be saved");
 		for (int i = 0; i < top; i++) {
 			if (illustrationList.get(i).second == null) {
 				// Saving a text illustration
@@ -289,7 +291,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 				}
 			}
 			else {
-				// Saving an audio, image, or view illustration
+				// Saving an audio, image, or video illustration
 				currentView.add(illustrationList.get(i));
 			}
 		}
@@ -298,7 +300,15 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		// Extract all illustrations from currentView for saving
 		ArrayList<Illustration> illus =  new ArrayList<Illustration>();
 		for (Pair<View, Illustration> p : currentView) {
-			illus.add(p.second);
+			Log.d(String.valueOf(p.second.getContent().toString()), "DEBUG: Text to be saved");
+			if (p.first instanceof EditText) {
+				String illString = ((EditText)p.first).getText().toString();
+				TextIllustration newText = new TextIllustration(illString);
+				illus.add(newText);
+			}
+			else {
+				illus.add(p.second);
+			}
 		}
 		
 		FCC.setAllIllustrations(illus);
@@ -323,7 +333,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		illustrationList = new ArrayList<Pair<View, Illustration>>();
 		for (Illustration i : illustrations) {
 			illustrationList.add(new Pair<View, Illustration>(
-					i.getView(SCC.getStoryPath(),editMode,this), i));
+					i.getView(SCC.getStoryPath(), editMode, this), i));
 		}
 
 	}
@@ -384,7 +394,10 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-
+		
+		// position of illustration selected
+		itemPos = v.getId() - 1;
+		
 		if (v instanceof Button) {
 			menu.setHeaderTitle("Select an Option:");
 			menu.add(0, v.getId(), 2, "Delete decision branch");  
@@ -409,6 +422,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 		case 1:
 			//Delete illustration
+			Log.d(String.valueOf(itemPos), "DEBUG: Item selected");
 			illustrationList.remove(itemPos);
 			displayFragment();
 

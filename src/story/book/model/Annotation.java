@@ -17,6 +17,10 @@ public class Annotation<T extends Illustration> {
 		return this.author;
 	}
 	
+	public T getIllustration() {
+		return illustration;
+	}
+	
 	public View getView(String path, Boolean editMode, Context C) {
 		return this.illustration.getView(path, editMode, C);
 	}

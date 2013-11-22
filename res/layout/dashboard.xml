@@ -55,7 +55,7 @@
             android:text="@string/online_stories"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="35sp" />
+            android:textSize="33sp" />
 
         <Button
             android:id="@+id/local_stories"
@@ -65,6 +65,7 @@
             android:layout_marginLeft="65dp"
             android:layout_marginRight="65dp"
             android:background="#333333"
+            android:gravity="center"
             android:text="@string/local_stories"
             android:textAlignment="center"
             android:textColor="#FFFFFF"

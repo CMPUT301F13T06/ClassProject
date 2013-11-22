@@ -13,5 +13,6 @@
     </style>
 
     <!-- Application theme. -->
+    <color name="GreyColor">#3A4480</color><color name="PreviewColor" >#909090</color>
 
 </resources>

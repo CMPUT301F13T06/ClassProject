@@ -21,10 +21,15 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -40,6 +45,9 @@ public class Dashboard extends Activity {
 
 	private EditText enterName;
 	private String defaultName;
+	
+	TextView tView;
+	TextView tView2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +60,38 @@ public class Dashboard extends Activity {
 		
 		final Intent localIntent = new Intent(this, LocalStoriesActivity.class);
 		final Intent onlineIntent = new Intent(this, OnlineStoriesActivity.class);
-
+		
+		// font -- http://www.fonts2u.com/homey.font
+		Typeface ltf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/homey.ttf");
+		// font -- http://www.fonts101.com/fonts/view/Standard/697/Adventure
+		Typeface otf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/adventure.ttf");
+		// font -- http://www.1001fonts.com/roboto-slab-font.html
+		Typeface tf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/RobotoSlab-Light.ttf");
+		
+		tView2 = (TextView) findViewById(R.id.start_adventure);
+		tView2.setTypeface(tf);
+		
+		String local = "Local";
+		String nook = "Story Nook";
+		Spannable span = new SpannableString(local + "\n" + nook);
+		span.setSpan(new RelativeSizeSpan(0.5f), 0, local.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE );
 		Button localButton = (Button) findViewById(R.id.local_stories);
+		localButton.setText(span);
+		localButton.setTypeface(ltf);
 		localButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				//Navigate to the Local Stories
 				startActivity(localIntent);
 			}
 		});
-
+		
+		String online = "Online";
+		String club = "Story Club";
+		span = new SpannableString(online + "\n" + club);
+		span.setSpan(new RelativeSizeSpan(0.5f), 0, online.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE );
 		Button onlineButton = (Button) findViewById(R.id.online_stories);
+		onlineButton.setText(span);
+		onlineButton.setTypeface(otf);
 		onlineButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				//Navigate to the Online Stories

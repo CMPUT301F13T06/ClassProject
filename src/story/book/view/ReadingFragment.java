@@ -31,12 +31,14 @@ import android.app.ActionBar;
 import android.app.ActionBar.LayoutParams;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView.FindListener;
 import android.widget.Button;
@@ -116,8 +118,21 @@ public class ReadingFragment extends Fragment {
 			luckyButton.setText("I'm feeling lucky");
 			
 			luckyButton.setOnClickListener(setListener(luckyButton, n));
-			Log.d(String.valueOf(n), "DEBUG: Decision branch taken");
 			buttonList.add(luckyButton);
+		}
+		else if (db.size() < 1) {
+			// Set "The End" button if there are no decision branches
+			Button endButton = new Button(c);
+			endButton.setText("THE END");
+			endButton.setTextSize(30);
+			endButton.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					getActivity().finish();
+				}
+			});
+			buttonList.add(endButton);
 		}
 		return buttonList;
 	}
@@ -133,18 +148,22 @@ public class ReadingFragment extends Fragment {
 	private void displayFragment(StoryFragment SF) {
 
 		RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.reading_fragment);
+		
+		if (decisions != null) {
+			decisions.clear();
+		}
 		illustrations = SF.getIllustrations();
 		decisions = SF.getDecisionBranches();
 
-		ArrayList<View> annotationViews = new ArrayList<View>();
+		ArrayList<View> illustrationViews = new ArrayList<View>();
 
 		for (Illustration i : illustrations){
-			annotationViews.add(i.getView(SRC.getStoryPath(),false,this.getActivity()));
+			illustrationViews.add(i.getView(SRC.getStoryPath(),false,this.getActivity()));
 		}
 
 		int pos = 0;
 
-		for (View t: annotationViews) {
+		for (View t: illustrationViews) {
 			t.setId(pos + 1);
 			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
 					WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
