@@ -33,6 +33,7 @@ import android.app.ActionBar.LayoutParams;
 import android.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
+import android.hardware.Camera.Size;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -58,14 +59,13 @@ import android.widget.RelativeLayout;
  *
  */
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
-public class AnnotationFragment extends Fragment {
+public class AnnotationFragment extends Fragment implements StoryView {
 	StoryReadController SRC;
 	StoryFragment SF;
 	ArrayList<Pair<View, Annotation>> annotationList;
 	View rootView;
 	int nextFragmentID;
 	FragmentCreationController FCC;
-	ArrayList<Annotation> annotations;
 
 	String author;
 	Boolean editMode = true;
@@ -82,11 +82,13 @@ public class AnnotationFragment extends Fragment {
 		SRC = ((StoryFragmentReadActivity)this.getActivity()).getController();
 		SF = SRC.getStartingFragment();
 		FCC = new FragmentCreationController(SF.getFragmentID());
-		
-		getAnnotations();
-		loadAnnotations();
+
 		annotationList = new ArrayList<Pair<View, Annotation>>();
-		
+		SF.addView(this);
+		getFragmentAnnotations();
+		loadAnnotations();
+		displayAnnotations();
+
 		if (savedInstanceState != null && savedInstanceState.containsKey("cameraImageUri")) {
 			auri = Uri.parse(savedInstanceState.getString("cameraImageUri"));
 		}
@@ -95,21 +97,28 @@ public class AnnotationFragment extends Fragment {
 		return rootView;
 
 	}
-	
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		saveAnnotations();
+	}
+
 	@Override
 	public void onResume() {
 		super.onResume();
-		getAnnotations();
-		displayAnnotations(SF, rootView);
+		getFragmentAnnotations();
+		loadAnnotations();
+		displayAnnotations();
 	}
-	
+
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		// Inflate the menu items for use in the action bar
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.add_annotation_menu, menu);
 
 	}
-	
+
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		if (auri != null) {
@@ -123,7 +132,8 @@ public class AnnotationFragment extends Fragment {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.text:
-			addNewTextAnnotation(rootView);
+			saveAnnotations();
+			addNewTextAnnotation();
 			return true;
 		case R.id.take_photo:
 			Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -157,19 +167,19 @@ public class AnnotationFragment extends Fragment {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	/**
 	 * loadAnnotations() loads annotation views from the current story fragment
 	 */
 	private void loadAnnotations() {
 		ArrayList<Annotation> annotations = SF.getAnnotations();
 
-		annotationList = new ArrayList<Pair<View, Annotation>>();
+		annotationList.clear();
 		for (Annotation i : annotations) {
 			annotationList.add(new Pair<View, Annotation>(i.getView(SRC.getStoryPath(),editMode,this.getActivity()), i));
 		}
 	}
-	
+
 	/**
 	 * displayAnnotations() displays all annotations as views 
 	 * by getting them from the corresponding fragment 
@@ -177,28 +187,27 @@ public class AnnotationFragment extends Fragment {
 	 * @param StoryFragment 	StoryFragment object
 	 * @param View	 where annotations will be displayed
 	 */
-	private void displayAnnotations(StoryFragment SF, View rootView) {
-		
+	private void displayAnnotations() {
+
 		RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.annotation_fragment);
-		if ((ViewGroup)this.getView() != null) {
-			rootView = this.getView().findViewById(R.id.annotation_fragment);
-			((ViewGroup) rootView).removeAllViews();
-		}
+
 		int position = 0;
 		if (annotationList.isEmpty() == false) {
 			// Display illustrations
+			((ViewGroup) layout).removeAllViews();
 			for (Pair <View, Annotation> t: annotationList) {
 				t.first.setId(position + 1);
 				RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
 						MATCH_PARENT,LayoutParams.WRAP_CONTENT); 
 				p.addRule(RelativeLayout.BELOW, position);
 				t.first.setLayoutParams(p);
+
 				((ViewGroup) layout).addView(t.first, p);
 				position++;
 			}
 		}
 	}
-	
+
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(resultCode == android.app.Activity.RESULT_OK ) {
 			if(requestCode == Actions.PHOTO.ordinal()) {
@@ -206,14 +215,14 @@ public class AnnotationFragment extends Fragment {
 				annotationList.add(
 						new Pair<View, Annotation>(image.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
 								new Annotation(StoryApplication.getNickname(),image)));
-				update();
+				saveAnnotations();
 			}
 			if(requestCode == Actions.VIDEO.ordinal()) {
 				VideoIllustration video = new VideoIllustration(auri);
 				annotationList.add(
 						new Pair<View, Annotation>(video.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
 								new Annotation(StoryApplication.getNickname(),video)));
-				update();
+				saveAnnotations();
 			}
 			if(requestCode == Actions.GALLERY.ordinal()) {
 				File f;
@@ -229,64 +238,77 @@ public class AnnotationFragment extends Fragment {
 				annotationList.add(
 						new Pair<View, Annotation>(image.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
 								new Annotation(StoryApplication.getNickname(),image)));
-				update();
+				saveAnnotations();
 			}
 		}
 	}
-	
-	/**
-	 * update() removes all views in the annotation fragment and redisplays them to show changes
-	 */
-	public void update() {
-		loadAnnotations();
-		displayAnnotations(SF, rootView);
-	}
-	
+
+
 	/**
 	 * addNewTextIllustration() creates a new EditText for users to enter the text
 	 * for a TextIllustration.
 	 */
-	private void addNewTextAnnotation(View v) {
+	private void addNewTextAnnotation() {
 		// TODO Auto-generated method stub
-		EditText newText = new EditText(v.getContext());
+		EditText newText = new EditText(rootView.getContext());
 		newText.setHint("Enter text here");
 		annotationList.add(new Pair<View, Annotation>(newText, null));
-		displayAnnotations(SF, v);
+		displayAnnotations();
 	}
 
 	/**
 	 * Loads the annotations for the fragment; used after a decision branch
 	 * has been selected in the <code>ReadingFragment</code>
 	 */
-	public void getAnnotations() {
+	public void getFragmentAnnotations() {
 		SF = SRC.getStoryFragment((StoryFragmentReadActivity.SF).getFragmentID());
-		update();
+
 	}
-	
+
 	/**
 	 * saveAnnotation() saves any new annotations
 	 */
-	public void saveFragment() {
+	public void saveAnnotations() {
 		int top = annotationList.size();
-		for (int i = 0; i < top; i++) {
-			if (annotationList.get(i).second == null) {
+		Log.d("DEBUG: total number of annotations", String.valueOf(top));
+
+		if(annotationList.size() > SF.getAnnotations().size()) {
+
+			Pair<View, Annotation> i = annotationList.get(top-1);
+
+			if (i.second == null) {
 				// Saving a text illustration
-				String illString = ((EditText)annotationList.get(i).first).getText().toString();
-				TextIllustration text = new TextIllustration(illString);
+				String illString = ((EditText)i.first).getText().toString();
+				Log.d("DEBUG: Text annotation to be saved", String.valueOf(illString));
 				if(illString.length() > 0) {
+					TextIllustration text = new TextIllustration(illString);
 					Annotation <TextIllustration> a = new Annotation<TextIllustration>(author, text);
-					SF.addAnnotation(a);
+					FCC.addAnnotation(a);
 				}
-				else {
-					annotationList.remove(i);
-				}
-	
 			}
 			else {
 				// Saving an audio, image, or view illustration
-				Annotation a = new Annotation(author, annotationList.get(i).second.getIllustration());
-				SF.addAnnotation((annotationList.get(i).second));
+				Annotation a = new Annotation(author, i.second.getIllustration());
+				FCC.addAnnotation(i.second);
 			}
 		}
+
+	}
+
+	/**
+	 * update(SF); redisplays annotations to show changes to model
+	 */
+	@Override
+	public void update(Object model) {
+		// TODO Auto-generated method stub
+
+		getFragmentAnnotations();
+		loadAnnotations();
+		displayAnnotations();
+	}
+
+	private void removeViews() {
+		rootView = this.getView().findViewById(R.id.reading_fragment);
+		((ViewGroup) rootView).removeAllViews();
 	}
 }
