@@ -46,7 +46,8 @@ import android.support.v4.app.NavUtils;
 /**
  * Activity that allows the user to view stories from an available list of 
  * stories online and download them to their local stories list.
- * It uses a controller called OnlineStoryController.
+ * It uses a controller called OnlineStoryController. There is also an "I'm Feeling Lucky" ala Google
+ * button that the user can select to choose a random story for them.
  * 
  * @author Nancy Pham-Nguyen
  * @author Anthony Ou
@@ -75,9 +76,7 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 			
 		listView = (ListView) findViewById(R.id.listView);
 		refreshList(onlineController.getStoryList());
-		registerForContextMenu(listView);
-
-		
+		registerForContextMenu(listView);	
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			/*
@@ -95,7 +94,7 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 			@Override
 			public void onClick(View v) {
 				if(sAdapter.getCount() > 0) {
-			
+					//generate a random story for the user
 					onlineController.getStory(getFromAdapter(new Random()
 					.nextInt(sAdapter.getCount())));
 
@@ -109,7 +108,7 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 	}
 	
 	 /**
-     * Displays the list of local stories.
+     * Displays the list of online stories.
      */
     public void refreshList(ArrayList<StoryInfo> storyList) {
             sList.clear();
@@ -135,6 +134,9 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
     		
     }
 
+    /**
+     * This method gets the position of the item of the adapter
+     */
     private int getFromAdapter(int pos){
     	return Integer.parseInt(((HashMap<String,String>) sAdapter.getItem(pos)).get("SID"));
     }
@@ -142,7 +144,6 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 	/**
 	 * Method that is called when a user chooses to read the story
 	 * 
-	 * @param SID
 	 */
 	public void readStory() {
 		Intent intent = new Intent(this, StoryInfoActivity.class);
@@ -187,11 +188,17 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 		return true;
 	}
 	
+	/**
+	 * Updates the adapter with only the search results
+	 * @param query
+	 */
 	private void searchResults(String query){	
 		refreshList(onlineController.search(query));
 	}
 	
-	
+	/**
+	 * Handle the search when the submit button is clicked on in the action bar
+	 */
 	private void handleSearch(){
 		searchView.setOnQueryTextListener(new OnQueryTextListener(){
 			
