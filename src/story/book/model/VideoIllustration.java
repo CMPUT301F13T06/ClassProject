@@ -20,9 +20,13 @@ package story.book.model;
 import java.io.File;
 
 import story.book.view.StoryApplication;
+import story.book.view.VideoPlayerActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
+import android.widget.Button;
+import android.widget.MediaController;
 import android.widget.VideoView;
 
 /**
@@ -43,10 +47,17 @@ public class VideoIllustration extends Illustration<String> {
 		return content;
 	}
 
-	public View getView(String path, Boolean editMode, Context C) {
-		VideoView video =  new VideoView(C);
-		video.setVideoPath(path+content);
-		return video;
+	public View getView(String path, Boolean editMode, final Context C) {
+		Button button = new Button(C);
+		final String videoPath = path + content;
+		button.setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {
+		    	Intent intent = new Intent(C, VideoPlayerActivity.class);
+		    	intent.putExtra("VIDEO_PATH", videoPath);
+		    	C.startActivity(intent);
+		    }
+		});
+		return button;
 	}
 
 	public void setContent(String content) {

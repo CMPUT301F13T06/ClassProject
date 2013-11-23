@@ -91,6 +91,11 @@
             android:name="story.book.view.DecisionPickerActivity"
             android:label="@string/title_decision_picker" >
         </activity>
+        <activity
+            android:name="story.book.view.VideoPlayerActivity"
+            android:label="video player temp title" 
+            android:screenOrientation="landscape" >
+        </activity>
     </application>
 
 </manifest>
