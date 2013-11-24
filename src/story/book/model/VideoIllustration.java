@@ -17,17 +17,14 @@
 
 package story.book.model;
 
-import java.io.File;
-
-import story.book.view.StoryApplication;
 import story.book.view.VideoPlayerActivity;
+import android.R;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.View;
-import android.widget.Button;
-import android.widget.MediaController;
-import android.widget.VideoView;
+import android.widget.ImageButton;
 
 /**
  * 
@@ -48,7 +45,7 @@ public class VideoIllustration extends Illustration<String> {
 	}
 
 	public View getView(String path, Boolean editMode, final Context C) {
-		Button button = new Button(C);
+		ImageButton button = new ImageButton(C);
 		final String videoPath = path + content;
 		button.setOnClickListener(new View.OnClickListener() {
 		    public void onClick(View v) {
@@ -57,6 +54,8 @@ public class VideoIllustration extends Illustration<String> {
 		    	C.startActivity(intent);
 		    }
 		});
+		button.setImageDrawable(C.getResources().getDrawable(R.drawable.ic_media_play));
+		button.setBackgroundColor(-16777216);
 		return button;
 	}
 
