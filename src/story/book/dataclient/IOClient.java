@@ -151,6 +151,20 @@ public class IOClient extends DataClient {
 		return -1;
 	}
 
+	public StringBuilder readFile(String Path) throws IOException {
+		char[] inputBuffer = new char[1024];
+		StringBuilder sb = new StringBuilder(1024); // set the initial size
+		FileInputStream fis = new FileInputStream(Path);
+		InputStreamReader isr = new InputStreamReader(fis);
+
+		int l;
+		while ((l = isr.read(inputBuffer)) != -1) {
+			sb.append(inputBuffer, 0, l);
+		}
+		fis.close();
+		isr.close();
+		return sb;
+	}
 	/**
 	 * http://stackoverflow.com/questions/14376807/how-to-read-write-string-from
 	 * -a-file-in-android
@@ -161,21 +175,12 @@ public class IOClient extends DataClient {
 	 */
 	public Story getStory(int SID) {
 
-		char[] inputBuffer = new char[1024];
-		StringBuilder sb = new StringBuilder(1024); // set the initial size
+		StringBuilder sb;
 		// of string builder to be
 		// same size as the buffer
 		try {
-			FileInputStream fis = new FileInputStream(story_dir
-					+ String.valueOf(SID) + "/" + String.valueOf(SID));
-			InputStreamReader isr = new InputStreamReader(fis);
-
-			int l;
-			while ((l = isr.read(inputBuffer)) != -1) {
-				sb.append(inputBuffer, 0, l);
-			}
-			fis.close();
-			isr.close();
+			sb = readFile(story_dir
+				+ String.valueOf(SID) + "/" + String.valueOf(SID));
 		} catch (Exception e) {
 			Log.d("reading file error", "getStory() error");
 			e.printStackTrace();

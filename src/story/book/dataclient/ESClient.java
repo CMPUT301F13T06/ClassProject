@@ -1,11 +1,18 @@
 package story.book.dataclient;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import story.book.model.Story;
 import story.book.model.StoryInfo;
+import story.book.view.StoryApplication;
+import android.os.AsyncTask;
+import android.provider.MediaStore.Files;
+import android.util.Log;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -21,7 +28,8 @@ import com.google.gson.reflect.TypeToken;
 public class ESClient extends DataClient {	
 	protected String def_folder = "stories/";
 	private String SID_folder = "SIDs/0";
-	
+	private String media_folder = "media/";
+	private IOClient io = StoryApplication.getIOClient();
 	/**
 	 *  Publishes a story.	 
 	 *  
@@ -34,7 +42,7 @@ public class ESClient extends DataClient {
 			String story_string = super.serialize(story);
 			
 			// Write the Story to the server
-			String res = new ESWrite(def_folder).execute(stringSID, story_string).get();
+			new ESWrite(def_folder).execute(stringSID, story_string);
 
 			// Read the existing SIDList, if any
 			SIDList list = readSIDList();
@@ -48,6 +56,14 @@ public class ESClient extends DataClient {
 				// Write the updated SID list to the server
 				new ESWrite(SID_folder).execute("", SID_string);
 			} 
+			ESWrite mediaWrite = new ESWrite(media_folder);
+			for(String media: new File(io.getLocalDirectory()+stringSID).list()) {
+				if(media.equals(stringSID) == false) {
+					mediaWrite.execute(stringSID, 
+							io.readFile(io.getLocalDirectory()+stringSID+"/"+media).toString());
+				}
+			}
+				
 			
 		} catch (Exception e) {
 			e.printStackTrace();
