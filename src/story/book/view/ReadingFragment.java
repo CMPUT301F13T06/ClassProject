@@ -166,7 +166,7 @@ public class ReadingFragment extends Fragment {
 		for (View t: illustrationViews) {
 			t.setId(pos + 1);
 			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
-					WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
+					MATCH_PARENT,LayoutParams.WRAP_CONTENT); 
 			p.addRule(RelativeLayout.BELOW, pos);
 			t.setLayoutParams(p);
 			((ViewGroup) layout).addView(t, p);
