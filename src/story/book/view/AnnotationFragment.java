@@ -56,7 +56,7 @@ import android.widget.RelativeLayout;
  * currently open in <code>Reading Fragment</code> (reading tab)
  * 
  * @author Jessica Surya
- *
+ * @author Anthony Ou
  */
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
 public class AnnotationFragment extends Fragment implements StoryView {
