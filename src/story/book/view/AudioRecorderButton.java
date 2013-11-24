@@ -1,8 +1,11 @@
 package story.book.view;
 
+import java.io.File;
+
 import android.content.Context;
 import android.media.MediaRecorder;
 import android.net.Uri;
+import android.util.Log;
 
 /**
  * AudioRecorderButton extends AudioButton. Clicking it
@@ -22,14 +25,21 @@ public class AudioRecorderButton extends AudioButton {
 	RecordState recorderButton;
 	StopRecordState recorderStopButton;
 	
+	
 	public AudioRecorderButton(Uri data, Context context) {
 		super(data, context);
 		
 		recorderButton = new RecordState();
 		recorderStopButton = new StopRecordState();
 		
-		currentState = recorderButton;
+		File file = new File(audioData.toString());
+		if (file.exists()) {
+			currentState = playButton;
+		} else {
+			currentState = recorderButton;
+		}
 		this.setImageResource(currentState.getImage());
+		
 	}
 	
 	 private class RecordState implements ButtonState {
@@ -83,4 +93,5 @@ public class AudioRecorderButton extends AudioButton {
 		public Uri getContent() {
 			return audioData;
 		}
+
 }

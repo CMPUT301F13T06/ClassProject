@@ -106,7 +106,7 @@ public class ImageIllustration extends Illustration<String> {
 				return false;
 			}
 		});
-
+		a.setPadding(20, 10, 20, 0);
 		return a;
 	}
 }
