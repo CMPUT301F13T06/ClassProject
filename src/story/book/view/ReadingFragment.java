@@ -129,6 +129,8 @@ public class ReadingFragment extends Fragment {
 				
 				@Override
 				public void onClick(View v) {
+					Intent intent = new Intent(getActivity(), StoryInfoActivity.class);
+					getActivity().startActivity(intent);
 					getActivity().finish();
 				}
 			});
