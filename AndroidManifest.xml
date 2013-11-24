@@ -94,7 +94,8 @@
         <activity
             android:name="story.book.view.VideoPlayerActivity"
             android:label="video player temp title" 
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape" 
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
         </activity>
     </application>
 
