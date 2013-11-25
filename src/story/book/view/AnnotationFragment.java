@@ -46,9 +46,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 /**
  * Annotation fragment is the right tab in <code>StoryFragmentReadActivity</code> 
@@ -176,7 +179,7 @@ public class AnnotationFragment extends Fragment implements StoryView {
 
 		annotationList.clear();
 		for (Annotation i : annotations) {
-			annotationList.add(new Pair<ArrayList<View>, Annotation>(i.getView(SRC.getStoryPath(),editMode,this.getActivity()), i));
+			annotationList.add(new Pair<ArrayList<View>, Annotation>(i.getView(SRC.getStoryPath(), false, this.getActivity()), i));
 		}
 	}
 
@@ -188,7 +191,6 @@ public class AnnotationFragment extends Fragment implements StoryView {
 	 * @param View	 where annotations will be displayed
 	 */
 	private void displayAnnotations() {
-		// TODO: Add captions and owner tags to annotations
 		RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.annotation_fragment);
 
 		int position = 0;
@@ -203,12 +205,15 @@ public class AnnotationFragment extends Fragment implements StoryView {
 							MATCH_PARENT,LayoutParams.WRAP_CONTENT); 
 					p.addRule(RelativeLayout.BELOW, position);
 					v.setLayoutParams(p);
-
 					((ViewGroup) layout).addView(v, p);
 					position++;
+					if (v instanceof EditText) {
+						showPostButton(position);
+					}
 				}
 			}
 		}
+		
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -308,9 +313,36 @@ public class AnnotationFragment extends Fragment implements StoryView {
 		loadAnnotations();
 		displayAnnotations();
 	}
-
-	private void removeViews() {
-		rootView = this.getView().findViewById(R.id.reading_fragment);
-		((ViewGroup) rootView).removeAllViews();
+	/**
+	 *Displays a "Post" button which will save the annotation 
+	 *
+	 * @param position of object which Post Button is to appear below of
+	 */
+	private void showPostButton(int position) {
+		RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.annotation_fragment);
+		Button post = new Button(this.getActivity());
+		post.setText("Post");
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
+				LayoutParams.WRAP_CONTENT);
+	
+		lp.setMargins(0, 10, 0, 0);
+		lp.addRule(RelativeLayout.BELOW, position);
+		post.setLayoutParams(lp);
+	
+		post.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				saveAnnotations();
+			}
+		});
+		
+		final ScrollView scroll = (ScrollView) rootView.findViewById(R.id.fragment_scrollable);
+		scroll.post(new Runnable() {            
+		    @Override
+		    public void run() {
+		           scroll.fullScroll(View.FOCUS_DOWN);              
+		    }
+		});
+		((ViewGroup) layout).addView(post, lp);
 	}
 }
