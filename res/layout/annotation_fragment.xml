@@ -5,7 +5,8 @@
     android:layout_height="fill_parent"
     android:isScrollContainer="true"
     android:orientation="vertical" 
-    android:id="@+id/fragment_scrollable">
+    android:id="@+id/fragment_scrollable"
+    android:layout_gravity="bottom">
 
     <LinearLayout
         android:id="@+id/container"
@@ -17,7 +18,8 @@
         <RelativeLayout
             android:id="@+id/annotation_fragment"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="36.84"
             android:orientation="vertical"
             android:scrollbars="vertical" >
         </RelativeLayout>
