@@ -37,7 +37,7 @@ public class Annotation {
 	private String caption = "";
 	
 	public Annotation(String author, Illustration<?> illustration) {
-		this.author = author + " posted: ";
+		this.author = author;
 		this.illustration = illustration;
 	}
 	
@@ -62,6 +62,7 @@ public class Annotation {
 		// Author tag
 		TextIllustration author = new TextIllustration(this.author);
 		TextView t = (TextView) author.getView(null, false, C);
+		t.setText(this.author + " posted : ");
 		t.setTextSize(15);
 		illus.add(t);
 		// Illustration
