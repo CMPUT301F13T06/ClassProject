@@ -150,10 +150,7 @@ public class ReadingFragment extends Fragment {
 	private void displayFragment(StoryFragment SF) {
 
 		RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.reading_fragment);
-		
-		if (decisions != null) {
-			decisions.clear();
-		}
+
 		illustrations = SF.getIllustrations();
 		decisions = SF.getDecisionBranches();
 
