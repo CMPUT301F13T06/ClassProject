@@ -23,6 +23,8 @@ import story.book.view.R;
 import story.book.controller.StoryCreationController;
 import story.book.model.Story;
 import story.book.model.StoryFragment;
+import story.book.model.StoryInfo;
+import story.book.model.StoryInfo.PublishState;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -72,7 +74,18 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 		SCC = new StoryCreationController();
 		SFL = new ArrayList<StoryFragment>();
 		
-		SCC.getStory().addView(this);
+		Story story = SCC.getStory();
+		story.addView(this);
+		
+		StoryInfo info = story.getStoryInfo();
+		PublishState state = info.getPublishState();
+		if (state == PublishState.PUBLISHED) {
+			// They've opened a published story for editing,
+			// annotations will no longer be allowed to be
+			// made to th is story
+			info.setPublishState(PublishState.NEEDS_REPUBLISH);
+		}
+		
 		
 		return;
 	}
