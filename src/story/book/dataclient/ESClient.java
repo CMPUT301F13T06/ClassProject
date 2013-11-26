@@ -124,7 +124,7 @@ public class ESClient extends DataClient {
 			server_read = new ESRead(SID_folder).execute("").get();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			e.printStackTrace();
 			server_read = "";
 		} 
 		
@@ -166,7 +166,7 @@ public class ESClient extends DataClient {
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 		
 		return bl;
@@ -183,7 +183,7 @@ public class ESClient extends DataClient {
 			story = es.getSource();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			e.printStackTrace();
 		}		
 		
 		return story;
