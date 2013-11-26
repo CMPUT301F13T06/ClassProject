@@ -156,16 +156,12 @@ public class ReadingFragment extends Fragment {
 
 		ArrayList<View> illustrationViews = new ArrayList<View>();
 
-		for (Illustration i : illustrations){
-			illustrationViews.add(i.getView(SRC.getStoryPath(),false,this.getActivity()));
-		}
-
 		int pos = 0;
-
-		for (View t: illustrationViews) {
+		for (Illustration i : illustrations) {
+			View t = i.getView(SRC.getStoryPath(),false,this.getActivity());
+			illustrationViews.add(t);
 			t.setId(pos + 1);
-			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
-					MATCH_PARENT,LayoutParams.WRAP_CONTENT); 
+			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(i.getLayoutParam()); 
 			p.addRule(RelativeLayout.BELOW, pos);
 			t.setLayoutParams(p);
 			((ViewGroup) layout).addView(t, p);

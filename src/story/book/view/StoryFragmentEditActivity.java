@@ -165,7 +165,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	}
 	
 	Uri auri;
-	private enum Actions {PHOTO, VIDEO, GALLERY}
+	private enum Actions {PHOTO, VIDEO, GALLERY, VIDEOPICK}
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
@@ -179,10 +179,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			startActivityForResult(i, Actions.PHOTO.ordinal());
 			return true;
 		case R.id.addGalleryPhoto:
-			i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-			// TODO uri recived from gallery looks something like this:
-			// dat=content://media/external/images/media/19
-
+			i = new Intent(Intent.ACTION_PICK, 
+					android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+			i.setType("image/*");
 			startActivityForResult(i, Actions.GALLERY.ordinal());
 			return true;
 		case R.id.addDecisionBranch:
@@ -194,6 +193,10 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			addNewAudioIllustration(this.findViewById(R.id.reading_fragment));
 			return true;
 		case R.id.video:
+			i = new Intent(Intent.ACTION_PICK,
+					android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+			i.setType("video/*");
+			startActivityForResult(i, Actions.VIDEOPICK.ordinal());
 			return true;
 		case R.id.record_video:
 			i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
@@ -241,6 +244,21 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 				ImageIllustration image = new ImageIllustration(Uri.fromFile(f), FCC.getFreeUri(".jpg"));
 				illustrationList.add(new Pair<View, Illustration>(
 						image.getView(SCC.getStoryPath(), editMode, this), image));
+				displayFragment();
+			}
+			if(requestCode == Actions.VIDEOPICK.ordinal()) {
+				File f;
+				Cursor cursor = getContentResolver().query(data.getData(), null, null, null, null);
+				if (cursor == null) { // Source is Dropbox or other similar local file path
+					f = new File((data.getData().getPath()));
+				} else { 
+					cursor.moveToFirst(); 
+					int idx = cursor.getColumnIndex(MediaStore.Video.VideoColumns.DATA);
+					f = new File(cursor.getString(idx));
+				}
+				VideoIllustration video = new VideoIllustration(Uri.fromFile(f), FCC.getFreeUri(".mp4"));
+				illustrationList.add(new Pair<View, Illustration>(
+						video.getView(SCC.getStoryPath(), editMode, this), video));
 				displayFragment();
 			}
 		}
@@ -357,10 +375,8 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		if (illustrationList.isEmpty() == false) {
 			// Display illustrations
 			for (Pair <View, Illustration> t: illustrationList) {
-				
 				t.first.setId(position + 1);
-				RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
-						MATCH_PARENT,LayoutParams.WRAP_CONTENT); 
+				RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(t.second.getLayoutParam()); 
 				p.addRule(RelativeLayout.BELOW, position);
 				t.first.setLayoutParams(p);
 				registerForContextMenu(t.first);
