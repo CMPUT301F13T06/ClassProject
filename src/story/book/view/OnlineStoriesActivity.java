@@ -172,10 +172,11 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.local_stories, menu);
-
+		getMenuInflater().inflate(R.menu.search_bar, menu);
+		getMenuInflater().inflate(R.menu.standard_menu, menu);
+		
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		 searchView = (SearchView) menu.findItem(R.id.action_search)
+		searchView = (SearchView) menu.findItem(R.id.search_bar)
 				.getActionView();
 		// Assumes current activity is the searchable activity
 		searchView.setSearchableInfo(searchManager
