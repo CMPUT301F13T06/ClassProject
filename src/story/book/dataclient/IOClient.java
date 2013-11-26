@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
+
 import story.book.model.Story;
 import story.book.model.StoryInfo;
 import android.content.Context;
@@ -61,7 +62,6 @@ public class IOClient extends DataClient {
 		} catch (IOException e) {
 			Log.d("error saving a story", "IOclient errors");
 		}
-
 	}
 
 	/**
@@ -70,13 +70,13 @@ public class IOClient extends DataClient {
 	 *            the story to be deleted
 	 * @return true on success and false on failure
 	 */
-	public boolean deleteStory(int SID) {
-		File dir = new File(story_dir + "/" +String.valueOf(SID));
-		String[] children = dir.list();
-		for (String i : children) {
-			new File(dir, i).delete();
+	public void deleteStory(int SID) {
+		try{
+			FileUtils.deleteDirectory(new File(story_dir + "/" + SID));
 		}
-		return dir.delete();
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	/**

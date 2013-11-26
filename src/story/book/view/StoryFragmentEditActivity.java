@@ -293,43 +293,30 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * saveFragment() saves the current state and layout of the fragment
 	 */
 	public void saveFragment() {
-
 		ArrayList<Pair<View, Illustration>> currentView = new ArrayList<Pair<View, Illustration>>();
-		int top = illustrationList.size();
-		Log.d(String.valueOf(top), "DEBUG: Number of illustrations to be saved");
-		for (int i = 0; i < top; i++) {
-			if (illustrationList.get(i).second instanceof BinaryIllustration == false) {
+		ArrayList<Illustration> illus =  new ArrayList<Illustration>();
+		for (Pair<View, Illustration> item : illustrationList) {
+			if (item.second instanceof BinaryIllustration == false) {
 				// Saving a text illustration
-				String illString = ((EditText)illustrationList.get(i).first).getText().toString();
+				String illString = ((EditText)item.first).getText().toString();
 				if(illString.length() > 0) {
-					currentView.add(new Pair<View, Illustration>(illustrationList.get(i).first, new TextIllustration(illString)));
+					currentView.add(new Pair<View, Illustration>(item.first, new TextIllustration(illString)));
+					TextIllustration newText = new TextIllustration(illString);
+					illus.add(newText);
 				}
 				
 				else {
-					illustrationList.remove(i);
+					illustrationList.remove(item);
 				}
 			}
 			else {
 				// Saving an audio, image, or video illustration
-				currentView.add(illustrationList.get(i));
+				currentView.add(item);
+				illus.add(item.second);
 			}
 		}
 
 		FCC.removeAllIllustrations();
-		// Extract all illustrations from currentView for saving
-		ArrayList<Illustration> illus =  new ArrayList<Illustration>();
-		for (Pair<View, Illustration> p : currentView) {
-			Log.d(String.valueOf(p.second.getContent().toString()), "DEBUG: Text to be saved");
-			if (p.first instanceof EditText) {
-				String illString = ((EditText)p.first).getText().toString();
-				TextIllustration newText = new TextIllustration(illString);
-				illus.add(newText);
-			}
-			else {
-				illus.add(p.second);
-			}
-		}
-		
 		FCC.setAllIllustrations(illus);
 	}
 
