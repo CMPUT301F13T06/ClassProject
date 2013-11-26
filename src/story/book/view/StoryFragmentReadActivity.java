@@ -53,7 +53,7 @@ public class StoryFragmentReadActivity extends FragmentActivity {
 	ActionBar actionBar;
 	StoryReadController SRC;
 	ArrayList<Illustration> illustrations;
-	int nextFragmentID;
+	int FragmentID;
 
 	static StoryFragment SF = null;
 
@@ -130,12 +130,12 @@ public class StoryFragmentReadActivity extends FragmentActivity {
 		return SRC;
 	}
 	
-	public void setNextFragmentID(int destinationID) {
-		nextFragmentID = destinationID;
+	public void setFragmentID(int destinationID) {
+		FragmentID = destinationID;
 	}
 	
-	public int getNextFragmentID() {
-		return nextFragmentID;
+	public int getFragmentID() {
+		return FragmentID;
 	}
 	
 	public void setActionBarTitle(String title) {
