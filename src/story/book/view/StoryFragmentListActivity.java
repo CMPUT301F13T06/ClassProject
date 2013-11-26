@@ -41,6 +41,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.SearchView;
@@ -255,6 +256,7 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 		case R.id.publish:
 			if (StoryApplication.checkInternetConnected()) {
 				SCC.publishStory();
+				Toast.makeText(getApplicationContext(), R.string.published, Toast.LENGTH_SHORT).show();
 			} else {
 				SimpleWarningDialog.getWarningDialog(this.getString(R.string.no_internet), this);
 			}

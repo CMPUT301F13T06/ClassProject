@@ -50,5 +50,6 @@
     <string name="no_internet_library">Connect to the Internet to view online stories!</string>
     <string name="title_decision_picker">Create Decision Branch</string>
     <string name="no_fragments">There are no story fragments to read</string>
+     <string name="published">Story published to the Online Story Club!</string>
 
 </resources>
