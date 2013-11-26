@@ -32,7 +32,11 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+
 import android.view.Gravity;
+
+import android.provider.MediaStore.Video.Thumbnails;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -73,7 +77,6 @@ public class VideoIllustration extends BinaryIllustration {
 		return content;
 	}
 
-	@SuppressWarnings("deprecation")
 	public View getView(String path, Boolean editMode, final Context C) {
 		ImageView button = new ImageView(C);
 		final String videoPath = path + content;
@@ -86,8 +89,8 @@ public class VideoIllustration extends BinaryIllustration {
 		});	
 		
 		Drawable[] layers = new Drawable[2];
-		layers[0] = new BitmapDrawable(ThumbnailUtils.createVideoThumbnail(videoPath,
-				5));
+		layers[0] = new BitmapDrawable(C.getResources(), ThumbnailUtils.createVideoThumbnail(videoPath,
+				Thumbnails.MINI_KIND));
 		layers[1] = (C.getResources().getDrawable(R.drawable.ic_action_play));
 		LayerDrawable ld = new LayerDrawable(layers);		
 		ld.setLayerInset(1, 40, 0, 40, 0);
