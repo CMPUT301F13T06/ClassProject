@@ -45,7 +45,7 @@ public class ESRead extends ESCommand {
 			return server_read;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			e.printStackTrace();
 			// Could not read from server
 			return "";
 		}
