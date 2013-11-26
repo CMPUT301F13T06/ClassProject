@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     
-     <item
+     <item android:id="@+id/action_search" android:icon="@drawable/ic_search" android:title="@string/action_search" android:actionViewClass="android.widget.SearchView" android:showAsAction="ifRoom" /><item
         android:id="@+id/add_fragment"
         android:icon="@drawable/ic_action_new"
         android:showAsAction="ifRoom"
         android:title="@string/add_fragment">
      </item>
      
-     <item android:id="@+id/action_search" android:icon="@drawable/ic_search" android:title="@string/action_search" android:actionViewClass="android.widget.SearchView" android:showAsAction="ifRoom" /><item
+     <item
         android:id="@+id/publish"
         android:showAsAction="never"
         android:title="@string/publish">
