@@ -34,12 +34,13 @@ public class StoryInfoTest extends ActivityInstrumentationTestCase2
 	
 	@Test
 	public void testGetTitle() {
-		
+		assertEquals(storyInfo.getTitle(), "");
 	}
 	
 	@Test
 	public void testSetTitle() {
-		
+		storyInfo.setTitle("test title");
+		assertEquals(storyInfo.getTitle(), "test title");
 	}
 
 	@Test
