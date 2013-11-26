@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.commons.io.FileUtils;
 import story.book.model.Story;
 import story.book.model.StoryInfo;
 import android.content.Context;
@@ -37,7 +38,8 @@ public class IOClient extends DataClient {
 		super();
 		context = c; //I dont need the context but its nice to have for the future
 
-		this.story_dir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/StoryBook/";
+		this.story_dir = Environment.getExternalStorageDirectory()
+						.getAbsolutePath() + "/StoryBook/";
 		new File(story_dir).mkdir();
 	}
 
@@ -54,10 +56,8 @@ public class IOClient extends DataClient {
 		try {
 			String SID = String.valueOf(aStory.getStoryInfo().getSID());
 			new File(story_dir + SID).mkdir();
-			FileOutputStream fos = new FileOutputStream(story_dir + SID + "/" + SID);
-			fos.write(super.serialize(aStory).getBytes());
-			fos.flush();
-			fos.close();
+			FileUtils.write(new File(story_dir + SID + "/" + SID), 
+					super.serialize(aStory));
 		} catch (IOException e) {
 			Log.d("error saving a story", "IOclient errors");
 		}
@@ -80,9 +80,10 @@ public class IOClient extends DataClient {
 	}
 	
 	/**
+	 * Use this when you want a free media file name
 	 * 
 	 * @param SID
-	 * @return
+	 * @return a free Uri for a media file to use up
 	 */
 	public Uri URIhandler(int SID, String Extension) {
 		File dir = new File(story_dir+String.valueOf(SID));
@@ -118,7 +119,7 @@ public class IOClient extends DataClient {
 		ArrayList<StoryInfo> listOfStoryInfo = new ArrayList<StoryInfo>();
 		for (String file : getStoryList()) {
 			try{
-				Story s = getStory(Integer.valueOf(file).intValue());
+				Story s = getStory(Integer.valueOf(file));
 				listOfStoryInfo.add(s.getStoryInfo());
 			}
 			catch (Exception e)
@@ -160,28 +161,13 @@ public class IOClient extends DataClient {
 	 * @returns A string representing a serialized story;
 	 */
 	public Story getStory(int SID) {
-
-		char[] inputBuffer = new char[1024];
-		StringBuilder sb = new StringBuilder(1024); // set the initial size
-		// of string builder to be
-		// same size as the buffer
 		try {
-			FileInputStream fis = new FileInputStream(story_dir
-					+ String.valueOf(SID) + "/" + String.valueOf(SID));
-			InputStreamReader isr = new InputStreamReader(fis);
-
-			int l;
-			while ((l = isr.read(inputBuffer)) != -1) {
-				sb.append(inputBuffer, 0, l);
-			}
-			fis.close();
-			isr.close();
+			return super.unSerialize(FileUtils.readFileToString(new File(story_dir
+					+ SID + "/" + SID)),Story.class);
 		} catch (Exception e) {
 			Log.d("reading file error", "getStory() error");
 			e.printStackTrace();
 			return null;
 		}
-
-		return super.unSerialize(sb.toString(), Story.class);
 	}
 }

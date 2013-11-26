@@ -18,28 +18,21 @@
 package story.book.model;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 
+import story.book.view.R;
 import story.book.view.VideoPlayerActivity;
-import android.R;
+
+import org.apache.commons.io.FileUtils;
+
 import android.app.ActionBar.LayoutParams;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -59,25 +52,16 @@ public class VideoIllustration extends BinaryIllustration {
 	/**
 	 * Called when the user picks from gallery
 	 * so we copy the files over.
+	 * 
 	 * @param path
 	 * @param savePath
 	 * 
-	 * http://stackoverflow.com/questions/9292954/how-to-make-a-copy-of-a-file-in-android
 	 */
 	public VideoIllustration(Uri path, Uri savePath) {
 		super();
 		setContent(savePath.getLastPathSegment());
 		try{
-			InputStream in = new FileInputStream(new File(path.getPath()));
-			OutputStream out = new FileOutputStream(new File(savePath.getPath()));
-
-			byte[] buf = new byte[1024];
-			int len;
-			while ((len = in.read(buf)) > 0) {
-				out.write(buf, 0, len);
-			}
-			in.close();
-			out.close();
+			FileUtils.copyFile(new File(path.getPath()), new File(savePath.getPath()));
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -103,7 +87,7 @@ public class VideoIllustration extends BinaryIllustration {
 		Drawable[] layers = new Drawable[2];
 		layers[0] = new BitmapDrawable(ThumbnailUtils.createVideoThumbnail(videoPath,
 				5));
-		layers[1] = (C.getResources().getDrawable(R.drawable.ic_media_play));
+		layers[1] = (C.getResources().getDrawable(R.drawable.ic_action_play));
 		LayerDrawable ld = new LayerDrawable(layers);		
 		button.setImageDrawable(ld);
 		return button;
