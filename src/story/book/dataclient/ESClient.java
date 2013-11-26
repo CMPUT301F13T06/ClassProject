@@ -139,25 +139,12 @@ public class ESClient extends DataClient {
 		return list;
 	}
 	
-	/**
-	 * Retrieves an online story (to be used for download or viewing).	 
-	 *  
-	 * @param SID is a Story's SID
-	 * @return a null on failure or a Story object 
-	 */
-	public Story getStory(int SID) {
-		try {			
-			
-			String sid_string = String.valueOf(SID);
-			
-			// Get the story from the server
-			String server_read = new ESRead(def_folder).execute(sid_string ).get();
-			Type type = new TypeToken<ESData<Story>>(){}.getType();
-			ESData<Story> es = (ESData<Story>) super.unSerialize(server_read, type);
-			
-			Story story = es.getSource();
-			
-			BinaryList bl = null;
+	private BinaryList readIllustrations(String sid_string) {
+		String server_read = "";
+		Type type;
+		BinaryList bl = new BinaryList(Integer.valueOf(sid_string));
+		
+		try {
 			// Get the illustrations from the server
 			server_read = new ESRead(Binary_folder).execute(sid_string ).get();
 			if (server_read != "") {
@@ -177,9 +164,48 @@ public class ESClient extends DataClient {
 					bl.appendBinaryList(b);
 				}
 			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}
+		
+		return bl;
+	}
+	
+	private Story readStory (String sid_string) {
+		Story story = null;
+		// Get the story from the server
+		try {
+			String server_read = new ESRead(def_folder).execute(sid_string ).get();
+			Type type = new TypeToken<ESData<Story>>(){}.getType();
+			ESData<Story> es = (ESData<Story>) super.unSerialize(server_read, type);
+			
+			story = es.getSource();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}		
+		
+		return story;
+	}
+	
+	/**
+	 * Retrieves an online story (to be used for download or viewing).	 
+	 *  
+	 * @param SID is a Story's SID
+	 * @return a null on failure or a Story object 
+	 */
+	public Story getStory(int SID) {
+		try {			
+			String sid_string = String.valueOf(SID);
+			
+			// Read the story from the server
+			Story story = readStory(sid_string);
+			// Read the illustrations from the server
+			BinaryList bl = readIllustrations(sid_string);
 			
 			// Now that we have both annotations and illustrations, decode the story
-			if (bl != null && bl.getContentsArray().size() > 0) {
+			if (bl != null && bl.getContentsArray().size() > 0 && story != null) {
 				bl.decodeStory(story);
 			}
 			
