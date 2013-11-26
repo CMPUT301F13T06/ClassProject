@@ -23,12 +23,13 @@ public class StoryInfoTest extends ActivityInstrumentationTestCase2
 	
 	@Test
 	public void testGetAuthor() {
-
+		assertEquals(storyInfo.getAuthor(), "");
 	}
 	
 	@Test
 	public void testSetAuthor() {
-		
+		storyInfo.setAuthor("test author");
+		assertEquals(storyInfo.getAuthor(), "test author");
 	}
 	
 	@Test
