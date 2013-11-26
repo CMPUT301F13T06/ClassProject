@@ -17,19 +17,11 @@
 
 package story.book.model;
 
-import java.io.File;
-
 import story.book.view.AudioButton;
 import story.book.view.AudioRecorderButton;
-import story.book.view.StoryApplication;
 import android.content.Context;
 import android.net.Uri;
-import android.view.DragEvent;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnDragListener;
-import android.widget.Button;
 
 /**
  * 
@@ -38,17 +30,11 @@ import android.widget.Button;
  * @author Vina Nguyen
  *
  */
-public class AudioIllustration extends Illustration<String>{
+public class AudioIllustration extends BinaryIllustration{
 
-	String content;
-	
 	public AudioIllustration(Uri data) {
 		super();
 		setContent(data.getLastPathSegment());
-	}
-
-	public String getContent() {
-		return content;
 	}
 
 	/**
@@ -63,10 +49,6 @@ public class AudioIllustration extends Illustration<String>{
 		} else {
 			return new AudioButton(Uri.parse(path+content), C);
 		}
-	}
-
-	public void setContent(String content) {
-		this.content = content;
 	}
 
 }

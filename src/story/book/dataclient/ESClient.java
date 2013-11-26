@@ -7,6 +7,8 @@ import java.util.concurrent.ExecutionException;
 import story.book.model.Story;
 import story.book.model.StoryInfo;
 
+import android.util.Log;
+
 import com.google.gson.reflect.TypeToken;
 
 /**
@@ -19,8 +21,9 @@ import com.google.gson.reflect.TypeToken;
  */
 
 public class ESClient extends DataClient {	
-	protected String def_folder = "stories/";
+	private String def_folder = "stories/";
 	private String SID_folder = "SIDs/0";
+	private String Binary_folder = "binaries2/";
 	
 	/**
 	 *  Publishes a story.	 
@@ -34,7 +37,7 @@ public class ESClient extends DataClient {
 			String story_string = super.serialize(story);
 			
 			// Write the Story to the server
-			String res = new ESWrite(def_folder).execute(stringSID, story_string).get();
+			String result = new ESWrite(def_folder).execute(stringSID, story_string).get();
 
 			// Read the existing SIDList, if any
 			SIDList list = readSIDList();
@@ -49,6 +52,13 @@ public class ESClient extends DataClient {
 				new ESWrite(SID_folder).execute("", SID_string);
 			} 
 			
+			// Write the binary data to the server
+			BinaryList binaryList = new BinaryList();
+			binaryList.encodeStoryIllustrations(story);
+
+			String binary_string = super.serialize(binaryList);
+			result = new ESWrite(Binary_folder).execute(stringSID, binary_string).get();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -90,15 +100,25 @@ public class ESClient extends DataClient {
 	 */
 	public Story getStory(int SID) {
 		try {			
-			String server_read = new ESRead(def_folder).execute(String.valueOf(SID)).get();
-			//String server_read = new ESConnection().getESRead(String.valueOf(SID));
+			
+			String sid_string = String.valueOf(SID);
+			
+			// Get the story from the server
+			String server_read = new ESRead(def_folder).execute(sid_string ).get();
 			Type type = new TypeToken<ESData<Story>>(){}.getType();
 			ESData<Story> es = (ESData<Story>) super.unSerialize(server_read, type);
 			
-			Story return_s = (Story) es.getSource();
+			Story story = es.getSource();
+			
+			// Get the illustrations from the server
+			server_read = new ESRead(Binary_folder).execute(sid_string ).get();
+			type = new TypeToken<ESData<BinaryList>>(){}.getType();
+			ESData<BinaryList> es_bl = (ESData<BinaryList>) super.unSerialize(server_read, type);
+			BinaryList bl = es_bl.getSource();
+			bl.decodeStory(story);
+			
+			return  story;
 
-			//Need to re-generate the view list as it is killed during serialization
-			return return_s.copy();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

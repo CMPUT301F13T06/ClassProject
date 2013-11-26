@@ -50,6 +50,7 @@ public class OnlineStoryController implements StoryController {
 	 * @param	SID	the ID of the <code>Story</code> to load
 	 */
 	public void getStory(int SID) {
+		checkSIDConflict(SID);
 		StoryApplication.setCurrentStory(es.getStory(SID));
 	}
 
@@ -58,8 +59,6 @@ public class OnlineStoryController implements StoryController {
 	 * checking for and resolving SID conflicts.
 	 */
 	public void saveStory() {
-		checkSIDConflict(StoryApplication.getCurrentStory().getStoryInfo()
-				.getSID());
 		io.saveStory(StoryApplication.getCurrentStory());
 	}
 

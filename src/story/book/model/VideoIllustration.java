@@ -48,10 +48,9 @@ import android.widget.RelativeLayout;
  * @author Anthony Ou
  *
  */
-public class VideoIllustration extends Illustration<String> {
 
-	private String content;
-
+public class VideoIllustration extends BinaryIllustration {
+	
 	public VideoIllustration(Uri data) {
 		super();
 		setContent(data.getLastPathSegment());
@@ -118,8 +117,4 @@ public class VideoIllustration extends Illustration<String> {
 		return rl;
 	}
 	
-	public void setContent(String content) {
-		this.content = content;	
-	}
-
 }

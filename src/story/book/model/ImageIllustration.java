@@ -34,9 +34,7 @@ import android.view.View;
 import android.view.View.OnDragListener;
 import android.widget.ImageView;
 
-public class ImageIllustration extends Illustration<String> {
-
-	private String content;
+public class ImageIllustration extends BinaryIllustration {
 	
 	/**
 	 * The picture at the specified location will be formated here 
@@ -78,14 +76,6 @@ public class ImageIllustration extends Illustration<String> {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public String getContent() {
-		return content;
-	}
-	
-	public void setContent(String content) {
-		this.content = content;
 	}
 
 	/**
