@@ -136,24 +136,16 @@ public class AnnotationFragment extends Fragment implements StoryView {
 			outState.putString("cameraImageUri", auri.toString());
 		}
 	}
-
-	@Override
-	 public void onPrepareOptionsMenu (Menu menu) {
-	    if (canAnnotate == false) {
-	    	Toast.makeText(StoryApplication.getContext(), R.string.cant_annotate, Toast.LENGTH_SHORT).show();
-	    	 MenuItem item= menu.findItem(R.id.addAnno);
-	    	 item.setEnabled(false);
-	    }
-	    super.onPrepareOptionsMenu(menu);
-	 }
 	
 	Uri auri;
 	private enum Actions {PHOTO, VIDEO, GALLERY}
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
+		getFragmentAnnotations();
+		loadAnnotations();
 		switch (item.getItemId()) {
+		
 		case R.id.text:
-			saveAnnotations();
 			addNewTextAnnotation();
 			return true;
 		case R.id.take_photo:
@@ -215,7 +207,6 @@ public class AnnotationFragment extends Fragment implements StoryView {
 		if (annotationList.isEmpty() == false) {
 			// Display illustrations
 			((ViewGroup) layout).removeAllViews();
-
 			for (Pair <ArrayList<View>, Annotation> t: annotationList) {
 				for (View v : t.first) {
 					v.setId(position + 1);
@@ -225,10 +216,10 @@ public class AnnotationFragment extends Fragment implements StoryView {
 					v.setLayoutParams(p);
 					((ViewGroup) layout).addView(v, p);
 					position++;
-					if (v instanceof EditText) {
-						showPostButton(position);
-					}
 				}
+			}
+			if(annotationList.size() > SF.getAnnotations().size()) {
+				showPostButton(position);
 			}
 		}
 		
@@ -299,10 +290,8 @@ public class AnnotationFragment extends Fragment implements StoryView {
 	 */
 	public void saveAnnotations() {
 		int top = annotationList.size();
-		Log.d(String.valueOf(top), "DEBUG: total number of annotations");
 
 		if(annotationList.size() > SF.getAnnotations().size()) {
-
 			Pair<ArrayList<View>, Annotation> i = annotationList.get(top-1);
 			String cap = ((EditText)i.first.get(i.first.size()-1)).getText().toString();
 			Log.d("DEBUG: Text annotation to be saved", String.valueOf(cap));
@@ -331,6 +320,7 @@ public class AnnotationFragment extends Fragment implements StoryView {
 		loadAnnotations();
 		displayAnnotations();
 	}
+	
 	/**
 	 *Displays a "Post" button which will save the annotation 
 	 *
