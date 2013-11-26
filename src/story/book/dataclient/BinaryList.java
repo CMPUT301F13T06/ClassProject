@@ -1,7 +1,13 @@
 package story.book.dataclient;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.apache.commons.io.FileUtils;
+
+import android.util.Base64;
 
 import story.book.model.Annotation;
 import story.book.model.BinaryIllustration;
@@ -20,12 +26,31 @@ import story.book.view.StoryApplication;
  */
 
 public class BinaryList {
-	ArrayList<String> contents;
-	ArrayList<String> base64data;
+	private ArrayList<String> contents;
+	private ArrayList<String> base64data;
+	private int SID;
 	
-	public BinaryList() {
+	public BinaryList(int SID) {
 		contents = new ArrayList<String>();
 		base64data = new ArrayList<String>();
+		this.SID = SID;
+	}
+	
+	public ArrayList<String> getContentsArray(){
+		return contents;
+	}
+	
+	public ArrayList<String> getDataArray(){
+		return base64data;
+	}
+	
+	public void appendBinaryList(BinaryList b) {
+		ArrayList<String> c = b.getContentsArray();
+		ArrayList<String> d = b.getDataArray();
+		for (int i = 0; i < c.size(); i++) {
+			contents.add(c.get(i));
+			base64data.add(d.get(i));
+		}
 	}
 	
 	/**
@@ -35,18 +60,19 @@ public class BinaryList {
 	 * @param Story to encode illustrations for
 	 */
 	public void encodeStoryIllustrations(Story s) {
-		int SID = s.getStoryInfo().getSID();
-		
 		HashMap<Integer, StoryFragment> fragmentMap = s.getStoryFragments();
 		
 		for (Integer key: fragmentMap.keySet()) {
 			StoryFragment f = fragmentMap.get(key);
+			
+			//encode Illustrations
 			ArrayList<Illustration> illusrations = f.getIllustrations();
 			for (Illustration i: illusrations) {
 				if (i instanceof BinaryIllustration) {
-					encode((BinaryIllustration)i, SID);
+					encode((BinaryIllustration)i);
 				}
 			}
+			
 		}
 	}
 	
@@ -57,24 +83,25 @@ public class BinaryList {
 	 * @param Annotation to encode
 	 * @param Story the annotation is associated with
 	 */
-	public void encodeStoryAnnotation(Annotation a, Story s) {
-		int SID = s.getStoryInfo().getSID();
-		
+	public String encodeStoryAnnotation(Annotation a, Story s) {
 		Illustration i = a.getIllustration();
 		if (i instanceof BinaryIllustration) {
-			encode((BinaryIllustration)i, SID);
+			encode((BinaryIllustration)i);
+			return ((BinaryIllustration)i).getContent();
 		}
+		return "";
 	}
 	
+	
 	/**
-	 * Decode all the base64 data (ie. files for BinaryIllustrations) 
-	 * for a story into the appropriate files.
-	 * 
-	 * @param Story to decode
+	 * Encode a binary illustration.
 	 */
+	private void encode(BinaryIllustration b) {
+		contents.add(b.getContent());
+		base64data.add(b.encodeIllustration(getStoryPath()));
+	}
+	
 	public void decodeStory(Story s) {
-		int SID = s.getStoryInfo().getSID();
-		
 		HashMap<Integer, StoryFragment> fragmentMap = s.getStoryFragments();
 		
 		for (Integer key: fragmentMap.keySet()) {
@@ -84,33 +111,31 @@ public class BinaryList {
 			ArrayList<Illustration> illusrations = f.getIllustrations();
 			for (Illustration i: illusrations) {
 				if (i instanceof BinaryIllustration) {
-					decode((BinaryIllustration)i, SID);
+					decode((BinaryIllustration)i);
 				}
 			}
 			
-			//decode Annotations
+			//decode Illustrations
 			ArrayList<Annotation> annotations = f.getAnnotations();
 			for (Annotation a: annotations) {
 				Illustration i = a.getIllustration();
-				
 				if (i instanceof BinaryIllustration) {
-					decode((BinaryIllustration)i, SID);
+					decode((BinaryIllustration)i);
 				}
 			}
+			
 		}
 	}
 	
-	private void encode(BinaryIllustration b, int SID) {
-		contents.add(b.getContent());
-		base64data.add(b.encodeIllustration(getStoryPath(SID)));
-	}
-	
-	private void decode(BinaryIllustration b, int SID) {
+	/**
+	 * Decode a binary illustration.
+	 */
+	private void decode(BinaryIllustration b) {
 		int i = contents.indexOf(b.getContent());
-		b.decodeIllustration(getStoryPath(SID), base64data.get(i));
+		b.decodeIllustration(getStoryPath(), base64data.get(i));
 	}
 	
-	private String getStoryPath(int SID) {
+	private String getStoryPath() {
 		return StoryApplication.getIOClient().getLocalDirectory() 
 				+ SID
 				+ "/";

@@ -4,6 +4,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.commons.io.FilenameUtils;
+
+import story.book.model.Annotation;
 import story.book.model.Story;
 import story.book.model.StoryInfo;
 
@@ -24,6 +27,7 @@ public class ESClient extends DataClient {
 	private String def_folder = "stories/";
 	private String SID_folder = "SIDs/0";
 	private String Binary_folder = "binaries2/";
+	private String Annotations_folder="";
 	
 	/**
 	 *  Publishes a story.	 
@@ -31,6 +35,11 @@ public class ESClient extends DataClient {
 	 * @param SID is a Story's SID
 	 */
 	public void saveStory(Story story) {
+		publishStory(story);
+		publishIllustrations(story);
+	}
+	
+	private void publishStory(Story story){
 		try {
 			int SID = story.getStoryInfo().getSID();
 			String stringSID = String.valueOf(SID);
@@ -51,17 +60,55 @@ public class ESClient extends DataClient {
 				// Write the updated SID list to the server
 				new ESWrite(SID_folder).execute("", SID_string);
 			} 
-			
-			// Write the binary data to the server
-			BinaryList binaryList = new BinaryList();
-			binaryList.encodeStoryIllustrations(story);
-
-			String binary_string = super.serialize(binaryList);
-			result = new ESWrite(Binary_folder).execute(stringSID, binary_string).get();
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		}		
+	}
+	
+	private void publishIllustrations(Story story){
+		int SID = story.getStoryInfo().getSID();
+		String stringSID = String.valueOf(SID);
+		
+		// Write the binary data to the server
+		BinaryList binaryList = new BinaryList(SID);
+		binaryList.encodeStoryIllustrations(story);
+
+		String binary_string = super.serialize(binaryList);
+		try {
+			String result = new ESWrite(Binary_folder).execute(stringSID, binary_string).get();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 *  Publishes an annotation to a story.	 
+	 *  
+	 * @param annotation to be published
+	 * @param story that the annotation is part of
+	 */
+	public void publishAnnotation(Annotation a, Story story) {
+		int SID = story.getStoryInfo().getSID();
+		String stringSID = String.valueOf(SID);
+		
+		//publish the annotation
+		BinaryList binaryList = new BinaryList(SID);
+		String path = binaryList.encodeStoryAnnotation(a, story);
+		if (path != "") {
+			path = FilenameUtils.removeExtension(path);
+			String binary_string = super.serialize(binaryList);
+			try {
+				String result = new ESWrite(Annotations_folder).execute(stringSID + "/" + path, binary_string).get();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		//re-publish the story as fragment has new annotation
+		publishStory(story);
 	}
 	
 	/**
@@ -115,7 +162,23 @@ public class ESClient extends DataClient {
 			type = new TypeToken<ESData<BinaryList>>(){}.getType();
 			ESData<BinaryList> es_bl = (ESData<BinaryList>) super.unSerialize(server_read, type);
 			BinaryList bl = es_bl.getSource();
-			bl.decodeStory(story);
+			
+			// Get the annotations from the server
+			server_read = new ESRead(Annotations_folder).execute(sid_string + "/_search?" ).get();
+		
+			if (server_read != "") {
+				type = new TypeToken<ESResponse<BinaryList>>(){}.getType();
+				ESResponse<BinaryList> bl_response = (ESResponse<BinaryList>) super.unSerialize(server_read, type);		
+				ArrayList<BinaryList> bls = (ArrayList<BinaryList>) bl_response.getSources();
+				for (BinaryList b: bls) {
+					bl.appendBinaryList(b);
+				}
+			}
+			
+			// Now that we have both annotations and illustrations, decode the story
+			if (bl.getContentsArray().size() > 0) {
+				bl.decodeStory(story);
+			}
 			
 			return  story;
 
