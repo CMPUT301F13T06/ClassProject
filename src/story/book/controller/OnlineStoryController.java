@@ -33,13 +33,12 @@ import story.book.view.StoryApplication;
  * @author Alexander Cheung
  *
  */
-public class OnlineStoryController implements StoryController {
+public class OnlineStoryController extends StoryController {
 	
-	private IOClient io;
 	private ESClient es;
 	
 	public OnlineStoryController() {
-		io = StoryApplication.getIOClient();
+		super();
 		es = StoryApplication.getESClient();
 	}
 	
@@ -50,6 +49,8 @@ public class OnlineStoryController implements StoryController {
 	 * @param	SID	the ID of the <code>Story</code> to load
 	 */
 	public void getStory(int SID) {
+		super.clearViewedStory();
+		
 		checkSIDConflict(SID);
 		StoryApplication.setCurrentStory(es.getStory(SID));
 	}

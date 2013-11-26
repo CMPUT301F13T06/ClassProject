@@ -19,32 +19,55 @@ package story.book.controller;
 
 import java.util.ArrayList;
 
+import story.book.dataclient.IOClient;
 import story.book.model.StoryInfo;
+import story.book.view.StoryApplication;
 
 /**
- * StoryController interface for getting Story objects, lists of stories and
+ * StoryController abstract for getting Story objects, lists of stories and
  * saving stories.
  * 
  * @author Alex
  */
-public interface StoryController {
+public abstract class StoryController {
+	
+	protected IOClient io;
+	
+	public StoryController() {
+		io = StoryApplication.getIOClient();
+	}
 	
 	/**
 	 * Sets the current Story of the StoryApplication.
 	 * 
 	 * @param SID the SID of the Story to set
 	 */
-	public void getStory(int SID);
+	abstract public void getStory(int SID);
 		
 	/**
 	 * Gets an ArrayList of StoryInfo to be displayed to the user.
 	 * @return the ArrayList of StoryInfo objects from a source
 	 */
-	public ArrayList<StoryInfo> getStoryList();
+	abstract public ArrayList<StoryInfo> getStoryList();
 	
 	/**
 	 * Save the Application current Story to a destination.
 	 */
-	public void saveStory();
+	abstract public void saveStory();
+	
+	/**
+	 * Clears the folder of the previous story that
+	 * was being viewed online.
+	 */
+	public void clearViewedStory() {
+		if (StoryApplication.getViewMode()) {
+			// Now that we are getting a new story,
+			// clear out illustrations that were downloaded for viewing
+			// the previous story
+			int oldSID = StoryApplication.getCurrentStory().getStoryInfo().getSID();
+			io.deleteStory(oldSID);
+			StoryApplication.setViewMode(false);
+		}
+	}
 
 }

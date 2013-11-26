@@ -31,14 +31,8 @@ import story.book.view.StoryApplication;
  * @author Alexander Cheung
  *
  */
-public class LocalStoryController implements StoryController {
+public class LocalStoryController extends StoryController {
 
-	private IOClient io;
-	
-	public LocalStoryController() {
-		io = StoryApplication.getIOClient();
-	}
-	
 	/**
 	 * Sets the current application Story to the locally stored Story with 
 	 * matching SID.
@@ -46,6 +40,8 @@ public class LocalStoryController implements StoryController {
 	 * @param SID the SID of the Story to fetch
 	 */
 	public void getStory(int SID) {
+		super.clearViewedStory();
+		
 		StoryApplication.setCurrentStory(io.getStory(SID));
 	}
 	
@@ -62,6 +58,8 @@ public class LocalStoryController implements StoryController {
 	 * to the new object.
 	 */
 	public void createStory() {
+		super.clearViewedStory();
+		
 		StoryInfo info = new StoryInfo();
 		info.setAuthor(StoryApplication.getNickname());
 		info.setSID(io.getSID());
