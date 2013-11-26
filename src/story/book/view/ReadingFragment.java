@@ -129,6 +129,8 @@ public class ReadingFragment extends Fragment {
 				
 				@Override
 				public void onClick(View v) {
+					Intent intent = new Intent(getActivity(), StoryInfoActivity.class);
+					getActivity().startActivity(intent);
 					getActivity().finish();
 				}
 			});
@@ -148,25 +150,18 @@ public class ReadingFragment extends Fragment {
 	private void displayFragment(StoryFragment SF) {
 
 		RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.reading_fragment);
-		
-		if (decisions != null) {
-			decisions.clear();
-		}
+
 		illustrations = SF.getIllustrations();
 		decisions = SF.getDecisionBranches();
 
 		ArrayList<View> illustrationViews = new ArrayList<View>();
 
-		for (Illustration i : illustrations){
-			illustrationViews.add(i.getView(SRC.getStoryPath(),false,this.getActivity()));
-		}
-
 		int pos = 0;
-
-		for (View t: illustrationViews) {
+		for (Illustration i : illustrations) {
+			View t = i.getView(SRC.getStoryPath(),false,this.getActivity());
+			illustrationViews.add(t);
 			t.setId(pos + 1);
-			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.
-					WRAP_CONTENT,LayoutParams.WRAP_CONTENT); 
+			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(i.getLayoutParam()); 
 			p.addRule(RelativeLayout.BELOW, pos);
 			t.setLayoutParams(p);
 			((ViewGroup) layout).addView(t, p);

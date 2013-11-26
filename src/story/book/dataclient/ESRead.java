@@ -37,7 +37,7 @@ public class ESRead extends ESCommand {
 			String server_read = "";
 			String inputLine;
 			while ((inputLine = reader.readLine()) != null) 
-		            server_read += inputLine;
+				server_read += inputLine;
 			
 			reader.close();
 			closeConnection();

@@ -26,5 +26,5 @@ package story.book.view;
  * @param <M> the type of model to associate with
  */
 public interface StoryView<M> {
-	 public void update(M model);
+	public void update(M model);
 }

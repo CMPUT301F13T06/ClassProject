@@ -96,7 +96,7 @@ public class ImageIllustration extends BinaryIllustration {
 				return false;
 			}
 		});
-		a.setPadding(20, 10, 20, 0);
+		a.setPadding(20, 10, 20, 10);
 		return a;
 	}
 }

@@ -17,8 +17,10 @@
 
 package story.book.model;
 
+import android.app.ActionBar.LayoutParams;
 import android.content.Context;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 /**
  * Base class for Illustrations. Extend to implement different types of
@@ -56,5 +58,14 @@ public abstract class Illustration<T> {
 	 * @return the View object containing the contents of the illustration
 	 */
 	public abstract View getView(String path, Boolean editMode, Context context);
-	
+
+	/**
+	 * Generic layout for illustrations which an illustration
+	 * may over ride for their own purposes.
+	 * @return a layout, by default a match parent by wrap content param
+	 */
+	public android.widget.RelativeLayout.LayoutParams getLayoutParam() {
+		return new RelativeLayout.LayoutParams(LayoutParams.
+					MATCH_PARENT,LayoutParams.WRAP_CONTENT);
+	}
 }
