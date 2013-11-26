@@ -91,12 +91,13 @@ public class StoryInfoTest extends ActivityInstrumentationTestCase2
 	
 	@Test
 	public void testGetSID() {
-		
+		assertEquals(storyInfo.getSID(), 0);
 	}
 	
 	@Test
 	public void testSetSID() {
-		
+		storyInfo.setSID(1337);
+		assertEquals(storyInfo.getSID(), 1337);
 	}
 	
 	@Test
