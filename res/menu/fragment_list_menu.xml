@@ -10,13 +10,15 @@
      
      <item
         android:id="@+id/publish"
-        android:showAsAction="never"
+        android:icon="@drawable/ic_action_share"
+        android:showAsAction="ifRoom"
         android:title="@string/publish">
      </item>
      
      <item
         android:id="@+id/change_info"
-        android:showAsAction="never"
+        android:icon="@drawable/ic_action_edit"
+        android:showAsAction="ifRoom"
         android:title="@string/change_info">
     </item>
 
