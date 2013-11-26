@@ -1,5 +1,7 @@
 package story.book.test;
 
+import java.util.Date;
+
 import org.junit.Test;
 
 import story.book.model.StoryInfo;
@@ -67,17 +69,13 @@ public class StoryInfoTest extends ActivityInstrumentationTestCase2
 	
 	@Test
 	public void testGetPublishDate() {
-		
-	}
-	
-	@Test
-	public void testGetPublishDateString() {
-		
+		assertNull(storyInfo.getPublishDateString());
 	}
 	
 	@Test
 	public void testSetPublishDate() {
-		
+		storyInfo.setPublishDate(new Date());
+		assertNotNull(storyInfo.getPublishDate());
 	}
 	
 	@Test
