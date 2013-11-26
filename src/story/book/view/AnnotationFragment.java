@@ -104,7 +104,7 @@ public class AnnotationFragment extends Fragment implements StoryView {
 	@Override
 	public void onPause() {
 		super.onPause();
-		saveAnnotations();
+		FCC.saveStory();
 	}
 
 	@Override
@@ -299,7 +299,6 @@ public class AnnotationFragment extends Fragment implements StoryView {
 				FCC.addAnnotation(i.second);
 			}
 		}
-		FCC.saveStory();
 	}
 
 	/**

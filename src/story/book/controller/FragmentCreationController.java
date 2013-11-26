@@ -82,6 +82,8 @@ public class FragmentCreationController extends LocalEditingController {
 	 */
 	public void addAnnotation(Annotation annotation) {
 		storyFragment.addAnnotation(annotation);
+		StoryApplication.getESClient().publishAnnotation(annotation, 
+				StoryApplication.getCurrentStory());
 	}
 	
 }
