@@ -69,24 +69,22 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.story_fragment_read_activity);
 		SCC = new StoryCreationController();
 		SFL = new ArrayList<StoryFragment>();
-		
+
 		Story story = SCC.getStory();
 		story.addView(this);
-		
+
 		StoryInfo info = story.getStoryInfo();
 		PublishState state = info.getPublishState();
 		if (state == PublishState.PUBLISHED) {
 			// They've opened a published story for editing,
 			// annotations will no longer be allowed to be
-			// made to th is story
+			// made to the is story
 			info.setPublishState(PublishState.NEEDS_REPUBLISH);
 		}
-		
-		
 		return;
 	}
 
@@ -104,12 +102,12 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 		Story s = SCC.getStory();
 		SCC.saveStory();
 		s.deleteView(this);
-		
+
 		for (StoryFragment f: SFL) {
 			f.deleteView(this);
 		}
 	}
-	
+
 	/**
 	 * getFragmentTitles() loads fragment titles from the story using the
 	 * <code>StoryCreationController</code> and displays them in the list
@@ -125,12 +123,12 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 		}
 		updateFragmentList();
 	}
-	
+
 	/**
-	 * updateFragmentList() displays a story fragment titles in the list
+	 * updateFragmentList() displays story fragment titles in a list
 	 */
 	private void updateFragmentList() {
-		
+
 		String title = SCC.getStory().getStoryInfo().getTitle();
 		actionBar = getActionBar();
 		actionBar.setTitle(title);
@@ -156,7 +154,7 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 
 		});
 	}
-	
+
 	/**
 	 * editFragment() passes the FragmentID from the selected story fragment in the list
 	 * and starts a new <code>StoryFragmentEditActivity</code> for edit the contents of 
@@ -169,7 +167,7 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 		i.putExtra("FID", FID);
 		startActivity(i);
 	}
-	
+
 	/**
 	 * changeFragmentTitle() adds a new fragment to the current story.
 	 */
@@ -196,6 +194,7 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 			}
 		}
 	}
+	
 	/**
 	 * doMySearch() takes a query from the search bar, passes it to
 	 * <code>StoryCreationController</code>, and display the set of results 
@@ -205,7 +204,7 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 	 */
 	private void doMySearch(String query) {
 		SFL = new ArrayList<StoryFragment>();
-		//show the list with just the search results
+		//Show the list with just the search results
 		HashMap<Integer, StoryFragment> map = SCC.searchFragments(query);
 		for (Integer key : map.keySet()){
 			SFL.add(map.get(key));
@@ -227,11 +226,10 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 		// Assumes current activity is the searchable activity
 		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 		searchView.setIconifiedByDefault(true); // Do not iconify the widget; expand it by default
-		
+
 		searchView.setOnQueryTextListener(new OnQueryTextListener() {
 			@Override
 			public boolean onQueryTextSubmit(String query) {
-				Log.d(String.valueOf(query), "DEBUG: Query entered");
 				doMySearch(query);
 				return true;
 			}
@@ -239,7 +237,6 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 			@Override
 			public boolean onQueryTextChange(String newText) {
 				if (newText.isEmpty()) {
-					Log.d("Close", "DEBUG: Search closed");
 					SFL = new ArrayList<StoryFragment>();
 					getFragmentTitles();
 					return true;
@@ -249,10 +246,10 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 				}
 			}
 		});
-		
+
 		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		Intent intent;
@@ -279,7 +276,7 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 			startActivity(intent);
 			return true;
 		default:
-			
+
 			return super.onOptionsItemSelected(item);
 		}
 	}
@@ -329,14 +326,11 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 			// Cancel options
 			return false;
 		}
-
 		return true; 
-
 	}
 
 	@Override
 	public void update(Object model) {
-		// TODO Auto-generated method stub
 		getFragmentTitles(); 
 	}
 }

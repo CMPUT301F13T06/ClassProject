@@ -201,6 +201,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		MenuInflater inflater = getMenuInflater();
+		menu.setHeaderTitle("Select an Option:");
 		inflater.inflate(R.menu.context_menu, menu);
 	}
 
