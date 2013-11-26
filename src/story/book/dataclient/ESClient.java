@@ -157,11 +157,14 @@ public class ESClient extends DataClient {
 			
 			Story story = es.getSource();
 			
+			BinaryList bl = null;
 			// Get the illustrations from the server
 			server_read = new ESRead(Binary_folder).execute(sid_string ).get();
-			type = new TypeToken<ESData<BinaryList>>(){}.getType();
-			ESData<BinaryList> es_bl = (ESData<BinaryList>) super.unSerialize(server_read, type);
-			BinaryList bl = es_bl.getSource();
+			if (server_read != "") {
+				type = new TypeToken<ESData<BinaryList>>(){}.getType();
+				ESData<BinaryList> es_bl = (ESData<BinaryList>) super.unSerialize(server_read, type);
+				bl = es_bl.getSource();
+			}
 			
 			// Get the annotations from the server
 			server_read = new ESRead(Annotations_folder).execute(sid_string + "/_search?" ).get();
@@ -176,7 +179,7 @@ public class ESClient extends DataClient {
 			}
 			
 			// Now that we have both annotations and illustrations, decode the story
-			if (bl.getContentsArray().size() > 0) {
+			if (bl != null && bl.getContentsArray().size() > 0) {
 				bl.decodeStory(story);
 			}
 			
