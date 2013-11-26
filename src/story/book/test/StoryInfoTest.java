@@ -45,12 +45,13 @@ public class StoryInfoTest extends ActivityInstrumentationTestCase2
 
 	@Test
 	public void testGetGenre() {
-		
+		assertEquals(storyInfo.getGenre(), "");
 	}
 	
 	@Test
 	public void testSetGenre() {
-		
+		storyInfo.setGenre("test genre");
+		assertEquals(storyInfo.getGenre(), "test genre");
 	}
 	
 	@Test
