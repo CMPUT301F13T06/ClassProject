@@ -272,6 +272,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		TextIllustration text = new TextIllustration("");
 		EditText newText = (EditText) text.getView("", true, v.getContext());
 		newText.setHint("Enter text here");
+		newText.setPadding(10, 0, 10, 0);
 		illustrationList.add(new Pair<View, Illustration>(newText, text));
 		displayFragment();
 	}
