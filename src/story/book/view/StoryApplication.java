@@ -44,12 +44,14 @@ public class StoryApplication extends Application {
 	transient private static ESClient es = null;
 	
 	private static Story currentStory;
+	private static Boolean viewMode;
 	private static Context context;
 	private static String nickname;
 
 	public void onCreate(){
 		super.onCreate();
 		context = getApplicationContext();
+		viewMode = false;
 	}
 	
 	/**
@@ -92,6 +94,25 @@ public class StoryApplication extends Application {
 	 */
 	public static void setCurrentStory(Story story) {
 		currentStory = story;
+	}
+	
+	/** 
+	 * Sets whether the current application story
+	 * is in viewing mode
+	 * 
+	 * @param viewing is true if the story has been 
+	 * opened for viewing, false otherwise
+	 */
+	public static void setViewMode(Boolean viewing) {
+		viewMode = viewing;
+	}
+	
+	/** 
+	 * @return true if the current story has been 
+	 * opened for viewing; false otherwise
+	 */
+	public static Boolean getViewMode() {
+		return viewMode ;
 	}
 	
 	/**

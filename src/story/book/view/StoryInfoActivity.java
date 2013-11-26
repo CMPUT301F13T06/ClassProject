@@ -71,17 +71,22 @@ public class StoryInfoActivity extends Activity  {
 		
 		displayStoryInfo();
 		
+		final Boolean calledByOnline = getIntent().hasExtra("calledByOnline");
+		
 		final Intent intent = new Intent(this, StoryFragmentReadActivity.class);
 		Button viewButton = (Button) findViewById(R.id.view);
 		viewButton.setVisibility(View.VISIBLE);
 		viewButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				if (calledByOnline) {
+					StoryApplication.setViewMode(true);
+				}
 				startActivity(intent);
 			}
 		});
 		
-		Boolean showDownload = getIntent().hasExtra("calledByOnline");
-		if (showDownload) {
+		
+		if (calledByOnline) {
 			Button downloadButton = (Button) findViewById(R.id.download);
 			final Intent intent2 = new Intent(this, StoryFragmentReadActivity.class);
 			downloadButton.setVisibility(View.VISIBLE);
