@@ -102,16 +102,13 @@ public class StoryInfoTest extends ActivityInstrumentationTestCase2
 	
 	@Test
 	public void testGetPublishState() {
-		
+		assertEquals(storyInfo.getPublishState(), StoryInfo.PublishState.UNPUBLISHED);
 	}
 	
 	@Test
 	public void testSetPublishState() {
-		
+		storyInfo.setPublishState(StoryInfo.PublishState.PUBLISHED);
+		assertEquals(storyInfo.getPublishState(), StoryInfo.PublishState.PUBLISHED);
 	}
 	
-	@Test
-	public void testToString() {
-		
-	}
 }
