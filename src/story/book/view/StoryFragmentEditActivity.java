@@ -269,9 +269,10 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * for a TextIllustration.
 	 */
 	private void addNewTextIllustration(View v) {
-		EditText newText = new EditText(v.getContext());
+		TextIllustration text = new TextIllustration("");
+		EditText newText = (EditText) text.getView("", true, v.getContext());
 		newText.setHint("Enter text here");
-		illustrationList.add(new Pair<View, Illustration>(newText, null));
+		illustrationList.add(new Pair<View, Illustration>(newText, text));
 		displayFragment();
 	}
 
@@ -297,7 +298,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		int top = illustrationList.size();
 		Log.d(String.valueOf(top), "DEBUG: Number of illustrations to be saved");
 		for (int i = 0; i < top; i++) {
-			if (illustrationList.get(i).second == null) {
+			if (illustrationList.get(i).second instanceof BinaryIllustration == false) {
 				// Saving a text illustration
 				String illString = ((EditText)illustrationList.get(i).first).getText().toString();
 				if(illString.length() > 0) {
