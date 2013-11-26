@@ -110,8 +110,11 @@ public class AnnotationFragment extends Fragment implements StoryView {
 	@Override
 	public void onResume() {
 		super.onResume();
-		getFragmentAnnotations();
-		loadAnnotations();
+		int readingFragmentID = ((StoryFragmentReadActivity) getActivity()).getFragmentID();
+		if (readingFragmentID != SF.getFragmentID()) {
+			getFragmentAnnotations();
+			loadAnnotations();
+		}
 		displayAnnotations();
 	}
 
@@ -119,7 +122,6 @@ public class AnnotationFragment extends Fragment implements StoryView {
 		// Inflate the menu items for use in the action bar
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.add_annotation_menu, menu);
-
 	}
 
 	public void onSaveInstanceState(Bundle outState) {
@@ -249,7 +251,7 @@ public class AnnotationFragment extends Fragment implements StoryView {
 						new Pair<ArrayList<View>, Annotation>(ann.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
 								ann));
 			}
-			saveAnnotations();
+			displayAnnotations();
 		}
 	}
 
@@ -269,8 +271,11 @@ public class AnnotationFragment extends Fragment implements StoryView {
 	 * has been selected in the <code>ReadingFragment</code>
 	 */
 	public void getFragmentAnnotations() {
-		SF = SRC.getStoryFragment((StoryFragmentReadActivity.SF).getFragmentID());
-
+		SF.deleteView(this);
+		int readingFragmentID = ((StoryFragmentReadActivity) getActivity()).getFragmentID();
+		SF = SRC.getStoryFragment(readingFragmentID);
+		FCC = new FragmentCreationController(SF.getFragmentID());
+		SF.addView(this);
 	}
 
 	/**
@@ -278,7 +283,7 @@ public class AnnotationFragment extends Fragment implements StoryView {
 	 */
 	public void saveAnnotations() {
 		int top = annotationList.size();
-		Log.d("DEBUG: total number of annotations", String.valueOf(top));
+		Log.d(String.valueOf(top), "DEBUG: total number of annotations");
 
 		if(annotationList.size() > SF.getAnnotations().size()) {
 
@@ -292,7 +297,6 @@ public class AnnotationFragment extends Fragment implements StoryView {
 					i.second.setCaption(cap);
 					FCC.addAnnotation(i.second);
 				}
-				
 			}
 			else {
 				i.second.setCaption(cap);
@@ -306,8 +310,7 @@ public class AnnotationFragment extends Fragment implements StoryView {
 	 */
 	@Override
 	public void update(Object model) {
-		// TODO Auto-generated method stub
-
+		Log.d(String.valueOf(model), "DEBUG: Updated");
 		getFragmentAnnotations();
 		loadAnnotations();
 		displayAnnotations();
@@ -332,6 +335,7 @@ public class AnnotationFragment extends Fragment implements StoryView {
 			@Override
 			public void onClick(View v) {
 				saveAnnotations();
+				displayAnnotations();
 			}
 		});
 		

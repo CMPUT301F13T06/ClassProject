@@ -71,7 +71,7 @@ public class ReadingFragment extends Fragment {
 		rootView = inflater.inflate(R.layout.reading_fragment, container, false);
 
 		SRC = ((StoryFragmentReadActivity)this.getActivity()).getController();
-		SF = SRC.getStartingFragment();
+		SF = SRC.getStoryFragment(((StoryFragmentReadActivity) getActivity()).getFragmentID());
 		displayFragment(SF);
 		return rootView;
 	}
@@ -105,7 +105,6 @@ public class ReadingFragment extends Fragment {
 			button.setOnClickListener(setListener(button, d.getDestinationID()));
 			buttonList.add(button);
 		}
-		Log.d(String.valueOf(db.size()), "DEBUG: Number of decision branches");
 		if (db.size() > 1) {
 			// Set "I'm feeling lucky" button only if there are more than 1 decision branches
 			Random rand = new Random();
@@ -189,8 +188,10 @@ public class ReadingFragment extends Fragment {
 		return new View.OnClickListener() {
 			public void onClick(View v) {
 				SF = SRC.getStoryFragment(destinationID);
+				
 				//TODO: set marquee :)
 				((StoryFragmentReadActivity) getActivity()).setActionBarTitle(SF.getFragmentTitle());
+				((StoryFragmentReadActivity) getActivity()).setFragmentID(SF.getFragmentID());
 				update();
 			}
 		};
@@ -200,5 +201,6 @@ public class ReadingFragment extends Fragment {
 		rootView = this.getView().findViewById(R.id.reading_fragment);
 		((ViewGroup) rootView).removeAllViews();
 		displayFragment(SF);
+		Log.d(String.valueOf(SF.getFragmentID()), "DEBUG: Fragment ID of fragment currently being read");
 	}
 }
