@@ -30,27 +30,17 @@ import android.widget.VideoView;
  * @author Anthony Ou
  *
  */
-public class VideoIllustration extends Illustration<String> {
-
-	private String content;
+public class VideoIllustration extends BinaryIllustration {
 	
 	public VideoIllustration(Uri data) {
 		super();
 		setContent(data.getLastPathSegment());
 	}
 	
-	public String getContent() {
-		return content;
-	}
-
 	public View getView(String path, Boolean editMode, Context C) {
 		VideoView video =  new VideoView(C);
 		video.setVideoPath(path+content);
 		return video;
-	}
-
-	public void setContent(String content) {
-		this.content = content;	
 	}
 
 }

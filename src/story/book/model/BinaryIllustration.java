@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 
 import android.util.Base64;
+import android.util.Log;
+
 import org.apache.commons.io.FileUtils;
 
 /**
@@ -16,7 +18,7 @@ import org.apache.commons.io.FileUtils;
 
 public abstract class BinaryIllustration extends Illustration<String> {
 
-	String content;
+	protected String content;
 	
 	/**
 	 * Encode the file associated with the BinaryIllustration
@@ -35,7 +37,6 @@ public abstract class BinaryIllustration extends Illustration<String> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		return encoded;
 	}
 	
