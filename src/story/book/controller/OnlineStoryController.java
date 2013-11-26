@@ -19,6 +19,8 @@ package story.book.controller;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
 import story.book.dataclient.IOClient;
 import story.book.dataclient.ESClient;
 import story.book.model.Story;
@@ -39,6 +41,7 @@ public class OnlineStoryController extends StoryController {
 	
 	public OnlineStoryController() {
 		super();
+		
 		es = StoryApplication.getESClient();
 	}
 	
@@ -75,6 +78,8 @@ public class OnlineStoryController extends StoryController {
 	 * 			server
 	 */
 	public ArrayList<StoryInfo> getStoryList() {
+		super.clearViewedStory();
+		
 		return es.getStoryInfoList();
 	}
 
@@ -91,26 +96,19 @@ public class OnlineStoryController extends StoryController {
 		if (!io.checkSID(SID)) {
 			// Change the locally stored Story with the original SID (SID) to
 			// the new SID (id) supplied by the IOClient
-			// ONLY IF the locally stored Story was never published 
-			// (else we are just re-downloading)
+			
 			StoryInfo info = io.getStory(SID).getStoryInfo();
-			if (info.getPublishState() == PublishState.UNPUBLISHED) {
-				changeLocalSID(SID, io.getSID());
+			int newSID = io.getSID();
+			
+			if (info.getPublishState() != PublishState.UNPUBLISHED) {
+				// ONLY IF the locally stored story was never published
+				// will we need to not worry about returning it
+				// back to the original SID
+				StoryApplication.setConflictedSID(newSID);
 			}
+			super.changeLocalSID(SID, newSID);
 		}
 	}
 	
-	/**
-	 * Changes the SID of a locally stored Story to a new SID. The old Story is
-	 * deleted from storage and replaced by the same Story but with a new SID.
-	 * 
-	 * @param oldSID the SID of the Story to change
-	 * @param newSID the new SID the Story will be assigned
-	 */
-	private void changeLocalSID(int oldSID, int newSID) {
-		Story story = io.getStory(oldSID);
-		story.getStoryInfo().setSID(newSID);
-		io.deleteStory(oldSID);
-		io.saveStory(story);
-	}
+
 }

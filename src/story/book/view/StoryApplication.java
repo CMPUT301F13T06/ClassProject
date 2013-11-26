@@ -45,6 +45,7 @@ public class StoryApplication extends Application {
 	
 	private static Story currentStory;
 	private static Boolean viewMode;
+	private static int conflictedSID;
 	private static Context context;
 	private static String nickname;
 
@@ -52,6 +53,7 @@ public class StoryApplication extends Application {
 		super.onCreate();
 		context = getApplicationContext();
 		viewMode = false;
+		conflictedSID = -1;
 	}
 	
 	/**
@@ -157,5 +159,25 @@ public class StoryApplication extends Application {
 		ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
+
+	/**
+	 * This contains the SID of a story that
+	 * was forced to change SID due to a view/
+	 * download of an online story.
+	 * A story that raised a SID conflict with the previous story
+	 * being VIEWED should be restored its SID.
+	 * 
+	 * (This covers special case where user views a story
+	 * they already have downloaded).
+	 * 
+	 * @return the new SID a story was forced to change to
+	 */
+	public static int getConflictedSID() {
+		return conflictedSID;
+	}
+
+	public static void setConflictedSID(int SID) {
+		conflictedSID = SID;
 	}
 }

@@ -19,7 +19,10 @@ package story.book.controller;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
 import story.book.dataclient.IOClient;
+import story.book.model.Story;
 import story.book.model.StoryInfo;
 import story.book.view.StoryApplication;
 
@@ -57,17 +60,51 @@ public abstract class StoryController {
 	
 	/**
 	 * Clears the folder of the previous story that
-	 * was being viewed online.
+	 * was being viewed online. 
 	 */
-	public void clearViewedStory() {
-		if (StoryApplication.getViewMode()) {
-			// Now that we are getting a new story,
-			// clear out illustrations that were downloaded for viewing
-			// the previous story
+	protected void clearViewedStory() {
+		if (StoryApplication.getCurrentStory() != null ) {
 			int oldSID = StoryApplication.getCurrentStory().getStoryInfo().getSID();
-			io.deleteStory(oldSID);
+			
+			if (StoryApplication.getViewMode()) {
+				// Now that we are getting a new story,
+				// clear out illustrations that were downloaded for viewing
+				// the previous story
+				io.deleteStory(oldSID);
+			}
+			
+			// Check if we need to restore a conflicted SID
+			// if there is one
+			int conflicted = StoryApplication.getConflictedSID();
+			if (conflicted  >= 0) {
+				if (StoryApplication.getViewMode()) {
+					//Since we were just viewing, restore the
+					//conflicted SID
+					changeLocalSID(conflicted, oldSID);
+				} else {
+					//Since we were downloading, delete the story with
+					//the conflicted SID as it has been updated with the downloaded
+					io.deleteStory(conflicted);
+				}
+				StoryApplication.setConflictedSID(-1);
+			}
+			
 			StoryApplication.setViewMode(false);
 		}
+	}
+	
+	/**
+	 * Changes the SID of a locally stored Story to a new SID. The old Story is
+	 * deleted from storage and replaced by the same Story but with a new SID.
+	 * 
+	 * @param oldSID the SID of the Story to change
+	 * @param newSID the new SID the Story will be assigned
+	 */
+	protected void changeLocalSID(int oldSID, int newSID) {
+		Story story = io.getStory(oldSID);
+		story.getStoryInfo().setSID(newSID);
+		io.deleteStory(oldSID);
+		io.saveStory(story);
 	}
 
 }

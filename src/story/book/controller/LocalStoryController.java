@@ -32,7 +32,7 @@ import story.book.view.StoryApplication;
  *
  */
 public class LocalStoryController extends StoryController {
-
+	
 	/**
 	 * Sets the current application Story to the locally stored Story with 
 	 * matching SID.
@@ -50,6 +50,8 @@ public class LocalStoryController extends StoryController {
 	 * stories.
 	 */
 	public ArrayList<StoryInfo> getStoryList() {
+		super.clearViewedStory();
+		
 		return io.getStoryInfoList();
 	}
 	
