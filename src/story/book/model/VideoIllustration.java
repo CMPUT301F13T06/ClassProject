@@ -32,6 +32,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -89,6 +90,8 @@ public class VideoIllustration extends BinaryIllustration {
 				5));
 		layers[1] = (C.getResources().getDrawable(R.drawable.ic_action_play));
 		LayerDrawable ld = new LayerDrawable(layers);		
+		ld.setLayerInset(1, 40, 0, 40, 0);
+		((BitmapDrawable)ld.getDrawable(1)).setGravity(Gravity.CENTER);
 		button.setImageDrawable(ld);
 		return button;
 	}
