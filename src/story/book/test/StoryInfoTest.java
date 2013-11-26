@@ -80,12 +80,13 @@ public class StoryInfoTest extends ActivityInstrumentationTestCase2
 	
 	@Test
 	public void testGetStartingFragmentID() {
-		
+		assertEquals(storyInfo.getStartingFragmentID(), -1);
 	}
 	
 	@Test
 	public void testSetStartingFragmentID() {
-		
+		storyInfo.setStartingFragmentID(1337);
+		assertEquals(storyInfo.getStartingFragmentID(), 1337);
 	}
 	
 	@Test
