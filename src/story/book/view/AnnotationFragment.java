@@ -351,11 +351,9 @@ public class AnnotationFragment extends Fragment implements StoryView {
 			@Override
 			public void onClick(View v) {
 				if (StoryApplication.checkInternetConnected()) {
-					//saveAnnotations();
-					//displayAnnotations();
-					Log.d("test301", "internet");
+					saveAnnotations();
+					displayAnnotations();
 				} else {
-					Log.d("test301", "no internet");
 					Toast.makeText(StoryApplication.getContext(), R.string.no_internet_annotation, Toast.LENGTH_SHORT).show();
 				}
 				
