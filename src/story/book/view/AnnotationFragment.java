@@ -20,14 +20,17 @@ import java.io.File;
 import java.util.ArrayList;
 
 import story.book.controller.FragmentCreationController;
+import story.book.controller.StoryInfoController;
 import story.book.controller.StoryReadController;
 import story.book.model.Annotation;
 import story.book.model.AudioIllustration;
 import story.book.model.Illustration;
 import story.book.model.ImageIllustration;
 import story.book.model.StoryFragment;
+import story.book.model.StoryInfo;
 import story.book.model.TextIllustration;
 import story.book.model.VideoIllustration;
+import story.book.model.StoryInfo.PublishState;
 import android.annotation.TargetApi;
 import android.app.ActionBar.LayoutParams;
 import android.app.Fragment;
@@ -52,6 +55,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 /**
  * Annotation fragment is the right tab in <code>StoryFragmentReadActivity</code> 
@@ -73,6 +77,8 @@ public class AnnotationFragment extends Fragment implements StoryView {
 	String author;
 	Boolean editMode = true;
 
+	Boolean canAnnotate = false;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -85,7 +91,13 @@ public class AnnotationFragment extends Fragment implements StoryView {
 		SRC = ((StoryFragmentReadActivity)this.getActivity()).getController();
 		SF = SRC.getStartingFragment();
 		FCC = new FragmentCreationController(SF.getFragmentID());
-
+		
+		StoryInfoController SIC = new StoryInfoController();
+		StoryInfo info = SIC.getStoryInfo();
+		if (info.getPublishState() == PublishState.PUBLISHED) {
+			canAnnotate = true;
+		}
+		
 		annotationList = new ArrayList<Pair<ArrayList<View>, Annotation>>();
 		SF.addView(this);
 		getFragmentAnnotations();
@@ -99,12 +111,6 @@ public class AnnotationFragment extends Fragment implements StoryView {
 			Log.v("some uri", auri.toString());
 		return rootView;
 
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		FCC.saveStory();
 	}
 
 	@Override
@@ -131,6 +137,16 @@ public class AnnotationFragment extends Fragment implements StoryView {
 		}
 	}
 
+	@Override
+	 public void onPrepareOptionsMenu (Menu menu) {
+	    if (canAnnotate == false) {
+	    	Toast.makeText(StoryApplication.getContext(), R.string.cant_annotate, Toast.LENGTH_SHORT).show();
+	    	 MenuItem item= menu.findItem(R.id.addAnno);
+	    	 item.setEnabled(false);
+	    }
+	    super.onPrepareOptionsMenu(menu);
+	 }
+	
 	Uri auri;
 	private enum Actions {PHOTO, VIDEO, GALLERY}
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -334,8 +350,15 @@ public class AnnotationFragment extends Fragment implements StoryView {
 		post.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				saveAnnotations();
-				displayAnnotations();
+				if (StoryApplication.checkInternetConnected()) {
+					//saveAnnotations();
+					//displayAnnotations();
+					Log.d("test301", "internet");
+				} else {
+					Log.d("test301", "no internet");
+					Toast.makeText(StoryApplication.getContext(), R.string.no_internet_annotation, Toast.LENGTH_SHORT).show();
+				}
+				
 			}
 		});
 		

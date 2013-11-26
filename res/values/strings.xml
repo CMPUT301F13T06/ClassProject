@@ -48,8 +48,10 @@
     <string name="bad_branch_msg">Cannot create branch with empty label</string>
     <string name="no_internet">Action could not be completed because there is no internet connection</string>
     <string name="no_internet_library">Connect to the Internet to view online stories!</string>
+     <string name="no_internet_annotation">Cannot publish annotation wtihout Internet connectivity! </string>
     <string name="title_decision_picker">Create Decision Branch</string>
     <string name="no_fragments">There are no story fragments to read</string>
-     <string name="published">Story published to the Online Story Club!</string>
+    <string name="published">Story published to the Online Story Club!</string>
+    <string name="cant_annotate">Cannot add new annotations to unpublished or modified stories</string>
 
 </resources>
