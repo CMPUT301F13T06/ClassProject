@@ -56,12 +56,13 @@ public class StoryInfoTest extends ActivityInstrumentationTestCase2
 	
 	@Test
 	public void testGetSynopsis() {
-		
+		assertEquals(storyInfo.getSynopsis(), "");
 	}
 	
 	@Test
 	public void testSetSynopsis() {
-		
+		storyInfo.setSynopsis("test synopsis");
+		assertEquals(storyInfo.getSynopsis(), "test synopsis");
 	}
 	
 	@Test
