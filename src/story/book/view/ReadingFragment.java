@@ -78,7 +78,8 @@ public class ReadingFragment extends Fragment {
 
 	/**
 	 * formatButton() creates a button with the corresponding decision branch text
-	 * for each decision branch in an array list of decision branches.
+	 * for each decision branch in an array list of decision branches by using
+	 * the DecisionBranchButtonGenerator class
 	 * 
 	 * This returns method an array list of buttons.
 	 * 
@@ -91,20 +92,14 @@ public class ReadingFragment extends Fragment {
 	 * @return an custom ArrayList<Button> corresponding to the decision branches in a fragment
 	 */
 	private ArrayList<Button> formatButton(ArrayList<DecisionBranch> db, Context c) {
-
 		ArrayList<Button> buttonList = new ArrayList<Button>();
-
-		Iterator<DecisionBranch> dbIterator = db.iterator();
-		DecisionBranch d = null;
-		Button button;
-		while(dbIterator.hasNext()) {
-
-			d = dbIterator.next();
-			button = new Button(c);
-			button.setText(d.getDecisionText());
-			button.setOnClickListener(setListener(button, d.getDestinationID()));
-			buttonList.add(button);
+		DecisionBranchButtonGenerator buttonGen = new DecisionBranchButtonGenerator();
+		buttonList = buttonGen.formatButton(db, c);
+		for (DecisionBranch d : db) {
+			buttonList.get(db.indexOf(d)).setOnClickListener(
+					setListener(buttonList.get(db.indexOf(d)), d.getDestinationID()));
 		}
+		
 		if (db.size() > 1) {
 			// Set "I'm feeling lucky" button only if there are more than 1 decision branches
 			Random rand = new Random();

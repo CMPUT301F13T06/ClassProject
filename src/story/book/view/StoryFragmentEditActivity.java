@@ -473,21 +473,19 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 				illustrationList.set(itemPos, below);
 				displayFragment();
 			}
-
 			break;
-
 		case 6:
 			// Cancel options
 			return false;
 		}
-
 		return true; 
 
 	}
 
 	/**
 	 * formatButton() creates a button with the corresponding decision branch text
-	 * for each decision branch in an array list of decision branches.
+	 * for each decision branch in an array list of decision branches by using
+	 * the DecisionBranchButtonGenerator class
 	 * 
 	 * This returns method an array list of buttons.
 	 * 
@@ -496,19 +494,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * @return a custom ArrayList<Button> corresponding to the decision branches in a fragment
 	 */
 	private ArrayList<Button> formatButton(ArrayList<DecisionBranch> db, Context c) {
-
-		buttonList = new ArrayList<Button>();
-
-		Iterator<DecisionBranch> dbIterator = db.iterator();
-		DecisionBranch d = null;
-		Button button;
-		while(dbIterator.hasNext()) {
-			d = dbIterator.next();
-			button = new Button(c);
-			button.setText(d.getDecisionText());
-			buttonList.add(button);
-		}
-		return buttonList;
+		
+		DecisionBranchButtonGenerator buttonGen = new DecisionBranchButtonGenerator();
+		return buttonList = buttonGen.formatButton(db, c);
 	}
 
 	@Override
