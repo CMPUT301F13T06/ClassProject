@@ -24,11 +24,9 @@ import story.book.controller.StoryInfoController;
 import story.book.controller.StoryReadController;
 import story.book.model.Annotation;
 import story.book.model.AudioIllustration;
-import story.book.model.Illustration;
 import story.book.model.ImageIllustration;
 import story.book.model.StoryFragment;
 import story.book.model.StoryInfo;
-import story.book.model.TextIllustration;
 import story.book.model.VideoIllustration;
 import story.book.model.StoryInfo.PublishState;
 import android.annotation.TargetApi;
@@ -36,12 +34,10 @@ import android.app.ActionBar.LayoutParams;
 import android.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
-import android.hardware.Camera.Size;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.InputType;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -138,7 +134,7 @@ public class AnnotationFragment extends Fragment implements StoryView {
 	}
 	
 	Uri auri;
-	private enum Actions {PHOTO, VIDEO, GALLERY}
+	private enum Actions {PHOTO, VIDEO, GALLERY, VIDEOPICK}
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		getFragmentAnnotations();
@@ -164,11 +160,12 @@ public class AnnotationFragment extends Fragment implements StoryView {
 			annotationList.add(new Pair<ArrayList<View>, Annotation>(
 					audioAnn.getView(FCC.getStoryPath(), editMode, this.getActivity()), audioAnn));
 			return true;
-
 		case R.id.video:
-
+			i = new Intent(Intent.ACTION_PICK,
+					android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+			i.setType("video/*");
+			startActivityForResult(i, Actions.VIDEOPICK.ordinal());
 			return true;
-
 		case R.id.record_video:
 			i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 			i.putExtra(MediaStore.EXTRA_OUTPUT, FCC.getFreeUri(".mp4"));
@@ -254,6 +251,22 @@ public class AnnotationFragment extends Fragment implements StoryView {
 				}
 				ImageIllustration image = new ImageIllustration(Uri.fromFile(f), FCC.getFreeUri(".jpg"));
 				ann = new Annotation(StoryApplication.getNickname(), image);
+				annotationList.add(
+						new Pair<ArrayList<View>, Annotation>(ann.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
+								ann));
+			}
+			if(requestCode == Actions.VIDEOPICK.ordinal()) {
+				File f;
+				Cursor cursor = this.getActivity().getContentResolver().query(data.getData(), null, null, null, null);
+				if (cursor == null) { // Source is Dropbox or other similar local file path
+					f = new File((data.getData().getPath()));
+				} else { 
+					cursor.moveToFirst(); 
+					int idx = cursor.getColumnIndex(MediaStore.Video.VideoColumns.DATA);
+					f = new File(cursor.getString(idx));
+				}
+				VideoIllustration video = new VideoIllustration(Uri.fromFile(f), FCC.getFreeUri(".mp4"));
+				ann = new Annotation(StoryApplication.getNickname(), video);
 				annotationList.add(
 						new Pair<ArrayList<View>, Annotation>(ann.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
 								ann));
