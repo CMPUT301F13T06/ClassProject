@@ -1,5 +1,6 @@
 package story.book.dataclient;
 
+import java.io.File;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import story.book.model.Illustration;
 import story.book.model.Story;
 import story.book.model.StoryInfo;
 import story.book.model.TextIllustration;
+import android.os.Environment;
 import android.util.Log;
 
 import com.google.gson.*;
@@ -25,12 +27,19 @@ import com.google.gson.*;
 public abstract class DataClient {
 
 	protected static Gson Gsonclient;
-
+	protected static String story_dir;
+	
 	protected DataClient() {
+		
+		story_dir = Environment.getExternalStorageDirectory()
+				.getAbsolutePath() + "/StoryBook/";
+		
+		new File(story_dir).mkdir();
+		
 		Gsonclient = new GsonBuilder()
 		.registerTypeAdapter(Illustration.class, new IllustrationDeserialiser())
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT)
-		.setPrettyPrinting()
+		//.setPrettyPrinting()
 		.create();
 	}
 
@@ -39,7 +48,7 @@ public abstract class DataClient {
 	 * http://stackoverflow.com/questions/3629596/deserializing-an-abstract-class-in-gson
 	 * 
 	 */
-	public class IllustrationDeserialiser 
+	final private class IllustrationDeserialiser 
 	implements JsonDeserializer<Illustration<?>>, JsonSerializer<Illustration<?>> {
 
 		@Override
