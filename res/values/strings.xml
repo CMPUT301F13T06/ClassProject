@@ -53,5 +53,35 @@
     <string name="no_fragments">There are no story fragments to read</string>
     <string name="published">Story published to the Online Story Club!</string>
     <string name="cant_annotate">Cannot add new annotations to unpublished or modified stories</string>
+    <string name="title_activity_help">Help</string>
 
+    
+    <!-- Help page section titles -->
+    <string name="help_title_online_story_club">1. Online Story Club*</string>
+    <string name="help_title_story_nook">2. Story Nook</string>
+    
+    <!-- Help page headings -->
+    <string name="help_heading_reading">Reading:</string>
+    <string name="help_heading_annotating">Annotation:</string>
+    <string name="help_editing">Editing:</string>
+	<string name="help_publishing">Publishing*:</string>
+	<string name="help_story_info">Story Info:</string>
+	<string name="help_story_fragment">Story Fragment:</string>
+	<string name="help_changing_starting_Fragment">Changing the Starting Fragment:</string>
+    
+	<!-- Help page text -->
+	<string name="help_dashboard">Change your nickname on the Dashboard!</string>
+	<string name="help_1_reading_p1">Find a story you want to read by selecting or searching for one from the list of stories available online and tap “View” to experience the story online, or tap “Download” to save it to your Story Nook and for offline reading! Not sure which one to read? Tap the “I’m feeling lucky” to pick one randomly!</string>
+    <string name="help_1_reading_p2">Pick a decision branch to progress the story, or if you’re feeling adventurous, you can pick the “I’m Feeling Lucky” button to pick a random decision!</string>
+    <string name="help_1_annotating_p1">View annotations to a story fragment by switching to the Annotations tab. Add your own by tapping the + icon at the top and selecting the type of annotation you want to add from the menu and tap the “Post” button when you’re done!</string>
+	<string name="help_2_reading_p1">Select or search for a story from your library and tap “View” to read it! Not sure which one to read? Tap the “I’m feeling lucky” to pick one randomly!</string>
+    <string name="help_2_editing_p1">Long press an existing story in collection to open it for editing!</string>
+	<string name="help_2_editing_storyinfo_p1">Opening a story in edit mode or pressing the menu button in the list of Story Fragments will allow you to make changes to the author, genre, and synopsis of the story on the Story Info page.</string>
+	<string name="help_2_editing_storyfragment_p1">After tapping “View” on the Story Info page, edit a Story Fragment by selecting it from the list of Story Fragments. Add new illustrations of various media types and decision branches to the story by tapping the + icon at the top. Long pressing existing illustrations will allow you to change its position or delete them. Long pressing decision branch buttons will allow you to change its text and the Story Fragment it will lead to.</string>
+	<string name="help_2_editing_changing_starting_fragment_p1">Long press Story Fragment from the list of Story Fragments to set it as the starting fragment.</string>
+	<string name="help_2_publishing_p1">In the list of Story Fragments, press the menu button and select “Publish” to publish the current story to the Online Story Club!</string>
+	
+	<!-- Help page footnote -->
+	<string name="help_footnote_1">* requires an internet connection</string>
+	
 </resources>

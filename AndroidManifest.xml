@@ -96,9 +96,13 @@
         </activity>
         <activity
             android:name="story.book.view.VideoPlayerActivity"
-            android:label="video player temp title" 
+            android:label="" 
             android:screenOrientation="landscape" 
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="story.book.view.HelpActivity"
+            android:label="@string/title_activity_help" >
         </activity>
     </application>
 
