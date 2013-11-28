@@ -169,50 +169,50 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
-			case R.id.text:
-				addNewTextIllustration(this.findViewById(R.id.reading_fragment));
-				return true;
-			case R.id.take_photo:
-				Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				auri = FCC.getFreeUri(".jpg");
-				i.putExtra(MediaStore.EXTRA_OUTPUT, auri);
-				startActivityForResult(i, Actions.PHOTO.ordinal());
-				return true;
-			case R.id.addGalleryPhoto:
-				i = new Intent(Intent.ACTION_PICK, 
-						android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-				i.setType("image/*");
-				startActivityForResult(i, Actions.GALLERY.ordinal());
-				return true;
-			case R.id.addDecisionBranch:
-				i = new Intent(this, DecisionPickerActivity.class);
-				i.putExtra("FID", FID);
-				startActivity(i);
-				return true;
-			case R.id.audio:
-				addNewAudioIllustration(this.findViewById(R.id.reading_fragment));
-				return true;
-			case R.id.video:
-				i = new Intent(Intent.ACTION_PICK,
-						android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-				i.setType("video/*");
-				startActivityForResult(i, Actions.VIDEOPICK.ordinal());
-				return true;
-			case R.id.record_video:
-				i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-				auri = FCC.getFreeUri(".mp4");
-				i.putExtra(MediaStore.EXTRA_OUTPUT, auri);
-				i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-				startActivityForResult(i, Actions.VIDEO.ordinal());
-				return true;
-			case R.id.title_activity_dashboard:
-				i = new Intent(this, Dashboard.class);
-				startActivity(i);
-				finish();
-				return true;
+		case R.id.text:
+			addNewTextIllustration(this.findViewById(R.id.reading_fragment));
+			return true;
+		case R.id.take_photo:
+			Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			auri = FCC.getFreeUri(".jpg");
+			i.putExtra(MediaStore.EXTRA_OUTPUT, auri);
+			startActivityForResult(i, Actions.PHOTO.ordinal());
+			return true;
+		case R.id.addGalleryPhoto:
+			i = new Intent(Intent.ACTION_PICK, 
+					android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+			i.setType("image/*");
+			startActivityForResult(i, Actions.GALLERY.ordinal());
+			return true;
+		case R.id.addDecisionBranch:
+			i = new Intent(this, DecisionPickerActivity.class);
+			i.putExtra("FID", FID);
+			startActivity(i);
+			return true;
+		case R.id.audio:
+			addNewAudioIllustration(this.findViewById(R.id.reading_fragment));
+			return true;
+		case R.id.video:
+			i = new Intent(Intent.ACTION_PICK,
+					android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+			i.setType("video/*");
+			startActivityForResult(i, Actions.VIDEOPICK.ordinal());
+			return true;
+		case R.id.record_video:
+			i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+			auri = FCC.getFreeUri(".mp4");
+			i.putExtra(MediaStore.EXTRA_OUTPUT, auri);
+			i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+			startActivityForResult(i, Actions.VIDEO.ordinal());
+			return true;
+		case R.id.title_activity_dashboard:
+			i = new Intent(this, Dashboard.class);
+			startActivity(i);
+			finish();
+			return true;
 
-			default:
-				return super.onOptionsItemSelected(item);
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 
@@ -325,7 +325,6 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * loadFragmentContents() loads illustration views from a saved story fragment
 	 */
 	private void loadFragmentContents() {
-
 		illustrations = SF.getIllustrations();
 		decisions = SF.getDecisionBranches();
 
@@ -411,60 +410,57 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		}
 	}
 
-
 	@Override  
 	public boolean onContextItemSelected(MenuItem item) {
 		int index; 
 		switch (item.getOrder()) {
 
-			case 1:
-				//Delete illustration
-				Log.d(String.valueOf(itemPos), "DEBUG: Item selected");
-				illustrationList.remove(itemPos);
+		case 1:
+			//Delete illustration
+			Log.d(String.valueOf(itemPos), "DEBUG: Item selected");
+			illustrationList.remove(itemPos);
+			displayFragment();
+			break;
+
+		case 2:
+			// Delete decision branch
+			editDecisionBranch(null);
+			displayFragment();
+			break;
+
+		case 3:
+			// Edit decision branch text
+			DialogFragment newFragment = new RequestTextDialog();
+			((RequestTextDialog)newFragment).setParent(StoryFragmentEditActivity.this);
+			((RequestTextDialog)newFragment).setParent(this);
+			((RequestTextDialog)newFragment).setHeader(this.getString(R.string.add_branch_title));
+			((RequestTextDialog)newFragment).setWarning(this.getString(R.string.bad_branch_msg));
+			newFragment.show(getFragmentManager(), "addFragment");
+			break;
+
+		case 4:
+			// Move illustration up
+			if (itemPos > 0){
+				Pair<View, Illustration> above = illustrationList.get(itemPos-1);
+				illustrationList.set(itemPos-1, illustrationList.get(itemPos));
+				illustrationList.set(itemPos, above);
 				displayFragment();
+			}
+			break;
 
-				break;
-
-			case 2:
-				// Delete decision branch
-				editDecisionBranch(null);
+		case 5:
+			// Move illustration down
+			if (itemPos < illustrationList.size()-1) {
+				Pair<View, Illustration> below = illustrationList.get(itemPos+1);
+				illustrationList.set(itemPos+1, illustrationList.get(itemPos));
+				illustrationList.set(itemPos, below);
 				displayFragment();
+			}
+			break;
 
-				break;
-
-			case 3:
-				// Edit decision branch text
-				DialogFragment newFragment = new RequestTextDialog();
-				((RequestTextDialog)newFragment).setParent(StoryFragmentEditActivity.this);
-				((RequestTextDialog)newFragment).setParent(this);
-				((RequestTextDialog)newFragment).setHeader(this.getString(R.string.add_branch_title));
-				((RequestTextDialog)newFragment).setWarning(this.getString(R.string.bad_branch_msg));
-				newFragment.show(getFragmentManager(), "addFragment");
-				break;
-
-			case 4:
-				// Move illustration up
-				if (itemPos > 0){
-					Pair<View, Illustration> above = illustrationList.get(itemPos-1);
-					illustrationList.set(itemPos-1, illustrationList.get(itemPos));
-					illustrationList.set(itemPos, above);
-					displayFragment();
-				}
-
-				break;
-
-			case 5:
-				// Move illustration down
-				if (itemPos < illustrationList.size()-1) {
-					Pair<View, Illustration> below = illustrationList.get(itemPos+1);
-					illustrationList.set(itemPos+1, illustrationList.get(itemPos));
-					illustrationList.set(itemPos, below);
-					displayFragment();
-				}
-				break;
-			case 6:
-				// Cancel options
-				return false;
+		case 6:
+			// Cancel options
+			return false;
 		}
 		return true; 
 
@@ -482,7 +478,6 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * @return a custom ArrayList<Button> corresponding to the decision branches in a fragment
 	 */
 	private ArrayList<Button> formatButton(ArrayList<DecisionBranch> db, Context c) {
-
 		DecisionBranchButtonGenerator buttonGen = new DecisionBranchButtonGenerator();
 		return buttonList = buttonGen.formatButton(db, c);
 	}
@@ -493,9 +488,11 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	}
 
 	/**
-	 * Edits the text which will appear on the decision branch button
+	 * Edits the decision branch button. If a string is passed to the method, a new Decision Branch
+	 * with the specified string will be recreated in place of the old one. If null is passed to the
+	 * method, the Decision Branch will simply be deleted 
 	 * 
-	 * @param text which the Decision Branch text will be set to
+	 * @param text which the Decision Branch text will be set to (optional)
 	 */
 	private void editDecisionBranch(String title) {
 		Button b = buttonList.get(itemPos - illustrationList.size());
@@ -508,6 +505,5 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			branch.setDecisionText(title);
 			DBCC.addDecisionBranch(branch);
 		}
-
 	}	
 }
