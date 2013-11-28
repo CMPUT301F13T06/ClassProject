@@ -83,9 +83,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 	int itemPos;
 	int FID;
-	
+
 	static final private Boolean editMode = true;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -116,7 +116,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		SF.addView(this);
 		illustrationList = new ArrayList<Pair<View, Illustration>>();
 		loadFragmentContents();
-		
+
 	}
 
 	@Override
@@ -148,7 +148,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -163,7 +163,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			auri = Uri.parse(savedInstanceState.getString("cameraImageUri"));
 		}
 	}
-	
+
 	Uri auri;
 	private enum Actions {PHOTO, VIDEO, GALLERY, VIDEOPICK}
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -289,7 +289,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		displayFragment();
 	}
 
-	
+
 	/**
 	 * saveFragment() saves the current state and layout of the fragment
 	 */
@@ -305,7 +305,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 					TextIllustration newText = new TextIllustration(illString);
 					illus.add(newText);
 				}
-				
+
 				else {
 					illustrationList.remove(item);
 				}
@@ -399,10 +399,10 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		
+
 		// position of illustration selected
 		itemPos = v.getId() - 1;
-		
+
 		if (v instanceof Button) {
 			menu.setHeaderTitle("Select an Option:");
 			menu.add(0, v.getId(), 2, "Delete decision branch");  
@@ -494,13 +494,22 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * @return a custom ArrayList<Button> corresponding to the decision branches in a fragment
 	 */
 	private ArrayList<Button> formatButton(ArrayList<DecisionBranch> db, Context c) {
-		
+
 		DecisionBranchButtonGenerator buttonGen = new DecisionBranchButtonGenerator();
 		return buttonList = buttonGen.formatButton(db, c);
 	}
 
 	@Override
 	public void onUserSelectValue(String title) {
+		editDecisionBranchText(title);
+	}
+
+	/**
+	 * Edits the text which will appear on the decision branch button
+	 * 
+	 * @param text which the Decision Branch text will be set to
+	 */
+	private void editDecisionBranchText(String title) {
 		Button b = buttonList.get(itemPos - illustrationList.size());
 		int index =  buttonList.indexOf(b);
 		// Remove the edited Decision Branch
