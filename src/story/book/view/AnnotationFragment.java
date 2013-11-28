@@ -24,6 +24,7 @@ import story.book.controller.StoryInfoController;
 import story.book.controller.StoryReadController;
 import story.book.model.Annotation;
 import story.book.model.AudioIllustration;
+import story.book.model.Illustration;
 import story.book.model.ImageIllustration;
 import story.book.model.StoryFragment;
 import story.book.model.StoryInfo;
@@ -208,59 +209,49 @@ public class AnnotationFragment extends Fragment implements StoryView {
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		Annotation ann;
 		if(resultCode == android.app.Activity.RESULT_OK ) {
+			Annotation ann;
+			Illustration<?> item = null;
 			if(requestCode == Actions.PHOTO.ordinal()) {
-				ImageIllustration image = new ImageIllustration(auri);
-				ann = new Annotation(StoryApplication.getNickname(), image);
-				annotationList.add(
-						new Pair<ArrayList<View>, Annotation>(ann.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
-								ann));
+				item = new ImageIllustration(auri);
+				ann = new Annotation(StoryApplication.getNickname(), item);
 			}
 			if(requestCode == Actions.VIDEO.ordinal()) {
-				VideoIllustration video = new VideoIllustration(auri);
-				ann = new Annotation(StoryApplication.getNickname(), video);
-				annotationList.add(
-						new Pair<ArrayList<View>, Annotation>(ann.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
-								ann));
+				item = new VideoIllustration(auri);
+				ann = new Annotation(StoryApplication.getNickname(), item);
 			}
 			if(requestCode == Actions.GALLERY.ordinal()) {
-				File f;
-				Cursor cursor = this.getActivity().getContentResolver().query(data.getData(), null, null, null, null);
-				if (cursor == null) { // Source is Dropbox or other similar local file path
-					f = new File((data.getData().getPath()));
-				} else { 
-					cursor.moveToFirst(); 
-					int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-					f = new File(cursor.getString(idx));
-				}
-				ImageIllustration image = new ImageIllustration(Uri.fromFile(f), FCC.getFreeUri(".jpg"));
-				ann = new Annotation(StoryApplication.getNickname(), image);
-				annotationList.add(
-						new Pair<ArrayList<View>, Annotation>(ann.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
-								ann));
+				item = new ImageIllustration(
+						Uri.fromFile(GalleryDecode(data, MediaStore.Images.ImageColumns.DATA)), 
+						FCC.getFreeUri(".jpg"));
+
 			}
 			if(requestCode == Actions.VIDEOPICK.ordinal()) {
-				File f;
-				Cursor cursor = this.getActivity().getContentResolver().query(data.getData(), null, null, null, null);
-				if (cursor == null) { // Source is Dropbox or other similar local file path
-					f = new File((data.getData().getPath()));
-				} else { 
-					cursor.moveToFirst(); 
-					int idx = cursor.getColumnIndex(MediaStore.Video.VideoColumns.DATA);
-					f = new File(cursor.getString(idx));
-				}
-				VideoIllustration video = new VideoIllustration(Uri.fromFile(f), FCC.getFreeUri(".mp4"));
-				ann = new Annotation(StoryApplication.getNickname(), video);
-				annotationList.add(
-						new Pair<ArrayList<View>, Annotation>(ann.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
-								ann));
+				item = new VideoIllustration(
+						Uri.fromFile(GalleryDecode(data, MediaStore.Video.VideoColumns.DATA)), 
+						FCC.getFreeUri(".mp4"));
 			}
+			ann = new Annotation(StoryApplication.getNickname(), item);
+			annotationList.add(
+					new Pair<ArrayList<View>, Annotation>(ann.getView(FCC.getStoryPath(), editMode, this.getActivity()), 
+							ann));
 			displayAnnotations();
 		}
 	}
 
-
+	public File GalleryDecode(Intent data, String index) {
+		File f;
+		Cursor cursor = this.getActivity().getContentResolver().query(data.getData(), null, null, null, null);
+		if (cursor == null) { // Source is Dropbox or other similar local file path
+			f = new File((data.getData().getPath()));
+		} else { 
+			cursor.moveToFirst(); 
+			int idx = cursor.getColumnIndex(index);
+			f = new File(cursor.getString(idx));
+		}
+		return f;
+	}
+	
 	/**
 	 * addNewTextIllustration() creates a new EditText for users to enter the text
 	 * for a TextIllustration.

@@ -83,9 +83,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 	int itemPos;
 	int FID;
-	
+
 	static final private Boolean editMode = true;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -116,7 +116,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		SF.addView(this);
 		illustrationList = new ArrayList<Pair<View, Illustration>>();
 		loadFragmentContents();
-		
+
 	}
 
 	@Override
@@ -148,7 +148,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -163,105 +163,97 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 			auri = Uri.parse(savedInstanceState.getString("cameraImageUri"));
 		}
 	}
-	
+
 	Uri auri;
 	private enum Actions {PHOTO, VIDEO, GALLERY, VIDEOPICK}
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
-		case R.id.text:
-			addNewTextIllustration(this.findViewById(R.id.reading_fragment));
-			return true;
-		case R.id.take_photo:
-			Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			auri = FCC.getFreeUri(".jpg");
-			i.putExtra(MediaStore.EXTRA_OUTPUT, auri);
-			startActivityForResult(i, Actions.PHOTO.ordinal());
-			return true;
-		case R.id.addGalleryPhoto:
-			i = new Intent(Intent.ACTION_PICK, 
-					android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-			i.setType("image/*");
-			startActivityForResult(i, Actions.GALLERY.ordinal());
-			return true;
-		case R.id.addDecisionBranch:
-			i = new Intent(this, DecisionPickerActivity.class);
-			i.putExtra("FID", FID);
-			startActivity(i);
-			return true;
-		case R.id.audio:
-			addNewAudioIllustration(this.findViewById(R.id.reading_fragment));
-			return true;
-		case R.id.video:
-			i = new Intent(Intent.ACTION_PICK,
-					android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-			i.setType("video/*");
-			startActivityForResult(i, Actions.VIDEOPICK.ordinal());
-			return true;
-		case R.id.record_video:
-			i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-			auri = FCC.getFreeUri(".mp4");
-			i.putExtra(MediaStore.EXTRA_OUTPUT, auri);
-			i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-			startActivityForResult(i, Actions.VIDEO.ordinal());
-			return true;
-		case R.id.title_activity_dashboard:
-			i = new Intent(this, Dashboard.class);
-			startActivity(i);
-			finish();
-			return true;
+			case R.id.text:
+				addNewTextIllustration(this.findViewById(R.id.reading_fragment));
+				return true;
+			case R.id.take_photo:
+				Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				auri = FCC.getFreeUri(".jpg");
+				i.putExtra(MediaStore.EXTRA_OUTPUT, auri);
+				startActivityForResult(i, Actions.PHOTO.ordinal());
+				return true;
+			case R.id.addGalleryPhoto:
+				i = new Intent(Intent.ACTION_PICK, 
+						android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+				i.setType("image/*");
+				startActivityForResult(i, Actions.GALLERY.ordinal());
+				return true;
+			case R.id.addDecisionBranch:
+				i = new Intent(this, DecisionPickerActivity.class);
+				i.putExtra("FID", FID);
+				startActivity(i);
+				return true;
+			case R.id.audio:
+				addNewAudioIllustration(this.findViewById(R.id.reading_fragment));
+				return true;
+			case R.id.video:
+				i = new Intent(Intent.ACTION_PICK,
+						android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+				i.setType("video/*");
+				startActivityForResult(i, Actions.VIDEOPICK.ordinal());
+				return true;
+			case R.id.record_video:
+				i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+				auri = FCC.getFreeUri(".mp4");
+				i.putExtra(MediaStore.EXTRA_OUTPUT, auri);
+				i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+				startActivityForResult(i, Actions.VIDEO.ordinal());
+				return true;
+			case R.id.title_activity_dashboard:
+				i = new Intent(this, Dashboard.class);
+				startActivity(i);
+				finish();
+				return true;
 
-		default:
-			return super.onOptionsItemSelected(item);
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(resultCode == RESULT_OK) {
+			Illustration<?> item = null;
 			if(requestCode == Actions.PHOTO.ordinal()) {
-				ImageIllustration image = new ImageIllustration(auri);
-				illustrationList.add(new Pair<View, Illustration>(
-						image.getView(SCC.getStoryPath(), editMode, this), image));
-				displayFragment();
+				item = new ImageIllustration(auri);
 			}
 			if(requestCode == Actions.VIDEO.ordinal()) {
-				VideoIllustration video = new VideoIllustration(auri);
-				illustrationList.add(new Pair<View, Illustration>(
-						video.getView(SCC.getStoryPath(), editMode, this), video));
-				displayFragment();
+				item = new VideoIllustration(auri);
 			}
 			//http://stackoverflow.com/questions/2789276/android-get-real-path-by-uri-getpath
 			if(requestCode == Actions.GALLERY.ordinal()) {
-				File f;
-				Cursor cursor = getContentResolver().query(data.getData(), null, null, null, null);
-				if (cursor == null) { // Source is Dropbox or other similar local file path
-					f = new File((data.getData().getPath()));
-				} else { 
-					cursor.moveToFirst(); 
-					int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-					f = new File(cursor.getString(idx));
-				}
-				ImageIllustration image = new ImageIllustration(Uri.fromFile(f), FCC.getFreeUri(".jpg"));
-				illustrationList.add(new Pair<View, Illustration>(
-						image.getView(SCC.getStoryPath(), editMode, this), image));
-				displayFragment();
+				item = new ImageIllustration(
+						Uri.fromFile(GalleryDecode(data, MediaStore.Images.ImageColumns.DATA)), 
+						FCC.getFreeUri(".jpg"));
 			}
 			if(requestCode == Actions.VIDEOPICK.ordinal()) {
-				File f;
-				Cursor cursor = getContentResolver().query(data.getData(), null, null, null, null);
-				if (cursor == null) { // Source is Dropbox or other similar local file path
-					f = new File((data.getData().getPath()));
-				} else { 
-					cursor.moveToFirst(); 
-					int idx = cursor.getColumnIndex(MediaStore.Video.VideoColumns.DATA);
-					f = new File(cursor.getString(idx));
-				}
-				VideoIllustration video = new VideoIllustration(Uri.fromFile(f), FCC.getFreeUri(".mp4"));
-				illustrationList.add(new Pair<View, Illustration>(
-						video.getView(SCC.getStoryPath(), editMode, this), video));
-				displayFragment();
+				item = new VideoIllustration(
+						Uri.fromFile(GalleryDecode(data, MediaStore.Video.VideoColumns.DATA)), 
+						FCC.getFreeUri(".mp4"));
+
 			}
+			illustrationList.add(new Pair<View, Illustration>(
+					item.getView(SCC.getStoryPath(), editMode, this), item));
+			displayFragment();
 		}
+	}
+
+	public File GalleryDecode(Intent data, String index) {
+		File f;
+		Cursor cursor = getContentResolver().query(data.getData(), null, null, null, null);
+		if (cursor == null) { // Source is Dropbox or other similar local file path
+			f = new File((data.getData().getPath()));
+		} else { 
+			cursor.moveToFirst(); 
+			int idx = cursor.getColumnIndex(index);
+			f = new File(cursor.getString(idx));
+		}
+		return f;
 	}
 
 	/**
@@ -289,7 +281,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		displayFragment();
 	}
 
-	
+
 	/**
 	 * saveFragment() saves the current state and layout of the fragment
 	 */
@@ -305,7 +297,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 					TextIllustration newText = new TextIllustration(illString);
 					illus.add(newText);
 				}
-				
+
 				else {
 					illustrationList.remove(item);
 				}
@@ -399,10 +391,10 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		
+
 		// position of illustration selected
 		itemPos = v.getId() - 1;
-		
+
 		if (v instanceof Button) {
 			menu.setHeaderTitle("Select an Option:");
 			menu.add(0, v.getId(), 2, "Delete decision branch");  
@@ -425,58 +417,58 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		int index; 
 		switch (item.getOrder()) {
 
-		case 1:
-			//Delete illustration
-			Log.d(String.valueOf(itemPos), "DEBUG: Item selected");
-			illustrationList.remove(itemPos);
-			displayFragment();
-
-			break;
-
-		case 2:
-			// Delete decision branch
-
-			Button b = buttonList.get(itemPos-illustrationList.size());
-			index =  buttonList.indexOf(b);
-			DecisionBranch branch = decisions.get(index);
-			DBCC.removeDecisionBranch(branch);
-			displayFragment();
-
-			break;
-
-		case 3:
-			// Edit decision branch text
-			DialogFragment newFragment = new RequestTextDialog();
-			((RequestTextDialog)newFragment).setParent(StoryFragmentEditActivity.this);
-			((RequestTextDialog)newFragment).setParent(this);
-			((RequestTextDialog)newFragment).setHeader(this.getString(R.string.add_branch_title));
-			((RequestTextDialog)newFragment).setWarning(this.getString(R.string.bad_branch_msg));
-			newFragment.show(getFragmentManager(), "addFragment");
-			break;
-
-		case 4:
-			// Move illustration up
-			if (itemPos > 0){
-				Pair<View, Illustration> above = illustrationList.get(itemPos-1);
-				illustrationList.set(itemPos-1, illustrationList.get(itemPos));
-				illustrationList.set(itemPos, above);
+			case 1:
+				//Delete illustration
+				Log.d(String.valueOf(itemPos), "DEBUG: Item selected");
+				illustrationList.remove(itemPos);
 				displayFragment();
-			}
 
-			break;
+				break;
 
-		case 5:
-			// Move illustration down
-			if (itemPos < illustrationList.size()-1) {
-				Pair<View, Illustration> below = illustrationList.get(itemPos+1);
-				illustrationList.set(itemPos+1, illustrationList.get(itemPos));
-				illustrationList.set(itemPos, below);
+			case 2:
+				// Delete decision branch
+
+				Button b = buttonList.get(itemPos-illustrationList.size());
+				index =  buttonList.indexOf(b);
+				DecisionBranch branch = decisions.get(index);
+				DBCC.removeDecisionBranch(branch);
 				displayFragment();
-			}
-			break;
-		case 6:
-			// Cancel options
-			return false;
+
+				break;
+
+			case 3:
+				// Edit decision branch text
+				DialogFragment newFragment = new RequestTextDialog();
+				((RequestTextDialog)newFragment).setParent(StoryFragmentEditActivity.this);
+				((RequestTextDialog)newFragment).setParent(this);
+				((RequestTextDialog)newFragment).setHeader(this.getString(R.string.add_branch_title));
+				((RequestTextDialog)newFragment).setWarning(this.getString(R.string.bad_branch_msg));
+				newFragment.show(getFragmentManager(), "addFragment");
+				break;
+
+			case 4:
+				// Move illustration up
+				if (itemPos > 0){
+					Pair<View, Illustration> above = illustrationList.get(itemPos-1);
+					illustrationList.set(itemPos-1, illustrationList.get(itemPos));
+					illustrationList.set(itemPos, above);
+					displayFragment();
+				}
+
+				break;
+
+			case 5:
+				// Move illustration down
+				if (itemPos < illustrationList.size()-1) {
+					Pair<View, Illustration> below = illustrationList.get(itemPos+1);
+					illustrationList.set(itemPos+1, illustrationList.get(itemPos));
+					illustrationList.set(itemPos, below);
+					displayFragment();
+				}
+				break;
+			case 6:
+				// Cancel options
+				return false;
 		}
 		return true; 
 
@@ -494,7 +486,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * @return a custom ArrayList<Button> corresponding to the decision branches in a fragment
 	 */
 	private ArrayList<Button> formatButton(ArrayList<DecisionBranch> db, Context c) {
-		
+
 		DecisionBranchButtonGenerator buttonGen = new DecisionBranchButtonGenerator();
 		return buttonList = buttonGen.formatButton(db, c);
 	}
