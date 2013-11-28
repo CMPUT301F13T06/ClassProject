@@ -39,6 +39,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.ContextMenu;
@@ -112,6 +113,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 		actionBar = getActionBar();
 		actionBar.setTitle(title);
+		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		SF.addView(this);
 		illustrationList = new ArrayList<Pair<View, Illustration>>();
@@ -169,6 +171,9 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
+		case android.R.id.home:
+			NavUtils.navigateUpTo(this, new Intent(this, StoryFragmentListActivity.class));
+			return true;
 		case R.id.text:
 			addNewTextIllustration(this.findViewById(R.id.reading_fragment));
 			return true;

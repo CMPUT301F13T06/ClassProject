@@ -33,6 +33,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -73,7 +74,7 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 		setContentView(R.layout.story_fragment_read_activity);
 		SCC = new StoryCreationController();
 		SFL = new ArrayList<StoryFragment>();
-
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		Story story = SCC.getStory();
 		story.addView(this);
 
@@ -194,7 +195,7 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 			}
 		}
 	}
-	
+
 	/**
 	 * doMySearch() takes a query from the search bar, passes it to
 	 * <code>StoryCreationController</code>, and display the set of results 
@@ -254,6 +255,9 @@ public class StoryFragmentListActivity extends Activity implements StoryView, Re
 		// Handle item selection
 		Intent intent;
 		switch (item.getItemId()) {
+		case android.R.id.home:
+			NavUtils.navigateUpTo(this, new Intent(this, LocalStoriesActivity.class));
+			return true;
 		case R.id.title_activity_dashboard:
 			intent = new Intent(this, Dashboard.class);
 			startActivity(intent);

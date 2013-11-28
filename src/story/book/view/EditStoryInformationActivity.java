@@ -29,6 +29,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,7 +67,7 @@ public class EditStoryInformationActivity extends Activity  {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_story_information);
-
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		storyInfo = storyInfoController.getStoryInfo();
 		
 		findViewById(R.id.title).setVisibility(View.VISIBLE);
@@ -170,6 +171,9 @@ public class EditStoryInformationActivity extends Activity  {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case android.R.id.home:
+			NavUtils.navigateUpTo(this, new Intent(this, LocalStoriesActivity.class));
+			return true;
 		case R.id.title_activity_dashboard:
 			Intent intent = new Intent(this, Dashboard.class);
 			startActivity(intent);
