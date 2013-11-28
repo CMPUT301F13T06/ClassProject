@@ -55,12 +55,8 @@ import android.support.v4.app.NavUtils;
 public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 
 	ListView listView;
-
-	ArrayList<StoryInfo> storyInfo;
-
 	ArrayList<HashMap<String, String>> sList;
 	SimpleAdapter sAdapter;
-
 	SearchView searchView;
 
 	private OnlineStoryController onlineController;
@@ -124,7 +120,6 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 			sList.add(item);
 
 		}
-
 
 		String[] from = new String[] {"Title", "Author", "Date", "SID"};
 		int[] to = new int[] {R.id.listItem1, R.id.listItem2, R.id.listItem3};
@@ -202,7 +197,6 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 	 */
 	private void handleSearch(){
 		searchView.setOnQueryTextListener(new OnQueryTextListener(){
-
 			@Override
 			public boolean onQueryTextChange(String newText) {
 				// TODO Auto-generated method stub
