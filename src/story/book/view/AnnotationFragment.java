@@ -56,8 +56,10 @@ import android.widget.Toast;
 
 /**
  * Annotation fragment is the right tab in <code>StoryFragmentReadActivity</code> 
- * This is the view for displaying all image annotations posted by users on the 
+ * This is the view for displaying all types of media annotations posted by users on the 
  * currently open in <code>Reading Fragment</code> (reading tab)
+ * 
+ * Annotations are added one at a time and are only saved if the user taps the "Post" button
  * 
  * @author Jessica Surya
  * @author Anthony Ou
@@ -224,7 +226,6 @@ public class AnnotationFragment extends Fragment implements StoryView {
 				item = new ImageIllustration(
 						Uri.fromFile(GalleryDecode(data, MediaStore.Images.ImageColumns.DATA)), 
 						FCC.getFreeUri(".jpg"));
-
 			}
 			if(requestCode == Actions.VIDEOPICK.ordinal()) {
 				item = new VideoIllustration(
@@ -292,7 +293,7 @@ public class AnnotationFragment extends Fragment implements StoryView {
 	}
 
 	/**
-	 *Displays a "Post" button which will save the annotation 
+	 *Displays a "Post" button which will save the newly created annotation 
 	 *
 	 * @param position of object which Post Button is to appear below of
 	 */
