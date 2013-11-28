@@ -281,30 +281,7 @@ public class AnnotationFragment extends Fragment implements StoryView {
 		}
 	}
 
-	/**
-	 * saveAnnotation() saves any new annotations
-	 */
-	public void saveAnnotations() {
-		int top = annotationList.size();
-
-
-		Pair<ArrayList<View>, Annotation> i = annotationList.get(top-1);
-		String cap = ((EditText)i.first.get(i.first.size()-1)).getText().toString();
-
-		if (i.first.size() == 2 ) {
-			// Saving a text caption
-			if(cap.length() > 0) {
-				// Set caption
-				i.second.setCaption(cap);
-				FCC.addAnnotation(i.second);
-			}
-		}
-		else {
-			i.second.setCaption(cap);
-			FCC.addAnnotation(i.second);
-		}
-
-	}
+	
 
 	/**
 	 * update(SF); redisplays annotations to show changes to model
@@ -336,7 +313,7 @@ public class AnnotationFragment extends Fragment implements StoryView {
 			@Override
 			public void onClick(View v) {
 				if (StoryApplication.checkInternetConnected()) {
-					saveAnnotations();
+					FCC.saveAnnotations(annotationList);
 					displayAnnotations();
 				} else {
 					Toast.makeText(StoryApplication.getContext(), R.string.no_internet_annotation, Toast.LENGTH_SHORT).show();

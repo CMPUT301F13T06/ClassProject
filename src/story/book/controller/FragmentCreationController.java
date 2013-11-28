@@ -20,6 +20,9 @@ package story.book.controller;
 import java.util.ArrayList;
 
 import android.net.Uri;
+import android.util.Pair;
+import android.view.View;
+import android.widget.EditText;
 import story.book.model.Annotation;
 import story.book.model.Illustration;
 import story.book.model.StoryFragment;
@@ -40,7 +43,7 @@ import story.book.view.StoryApplication;
 public class FragmentCreationController extends LocalEditingController {
 
 	private StoryFragment storyFragment;
-	
+
 	/**
 	 * Initializes the controller with the story fragment with the specified
 	 * fragment ID.
@@ -52,12 +55,12 @@ public class FragmentCreationController extends LocalEditingController {
 		this.storyFragment = StoryApplication.getCurrentStory()
 				.getStoryFragments().get(fragmentID);
 	}
-	
+
 	public Uri getFreeUri(String Extension) {
 		return io.URIhandler(StoryApplication.getCurrentStory().getStoryInfo()
 				.getSID(), Extension);
 	}
-	
+
 	/**
 	 * Removes all the <code>Illustration</code> from the story
 	 * fragment.
@@ -65,7 +68,7 @@ public class FragmentCreationController extends LocalEditingController {
 	public void removeAllIllustrations() {
 		storyFragment.removeAllIllustrations();
 	}
-	
+
 	/**
 	 * Sets all the specified <code>Illustration</code> from the story
 	 * fragment.
@@ -75,7 +78,29 @@ public class FragmentCreationController extends LocalEditingController {
 	public void setAllIllustrations(ArrayList<Illustration> illustrations) {
 		storyFragment.setAllIllustrations(illustrations);
 	}
-	
+
+	/**
+	 * saveAnnotation() saves any new annotations
+	 */
+	public void saveAnnotations(ArrayList<Pair<ArrayList<View>, Annotation>> annotationList) {
+		Pair<ArrayList<View>, Annotation> i = annotationList.get(annotationList.size()-1);
+		String cap = ((EditText)i.first.get(i.first.size()-1)).getText().toString();
+
+		if (i.first.size() == 2 ) {
+			// Saving a text caption
+			if(cap.length() > 0) {
+				// Set caption
+				i.second.setCaption(cap);
+				this.addAnnotation(i.second);
+			}
+		}
+		else {
+			i.second.setCaption(cap);
+			this.addAnnotation(i.second);
+		}
+
+	}
+
 	/**
 	 * Adds an <code>Annotation</code> to the story fragment.
 	 * @param 	annotation	the <code>Annotation</code> to add
@@ -86,5 +111,5 @@ public class FragmentCreationController extends LocalEditingController {
 				StoryApplication.getCurrentStory());
 		saveStory();
 	}
-	
+
 }
