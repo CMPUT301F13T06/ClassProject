@@ -16,6 +16,8 @@ import android.widget.Button;
  * @param DecisionBranch 	the decision branches associated with the fragment
  * @param Context 	the context where the button will be displayed
  * @return a custom ArrayList<Button> corresponding to the decision branches in a fragment
+ * 
+ * @author Jessica Surya
  */
 public class DecisionBranchButtonGenerator {
 	ArrayList<Button> buttonList;
