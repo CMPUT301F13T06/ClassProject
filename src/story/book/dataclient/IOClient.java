@@ -135,7 +135,10 @@ public class IOClient extends DataClient {
 	public Boolean checkSID(int SID) {
 		return getStoryList().contains(String.valueOf(SID)) ? false : true;
 	}
-
+	
+	public void moveDirectory(int oldSID, int newSID) {
+		new File(story_dir+oldSID).renameTo(new File(story_dir+newSID));
+	}
 
 	public int getSID() {
 		ArrayList<String> StoryInfo = getStoryList();

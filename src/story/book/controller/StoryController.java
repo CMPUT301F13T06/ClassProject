@@ -19,8 +19,9 @@ package story.book.controller;
 
 import java.util.ArrayList;
 
-import android.util.Log;
+import org.apache.commons.io.FileUtils;
 
+import android.util.Log;
 import story.book.dataclient.IOClient;
 import story.book.model.Story;
 import story.book.model.StoryInfo;
@@ -103,8 +104,7 @@ public abstract class StoryController {
 	protected void changeLocalSID(int oldSID, int newSID) {
 		Story story = io.getStory(oldSID);
 		story.getStoryInfo().setSID(newSID);
-		io.deleteStory(oldSID);
-		io.saveStory(story);
+		io.moveDirectory(oldSID, newSID);
 	}
 
 }
