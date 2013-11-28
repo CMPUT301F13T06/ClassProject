@@ -23,6 +23,17 @@ public class AudioIllustrationTest extends ActivityInstrumentationTestCase2
 	}
 	
 	@Test
+	public void testGetContent() {
+		assertEquals(audioIllustration.getContent(), Uri.parse("http://www.google.com").getLastPathSegment());
+	}
+	
+	@Test
+	public void testSetContent() {
+		audioIllustration.setContent("http://www.google.ca");
+		assertEquals(audioIllustration.getContent(), "http://www.google.ca");
+	}
+	
+	@Test
 	public void testGetView() {
 		assertNotNull(audioIllustration.getView(null, false, getActivity()));
 	}
