@@ -281,8 +281,6 @@ public class AnnotationFragment extends Fragment implements StoryView {
 		}
 	}
 
-	
-
 	/**
 	 * update(SF); redisplays annotations to show changes to model
 	 */
@@ -313,7 +311,7 @@ public class AnnotationFragment extends Fragment implements StoryView {
 			@Override
 			public void onClick(View v) {
 				if (StoryApplication.checkInternetConnected()) {
-					FCC.saveAnnotations(annotationList);
+					FCC.saveAnnotations(annotationList.get(annotationList.size()-1));
 					displayAnnotations();
 				} else {
 					Toast.makeText(StoryApplication.getContext(), R.string.no_internet_annotation, Toast.LENGTH_SHORT).show();
