@@ -102,7 +102,8 @@
         </activity>
         <activity
             android:name="story.book.view.HelpActivity"
-            android:label="@string/title_activity_help" >
+            android:label="@string/title_activity_help" 
+            android:parentActivityName="story.book.view.Dashboard" >
         </activity>
     </application>
 
