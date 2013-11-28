@@ -273,7 +273,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 				// TODO Auto-generated method stub
 				if (newText.isEmpty()) {
 					//refreshes the story list if there is no text entered to search
-					refreshList(localController.getStoryList());
+					refreshList(localController.search(newText));
 					return true;
 				} else {
 					return false;

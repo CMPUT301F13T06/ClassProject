@@ -24,7 +24,6 @@ import android.util.Log;
  */
 public class IOClient extends DataClient {
 
-	private String story_dir;
 	private Context context;
 
 	/**
@@ -38,10 +37,6 @@ public class IOClient extends DataClient {
 	public IOClient(Context c) {
 		super();
 		context = c; //I dont need the context but its nice to have for the future
-
-		this.story_dir = Environment.getExternalStorageDirectory()
-						.getAbsolutePath() + "/StoryBook/";
-		new File(story_dir).mkdir();
 	}
 
 	/**

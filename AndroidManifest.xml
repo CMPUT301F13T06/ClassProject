@@ -55,7 +55,8 @@
         <activity
             android:name="story.book.view.LocalStoriesActivity"
             android:label="@string/title_activity_local_stories"
-            android:parentActivityName="story.book.view.StoryListActivity" >
+            android:parentActivityName="story.book.view.StoryListActivity" 
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -75,7 +76,8 @@
         <activity
             android:name="story.book.view.OnlineStoriesActivity"
             android:label="@string/title_activity_online_stories"
-            android:parentActivityName="story.book.view.StoryListActivity" >
+            android:parentActivityName="story.book.view.StoryListActivity" 
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="story.book.view.StoryListActivity" />
