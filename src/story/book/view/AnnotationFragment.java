@@ -167,9 +167,10 @@ public class AnnotationFragment extends Fragment implements StoryView {
 			startActivityForResult(i, Actions.VIDEOPICK.ordinal());
 			return true;
 		case R.id.record_video:
+			auri = FCC.getFreeUri(".mp4");
 			i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-			i.putExtra(MediaStore.EXTRA_OUTPUT, FCC.getFreeUri(".mp4"));
-			i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
+			i.putExtra(MediaStore.EXTRA_OUTPUT, auri);
+			i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
 			startActivityForResult(i, Actions.VIDEO.ordinal());
 			return true;
 

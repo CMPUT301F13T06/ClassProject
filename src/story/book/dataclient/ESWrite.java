@@ -3,6 +3,8 @@ package story.book.dataclient;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+import android.util.Log;
+
 /**
  * ESWrite is an ESCommand that writes to the Elastic Search server. 
  * 
@@ -33,11 +35,10 @@ public class ESWrite extends ESCommand {
 			openConnection(location);
 			conn.setDoOutput(true);
 			conn.setChunkedStreamingMode(0);
-			
+
 			OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
-			
 			writer.write(data);
-			
+			writer.flush();
 			writer.close();
 			closeConnection();
 		} catch (IOException e) {

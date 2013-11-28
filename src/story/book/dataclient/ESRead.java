@@ -15,13 +15,13 @@ public class ESRead extends ESCommand {
 		// sets the Elastic Search url to access
 		url_string = base_url + folder;
 	}
-	
+
 	@Override
 	protected String doInBackground(String... params) {
 		String result = doESRead(params[0]);
 		return result;
 	}
-	
+
 	/**
 	 * Opens the ES BufferedReader to allow reads from the server.
 	 * 
@@ -31,18 +31,22 @@ public class ESRead extends ESCommand {
 	private String doESRead(String location) {
 		try {
 			openConnection(location);
+			conn.setDoInput(true);
+			conn.setChunkedStreamingMode(0);
+			
+			char[] inputBuffer = new char[1024];
+			StringBuilder sb = new StringBuilder(4096); // set 
+			InputStreamReader isr = new InputStreamReader(conn.getInputStream());
 
-			BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-		
-			String server_read = "";
-			String inputLine;
-			while ((inputLine = reader.readLine()) != null) 
-				server_read += inputLine;
-			
-			reader.close();
+			int l;
+			while ((l = isr.read(inputBuffer)) != -1) {
+				sb.append(inputBuffer, 0, l);
+			}
+			isr.close();
+
 			closeConnection();
-			
-			return server_read;
+
+			return sb.toString();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

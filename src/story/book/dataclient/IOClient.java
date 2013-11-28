@@ -82,16 +82,8 @@ public class IOClient extends DataClient {
 	 */
 	public Uri URIhandler(int SID, String Extension) {
 		File dir = new File(story_dir+String.valueOf(SID));
-		ArrayList<String> listOfFiles = new ArrayList<String>();
-		String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
-		for(String i : dir.list())
-			if(i.contains(date))
-				listOfFiles.add(i);
-
 		return Uri.fromFile(
-				new File(dir, 
-						"ID-"+listOfFiles.size()+"-"+date+'-'+
-						Calendar.getInstance().getTimeInMillis()+Extension));
+				new File(dir, Calendar.getInstance().getTimeInMillis()+Extension));
 	}
 	
 	/**
