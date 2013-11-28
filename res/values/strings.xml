@@ -67,7 +67,7 @@
 	<string name="help_publishing">Publishing*:</string>
 	<string name="help_story_info">Story Info:</string>
 	<string name="help_story_fragment">Story Fragment:</string>
-	<string name="help_changing_starting_Fragment">Changing the Starting Fragment:</string>
+	<string name="help_changing_starting_fragment">Changing the Starting Fragment:</string>
     
 	<!-- Help page text -->
 	<string name="help_dashboard">Change your nickname on the Dashboard!</string>
