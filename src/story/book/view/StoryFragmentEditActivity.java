@@ -435,11 +435,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 		case 2:
 			// Delete decision branch
-
-			Button b = buttonList.get(itemPos-illustrationList.size());
-			index =  buttonList.indexOf(b);
-			DecisionBranch branch = decisions.get(index);
-			DBCC.removeDecisionBranch(branch);
+			editDecisionBranch(null);
 			displayFragment();
 
 			break;
@@ -501,7 +497,7 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 
 	@Override
 	public void onUserSelectValue(String title) {
-		editDecisionBranchText(title);
+		editDecisionBranch(title);
 	}
 
 	/**
@@ -509,14 +505,17 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 	 * 
 	 * @param text which the Decision Branch text will be set to
 	 */
-	private void editDecisionBranchText(String title) {
+	private void editDecisionBranch(String title) {
 		Button b = buttonList.get(itemPos - illustrationList.size());
 		int index =  buttonList.indexOf(b);
 		// Remove the edited Decision Branch
 		DecisionBranch branch = decisions.get(index);
 		DBCC.removeDecisionBranch(branch);
-		// Re-add the Decision Branch
-		branch.setDecisionText(title);
-		DBCC.addDecisionBranch(branch);
-	}
+		if (title != null) {
+			// Re-add the Decision Branch
+			branch.setDecisionText(title);
+			DBCC.addDecisionBranch(branch);
+		}
+
+	}	
 }
