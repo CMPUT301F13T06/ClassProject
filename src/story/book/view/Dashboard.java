@@ -25,6 +25,9 @@ import android.graphics.Typeface;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -144,4 +147,29 @@ public class Dashboard extends Activity {
 		StoryApplication.setNickname(name);
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.dashboard_menu, menu);
+		boolean result = super.onCreateOptionsMenu(menu);
+		return result;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		
+		switch(item.getItemId()) {
+		case R.id.action_help:
+			openHelp();
+			return true;
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+	
+	private void openHelp() {
+		Intent intent = new Intent(this, HelpActivity.class);
+		startActivity(intent);
+	}
+	
 }
