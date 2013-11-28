@@ -24,6 +24,7 @@ import story.book.model.StoryInfo;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,6 +54,7 @@ public class StoryInfoActivity extends Activity  {
 	OnlineStoryController onlineController;
 	
 	StoryInfo storyInfo;
+	Boolean calledByOnline;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +73,7 @@ public class StoryInfoActivity extends Activity  {
 		
 		displayStoryInfo();
 		
-		final Boolean calledByOnline = getIntent().hasExtra("calledByOnline");
+		calledByOnline = getIntent().hasExtra("calledByOnline");
 		
 		final Intent intent = new Intent(this, StoryFragmentReadActivity.class);
 		Button viewButton = (Button) findViewById(R.id.view);
@@ -130,6 +132,14 @@ public class StoryInfoActivity extends Activity  {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case android.R.id.home:
+			if (calledByOnline) {
+				NavUtils.navigateUpTo(this, new Intent(this, OnlineStoriesActivity.class));
+			}
+			else {
+				NavUtils.navigateUpTo(this, new Intent(this, LocalStoriesActivity.class));
+			}
+			return true;
 		case R.id.title_activity_dashboard:
 			Intent intent = new Intent(this, Dashboard.class);
 			startActivity(intent);
