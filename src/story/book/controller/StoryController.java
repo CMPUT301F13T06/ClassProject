@@ -105,6 +105,7 @@ public abstract class StoryController {
 		Story story = io.getStory(oldSID);
 		story.getStoryInfo().setSID(newSID);
 		io.moveDirectory(oldSID, newSID);
+		io.saveStory(story);
 	}
 
 }

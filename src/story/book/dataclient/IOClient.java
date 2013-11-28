@@ -137,6 +137,7 @@ public class IOClient extends DataClient {
 	}
 	
 	public void moveDirectory(int oldSID, int newSID) {
+		new File(story_dir+oldSID+"/"+oldSID).renameTo(new File(story_dir+oldSID+"/"+newSID));
 		new File(story_dir+oldSID).renameTo(new File(story_dir+newSID));
 	}
 
