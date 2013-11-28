@@ -74,7 +74,7 @@ public class AnnotationFragment extends Fragment implements StoryView {
 	Boolean editMode = true;
 
 	Boolean canAnnotate = false;
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -87,17 +87,16 @@ public class AnnotationFragment extends Fragment implements StoryView {
 		SRC = ((StoryFragmentReadActivity)this.getActivity()).getController();
 		SF = SRC.getStartingFragment();
 		FCC = new FragmentCreationController(SF.getFragmentID());
-		
+
 		StoryInfoController SIC = new StoryInfoController();
 		StoryInfo info = SIC.getStoryInfo();
 		if (info.getPublishState() == PublishState.PUBLISHED) {
 			canAnnotate = true;
 		}
-		
+
 		annotationList = new ArrayList<Pair<ArrayList<View>, Annotation>>();
 		SF.addView(this);
 		getFragmentAnnotations();
-		loadAnnotations();
 		displayAnnotations();
 
 		if (savedInstanceState != null && savedInstanceState.containsKey("cameraImageUri")) {
@@ -115,7 +114,6 @@ public class AnnotationFragment extends Fragment implements StoryView {
 		int readingFragmentID = ((StoryFragmentReadActivity) getActivity()).getFragmentID();
 		if (readingFragmentID != SF.getFragmentID()) {
 			getFragmentAnnotations();
-			loadAnnotations();
 		}
 		displayAnnotations();
 	}
@@ -132,15 +130,14 @@ public class AnnotationFragment extends Fragment implements StoryView {
 			outState.putString("cameraImageUri", auri.toString());
 		}
 	}
-	
+
 	Uri auri;
 	private enum Actions {PHOTO, VIDEO, GALLERY, VIDEOPICK}
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		getFragmentAnnotations();
-		loadAnnotations();
 		switch (item.getItemId()) {
-		
+
 		case R.id.text:
 			addNewTextAnnotation();
 			return true;
@@ -179,18 +176,6 @@ public class AnnotationFragment extends Fragment implements StoryView {
 	}
 
 	/**
-	 * loadAnnotations() loads annotation views from the current story fragment
-	 */
-	private void loadAnnotations() {
-		ArrayList<Annotation> annotations = SF.getAnnotations();
-
-		annotationList.clear();
-		for (Annotation i : annotations) {
-			annotationList.add(new Pair<ArrayList<View>, Annotation>(i.getView(SRC.getStoryPath(), false, this.getActivity()), i));
-		}
-	}
-
-	/**
 	 * displayAnnotations() displays all annotations as views 
 	 * by getting them from the corresponding fragment 
 	 * 
@@ -219,7 +204,7 @@ public class AnnotationFragment extends Fragment implements StoryView {
 				showPostButton(position);
 			}
 		}
-		
+
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -296,6 +281,13 @@ public class AnnotationFragment extends Fragment implements StoryView {
 		SF = SRC.getStoryFragment(readingFragmentID);
 		FCC = new FragmentCreationController(SF.getFragmentID());
 		SF.addView(this);
+
+		ArrayList<Annotation> annotations = SF.getAnnotations();
+
+		annotationList.clear();
+		for (Annotation i : annotations) {
+			annotationList.add(new Pair<ArrayList<View>, Annotation>(i.getView(SRC.getStoryPath(), false, this.getActivity()), i));
+		}
 	}
 
 	/**
@@ -304,23 +296,23 @@ public class AnnotationFragment extends Fragment implements StoryView {
 	public void saveAnnotations() {
 		int top = annotationList.size();
 
-		if(annotationList.size() > SF.getAnnotations().size()) {
-			Pair<ArrayList<View>, Annotation> i = annotationList.get(top-1);
-			String cap = ((EditText)i.first.get(i.first.size()-1)).getText().toString();
-			Log.d("DEBUG: Text annotation to be saved", String.valueOf(cap));
-			if (i.first.size() == 2 ) {
-				// Saving a text caption
-				if(cap.length() > 0) {
-					// Set caption
-					i.second.setCaption(cap);
-					FCC.addAnnotation(i.second);
-				}
-			}
-			else {
+
+		Pair<ArrayList<View>, Annotation> i = annotationList.get(top-1);
+		String cap = ((EditText)i.first.get(i.first.size()-1)).getText().toString();
+
+		if (i.first.size() == 2 ) {
+			// Saving a text caption
+			if(cap.length() > 0) {
+				// Set caption
 				i.second.setCaption(cap);
 				FCC.addAnnotation(i.second);
 			}
 		}
+		else {
+			i.second.setCaption(cap);
+			FCC.addAnnotation(i.second);
+		}
+
 	}
 
 	/**
@@ -330,10 +322,9 @@ public class AnnotationFragment extends Fragment implements StoryView {
 	public void update(Object model) {
 		Log.d(String.valueOf(model), "DEBUG: Updated");
 		getFragmentAnnotations();
-		loadAnnotations();
 		displayAnnotations();
 	}
-	
+
 	/**
 	 *Displays a "Post" button which will save the annotation 
 	 *
@@ -345,11 +336,11 @@ public class AnnotationFragment extends Fragment implements StoryView {
 		post.setText("Post");
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
 				LayoutParams.WRAP_CONTENT);
-	
+
 		lp.setMargins(0, 10, 0, 0);
 		lp.addRule(RelativeLayout.BELOW, position);
 		post.setLayoutParams(lp);
-	
+
 		post.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -359,16 +350,16 @@ public class AnnotationFragment extends Fragment implements StoryView {
 				} else {
 					Toast.makeText(StoryApplication.getContext(), R.string.no_internet_annotation, Toast.LENGTH_SHORT).show();
 				}
-				
+
 			}
 		});
-		
+
 		final ScrollView scroll = (ScrollView) rootView.findViewById(R.id.fragment_scrollable);
 		scroll.post(new Runnable() {            
-		    @Override
-		    public void run() {
-		           scroll.fullScroll(View.FOCUS_DOWN);              
-		    }
+			@Override
+			public void run() {
+				scroll.fullScroll(View.FOCUS_DOWN);              
+			}
 		});
 		((ViewGroup) layout).addView(post, lp);
 	}
