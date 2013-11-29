@@ -130,8 +130,7 @@ public class StoryCreationController extends LocalEditingController {
 	 */
 	public void publishStory() {
 
-		
-		Story story = StoryApplication.getCurrentStory();
+		// Story story = StoryApplication.getCurrentStory();
 		StoryInfo storyInfo = story.getStoryInfo();
 		if (storyInfo.getPublishState() == PublishState.UNPUBLISHED) {
 			// Check if the SID has any conflicts with the server and resolve it
@@ -139,7 +138,7 @@ public class StoryCreationController extends LocalEditingController {
 		}
 		storyInfo.setPublishState(PublishState.PUBLISHED);
 		storyInfo.setPublishDate(new Date());
-		StoryApplication.setCurrentStory(story);
+		//StoryApplication.setCurrentStory(story);
 		
 		saveStory();
 		
@@ -187,10 +186,13 @@ public class StoryCreationController extends LocalEditingController {
 		
 			// Change the current Story's SID to the new SID supplied by the
 			// ESClient.
-			StoryApplication.getCurrentStory().getStoryInfo().setSID(id);
+			story.getStoryInfo().setSID(id);
 			
-			//Removes the old one
-			io.deleteStory(SID);
+			// Move the story to new SID folder
+			io.moveDirectory(SID, id);
+			
+			// Save the story
+			saveStory();
 		}
 	}
 
