@@ -61,12 +61,8 @@ public class LocalStoryController extends StoryController {
 	 */
 	public void createStory() {
 		super.clearViewedStory();
-		
-		StoryInfo info = new StoryInfo();
-		info.setAuthor(StoryApplication.getNickname());
-		info.setSID(io.getSID());
-		Story s = new Story(info);
-		StoryApplication.setCurrentStory(s);
+		StoryApplication.setCurrentStory(new Story(
+				new StoryInfo(StoryApplication.getNickname(), io.getSID())));
 	}
 
 	/**

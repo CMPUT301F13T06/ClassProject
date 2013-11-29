@@ -64,6 +64,23 @@ public class StoryInfo {
 	}
 	
 	/**
+	 * Initializes the author and SID to the specified values, and the
+	 * remaining attributes to default values.
+	 * 
+	 * @param 	author	the author of the story
+	 * @param 	SID		the SID of the story
+	 */
+	public StoryInfo(String author, int SID) {
+		setAuthor(author);
+		setSID(SID);
+		setTitle("");
+		setGenre("");
+		setSynopsis("");
+		setPublishState(PublishState.UNPUBLISHED);
+		setStartingFragmentID(-1);
+	}
+	
+	/**
 	 * 
 	 * @return the author of the story
 	 */
