@@ -189,10 +189,8 @@ public class StoryCreationController extends LocalEditingController {
 			// ESClient.
 			StoryApplication.getCurrentStory().getStoryInfo().setSID(id);
 			
-			//Transfer the illustrations to new ID
+			//Transfer the story to new ID
 			io.moveDirectory(SID, id);
-			//Removes the old one
-			io.deleteStory(SID);
 		}
 	}
 
