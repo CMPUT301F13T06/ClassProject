@@ -130,7 +130,7 @@ public class StoryCreationController extends LocalEditingController {
 	 */
 	public void publishStory() {
 
-		// Story story = StoryApplication.getCurrentStory();
+		// Story story = StoryApplication.getCurrentStory(); // why is this here?
 		StoryInfo storyInfo = story.getStoryInfo();
 		if (storyInfo.getPublishState() == PublishState.UNPUBLISHED) {
 			// Check if the SID has any conflicts with the server and resolve it
@@ -138,7 +138,7 @@ public class StoryCreationController extends LocalEditingController {
 		}
 		storyInfo.setPublishState(PublishState.PUBLISHED);
 		storyInfo.setPublishDate(new Date());
-		//StoryApplication.setCurrentStory(story);
+		//StoryApplication.setCurrentStory(story); // why is this here?
 		
 		saveStory();
 		
