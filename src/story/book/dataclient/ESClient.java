@@ -102,7 +102,9 @@ public class ESClient extends DataClient {
 		for (BinaryFile b: files) {
 			String binary_string = super.serialize(b);
 			try {
-				String result = new ESWrite(Annotations_folder).execute(stringSID, binary_string).get();
+				String path = b.getContent();
+				path = FilenameUtils.removeExtension(path);
+				String result = new ESWrite(Annotations_folder).execute(stringSID + "/" + path, binary_string).get();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -124,7 +126,7 @@ public class ESClient extends DataClient {
 	
 	/**
 	 *  Publishes an annotation to a story.	 
-	 *  
+	 *  TODO FIX
 	 * @param annotation to be published
 	 * @param story that the annotation is part of
 	 */
