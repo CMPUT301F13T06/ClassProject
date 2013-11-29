@@ -90,13 +90,11 @@ public class StoryInfoActivity extends Activity  {
 		
 		if (calledByOnline) {
 			Button downloadButton = (Button) findViewById(R.id.download);
-			final Intent intent2 = new Intent(this, StoryFragmentReadActivity.class);
 			downloadButton.setVisibility(View.VISIBLE);
 			downloadButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					onlineController.saveStory();
-					startActivity(intent2);
 				}
 			});
 		}
