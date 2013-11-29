@@ -229,4 +229,8 @@ public class StoryInfo {
 		return this.title + "\n" + this.author +"\n" + this.getPublishDateString();
 	}
 	
+	public void publish(Date publishDate) {
+		setPublishState(PublishState.PUBLISHED);
+		setPublishDate(new Date());
+	}
 }
