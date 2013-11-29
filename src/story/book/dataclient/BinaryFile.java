@@ -13,6 +13,22 @@ public class BinaryFile {
 	private String content;
 	private String base64data;
 
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getBase64data() {
+		return base64data;
+	}
+
+	public void setBase64data(String base64data) {
+		this.base64data = base64data;
+	}
+
 	public BinaryFile(String content, String data) {
 		this.content = content;
 		this.base64data = data;
