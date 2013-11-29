@@ -169,24 +169,19 @@ public class StoryCreationController extends LocalEditingController {
 	 * it is resolved by changing the SID of the current Story to a new SID.
 	 * 
 	 * @param SID the SID being checked for
-	 * @return 
 	 */
 	private void checkSIDConflict(int SID) {
-		
-		// Check if any remote story has conflicting SID. ESClient will return
-		// the original ID if it is free, else it returns a free SID from the
-		// server.
-		int id;
-		if (!es.checkSID(SID)) {
-			id = es.getSID();
-		
-			// Change the current Story's SID to the new SID supplied by the
-			// ESClient.
-			StoryApplication.getCurrentStory().getStoryInfo().setSID(id);
-			
-			//Transfer the story to new ID
-			io.moveDirectory(SID, id);
-		}
+		if (!es.checkSID(SID)) io.moveDirectory(SID, replaceSID());
+	}
+	
+	/**
+	 * Changes the SID of the current story to a new SID fetched from the
+	 * server.
+	 */
+	private int replaceSID() {
+		int id = es.getSID();
+		story.getStoryInfo().setSID(id);
+		return id;
 	}
 
 }
