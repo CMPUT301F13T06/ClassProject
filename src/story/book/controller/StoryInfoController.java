@@ -52,9 +52,8 @@ public class StoryInfoController extends LocalEditingController {
 	 */
 	@Override
 	public void saveStory() {
-		if (storyInfo.getAuthor().equals("")) {
+		if (storyInfo.getAuthor().equals(""))
 			storyInfo.setAuthor(StoryApplication.getNickname());
-		}
 		super.saveStory();
 	}
 }
