@@ -30,15 +30,15 @@ import story.book.view.StoryApplication;
  *
  */
 public class StoryReadController {
-	private Story story;
-	private IOClient io;
+	private FragmentManager fragmentManager;
+	private IOHelper ioHelper;
 	
 	/**
 	 * Initializes the story to the current application story
 	 */
 	public StoryReadController() {
-		story = StoryApplication.getCurrentStory();
-		io = StoryApplication.getIOClient();
+		fragmentManager = new FragmentManager();
+		ioHelper = new IOHelper();
 	}
 	
 	/**
@@ -46,12 +46,7 @@ public class StoryReadController {
 	 * @return returns the fragment ID of the starting fragment
 	 */
 	public StoryFragment getStartingFragment() {
-		int FID = story.getStoryInfo().getStartingFragmentID();
-		if (FID != -1 ) {
-			return story.getStoryFragments().get(FID);
-		} else {
-			return null;
-		}
+		return fragmentManager.getStartingFragment();
 	}
 	
 	/**
@@ -62,15 +57,65 @@ public class StoryReadController {
 	 * @return	the <code>StoryFragment</code> with the specified ID
 	 */
 	public StoryFragment getStoryFragment(int storyFragmentID) {
-		return story.getStoryFragments().get(storyFragmentID);
+		return fragmentManager.getStoryFragment(storyFragmentID);
 	}
 	
 	/**
 	 * @return the local file path to the current story's directory
 	 */
 	public String getStoryPath() {
-		return io.getLocalDirectory() 
-				+ StoryApplication.getCurrentStory().getStoryInfo().getSID() 
-				+ "/";
+		return ioHelper.getStoryPath();
 	}
+	
+	private class FragmentManager {
+		
+		private Story story;
+		
+		public FragmentManager() {
+			story = StoryApplication.getCurrentStory();
+		}
+		
+		/**
+		 * 
+		 * @return returns the fragment ID of the starting fragment
+		 */
+		public StoryFragment getStartingFragment() {
+			int FID = story.getStoryInfo().getStartingFragmentID();
+			if (FID != -1 ) {
+				return story.getStoryFragments().get(FID);
+			} else {
+				return null;
+			}
+		}
+		
+		/**
+		 * Gets the <code>StoryFragment</code> with the specified fragment ID from
+		 * the current application story.
+		 *  
+		 * @param 	storyFragmentID	the ID of the fragment to get
+		 * @return	the <code>StoryFragment</code> with the specified ID
+		 */
+		public StoryFragment getStoryFragment(int storyFragmentID) {
+			return story.getStoryFragments().get(storyFragmentID);
+		}
+	}
+	
+	private class IOHelper {
+		
+		private IOClient io;
+		
+		public IOHelper() {
+			io = StoryApplication.getIOClient();
+		}
+		
+		/**
+		 * @return the local file path to the current story's directory
+		 */
+		public String getStoryPath() {
+			return io.getLocalDirectory() 
+					+ StoryApplication.getCurrentStory().getStoryInfo().getSID() 
+					+ "/";
+		}
+	}
+	
 }
