@@ -73,14 +73,38 @@ public class Dashboard extends Activity {
 		initializeLocalButton();
 		initializeOnlineButton();
 	}
+	
+	private class ButtonFormat {
+		
+		public String connection;
+		public String name;
+		public Typeface font;
+		
+		public ButtonFormat(String connection, String name, Typeface font) {
+			this.connection = connection;
+			this.name = name;
+			this.font = font;
+		}
+	}
+	
+	private void formatButton(Button button, ButtonFormat format) {
+		Spannable span = new SpannableString(format.connection + "\n" + format.name);
+		span.setSpan(new RelativeSizeSpan(0.5f), 0, format.connection.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		button.setText(span);
+		button.setTypeface(format.font);
+	}
 
 	private void initializeLocalButton() {
 		Button localButton = (Button) findViewById(R.id.local_stories);
 		final Intent localIntent = new Intent(this, LocalStoriesActivity.class);
-		Spannable span = new SpannableString(getString(R.string.dashboard_local) + "\n" + getString(R.string.dashboard_nook));
-		span.setSpan(new RelativeSizeSpan(0.5f), 0, getString(R.string.dashboard_local).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE );
-		localButton.setText(span);
-		localButton.setTypeface(Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/homey.ttf"));
+
+		formatButton(localButton, new ButtonFormat(
+				getString(R.string.dashboard_local), 
+				getString(R.string.dashboard_nook), 
+				Typeface.createFromAsset(getApplicationContext().getAssets(), 
+						"fonts/homey.ttf")
+		));
+		
 		localButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				//Navigate to the Local Stories
@@ -92,19 +116,23 @@ public class Dashboard extends Activity {
 	private void initializeOnlineButton() {
 		Button onlineButton = (Button) findViewById(R.id.online_stories);
 		final Intent onlineIntent = new Intent(this, OnlineStoriesActivity.class);
-		Spannable span = new SpannableString(getString(R.string.dashboard_online) + "\n" + getString(R.string.dashboard_club));
-		span.setSpan(new RelativeSizeSpan(0.5f), 0, getString(R.string.dashboard_online).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE );
-		onlineButton.setText(span);
-		onlineButton.setTypeface(Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/adventure.ttf"));
+		
+		formatButton(onlineButton, new ButtonFormat(
+				getString(R.string.dashboard_online), 
+				getString(R.string.dashboard_club), 
+				Typeface.createFromAsset(getApplicationContext().getAssets(), 
+						"fonts/adventure.ttf")
+		));
+		
 		onlineButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				//Navigate to the Online Stories
-				if (StoryApplication.checkInternetConnected()) {
+				// Navigate to the Online Stories
+				if (StoryApplication.checkInternetConnected())
 					startActivity(onlineIntent);
-				} else {
-					//Tell user to connect to internet
-					Toast.makeText(getApplicationContext(), R.string.no_internet_library, Toast.LENGTH_SHORT).show();
-				}
+				// Tell user to connect to internet if there is no connection
+				else Toast.makeText(getApplicationContext(), 
+						R.string.no_internet_library, 
+						Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
