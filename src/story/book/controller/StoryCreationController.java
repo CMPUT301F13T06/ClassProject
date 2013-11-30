@@ -41,10 +41,12 @@ public class StoryCreationController extends LocalEditingController {
 	
 	private Story story;
 	private Publisher publisher;
+	private FragmentManager fragmentManager;
 	
 	public StoryCreationController() {
 		super();
 		this.story = StoryApplication.getCurrentStory();
+		this.fragmentManager = new FragmentManager();
 		this.publisher = new Publisher();
 	}
 	
@@ -104,7 +106,7 @@ public class StoryCreationController extends LocalEditingController {
 	 * @param fragmentID of StoryFragment
 	 */
 	public void setStartingFragment(int fragmentID) {
-		story.getStoryInfo().setStartingFragmentID(fragmentID);
+		fragmentManager.setStartingFragment(fragmentID);
 	}
 	
 	/**
@@ -113,7 +115,7 @@ public class StoryCreationController extends LocalEditingController {
 	 * @param fragmentID of StoryFragment
 	 */
 	public int getStartingFragment() {
-		return story.getStoryInfo().getStartingFragmentID();
+		return fragmentManager.getStartingFragment();
 	}
 	
 	/**
@@ -130,19 +132,7 @@ public class StoryCreationController extends LocalEditingController {
 	 * @return	<code>HashMap</code> containing matching fragments
 	 */
 	public HashMap<Integer, StoryFragment> searchFragments(String term) {
-		
-		HashMap<Integer, StoryFragment> matchingFragments = new HashMap<Integer, StoryFragment>();
-		Collection<StoryFragment> allFragments = story.getStoryFragments().values();
-		Iterator<StoryFragment> fragmentIterator = allFragments.iterator();
-		
-		while (fragmentIterator.hasNext()) {
-			StoryFragment fragment = fragmentIterator.next();
-			if (fragment.getFragmentTitle().toLowerCase().contains(term.toLowerCase())) {
-				matchingFragments.put(fragment.getFragmentID(), fragment);
-			}
-		}
-		
-		return matchingFragments;
+		return fragmentManager.searchFragments(term);
 	}
 	
 	/**
@@ -201,6 +191,52 @@ public class StoryCreationController extends LocalEditingController {
 			int id = es.getSID();
 			story.getStoryInfo().setSID(id);
 			return id;
+		}
+	}
+	
+	private class FragmentManager {
+		
+		public FragmentManager() {		}
+		
+		/**
+		 * Sets an instance of StoryFragment as the 
+		 * starting fragment for the current Story.
+		 * 
+		 * @param fragmentID of StoryFragment
+		 */
+		public void setStartingFragment(int fragmentID) {
+			story.getStoryInfo().setStartingFragmentID(fragmentID);
+		}
+		
+		/**
+		 * Get the starting fragment of the current Story.
+		 * 
+		 * @param fragmentID of StoryFragment
+		 */
+		public int getStartingFragment() {
+			return story.getStoryInfo().getStartingFragmentID();
+		}
+		
+		/**
+		 * Returns a <code>HashMap</code> containing all story fragments whose
+		 * title attributes contain the specified <code>String</code>.
+		 * @param 	term	the <code>String</code> to search for
+		 * @return	<code>HashMap</code> containing matching fragments
+		 */
+		public HashMap<Integer, StoryFragment> searchFragments(String term) {
+			
+			HashMap<Integer, StoryFragment> matchingFragments = new HashMap<Integer, StoryFragment>();
+			Collection<StoryFragment> allFragments = story.getStoryFragments().values();
+			Iterator<StoryFragment> fragmentIterator = allFragments.iterator();
+			
+			while (fragmentIterator.hasNext()) {
+				StoryFragment fragment = fragmentIterator.next();
+				if (fragment.getFragmentTitle().toLowerCase().contains(term.toLowerCase())) {
+					matchingFragments.put(fragment.getFragmentID(), fragment);
+				}
+			}
+			
+			return matchingFragments;
 		}
 	}
 
