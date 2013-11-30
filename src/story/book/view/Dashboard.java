@@ -61,26 +61,37 @@ public class Dashboard extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dashboard);
 		
-		// Initialize view and button references
 		tView = (TextView) findViewById(R.id.start_adventure);
 		enterName = (EditText) findViewById(R.id.enter_name);
 		defaultName = this.getString(R.string.default_nickname);
 		
-		displayNickname();
-		
 		tView.setTypeface(Typeface.createFromAsset(getApplicationContext().getAssets(),
 				"fonts/RobotoSlab-Light.ttf"));
 		
+		displayNickname();
 		initializeLocalButton();
 		initializeOnlineButton();
 	}
 	
+	/**
+	 * Parameter object which defines the format of a button for the
+	 * <code>formatButton</code> method
+	 * @author Alex
+	 *
+	 */
 	private class ButtonFormat {
 		
 		public String connection;
 		public String name;
 		public Typeface font;
 		
+		/**
+		 * Constructor initializing the format attributes of a button
+		 * 
+		 * @param connection	local or online
+		 * @param name			name of the library
+		 * @param font			<code>Typeface</code> for the font
+		 */
 		public ButtonFormat(String connection, String name, Typeface font) {
 			this.connection = connection;
 			this.name = name;
@@ -88,6 +99,13 @@ public class Dashboard extends Activity {
 		}
 	}
 	
+	/**
+	 * Formats the specified button using attributes from the 
+	 * <code>ButtonFormat</code> parameter object.
+	 * 
+	 * @param button	the <code>Button</code> to format
+	 * @param format	the parameter object defining the format of the button
+	 */
 	private void formatButton(Button button, ButtonFormat format) {
 		Spannable span = new SpannableString(format.connection + "\n" + format.name);
 		span.setSpan(new RelativeSizeSpan(0.5f), 0, format.connection.length(), 
@@ -96,6 +114,9 @@ public class Dashboard extends Activity {
 		button.setTypeface(format.font);
 	}
 
+	/**
+	 * Initializes the button for the local story library
+	 */
 	private void initializeLocalButton() {
 		Button localButton = (Button) findViewById(R.id.local_stories);
 		final Intent localIntent = new Intent(this, LocalStoriesActivity.class);
@@ -115,6 +136,9 @@ public class Dashboard extends Activity {
 		});
 	}
 	
+	/**
+	 * Initializes the button for the online story library
+	 */
 	private void initializeOnlineButton() {
 		Button onlineButton = (Button) findViewById(R.id.online_stories);
 		final Intent onlineIntent = new Intent(this, OnlineStoriesActivity.class);
