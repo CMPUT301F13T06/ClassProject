@@ -78,13 +78,8 @@ public class Dashboard extends Activity {
 		
 		tView2.setTypeface(tf);
 		
-		String local = "Local"; // Move to res
-		String nook = "Story Nook"; // Move to res
-		String online = "Online"; // Move to res
-		String club = "Story Club"; // Move to res
-		
-		Spannable span = new SpannableString(local + "\n" + nook);
-		span.setSpan(new RelativeSizeSpan(0.5f), 0, local.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE );
+		Spannable span = new SpannableString(getString(R.string.dashboard_local) + "\n" + getString(R.string.dashboard_nook));
+		span.setSpan(new RelativeSizeSpan(0.5f), 0, getString(R.string.dashboard_local).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE );
 		localButton.setText(span);
 		localButton.setTypeface(ltf);
 		localButton.setOnClickListener(new OnClickListener() {
@@ -94,8 +89,8 @@ public class Dashboard extends Activity {
 			}
 		});
 		
-		span = new SpannableString(online + "\n" + club);
-		span.setSpan(new RelativeSizeSpan(0.5f), 0, online.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE );
+		span = new SpannableString(getString(R.string.dashboard_online) + "\n" + getString(R.string.dashboard_club));
+		span.setSpan(new RelativeSizeSpan(0.5f), 0, getString(R.string.dashboard_online).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE );
 		onlineButton.setText(span);
 		onlineButton.setTypeface(otf);
 		onlineButton.setOnClickListener(new OnClickListener() {
