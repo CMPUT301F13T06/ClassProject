@@ -11,7 +11,7 @@ import android.util.Base64;
 public class BinaryFile {
 
 	private String content;
-	private String base64data;
+	private byte[] base64data;
 
 	public String getContent() {
 		return content;
@@ -21,17 +21,17 @@ public class BinaryFile {
 		this.content = content;
 	}
 
-	public String getBase64data() {
+	public byte[] getBase64data() {
 		return base64data;
 	}
 
-	public void setBase64data(String base64data) {
+	public void setBase64data(byte[] base64data) {
 		this.base64data = base64data;
 	}
 
-	public BinaryFile(String content, String data) {
+	public BinaryFile(String content, byte[] bs) {
 		this.content = content;
-		this.base64data = data;
+		this.base64data = bs;
 	}
 
 	public void decode(String path) {

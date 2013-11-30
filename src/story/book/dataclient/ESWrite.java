@@ -36,6 +36,7 @@ public class ESWrite extends ESCommand {
 			conn.setDoOutput(true);
 			conn.setChunkedStreamingMode(0);
 			conn.setRequestMethod("PUT");
+			conn.setRequestProperty("Accept","application/json");
 			conn.setConnectTimeout(Integer.MAX_VALUE);
 			conn.connect();
 			

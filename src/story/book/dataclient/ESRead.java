@@ -31,7 +31,11 @@ public class ESRead extends ESCommand {
 	private String doESRead(String location) {
 		try {
 			openConnection(location);
-			
+			conn.setChunkedStreamingMode(0);
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Accept","application/json");
+			conn.setConnectTimeout(Integer.MAX_VALUE);
+			conn.connect();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			String server_read = "";
 			String inputLine;

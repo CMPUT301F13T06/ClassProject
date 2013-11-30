@@ -27,12 +27,12 @@ import story.book.view.StoryApplication;
 
 public class BinaryList {
 	private ArrayList<String> contents;
-	private ArrayList<String> base64data;
+	private ArrayList<byte[]> base64data;
 	private int SID;
 	
 	public BinaryList(int SID) {
 		contents = new ArrayList<String>();
-		base64data = new ArrayList<String>();
+		base64data = new ArrayList<byte[]>();
 		this.SID = SID;
 	}
 	
@@ -40,13 +40,13 @@ public class BinaryList {
 		return contents;
 	}
 	
-	public ArrayList<String> getDataArray(){
+	public ArrayList<byte[]> getDataArray(){
 		return base64data;
 	}
 	
 	public void appendBinaryList(BinaryList b) {
 		ArrayList<String> c = b.getContentsArray();
-		ArrayList<String> d = b.getDataArray();
+		ArrayList<byte[]> d = b.getDataArray();
 		for (int i = 0; i < c.size(); i++) {
 			contents.add(c.get(i));
 			base64data.add(d.get(i));
