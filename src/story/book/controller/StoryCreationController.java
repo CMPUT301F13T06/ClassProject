@@ -40,14 +40,12 @@ import story.book.view.StoryApplication;
 public class StoryCreationController extends LocalEditingController {
 	
 	private Story story;
-	private ESClient es;
-	private IOClient io;
+	private Publisher publisher;
 	
 	public StoryCreationController() {
 		super();
-		es = StoryApplication.getESClient();
-		io = StoryApplication.getIOClient();
 		this.story = StoryApplication.getCurrentStory();
+		this.publisher = new Publisher();
 	}
 	
 	/** 
@@ -126,23 +124,6 @@ public class StoryCreationController extends LocalEditingController {
 	}
 	
 	/**
-	 * Publishes the Story with the specified SID to the server.
-	 */
-	public void publishStory() {
-
-		StoryInfo storyInfo = story.getStoryInfo();
-		
-		// If never published, check and resolve any SID conflicts with server
-		// and set the publishState to published.
-		if (storyInfo.getPublishState() == PublishState.UNPUBLISHED)
-			checkSIDConflict(storyInfo.getSID());
-		
-		storyInfo.publish(new Date());
-		saveStory();
-		es.saveStory(story);
-	}
-	
-	/**
 	 * Returns a <code>HashMap</code> containing all story fragments whose
 	 * title attributes contain the specified <code>String</code>.
 	 * @param 	term	the <code>String</code> to search for
@@ -165,23 +146,62 @@ public class StoryCreationController extends LocalEditingController {
 	}
 	
 	/**
-	 * Checks if an SID already exists on the server. If there is a conflict, 
-	 * it is resolved by changing the SID of the current Story to a new SID.
-	 * 
-	 * @param SID the SID being checked for
+	 * Publishes the Story to the server
 	 */
-	private void checkSIDConflict(int SID) {
-		if (!es.checkSID(SID)) io.moveDirectory(SID, replaceSID());
+	public void publishStory() {
+		publisher.publishStory();
 	}
 	
 	/**
-	 * Changes the SID of the current story to a new SID fetched from the
-	 * server.
+	 * Helper class which is responsible for publishing stories using the
+	 * ESClient.
+	 * 
+	 * @author Alex
 	 */
-	private int replaceSID() {
-		int id = es.getSID();
-		story.getStoryInfo().setSID(id);
-		return id;
+	private class Publisher {
+		
+		private ESClient es;
+		
+		public Publisher() {
+			es = StoryApplication.getESClient();
+		}
+		
+		/**
+		 * Publishes the Story to the server.
+		 */
+		public void publishStory() {
+
+			StoryInfo storyInfo = story.getStoryInfo();
+			
+			// If never published, check and resolve any SID conflicts with server
+			// and set the publishState to published.
+			if (storyInfo.getPublishState() == PublishState.UNPUBLISHED)
+				checkSIDConflict(storyInfo.getSID());
+			
+			storyInfo.publish(new Date());
+			saveStory();
+			es.saveStory(story);
+		}
+		
+		/**
+		 * Checks if an SID already exists on the server. If there is a conflict, 
+		 * it is resolved by changing the SID of the current Story to a new SID.
+		 * 
+		 * @param SID the SID being checked for
+		 */
+		private void checkSIDConflict(int SID) {
+			if (!es.checkSID(SID)) io.moveDirectory(SID, replaceSID());
+		}
+		
+		/**
+		 * Changes the SID of the current story to a new SID fetched from the
+		 * server.
+		 */
+		private int replaceSID() {
+			int id = es.getSID();
+			story.getStoryInfo().setSID(id);
+			return id;
+		}
 	}
 
 }
