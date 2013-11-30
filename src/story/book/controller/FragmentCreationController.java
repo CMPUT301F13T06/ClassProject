@@ -80,15 +80,15 @@ public class FragmentCreationController extends LocalEditingController {
 	}
 
 	/**
-	 * saveAnnotation() saves newly added annotations by extracting the media/caption
-	 * from the its view and adding it to the storyFragment by calling 
+	 * saveAnnotation() saves newly added annotation objects by assigning a caption
+	 * from its view and adding it to the storyFragment by calling 
 	 * <code>addAnnotation(Annotation annotation)</code>
 	 * 
 	 * @param Pair data structure which contains an ArrayList of the annotation's views
 	 * (Author tag/media/caption), and the <code>Annotation</code> object itself
+	 * @param String caption to be set in the annotation
 	 */
-	public void saveAnnotations(Pair<ArrayList<View>, Annotation> i) {
-		String cap = ((EditText)i.first.get(i.first.size()-1)).getText().toString();
+	public void saveAnnotations(Pair<ArrayList<View>, Annotation> i, String cap) {
 		if (i.first.size() == 2 ) {
 			// Saving a text caption
 			if(cap.length() > 0) {
