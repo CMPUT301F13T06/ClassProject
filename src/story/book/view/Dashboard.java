@@ -65,16 +65,18 @@ public class Dashboard extends Activity {
 		tView2 = (TextView) findViewById(R.id.start_adventure);
 		enterName = (EditText) findViewById(R.id.enter_name);
 		defaultName = this.getString(R.string.default_nickname);
-		Button localButton = (Button) findViewById(R.id.local_stories);
-		Button onlineButton = (Button) findViewById(R.id.online_stories);
 		
 		displayNickname();
 		
-		final Intent localIntent = new Intent(this, LocalStoriesActivity.class); // In-line temp
-		final Intent onlineIntent = new Intent(this, OnlineStoriesActivity.class); // In-line temp
-		
 		tView2.setTypeface(Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/RobotoSlab-Light.ttf"));
 		
+		initializeLocalButton();
+		initializeOnlineButton();
+	}
+
+	private void initializeLocalButton() {
+		Button localButton = (Button) findViewById(R.id.local_stories);
+		final Intent localIntent = new Intent(this, LocalStoriesActivity.class);
 		Spannable span = new SpannableString(getString(R.string.dashboard_local) + "\n" + getString(R.string.dashboard_nook));
 		span.setSpan(new RelativeSizeSpan(0.5f), 0, getString(R.string.dashboard_local).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE );
 		localButton.setText(span);
@@ -85,8 +87,12 @@ public class Dashboard extends Activity {
 				startActivity(localIntent);
 			}
 		});
-		
-		span = new SpannableString(getString(R.string.dashboard_online) + "\n" + getString(R.string.dashboard_club));
+	}
+	
+	private void initializeOnlineButton() {
+		Button onlineButton = (Button) findViewById(R.id.online_stories);
+		final Intent onlineIntent = new Intent(this, OnlineStoriesActivity.class);
+		Spannable span = new SpannableString(getString(R.string.dashboard_online) + "\n" + getString(R.string.dashboard_club));
 		span.setSpan(new RelativeSizeSpan(0.5f), 0, getString(R.string.dashboard_online).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE );
 		onlineButton.setText(span);
 		onlineButton.setTypeface(Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/adventure.ttf"));
@@ -102,7 +108,7 @@ public class Dashboard extends Activity {
 			}
 		});
 	}
-
+	
 	@Override
 	protected void onPause() {
 		super.onPause();
