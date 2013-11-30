@@ -161,7 +161,8 @@ public class StoryCreationController extends LocalEditingController {
 		 */
 		public void publishStory() {
 
-			StoryInfo storyInfo = story.getStoryInfo();
+			Story storyToPublish = StoryApplication.getCurrentStory();
+			StoryInfo storyInfo = storyToPublish.getStoryInfo();
 			
 			// If never published, check and resolve any SID conflicts with server
 			// and set the publishState to published.
@@ -169,6 +170,8 @@ public class StoryCreationController extends LocalEditingController {
 				checkSIDConflict(storyInfo.getSID());
 			
 			storyInfo.publish(new Date());
+			StoryApplication.setCurrentStory(storyToPublish);
+			
 			saveStory();
 			es.saveStory(story);
 		}
