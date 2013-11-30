@@ -65,12 +65,12 @@ public class ReadingFragment extends Fragment {
 	ArrayList<DecisionBranch> decisions;
 	ArrayList<Button> buttons;
 	View rootView;
-
+	ScrollView scr;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.reading_fragment, container, false);
-
+		scr = (ScrollView) rootView.findViewById(R.id.fragment_scrollable);
 		SRC = ((StoryFragmentReadActivity)this.getActivity()).getController();
 		SF = SRC.getStoryFragment(((StoryFragmentReadActivity) getActivity()).getFragmentID());
 		displayFragment(SF);
@@ -188,7 +188,6 @@ public class ReadingFragment extends Fragment {
 				//TODO: set marquee :)
 				((StoryFragmentReadActivity) getActivity()).setActionBarTitle(SF.getFragmentTitle());
 				((StoryFragmentReadActivity) getActivity()).setFragmentID(SF.getFragmentID());
-				final ScrollView scr = (ScrollView) rootView.findViewById(R.id.fragment_scrollable);
 				scr.post(new Runnable() {            
 					@Override
 					public void run() {
