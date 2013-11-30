@@ -14,6 +14,12 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:text="@string/help_dashboard" />
+
+	    <ImageView
+	        android:id="@+id/imageView1"
+	        android:layout_width="wrap_content"
+	        android:layout_height="60dp"
+	        android:src="@drawable/help_enter_nickname" />
 	
 	    <TextView
 	        android:id="@+id/textView1"
@@ -23,6 +29,12 @@
 	        android:layout_height="wrap_content"
 	        android:text="@string/help_title_online_story_club"
 	        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+	    <ImageView
+	        android:id="@+id/imageView2"
+	        android:layout_width="wrap_content"
+	        android:layout_height="80dp"
+	        android:src="@drawable/help_online_story_club" />
 
 	    <TextView
 	        android:id="@+id/textView2"
@@ -41,6 +53,12 @@
 	        android:layout_height="wrap_content"
 	        android:text="@string/help_1_reading_p1" />
 
+	    <ImageView
+	        android:id="@+id/imageView3"
+	        android:layout_width="wrap_content"
+	        android:layout_height="200dp"
+	        android:src="@drawable/help_view_online" />
+
 	    <TextView
 	        android:id="@+id/textView4"
 	        android:paddingTop="5dp"
@@ -48,6 +66,12 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="@string/help_1_reading_p2" />
+
+	    <ImageView
+	        android:id="@+id/imageView4"
+	        android:layout_width="wrap_content"
+	        android:layout_height="190dp"
+	        android:src="@drawable/help_decision_branch" />
 
 	    <TextView
 	        android:id="@+id/textView5"
@@ -65,6 +89,19 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="@string/help_1_annotating_p1" />
+
+	    <ImageView
+	        android:id="@+id/imageView5"
+	        android:layout_width="wrap_content"
+	        android:layout_height="95dp"
+	        android:src="@drawable/help_tap_annotations" />
+
+	    <ImageView
+	        android:id="@+id/imageView6"
+	        android:layout_width="wrap_content"
+	        android:layout_height="143dp"
+	        android:paddingTop="20dp"
+	        android:src="@drawable/help_post_annotation" />
 
 	    <TextView
 	        android:id="@+id/textView7"
@@ -93,6 +130,12 @@
 	        android:layout_height="wrap_content"
 	        android:text="@string/help_2_reading_p1" />
 
+	    <ImageView
+	        android:id="@+id/imageView7"
+	        android:layout_width="wrap_content"
+	        android:layout_height="210dp"
+	        android:src="@drawable/help_read_story" />
+
 	    <TextView
 	        android:id="@+id/textView10"
 	        android:paddingTop="5dp"
@@ -109,6 +152,12 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="@string/help_2_editing_p1" />
+
+	    <ImageView
+	        android:id="@+id/imageView8"
+	        android:layout_width="wrap_content"
+	        android:layout_height="120dp"
+	        android:src="@drawable/help_edit_story" />
 
 	    <TextView
 	        android:id="@+id/textView12"
