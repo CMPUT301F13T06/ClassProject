@@ -89,19 +89,13 @@ public class FragmentCreationController extends LocalEditingController {
 	 * @param String caption to be set in the annotation
 	 */
 	public void saveAnnotations(Pair<ArrayList<View>, Annotation> i, String cap) {
-		if (i.first.size() == 2 ) {
-			// Saving a text caption
-			if(cap.length() > 0) {
-				// Set caption
-				i.second.setCaption(cap);
-				this.addAnnotation(i.second);
-			}
-		}
-		else {
-			i.second.setCaption(cap);
-			this.addAnnotation(i.second);
-		}
-
+		if (i.first.size() == 2 && cap.isEmpty())
+			addAnnotationWithCaption(i.second, cap);
+	}
+	
+	private void addAnnotationWithCaption(Annotation annotation, String caption) {
+		annotation.setCaption(caption);
+		this.addAnnotation(annotation);
 	}
 
 	/**
