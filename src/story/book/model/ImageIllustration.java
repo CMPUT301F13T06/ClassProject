@@ -17,12 +17,8 @@
 
 package story.book.model;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
-
-import story.book.view.StoryApplication;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -38,8 +34,10 @@ public class ImageIllustration extends BinaryIllustration {
 	
 	/**
 	 * The picture at the specified location will be formated here 
-	 * for reduced size and correct orrientation.
-	 * @param content
+	 * for reduced size and correct orientation.
+	 * 
+	 * 
+	 * @param content of the file name saved directly to the story folder.
 	 * 
 	 * @author Anthony Ou
 	 * 
@@ -47,37 +45,38 @@ public class ImageIllustration extends BinaryIllustration {
 	public ImageIllustration(Uri content) {
 		super();
 		setContent(content.getLastPathSegment());
-		Bitmap bmp =  BitmapFactory.decodeFile(content.getPath());
+		save(content, content);
+	}
+	
+	/**
+	 * This is called when the path of the content is
+	 * not in the correct story folder.
+	 * 
+	 * @param content
+	 * @param savePath
+	 */
+	public ImageIllustration(Uri content, Uri savePath) {
+		super();
+		setContent(savePath.getLastPathSegment());
+		save(content, savePath);
+
+	}
+
+	private void save(Uri givenPath, Uri savePath) {
+		Bitmap bmp =  BitmapFactory.decodeFile(givenPath.getPath());
 		try {
 			if(bmp.getWidth() > bmp.getHeight()) {
 				Matrix matrix = new Matrix();
 				matrix.postRotate(90);
 				Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
 			}
-			bmp.compress(CompressFormat.JPEG, 90, new FileOutputStream(content.getPath()));
+			bmp.compress(CompressFormat.JPEG, 50, new FileOutputStream(savePath.getPath()));
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public ImageIllustration(Uri content, Uri savePath) {
-		super();
-		setContent(savePath.getLastPathSegment());
-		Bitmap bmp =  BitmapFactory.decodeFile(content.getPath());
-		try {
-			if(bmp.getWidth() > bmp.getHeight()) {
-				Matrix matrix = new Matrix();
-				matrix.postRotate(90);
-				Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
-			}
-			bmp.compress(CompressFormat.JPEG, 90, new FileOutputStream(savePath.getPath()));
-			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-
 	/**
 	 * return an ImageView 
 	 */

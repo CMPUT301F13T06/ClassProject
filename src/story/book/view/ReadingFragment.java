@@ -17,7 +17,6 @@
 package story.book.view;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
 
 import story.book.view.R;
@@ -25,14 +24,10 @@ import story.book.controller.StoryReadController;
 import story.book.model.DecisionBranch;
 import story.book.model.Illustration;
 import story.book.model.StoryFragment;
-import story.book.model.TextIllustration;
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.ActionBar.LayoutParams;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,12 +35,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 /**
  * ReadingFragment is the interface users can use to read story
@@ -65,12 +57,12 @@ public class ReadingFragment extends Fragment {
 	ArrayList<DecisionBranch> decisions;
 	ArrayList<Button> buttons;
 	View rootView;
-
+	ScrollView scr;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.reading_fragment, container, false);
-
+		scr = (ScrollView) rootView.findViewById(R.id.fragment_scrollable);
 		SRC = ((StoryFragmentReadActivity)this.getActivity()).getController();
 		SF = SRC.getStoryFragment(((StoryFragmentReadActivity) getActivity()).getFragmentID());
 		displayFragment(SF);
@@ -188,7 +180,6 @@ public class ReadingFragment extends Fragment {
 				//TODO: set marquee :)
 				((StoryFragmentReadActivity) getActivity()).setActionBarTitle(SF.getFragmentTitle());
 				((StoryFragmentReadActivity) getActivity()).setFragmentID(SF.getFragmentID());
-				final ScrollView scr = (ScrollView) rootView.findViewById(R.id.fragment_scrollable);
 				scr.post(new Runnable() {            
 					@Override
 					public void run() {

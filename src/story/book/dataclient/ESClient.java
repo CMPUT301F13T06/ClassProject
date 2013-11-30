@@ -93,22 +93,18 @@ public class ESClient extends DataClient {
 				if (i instanceof BinaryIllustration) {
 					BinaryIllustration bi = (BinaryIllustration)i;
 					BinaryFile b = new BinaryFile(bi.getContent(), bi.encodeIllustration(path));
-					files.add(b);
+					String binary_string = super.serialize(b);
+					try {
+						String filepath = b.getContent();
+						filepath = FilenameUtils.removeExtension(filepath);
+						String result = new ESWrite(Annotations_folder).execute(stringSID + "/" + filepath, binary_string).get();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 			
-		}
-		
-		for (BinaryFile b: files) {
-			String binary_string = super.serialize(b);
-			try {
-				String path = b.getContent();
-				path = FilenameUtils.removeExtension(path);
-				String result = new ESWrite(Annotations_folder).execute(stringSID + "/" + path, binary_string).get();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 		
 		// Write the binary data to the server
