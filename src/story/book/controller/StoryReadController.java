@@ -80,12 +80,8 @@ public class StoryReadController {
 		 * @return returns the fragment ID of the starting fragment
 		 */
 		public StoryFragment getStartingFragment() {
-			int FID = story.getStoryInfo().getStartingFragmentID();
-			if (FID != -1 ) {
-				return story.getStoryFragments().get(FID);
-			} else {
-				return null;
-			}
+			return (story.getStoryInfo().getStartingFragmentID() != -1) ? 
+					story.getStoryFragment(story.getStoryInfo().getStartingFragmentID()) : null;
 		}
 		
 		/**
