@@ -70,7 +70,7 @@ public class ImageIllustration extends BinaryIllustration {
 				matrix.postRotate(90);
 				Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
 			}
-			bmp.compress(CompressFormat.JPEG, 50, new FileOutputStream(givenPath.getPath()));
+			bmp.compress(CompressFormat.JPEG, 50, new FileOutputStream(savePath.getPath()));
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
