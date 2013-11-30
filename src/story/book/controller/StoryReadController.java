@@ -96,7 +96,7 @@ public class StoryReadController {
 		 * @return	the <code>StoryFragment</code> with the specified ID
 		 */
 		public StoryFragment getStoryFragment(int storyFragmentID) {
-			return story.getStoryFragments().get(storyFragmentID);
+			return story.getStoryFragment(storyFragmentID);
 		}
 	}
 	

@@ -123,6 +123,15 @@ public class Story extends StoryModel<StoryView> {
 	}
 	
 	/**
+	 * Returns the <code>StoryFragment</code> with the specified fragment ID
+	 * 
+	 * @return	<code>StoryFragment</code> with specified ID
+	 */
+	public StoryFragment getStoryFragment(int fragmentID) {
+		return fragmentList.get(fragmentID);
+	}
+	
+	/**
 	 * Returns the next available fragment ID
 	 * 
 	 * @return	the next available fragment ID
