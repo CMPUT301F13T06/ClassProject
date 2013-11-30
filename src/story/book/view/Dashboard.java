@@ -56,13 +56,13 @@ public class Dashboard extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dashboard);
-
+		
+		// Initialize view and button references
+		tView2 = (TextView) findViewById(R.id.start_adventure);
 		enterName = (EditText) findViewById(R.id.enter_name);
 		defaultName = this.getString(R.string.default_nickname);
-		displayNickname();
-		
-		final Intent localIntent = new Intent(this, LocalStoriesActivity.class);
-		final Intent onlineIntent = new Intent(this, OnlineStoriesActivity.class);
+		Button localButton = (Button) findViewById(R.id.local_stories);
+		Button onlineButton = (Button) findViewById(R.id.online_stories);
 		
 		// font -- http://www.fonts2u.com/homey.font
 		Typeface ltf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/homey.ttf");
@@ -71,14 +71,20 @@ public class Dashboard extends Activity {
 		// font -- http://www.1001fonts.com/roboto-slab-font.html
 		Typeface tf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/RobotoSlab-Light.ttf");
 		
-		tView2 = (TextView) findViewById(R.id.start_adventure);
+		displayNickname();
+		
+		final Intent localIntent = new Intent(this, LocalStoriesActivity.class); // In-line temp
+		final Intent onlineIntent = new Intent(this, OnlineStoriesActivity.class); // In-line temp
+		
 		tView2.setTypeface(tf);
 		
-		String local = "Local";
-		String nook = "Story Nook";
+		String local = "Local"; // Move to res
+		String nook = "Story Nook"; // Move to res
+		String online = "Online"; // Move to res
+		String club = "Story Club"; // Move to res
+		
 		Spannable span = new SpannableString(local + "\n" + nook);
 		span.setSpan(new RelativeSizeSpan(0.5f), 0, local.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE );
-		Button localButton = (Button) findViewById(R.id.local_stories);
 		localButton.setText(span);
 		localButton.setTypeface(ltf);
 		localButton.setOnClickListener(new OnClickListener() {
@@ -88,11 +94,8 @@ public class Dashboard extends Activity {
 			}
 		});
 		
-		String online = "Online";
-		String club = "Story Club";
 		span = new SpannableString(online + "\n" + club);
 		span.setSpan(new RelativeSizeSpan(0.5f), 0, online.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE );
-		Button onlineButton = (Button) findViewById(R.id.online_stories);
 		onlineButton.setText(span);
 		onlineButton.setTypeface(otf);
 		onlineButton.setOnClickListener(new OnClickListener() {
