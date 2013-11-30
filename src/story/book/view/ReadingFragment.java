@@ -17,7 +17,6 @@
 package story.book.view;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
 
 import story.book.view.R;
@@ -25,14 +24,10 @@ import story.book.controller.StoryReadController;
 import story.book.model.DecisionBranch;
 import story.book.model.Illustration;
 import story.book.model.StoryFragment;
-import story.book.model.TextIllustration;
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.ActionBar.LayoutParams;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,12 +35,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 /**
  * ReadingFragment is the interface users can use to read story
