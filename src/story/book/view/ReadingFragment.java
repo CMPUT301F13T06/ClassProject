@@ -44,6 +44,7 @@ import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 /**
@@ -187,6 +188,14 @@ public class ReadingFragment extends Fragment {
 				//TODO: set marquee :)
 				((StoryFragmentReadActivity) getActivity()).setActionBarTitle(SF.getFragmentTitle());
 				((StoryFragmentReadActivity) getActivity()).setFragmentID(SF.getFragmentID());
+				final ScrollView scr = (ScrollView) rootView.findViewById(R.id.fragment_scrollable);
+				scr.post(new Runnable() {            
+					@Override
+					public void run() {
+						scr.smoothScrollTo(0, 0);          
+					}
+				});
+
 				update();
 			}
 		};
@@ -196,6 +205,7 @@ public class ReadingFragment extends Fragment {
 		rootView = this.getView().findViewById(R.id.reading_fragment);
 		((ViewGroup) rootView).removeAllViews();
 		displayFragment(SF);
+		
 		Log.d(String.valueOf(SF.getFragmentID()), "DEBUG: Fragment ID of fragment currently being read");
 	}
 }

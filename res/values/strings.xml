@@ -55,6 +55,11 @@
     <string name="cant_annotate">Cannot add new annotations to unpublished or modified stories</string>
     <string name="title_activity_help">Help</string>
 
+    <!-- Dashboard -->
+    <string name="dashboard_local">Local</string>
+    <string name="dashboard_online">Online</string>
+    <string name="dashboard_nook">Story Nook</string>
+	<string name="dashboard_club">Story Club</string>
     
     <!-- Help page section titles -->
     <string name="help_title_online_story_club">1. Online Story Club*</string>

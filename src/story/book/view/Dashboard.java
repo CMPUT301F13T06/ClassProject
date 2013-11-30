@@ -13,8 +13,12 @@
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Fonts from external sources:
+ * http://www.fonts2u.com/homey.font
+ * http://www.fonts101.com/fonts/view/Standard/697/Adventure
+ * http://www.1001fonts.com/roboto-slab-font.html
  */
-
 package story.book.view;
 import story.book.view.R;
 import android.os.Bundle;
@@ -42,6 +46,7 @@ import android.widget.Toast;
  * 
  * @author Nancy Pham-Nguyen
  * @author Vina Nguyen
+ * @author Alexander Cheung
  */
 
 public class Dashboard extends Activity {
@@ -50,64 +55,114 @@ public class Dashboard extends Activity {
 	private String defaultName;
 	
 	TextView tView;
-	TextView tView2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dashboard);
-
+		
+		tView = (TextView) findViewById(R.id.start_adventure);
 		enterName = (EditText) findViewById(R.id.enter_name);
 		defaultName = this.getString(R.string.default_nickname);
+		
+		tView.setTypeface(Typeface.createFromAsset(getApplicationContext().getAssets(),
+				"fonts/RobotoSlab-Light.ttf"));
+		
 		displayNickname();
+		initializeLocalButton();
+		initializeOnlineButton();
+	}
+	
+	/**
+	 * Parameter object which defines the format of a button for the
+	 * <code>formatButton</code> method
+	 * @author Alex
+	 *
+	 */
+	private class ButtonFormat {
 		
-		final Intent localIntent = new Intent(this, LocalStoriesActivity.class);
-		final Intent onlineIntent = new Intent(this, OnlineStoriesActivity.class);
+		public String connection;
+		public String name;
+		public Typeface font;
 		
-		// font -- http://www.fonts2u.com/homey.font
-		Typeface ltf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/homey.ttf");
-		// font -- http://www.fonts101.com/fonts/view/Standard/697/Adventure
-		Typeface otf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/adventure.ttf");
-		// font -- http://www.1001fonts.com/roboto-slab-font.html
-		Typeface tf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/RobotoSlab-Light.ttf");
-		
-		tView2 = (TextView) findViewById(R.id.start_adventure);
-		tView2.setTypeface(tf);
-		
-		String local = "Local";
-		String nook = "Story Nook";
-		Spannable span = new SpannableString(local + "\n" + nook);
-		span.setSpan(new RelativeSizeSpan(0.5f), 0, local.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE );
+		/**
+		 * Constructor initializing the format attributes of a button
+		 * 
+		 * @param connection	local or online
+		 * @param name			name of the library
+		 * @param font			<code>Typeface</code> for the font
+		 */
+		public ButtonFormat(String connection, String name, Typeface font) {
+			this.connection = connection;
+			this.name = name;
+			this.font = font;
+		}
+	}
+	
+	/**
+	 * Formats the specified button using attributes from the 
+	 * <code>ButtonFormat</code> parameter object.
+	 * 
+	 * @param button	the <code>Button</code> to format
+	 * @param format	the parameter object defining the format of the button
+	 */
+	private void formatButton(Button button, ButtonFormat format) {
+		Spannable span = new SpannableString(format.connection + "\n" + format.name);
+		span.setSpan(new RelativeSizeSpan(0.5f), 0, format.connection.length(), 
+				Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		button.setText(span);
+		button.setTypeface(format.font);
+	}
+
+	/**
+	 * Initializes the button for the local story library
+	 */
+	private void initializeLocalButton() {
 		Button localButton = (Button) findViewById(R.id.local_stories);
-		localButton.setText(span);
-		localButton.setTypeface(ltf);
+		final Intent localIntent = new Intent(this, LocalStoriesActivity.class);
+
+		formatButton(localButton, new ButtonFormat(
+				getString(R.string.dashboard_local), 
+				getString(R.string.dashboard_nook), 
+				Typeface.createFromAsset(getApplicationContext().getAssets(), 
+						"fonts/homey.ttf")
+		));
+		
 		localButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				//Navigate to the Local Stories
 				startActivity(localIntent);
 			}
 		});
-		
-		String online = "Online";
-		String club = "Story Club";
-		span = new SpannableString(online + "\n" + club);
-		span.setSpan(new RelativeSizeSpan(0.5f), 0, online.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE );
+	}
+	
+	/**
+	 * Initializes the button for the online story library
+	 */
+	private void initializeOnlineButton() {
 		Button onlineButton = (Button) findViewById(R.id.online_stories);
-		onlineButton.setText(span);
-		onlineButton.setTypeface(otf);
+		final Intent onlineIntent = new Intent(this, OnlineStoriesActivity.class);
+		
+		formatButton(onlineButton, new ButtonFormat(
+				getString(R.string.dashboard_online), 
+				getString(R.string.dashboard_club), 
+				Typeface.createFromAsset(getApplicationContext().getAssets(), 
+						"fonts/adventure.ttf")
+		));
+		
 		onlineButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				//Navigate to the Online Stories
-				if (StoryApplication.checkInternetConnected()) {
+				// Navigate to the Online Stories
+				if (StoryApplication.checkInternetConnected())
 					startActivity(onlineIntent);
-				} else {
-					//Tell user to connect to internet
-					Toast.makeText(getApplicationContext(), R.string.no_internet_library, Toast.LENGTH_SHORT).show();
-				}
+				// Tell user to connect to internet if there is no connection
+				else Toast.makeText(getApplicationContext(), 
+						R.string.no_internet_library, 
+						Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
-
+	
 	@Override
 	protected void onPause() {
 		super.onPause();
