@@ -35,7 +35,10 @@ public class ESWrite extends ESCommand {
 			openConnection(location);
 			conn.setDoOutput(true);
 			conn.setChunkedStreamingMode(0);
-
+			conn.setRequestMethod("PUT");
+			conn.setConnectTimeout(Integer.MAX_VALUE);
+			conn.connect();
+			
 			OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
 			writer.write(data);
 			writer.flush();

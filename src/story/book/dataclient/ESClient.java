@@ -2,13 +2,18 @@ package story.book.dataclient;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.io.FilenameUtils;
 
 import story.book.model.Annotation;
+import story.book.model.BinaryIllustration;
+import story.book.model.Illustration;
 import story.book.model.Story;
+import story.book.model.StoryFragment;
 import story.book.model.StoryInfo;
+import story.book.view.StoryApplication;
 
 import android.util.Log;
 
@@ -70,8 +75,44 @@ public class ESClient extends DataClient {
 		int SID = story.getStoryInfo().getSID();
 		String stringSID = String.valueOf(SID);
 		
+		//Get list of binary files
+		ArrayList<BinaryFile> files = new ArrayList<BinaryFile>();
+		
+		HashMap<Integer, StoryFragment> fragmentMap = story.getStoryFragments();
+		
+		for (Integer key: fragmentMap.keySet()) {
+			StoryFragment f = fragmentMap.get(key);
+			
+			//encode Illustrations
+			ArrayList<Illustration> illusrations = f.getIllustrations();
+			for (Illustration i: illusrations) {
+				String path =  StoryApplication.getIOClient().getLocalDirectory() 
+						+ stringSID
+						+ "/";
+				
+				if (i instanceof BinaryIllustration) {
+					BinaryIllustration bi = (BinaryIllustration)i;
+					BinaryFile b = new BinaryFile(bi.getContent(), bi.encodeIllustration(path));
+					files.add(b);
+				}
+			}
+			
+		}
+		
+		for (BinaryFile b: files) {
+			String binary_string = super.serialize(b);
+			try {
+				String path = b.getContent();
+				path = FilenameUtils.removeExtension(path);
+				String result = new ESWrite(Annotations_folder).execute(stringSID + "/" + path, binary_string).get();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		// Write the binary data to the server
-		BinaryList binaryList = new BinaryList(SID);
+		/*BinaryList binaryList = new BinaryList(SID);
 		binaryList.encodeStoryIllustrations(story);
 
 		String binary_string = super.serialize(binaryList);
@@ -80,12 +121,12 @@ public class ESClient extends DataClient {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	/**
 	 *  Publishes an annotation to a story.	 
-	 *  
+	 *  TODO FIX
 	 * @param annotation to be published
 	 * @param story that the annotation is part of
 	 */
@@ -139,37 +180,37 @@ public class ESClient extends DataClient {
 		return list;
 	}
 	
-	private BinaryList readIllustrations(String sid_string) {
+	private ArrayList<BinaryFile> readIllustrations(String sid_string) {
 		String server_read = "";
 		Type type;
 		BinaryList bl = new BinaryList(Integer.valueOf(sid_string));
 		
+		ArrayList<BinaryFile> list = new ArrayList<BinaryFile>();
+		
 		try {
 			// Get the illustrations from the server
-			server_read = new ESRead(Binary_folder).execute(sid_string ).get();
+			/*server_read = new ESRead(Binary_folder).execute(sid_string ).get();
 			if (server_read != "") {
 				type = new TypeToken<ESData<BinaryList>>(){}.getType();
 				ESData<BinaryList> es_bl = (ESData<BinaryList>) super.unSerialize(server_read, type);
 				bl = es_bl.getSource();
-			}
+			}*/
 			
 			// Get the annotations from the server
 			server_read = new ESRead(Annotations_folder).execute(sid_string + "/_search?" ).get();
 		
 			if (server_read != "") {
-				type = new TypeToken<ESResponse<BinaryList>>(){}.getType();
-				ESResponse<BinaryList> bl_response = (ESResponse<BinaryList>) super.unSerialize(server_read, type);		
-				ArrayList<BinaryList> bls = (ArrayList<BinaryList>) bl_response.getSources();
-				for (BinaryList b: bls) {
-					bl.appendBinaryList(b);
-				}
+				type = new TypeToken<ESResponse<BinaryFile>>(){}.getType();
+				ESResponse<BinaryFile> bl_response = (ESResponse<BinaryFile>) super.unSerialize(server_read, type);		
+				list  = (ArrayList<BinaryFile>) bl_response.getSources();
+
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return bl;
+		return list;
 	}
 	
 	private Story readStory (String sid_string) {
@@ -202,11 +243,17 @@ public class ESClient extends DataClient {
 			// Read the story from the server
 			Story story = readStory(sid_string);
 			// Read the illustrations from the server
-			BinaryList bl = readIllustrations(sid_string);
+			ArrayList<BinaryFile> bl = readIllustrations(sid_string);
+			
 			
 			// Now that we have both annotations and illustrations, decode the story
-			if (bl != null && bl.getContentsArray().size() > 0 && story != null) {
-				bl.decodeStory(story);
+			if (bl != null && bl.size() > 0 && story != null) {
+				for (BinaryFile b: bl) {
+					String path =  StoryApplication.getIOClient().getLocalDirectory() 
+							+ sid_string
+							+ "/";
+					b.decode(path);
+				}
 			}
 			
 			return  story;
