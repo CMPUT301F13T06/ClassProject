@@ -13,8 +13,12 @@
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Fonts from external sources:
+ * http://www.fonts2u.com/homey.font
+ * http://www.fonts101.com/fonts/view/Standard/697/Adventure
+ * http://www.1001fonts.com/roboto-slab-font.html
  */
-
 package story.book.view;
 import story.book.view.R;
 import android.os.Bundle;
@@ -64,24 +68,17 @@ public class Dashboard extends Activity {
 		Button localButton = (Button) findViewById(R.id.local_stories);
 		Button onlineButton = (Button) findViewById(R.id.online_stories);
 		
-		// font -- http://www.fonts2u.com/homey.font
-		Typeface ltf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/homey.ttf");
-		// font -- http://www.fonts101.com/fonts/view/Standard/697/Adventure
-		Typeface otf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/adventure.ttf");
-		// font -- http://www.1001fonts.com/roboto-slab-font.html
-		Typeface tf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/RobotoSlab-Light.ttf");
-		
 		displayNickname();
 		
 		final Intent localIntent = new Intent(this, LocalStoriesActivity.class); // In-line temp
 		final Intent onlineIntent = new Intent(this, OnlineStoriesActivity.class); // In-line temp
 		
-		tView2.setTypeface(tf);
+		tView2.setTypeface(Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/RobotoSlab-Light.ttf"));
 		
 		Spannable span = new SpannableString(getString(R.string.dashboard_local) + "\n" + getString(R.string.dashboard_nook));
 		span.setSpan(new RelativeSizeSpan(0.5f), 0, getString(R.string.dashboard_local).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE );
 		localButton.setText(span);
-		localButton.setTypeface(ltf);
+		localButton.setTypeface(Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/homey.ttf"));
 		localButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				//Navigate to the Local Stories
@@ -92,7 +89,7 @@ public class Dashboard extends Activity {
 		span = new SpannableString(getString(R.string.dashboard_online) + "\n" + getString(R.string.dashboard_club));
 		span.setSpan(new RelativeSizeSpan(0.5f), 0, getString(R.string.dashboard_online).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE );
 		onlineButton.setText(span);
-		onlineButton.setTypeface(otf);
+		onlineButton.setTypeface(Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/adventure.ttf"));
 		onlineButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				//Navigate to the Online Stories
