@@ -31,7 +31,18 @@ public class ESRead extends ESCommand {
 	private String doESRead(String location) {
 		try {
 			openConnection(location);
-			conn.setDoInput(true);
+			
+			BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			String server_read = "";
+			String inputLine;
+			while ((inputLine = reader.readLine()) != null)
+				server_read += inputLine;
+			
+			reader.close();
+			closeConnection();
+			
+			return server_read;
+			/*conn.setDoInput(true);
 			conn.setChunkedStreamingMode(0);
 			
 			char[] inputBuffer = new char[1024];
@@ -46,7 +57,7 @@ public class ESRead extends ESCommand {
 
 			closeConnection();
 
-			return sb.toString();
+			return sb.toString();*/
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

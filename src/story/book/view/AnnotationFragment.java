@@ -313,7 +313,7 @@ public class AnnotationFragment extends Fragment implements StoryView {
 			@Override
 			public void onClick(View v) {
 				if (StoryApplication.checkInternetConnected()) {
-					FCC.saveAnnotations(annotationList.get(annotationList.size()-1));
+					saveAnnotation();
 					displayAnnotations();
 				} else {
 					Toast.makeText(StoryApplication.getContext(), R.string.no_internet_annotation, Toast.LENGTH_SHORT).show();
@@ -330,5 +330,16 @@ public class AnnotationFragment extends Fragment implements StoryView {
 			}
 		});
 		((ViewGroup) layout).addView(post, lp);
+	}
+	
+	/**
+	 * saveAnnotation() saves newly added annotations by extracting the media/caption
+	 * from the its view, and adds it to the storyFragment by calling 
+	 * <code>addAnnotation(Annotation annotation)</code>
+	 */
+	private void saveAnnotation() {
+		Pair<ArrayList<View>, Annotation> i = annotationList.get(annotationList.size()-1);
+		String cap = ((EditText)i.first.get(i.first.size()-1)).getText().toString();
+		FCC.saveAnnotations(i, cap);
 	}
 }
