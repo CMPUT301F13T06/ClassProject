@@ -93,6 +93,12 @@ public class FragmentCreationController extends LocalEditingController {
 		addAnnotationWithCaption(i.second, cap);
 	}
 	
+	/**
+	 * Adds the specified caption to an annotation, then adds the annotation 
+	 * to the story fragment
+	 * @param annotation	the <code>Annotation</code> to add
+	 * @param caption		the caption to add to the annotation
+	 */
 	private void addAnnotationWithCaption(Annotation annotation, String caption) {
 		annotation.setCaption(caption);
 		this.addAnnotation(annotation);
