@@ -46,6 +46,7 @@ import android.widget.Toast;
  * 
  * @author Nancy Pham-Nguyen
  * @author Vina Nguyen
+ * @author Alexander Cheung
  */
 
 public class Dashboard extends Activity {
@@ -54,7 +55,6 @@ public class Dashboard extends Activity {
 	private String defaultName;
 	
 	TextView tView;
-	TextView tView2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +62,14 @@ public class Dashboard extends Activity {
 		setContentView(R.layout.dashboard);
 		
 		// Initialize view and button references
-		tView2 = (TextView) findViewById(R.id.start_adventure);
+		tView = (TextView) findViewById(R.id.start_adventure);
 		enterName = (EditText) findViewById(R.id.enter_name);
 		defaultName = this.getString(R.string.default_nickname);
 		
 		displayNickname();
 		
-		tView2.setTypeface(Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/RobotoSlab-Light.ttf"));
+		tView.setTypeface(Typeface.createFromAsset(getApplicationContext().getAssets(),
+				"fonts/RobotoSlab-Light.ttf"));
 		
 		initializeLocalButton();
 		initializeOnlineButton();
@@ -89,7 +90,8 @@ public class Dashboard extends Activity {
 	
 	private void formatButton(Button button, ButtonFormat format) {
 		Spannable span = new SpannableString(format.connection + "\n" + format.name);
-		span.setSpan(new RelativeSizeSpan(0.5f), 0, format.connection.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		span.setSpan(new RelativeSizeSpan(0.5f), 0, format.connection.length(), 
+				Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		button.setText(span);
 		button.setTypeface(format.font);
 	}
