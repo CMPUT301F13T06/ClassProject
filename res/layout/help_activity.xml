@@ -200,7 +200,7 @@
 	    <ImageView
 	        android:id="@+id/imageView10"
 	        android:layout_width="wrap_content"
-	        android:layout_height="182dp"
+	        android:layout_height="202dp"
 	        android:paddingTop="20dp"
 	        android:src="@drawable/help_edit_decision" />
 
@@ -219,6 +219,12 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="@string/help_2_editing_changing_starting_fragment_p1" />
+
+	    <ImageView
+	        android:id="@+id/imageView11"
+	        android:layout_width="wrap_content"
+	        android:layout_height="220dp"
+	        android:src="@drawable/help_change_starting_fragment" />
 
 	    <TextView
 	        android:id="@+id/textView18"
