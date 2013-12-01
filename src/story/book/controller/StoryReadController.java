@@ -42,7 +42,6 @@ public class StoryReadController {
 	}
 	
 	/**
-	 * 
 	 * @return returns the fragment ID of the starting fragment
 	 */
 	public StoryFragment getStartingFragment() {
@@ -67,6 +66,12 @@ public class StoryReadController {
 		return ioHelper.getStoryPath();
 	}
 	
+	/**
+	 * Helper class responsible for managing the fragments and fragment IDs of
+	 * the controller's story object as well as the object itself.
+	 * 
+	 * @author Alex
+	 */
 	private class FragmentManager {
 		
 		private Story story;
@@ -96,6 +101,12 @@ public class StoryReadController {
 		}
 	}
 	
+	/**
+	 * Helper class responsible for managing IO operations and interacting with
+	 * the IOClient.
+	 * 
+	 * @author Alex
+	 */
 	private class IOHelper {
 		
 		private IOClient io;

@@ -66,6 +66,14 @@ public class OnlineStoryController extends StoryController {
 		io.saveStory(StoryApplication.getCurrentStory());
 	}
 
+	/**
+	 * Returns an <code>ArrayList</code> of <code>StoryInfo</code> for stories
+	 * matching the specified search term from the server using the ESClient.
+	 * 
+	 * @param 	term	the search term
+	 * @return	the <code>ArrayList</code> of <code>StoryInfo</code> from the
+	 * 			server
+	 */
 	public ArrayList<StoryInfo> search(String term) {
 		return es.search(term);
 	}

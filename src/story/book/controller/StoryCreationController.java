@@ -197,6 +197,12 @@ public class StoryCreationController extends LocalEditingController {
 		}
 	}
 	
+	/**
+	 * Helper class responsible for managing fragments and fragment IDS for the
+	 * controller's story object.
+	 * 
+	 * @author Alex
+	 */
 	private class FragmentManager {
 		
 		public FragmentManager() {		}
