@@ -34,7 +34,6 @@ public class ESRead extends ESCommand {
 			conn.setChunkedStreamingMode(0);
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept","application/json");
-			conn.setConnectTimeout(Integer.MAX_VALUE);
 			conn.connect();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			String server_read = "";
@@ -46,22 +45,6 @@ public class ESRead extends ESCommand {
 			closeConnection();
 			
 			return server_read;
-			/*conn.setDoInput(true);
-			conn.setChunkedStreamingMode(0);
-			
-			char[] inputBuffer = new char[1024];
-			StringBuilder sb = new StringBuilder(4096); // set 
-			InputStreamReader isr = new InputStreamReader(conn.getInputStream());
-
-			int l;
-			while ((l = isr.read(inputBuffer)) != -1) {
-				sb.append(inputBuffer, 0, l);
-			}
-			isr.close();
-
-			closeConnection();
-
-			return sb.toString();*/
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

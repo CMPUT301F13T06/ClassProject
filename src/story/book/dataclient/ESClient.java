@@ -14,7 +14,6 @@ import story.book.model.Story;
 import story.book.model.StoryFragment;
 import story.book.model.StoryInfo;
 import story.book.view.StoryApplication;
-
 import android.util.Log;
 
 import com.google.gson.reflect.TypeToken;
@@ -53,18 +52,15 @@ public class ESClient extends DataClient {
 			// Write the Story to the server
 			String result = new ESWrite(def_folder).execute(stringSID, story_string).get();
 
-			// Read the existing SIDList, if any
-			SIDList list = readSIDList();
-			
-			ArrayList<Integer> SIDs = list.getSIDs();
-			// If we are publishing a story for the first time, add the SID to the list
-			if (!SIDs.contains(Integer.valueOf(SID))) {
-				SIDs.add(Integer.valueOf((SID)));
-				String SID_string = super.serialize(list);
-				
-				// Write the updated SID list to the server
-				new ESWrite(SID_folder).execute("", SID_string);
-			} 
+//			// Read the existing SIDList, if any
+//			ArrayList<String> list = readSIDList();
+//			// If we are publishing a story for the first time, add the SID to the list
+//			if (!list.contains(Integer.valueOf(SID))) {
+//				String SID_string = super.serialize(list);
+//				
+//				// Write the updated SID list to the server
+//				new ESWrite(SID_folder).execute("", SID_string);
+//			} 
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -155,22 +151,22 @@ public class ESClient extends DataClient {
 	 * @throws ExecutionException 
 	 * @throws InterruptedException 
 	 */
-	private SIDList readSIDList() {
+	private ArrayList<String> readSIDList() {
 		String server_read;
 		try {
-			server_read = new ESRead(SID_folder).execute("").get();
+			server_read = new ESRead(def_folder).execute("_search?fields=_id").get();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			server_read = "";
 		} 
 		
-		SIDList list = new SIDList();
+		ArrayList<String> list = new ArrayList<String>();
 		
 		if (!server_read.equals("")) {
-			Type type = new TypeToken<ESData<SIDList>>(){}.getType();
-			ESData<SIDList> es = (ESData<SIDList>) super.unSerialize(server_read, type);
-			list = es.getSource();
+			Type type = new TypeToken<ES_ID_Response>(){}.getType();
+			ES_ID_Response es = (ES_ID_Response) super.unSerialize(server_read, type);
+			return (ArrayList<String>) es.getSources();
 		}
 		
 		return list;
@@ -179,7 +175,6 @@ public class ESClient extends DataClient {
 	private ArrayList<BinaryFile> readIllustrations(String sid_string) {
 		String server_read = "";
 		Type type;
-		BinaryList bl = new BinaryList(Integer.valueOf(sid_string));
 		
 		ArrayList<BinaryFile> list = new ArrayList<BinaryFile>();
 		
@@ -283,9 +278,8 @@ public class ESClient extends DataClient {
 	}
 
 	public Boolean checkSID(int SID) {
-		SIDList list = readSIDList();
-		ArrayList<Integer> SIDs = list.getSIDs();
-		if (!SIDs.contains(Integer.valueOf(SID))) {
+		ArrayList<String> list = readSIDList();
+		if (!list.contains(Integer.valueOf(SID))) {
 			return true;
 		} else {
 			return false;
@@ -293,11 +287,9 @@ public class ESClient extends DataClient {
 	}
 
 	public int getSID() {
-		SIDList list = readSIDList();
-		ArrayList<Integer> SIDs = list.getSIDs();
-		
-		for (int i = 0; i < Integer.MAX_VALUE; i++) {
-			if (!SIDs.contains(i)) {
+		ArrayList<String> list = readSIDList();
+		for (Integer i = 0; i < Integer.MAX_VALUE; i++) {
+			if (!list.contains(i.toString())) {
 				return i;
 			} 
 		}

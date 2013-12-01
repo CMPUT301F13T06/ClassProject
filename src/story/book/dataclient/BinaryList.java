@@ -132,7 +132,7 @@ public class BinaryList {
 	 */
 	private void decode(BinaryIllustration b) {
 		int i = contents.indexOf(b.getContent());
-		b.decodeIllustration(getStoryPath(), base64data.get(i));
+		//b.decodeIllustration(getStoryPath(), base64data.get(i));
 	}
 	
 	private String getStoryPath() {
