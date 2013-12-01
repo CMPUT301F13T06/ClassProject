@@ -10,6 +10,7 @@ import java.util.zip.GZIPInputStream;
 import org.apache.commons.io.FileUtils;
 
 import android.util.Base64;
+import android.util.Log;
 
 public class BinaryFile {
 
@@ -45,7 +46,8 @@ public class BinaryFile {
 	 *@param bs is the base64 string
 	 */
 	public void decode(String path) {
-		File file = new File(path + content.toString());
+		Log.d(content,"some content");
+		File file = new File(path + content);
 		
 		try {
 			FileUtils.writeByteArrayToFile(file, unpackRaw(base64data));
