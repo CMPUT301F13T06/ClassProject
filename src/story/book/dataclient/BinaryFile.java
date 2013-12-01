@@ -1,8 +1,11 @@
 package story.book.dataclient;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.io.FileUtils;
 
@@ -34,11 +37,18 @@ public class BinaryFile {
 		this.base64data = bs;
 	}
 
+	/**
+	 * Decode the given base64 string into the 
+	 * file associated with the BinaryIllustration
+	 * 
+	 *@param path is the base file path that the binary file will be stored at
+	 *@param bs is the base64 string
+	 */
 	public void decode(String path) {
-File file = new File(path + content.toString());
+		File file = new File(path + content.toString());
 		
 		try {
-			FileUtils.writeByteArrayToFile(file, Base64.decode(base64data, Base64.DEFAULT));
+			FileUtils.writeByteArrayToFile(file, unpackRaw(base64data));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,4 +57,23 @@ File file = new File(path + content.toString());
 		
 	}
 	
+	/**
+	 * http://www.java2s.com/Code/Java/File-Input-Output/Compressbytearray.htm
+	 * @param b
+	 * @return
+	 * @throws IOException
+	 */
+	public static byte[] unpackRaw(byte[] b) throws IOException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ByteArrayInputStream bais = new ByteArrayInputStream(b);
+
+		GZIPInputStream zis = new GZIPInputStream(bais);
+		byte[] tmpBuffer = new byte[256];
+		int n;
+		while ((n = zis.read(tmpBuffer)) >= 0)
+			baos.write(tmpBuffer, 0, n);
+		zis.close();
+
+		return baos.toByteArray();
+	}
 }
