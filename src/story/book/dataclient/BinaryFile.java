@@ -16,7 +16,7 @@ public class BinaryFile {
 
 	private String content;
 	private byte[] base64data;
-
+	boolean include_in_all = false;
 	public String getContent() {
 		return content;
 	}
