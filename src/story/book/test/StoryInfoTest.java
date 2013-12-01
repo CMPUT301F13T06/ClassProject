@@ -69,7 +69,7 @@ public class StoryInfoTest extends ActivityInstrumentationTestCase2
 	
 	@Test
 	public void testGetPublishDate() {
-		assertNull(storyInfo.getPublishDateString());
+		assertEquals(storyInfo.getPublishDateString(), "");
 	}
 	
 	@Test
