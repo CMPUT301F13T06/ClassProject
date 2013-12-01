@@ -2,12 +2,17 @@ package story.book.test;
 
 import org.junit.Test;
 
+import story.book.model.Annotation;
+import story.book.model.AudioIllustration;
 import story.book.model.DecisionBranch;
+import story.book.model.ImageIllustration;
 import story.book.model.Story;
 import story.book.model.StoryFragment;
 import story.book.model.StoryInfo;
 import story.book.model.TextIllustration;
+import story.book.model.VideoIllustration;
 import story.book.view.Dashboard;
+import android.net.Uri;
 import android.test.ActivityInstrumentationTestCase2;
 
 public class StoryFragmentTest extends ActivityInstrumentationTestCase2
@@ -54,32 +59,45 @@ public class StoryFragmentTest extends ActivityInstrumentationTestCase2
 	
 	@Test
 	public void testAddRemoveImageIllustration() {
-		// TODO: ImageIllustration not implemented
-		fail("Not yet implemented");
+		// This test contains errors and will not pass
+		ImageIllustration imageIllustration = new ImageIllustration(Uri.parse("http://www.google.com"));
+		storyFragment1.addIllustration(imageIllustration);
+		assertFalse(storyFragment1.getIllustrations().isEmpty());
+		assertTrue(storyFragment1.getIllustrations()
+				.contains(imageIllustration));
+		storyFragment1.removeIllustration(imageIllustration);
+		assertTrue(storyFragment1.getIllustrations().isEmpty());
 	}
 	
 	@Test
 	public void testAddRemoveVideoIllustration() {
-		// TODO: VideoIllustration not implemented
-		fail("Not yet implemented");
+		VideoIllustration videoIllustration = new VideoIllustration(Uri.parse("http://www.google.com"));
+		storyFragment1.addIllustration(videoIllustration);
+		assertFalse(storyFragment1.getIllustrations().isEmpty());
+		assertTrue(storyFragment1.getIllustrations()
+				.contains(videoIllustration));
+		storyFragment1.removeIllustration(videoIllustration);
+		assertTrue(storyFragment1.getIllustrations().isEmpty());
 	}
 	
 	@Test
 	public void testAddRemoveAudioIllustration() {
-		// TODO: AudioIllustration not implemented
-		fail("Not yet implemented");
-	}
-	
-	@Test
-	public void testCombinationIllustrationTypes() {
-		// TODO: All illustrations not implemented
-		fail("Not yet implemented");
+		AudioIllustration audioIllustration = new AudioIllustration(Uri.parse("http://www.google.com"));
+		storyFragment1.addIllustration(audioIllustration);
+		assertFalse(storyFragment1.getIllustrations().isEmpty());
+		assertTrue(storyFragment1.getIllustrations()
+				.contains(audioIllustration));
+		storyFragment1.removeIllustration(audioIllustration);
+		assertTrue(storyFragment1.getIllustrations().isEmpty());
 	}
 	
 	@Test
 	public void testAddRemoveAnnotation() {
-		// TODO: Annotations not implemented
-		fail("Not yet implemented");
+		Annotation annotation = new Annotation("Dummy", new TextIllustration("Text stuff and things"));
+		storyFragment1.addAnnotation(annotation);
+		assertFalse(storyFragment1.getAnnotations().isEmpty());
+		storyFragment1.removeAnnotation(annotation);
+		assertTrue(storyFragment1.getAnnotations().isEmpty());
 	}
 	
 	@Test
