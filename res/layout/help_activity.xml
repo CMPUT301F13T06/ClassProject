@@ -191,6 +191,19 @@
 	        android:layout_height="wrap_content"
 	        android:text="@string/help_2_editing_storyfragment_p1" />
 
+	    <ImageView
+	        android:id="@+id/imageView9"
+	        android:layout_width="wrap_content"
+	        android:layout_height="175dp"
+	        android:src="@drawable/help_move_illustration" />
+
+	    <ImageView
+	        android:id="@+id/imageView10"
+	        android:layout_width="wrap_content"
+	        android:layout_height="182dp"
+	        android:paddingTop="20dp"
+	        android:src="@drawable/help_edit_decision" />
+
 	    <TextView
 	        android:id="@+id/textView16"
 	        android:paddingTop="5dp"
