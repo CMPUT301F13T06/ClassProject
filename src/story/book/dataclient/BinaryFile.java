@@ -50,7 +50,7 @@ public class BinaryFile {
 		File file = new File(path + content);
 		
 		try {
-			FileUtils.writeByteArrayToFile(file, unpackRaw(base64data));
+			FileUtils.writeByteArrayToFile(file, Base64.decode(unpackRaw(base64data),Base64.NO_WRAP));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

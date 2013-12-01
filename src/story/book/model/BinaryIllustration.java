@@ -7,6 +7,8 @@ import java.util.zip.GZIPOutputStream;
 
 import org.apache.commons.io.FileUtils;
 
+import android.util.Base64;
+
 /**
  * BinaryIllustration is an Illustration whose content is a
  * relative path to a file. It provides methods to encode/decode
@@ -30,7 +32,7 @@ public abstract class BinaryIllustration extends Illustration<String> {
 
 		byte[] encoded = null;
 		try {
-			encoded =  packRaw(FileUtils.readFileToByteArray(file));
+			encoded =  Base64.encode(packRaw(FileUtils.readFileToByteArray(file)), Base64.NO_WRAP);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
