@@ -15,6 +15,7 @@ import android.util.Base64;
  *  its file's contents into/from base64. This is an abstract class.
  * 
  * @author Vina Nguyen
+ * @author Anthony Ou
  */
 
 public abstract class BinaryIllustration extends Illustration<String> {

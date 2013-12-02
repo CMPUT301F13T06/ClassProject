@@ -13,7 +13,6 @@ import story.book.model.Illustration;
 import story.book.model.Story;
 import story.book.model.StoryFragment;
 import story.book.model.StoryInfo;
-import story.book.view.StoryApplication;
 import android.util.Log;
 
 import com.google.gson.reflect.TypeToken;
@@ -24,14 +23,12 @@ import com.google.gson.reflect.TypeToken;
  * are saved to an Elastic Search server.
  * 
  * @author Vina Nguyen
- * 
+ * @author Anthony Ou
  */
 
 public class ESClient extends DataClient {	
 	private String stories_folder = "stories/";
-	private String SID_folder = "SIDs/0";
-	private String Binary_folder = "binaries2/";
-	private String Annotations_folder="";
+	private String binaries_folder = "";
 
 	/**
 	 *  Publishes a story.	 
@@ -43,6 +40,11 @@ public class ESClient extends DataClient {
 		publishIllustrations(story);
 	}
 
+	/**
+	 *  Uploads a Story object to the server.	 
+	 *  
+	 * @param story is the Story to be uploaded
+	 */
 	private void publishStory(Story story){
 		try {
 			int SID = story.getStoryInfo().getSID();
@@ -56,6 +58,11 @@ public class ESClient extends DataClient {
 		}		
 	}
 
+	/**
+	 *  Uploads a Story's binary illustrations to the server.	 
+	 *  
+	 * @param story is the Story to be uploaded
+	 */
 	private void publishIllustrations(Story story){
 		int SID = story.getStoryInfo().getSID();
 		String stringSID = String.valueOf(SID);
@@ -69,20 +76,8 @@ public class ESClient extends DataClient {
 			//encode Illustrations
 			ArrayList<Illustration> illusrations = f.getIllustrations();
 			for (Illustration i: illusrations) {
-				String path =  story_dir + stringSID	+ "/";
-
 				if (i instanceof BinaryIllustration) {
-					BinaryIllustration bi = (BinaryIllustration)i;
-					BinaryFile b = new BinaryFile(bi.getContent(), bi.encodeIllustration(path));
-					String binary_string = super.serialize(b);
-					try {
-						String filepath = b.getContent();
-						filepath = FilenameUtils.removeExtension(filepath);
-						String result = new ESWrite(Annotations_folder).execute(stringSID + "/" + filepath, binary_string).get();
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					uploadBinaryFile((BinaryIllustration)i, stringSID);
 				}
 			}
 		}
@@ -90,32 +85,45 @@ public class ESClient extends DataClient {
 
 	/**
 	 *  Publishes an annotation to a story.	 
-	 *  TODO FIX
+	 *  
 	 * @param annotation to be published
 	 * @param story that the annotation is part of
 	 */
 	public void publishAnnotation(Annotation a, Story story) {
 		int SID = story.getStoryInfo().getSID();
 		String stringSID = String.valueOf(SID);
-
-		//publish the annotation
-		BinaryList binaryList = new BinaryList(SID);
-		String path = binaryList.encodeStoryAnnotation(a, story);
-		if (path != "") {
-			path = FilenameUtils.removeExtension(path);
-			String binary_string = super.serialize(binaryList);
-			try {
-				String result = new ESWrite(Annotations_folder).execute(stringSID + "/" + path, binary_string).get();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		
+		//publish the annotation (if necessary)
+		Illustration i = a.getIllustration();
+		if (i instanceof BinaryIllustration) {
+			uploadBinaryFile((BinaryIllustration)i, stringSID);
 		}
 
 		//re-publish the story as fragment has new annotation
 		publishStory(story);
 	}
 
+	/**
+	 *  Uploads a single binary illustration to the server.	 
+	 *  
+	 * @param BinaryIllustration to be uploaded
+	 * @param SID the illustration belongs to 
+	 */
+	private void uploadBinaryFile(BinaryIllustration bi, String SID) {
+		String path =  story_dir + SID + "/";
+		BinaryFile bf = new BinaryFile(bi.getContent(), bi.encodeIllustration(path));
+		
+		String binary_string = super.serialize(bf);
+		try {
+			path = bf.getContent();
+			path = FilenameUtils.removeExtension(path);
+			String result = new ESWrite(binaries_folder).execute(SID + "/" + path, binary_string).get();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 *  Reads the in-use SID list from the server. 
 	 *  
@@ -193,13 +201,12 @@ public class ESClient extends DataClient {
 
 			// Now that we have both annotations and illustrations, decode the story
 			for (String file: filenames) {
-				String server_read = new ESRead(Annotations_folder).execute(sid_string+"/"+file).get();
+				String server_read = new ESRead(binaries_folder).execute(sid_string+"/"+file).get();
 				Type type = new TypeToken<ESData<BinaryFile>>(){}.getType();
 				ESData<BinaryFile> es = (ESData<BinaryFile>) super.unSerialize(server_read, type);
 				BinaryFile binFile = es.getSource();
 				binFile.decode(path);
 			}
-
 
 			return  story;
 

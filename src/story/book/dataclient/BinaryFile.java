@@ -12,6 +12,14 @@ import org.apache.commons.io.FileUtils;
 import android.util.Base64;
 import android.util.Log;
 
+/**
+ * BinaryFile contains the file information for a BinaryIllustration. 
+ * It is used to save BinaryIllustrations to the server.
+ * 
+ * @author Vina Nguyen
+ * @author Anthony Ou
+ */
+
 public class BinaryFile {
 
 	private String content;
