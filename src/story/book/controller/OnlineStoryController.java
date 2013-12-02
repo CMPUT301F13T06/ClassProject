@@ -52,8 +52,6 @@ public class OnlineStoryController extends StoryController {
 	 * @param	SID	the ID of the <code>Story</code> to load
 	 */
 	public void getStory(int SID) {
-		super.clearViewedStory();
-		
 		checkSIDConflict(SID);
 		StoryApplication.setCurrentStory(es.getStory(SID));
 	}
@@ -63,6 +61,7 @@ public class OnlineStoryController extends StoryController {
 	 * checking for and resolving SID conflicts.
 	 */
 	public void saveStory() {
+		super.clearViewedStory();
 		io.saveStory(StoryApplication.getCurrentStory());
 	}
 
@@ -113,6 +112,7 @@ public class OnlineStoryController extends StoryController {
 				// will we need to not worry about returning it
 				// back to the original SID
 				StoryApplication.setConflictedSID(newSID);
+				Log.d("conflicted SID", String.valueOf(newSID));
 			}
 			super.changeLocalSID(SID, newSID);
 		}

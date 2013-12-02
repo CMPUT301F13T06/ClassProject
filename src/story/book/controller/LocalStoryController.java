@@ -39,9 +39,7 @@ public class LocalStoryController extends StoryController {
 	 * 
 	 * @param SID the SID of the Story to fetch
 	 */
-	public void getStory(int SID) {
-		super.clearViewedStory();
-		
+	public void getStory(int SID) {		
 		StoryApplication.setCurrentStory(io.getStory(SID));
 	}
 	
@@ -60,7 +58,6 @@ public class LocalStoryController extends StoryController {
 	 * to the new object.
 	 */
 	public void createStory() {
-		super.clearViewedStory();
 		StoryApplication.setCurrentStory(new Story(
 				new StoryInfo(StoryApplication.getNickname(), io.getSID())));
 	}
