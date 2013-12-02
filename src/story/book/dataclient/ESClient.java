@@ -52,7 +52,7 @@ public class ESClient extends DataClient {
 			String story_string = super.serialize(story);
 
 			// Write the Story to the server
-			String result = new ESWrite(stories_folder).execute(stringSID, story_string).get();
+			new ESWrite(stories_folder).execute(stringSID, story_string);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
@@ -117,7 +117,7 @@ public class ESClient extends DataClient {
 		try {
 			path = bf.getContent();
 			path = FilenameUtils.removeExtension(path);
-			String result = new ESWrite(binaries_folder).execute(SID + "/" + path, binary_string).get();
+			new ESWrite(binaries_folder).execute(SID + "/" + path, binary_string);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
