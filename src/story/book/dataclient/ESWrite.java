@@ -2,6 +2,7 @@ package story.book.dataclient;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
 
 import android.util.Log;
 
@@ -37,13 +38,15 @@ public class ESWrite extends ESCommand {
 			conn.setFixedLengthStreamingMode(data.length());
 			conn.setRequestMethod("PUT");
 			conn.setRequestProperty("Accept","application/json");
-			conn.setConnectTimeout(Integer.MAX_VALUE);
+			conn.setRequestProperty("Connection","keep-alive");
 			conn.connect();
-			
 			OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
-			writer.write(data);
-			writer.flush();
-			writer.close();
+			do{
+				writer.write(data);
+				writer.flush();
+				writer.close();
+				
+			}while(conn.getResponseCode() != HttpURLConnection.HTTP_OK);
 			closeConnection();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
