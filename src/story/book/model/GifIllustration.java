@@ -1,15 +1,8 @@
 package story.book.model;
 
-import java.io.*;
-
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Movie;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.net.Uri;
-import android.view.*;
 import android.webkit.WebView;
 
 import java.io.File;
@@ -42,6 +35,12 @@ public class GifIllustration extends BinaryIllustration{
 		return gif;
 	}
 
+	/**
+	 * 
+	 * source:
+	 * http://droid-blog.net/2011/10/17/tutorial-how-to-play-animated-gifs-in-android-part-3/
+	 *
+	 */
 	private class GifView extends WebView {
 		public GifView(Context context, String path) {
 			super(context);
