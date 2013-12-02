@@ -97,23 +97,20 @@ public class Dashboard extends Activity {
 			this.name = name;
 			this.font = font;
 		}
+
+		/**
+		 * Formats the specified button using attributes from the  <code>ButtonFormat</code> parameter object.
+		 * @param button 	the <code>Button</code> to format
+		 */
+		public void formatButton(Button button) {
+			Spannable span = new SpannableString(connection + "\n" + name);
+			span.setSpan(new RelativeSizeSpan(0.5f), 0, connection.length(),
+					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			button.setText(span);
+			button.setTypeface(font);
+		}
 	}
 	
-	/**
-	 * Formats the specified button using attributes from the 
-	 * <code>ButtonFormat</code> parameter object.
-	 * 
-	 * @param button	the <code>Button</code> to format
-	 * @param format	the parameter object defining the format of the button
-	 */
-	private void formatButton(Button button, ButtonFormat format) {
-		Spannable span = new SpannableString(format.connection + "\n" + format.name);
-		span.setSpan(new RelativeSizeSpan(0.5f), 0, format.connection.length(), 
-				Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		button.setText(span);
-		button.setTypeface(format.font);
-	}
-
 	/**
 	 * Initializes the button for the local story library
 	 */
@@ -121,12 +118,9 @@ public class Dashboard extends Activity {
 		Button localButton = (Button) findViewById(R.id.local_stories);
 		final Intent localIntent = new Intent(this, LocalStoriesActivity.class);
 
-		formatButton(localButton, new ButtonFormat(
-				getString(R.string.dashboard_local), 
-				getString(R.string.dashboard_nook), 
-				Typeface.createFromAsset(getApplicationContext().getAssets(), 
-						"fonts/homey.ttf")
-		));
+		new ButtonFormat(getString(R.string.dashboard_local),
+				getString(R.string.dashboard_nook), Typeface.createFromAsset(
+						getApplicationContext().getAssets(), "fonts/homey.ttf")).formatButton(localButton);
 		
 		localButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -143,12 +137,10 @@ public class Dashboard extends Activity {
 		Button onlineButton = (Button) findViewById(R.id.online_stories);
 		final Intent onlineIntent = new Intent(this, OnlineStoriesActivity.class);
 		
-		formatButton(onlineButton, new ButtonFormat(
-				getString(R.string.dashboard_online), 
-				getString(R.string.dashboard_club), 
-				Typeface.createFromAsset(getApplicationContext().getAssets(), 
-						"fonts/adventure.ttf")
-		));
+		new ButtonFormat(getString(R.string.dashboard_online),
+				getString(R.string.dashboard_club), Typeface.createFromAsset(
+						getApplicationContext().getAssets(),
+						"fonts/adventure.ttf")).formatButton(onlineButton);
 		
 		onlineButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
