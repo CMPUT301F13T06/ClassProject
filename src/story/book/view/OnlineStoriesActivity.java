@@ -54,9 +54,9 @@ import android.support.v4.app.NavUtils;
  */
 public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 
+	private ListAdapter adapter = new ListAdapter();
 	ListView listView;
 	ArrayList<HashMap<String, String>> sList;
-	SimpleAdapter sAdapter;
 	SearchView searchView;
 
 	private OnlineStoryController onlineController;
@@ -81,7 +81,7 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 			@Override
 			public void  onItemClick
 			(AdapterView<?> parent , View view, int pos, long id) {
-				onlineController.getStory(getFromAdapter(pos));
+				onlineController.getStory(adapter.getFromAdapter(pos));
 				readStory();
 			}});
 
@@ -89,10 +89,10 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 		luckyButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(sAdapter.getCount() > 0) {
+				if(adapter.getSAdapter().getCount() > 0) {
 					//generate a random story for the user
-					onlineController.getStory(getFromAdapter(new Random()
-					.nextInt(sAdapter.getCount())));
+					onlineController.getStory(adapter.getFromAdapter(new Random()
+					.nextInt(adapter.getSAdapter().getCount())));
 
 					readStory();
 				}
@@ -124,16 +124,10 @@ public class OnlineStoriesActivity extends Activity implements StoryView<Story>{
 		String[] from = new String[] {"Title", "Author", "Date", "SID"};
 		int[] to = new int[] {R.id.listItem1, R.id.listItem2, R.id.listItem3};
 
-		sAdapter = new SimpleAdapter(this, sList, R.layout.stories_list, from, to);
-		listView.setAdapter(sAdapter);
+		adapter.setSAdapter(new SimpleAdapter(this, sList,
+				R.layout.stories_list, from, to));
+		listView.setAdapter(adapter.getSAdapter());
 
-	}
-
-	/**
-	 * This method gets the position of the item of the adapter
-	 */
-	private int getFromAdapter(int pos){
-		return Integer.parseInt(((HashMap<String,String>) sAdapter.getItem(pos)).get("SID"));
 	}
 
 	/**
