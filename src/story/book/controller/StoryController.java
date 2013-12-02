@@ -71,6 +71,7 @@ public abstract class StoryController {
 				// Now that we are getting a new story,
 				// clear out illustrations that were downloaded for viewing
 				// the previous story
+				Log.d("delete viewed story", String.valueOf(oldSID));
 				io.deleteStory(oldSID);
 			}
 			
@@ -82,14 +83,18 @@ public abstract class StoryController {
 					//Since we were just viewing, restore the
 					//conflicted SID
 					changeLocalSID(conflicted, oldSID);
+					Log.d("restore SID from", String.valueOf(conflicted));
+					Log.d("restore SID to", String.valueOf(oldSID));
 				} else {
 					//Since we were downloading, delete the story with
 					//the conflicted SID as it has been updated with the downloaded
 					io.deleteStory(conflicted);
+					Log.d("delete updated story", String.valueOf(conflicted));
 				}
-				StoryApplication.setConflictedSID(-1);
 			}
 			
+			Log.d("clear conflicted SID SC", "-1");
+			StoryApplication.setConflictedSID(-1);
 			StoryApplication.setViewMode(false);
 		}
 	}

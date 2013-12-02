@@ -55,6 +55,7 @@ public class StoryInfoActivity extends Activity  {
 	
 	StoryInfo storyInfo;
 	Boolean calledByOnline;
+	Boolean downloaded;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,13 +75,14 @@ public class StoryInfoActivity extends Activity  {
 		displayStoryInfo();
 		
 		calledByOnline = getIntent().hasExtra("calledByOnline");
+		downloaded = false;
 		
 		final Intent intent = new Intent(this, StoryFragmentReadActivity.class);
 		Button viewButton = (Button) findViewById(R.id.view);
 		viewButton.setVisibility(View.VISIBLE);
 		viewButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				if (calledByOnline) {
+				if (calledByOnline && !downloaded) {
 					StoryApplication.setViewMode(true);
 				}
 				startActivity(intent);
@@ -95,6 +97,7 @@ public class StoryInfoActivity extends Activity  {
 				@Override
 				public void onClick(View v) {
 					onlineController.saveStory();
+					downloaded = true;
 				}
 			});
 		}
