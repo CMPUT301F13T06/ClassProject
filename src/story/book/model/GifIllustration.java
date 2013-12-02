@@ -18,8 +18,6 @@ import org.apache.commons.io.FileUtils;
 
 public class GifIllustration extends BinaryIllustration{
 
-	String content;
-
 	public GifIllustration(Uri path, Uri savePath) {
 		super();
 		setContent(savePath.getLastPathSegment());
