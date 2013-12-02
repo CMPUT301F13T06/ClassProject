@@ -43,61 +43,16 @@ public class GifIllustration extends Illustration<String>{
 
 	@Override
 	public View getView(String path, Boolean editMode, Context context) {
-		GifView gif = null;
-		try{
-			gif = new GifView(context, new File(path+content));
-		}
-		catch(Exception e) {}
+		GifView gif = new GifView(context, (path+content));
 		return gif;
 	}
 
-	public class GifView extends View {
-		private Movie mMovie;
-		private long mMovieStart;
-		private static final boolean DECODE_STREAM = true;
-		private byte[] streamToBytes(InputStream is) {
-			ByteArrayOutputStream os = new ByteArrayOutputStream(1024);
-			byte[] buffer = new byte[1024];
-			int len;
-			try {
-				while ((len = is.read(buffer)) >= 0) {
-					os.write(buffer, 0, len);
-				}
-			} catch (java.io.IOException e) {
-			}
-			return os.toByteArray();
-		}
-		public GifView(Context context, File gif) throws FileNotFoundException {
+	private class GifView extends WebView {
+		public GifView(Context context, String path) {
 			super(context);
-			setFocusable(true);
-			java.io.InputStream is;
-			// YOUR GIF IMAGE Here
-			is  = (new FileInputStream(gif)); 
-			if (DECODE_STREAM) {
-				mMovie = Movie.decodeStream(is);
-			} else {
-				byte[] array = streamToBytes(is);
-				mMovie = Movie.decodeByteArray(array, 0, array.length);
-			}
-		}
-		@Override
-		public void onDraw(Canvas canvas) {
-			long now = android.os.SystemClock.uptimeMillis();
-			if (mMovieStart == 0) { // first time
-				mMovieStart = now;
-			}
-			if (mMovie != null) {
-				int dur = mMovie.duration();
-				if (dur == 0) {
-					dur = 3000;
-				}
-				int relTime = (int) ((now - mMovieStart) % dur);
-				Log.d("", "real time :: " +relTime);
-				mMovie.setTime(relTime);
-				mMovie.draw(canvas, getWidth() - 200, getHeight()-200);
-				invalidate();
-			}
+			loadUrl("file://"+path);
 		}
 	}
+
 
 }
