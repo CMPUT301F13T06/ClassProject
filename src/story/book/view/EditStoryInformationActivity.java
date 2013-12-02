@@ -125,12 +125,15 @@ public class EditStoryInformationActivity extends Activity  {
 	 * Method that sets the information of the story entered by the user
 	 */
 	private void setStoryInfo() {
+		storyInfo();
+		storyInfoController.saveStory();
+	}
+
+	private void storyInfo() {
 		storyInfo.setTitle(editTitle.getText().toString());
 		storyInfo.setAuthor(editAuthor.getText().toString());
 		storyInfo.setGenre(editGenre.getText().toString());
 		storyInfo.setSynopsis(editSynopsis.getText().toString());
-		
-		storyInfoController.saveStory();
 	}
 
 	/**
