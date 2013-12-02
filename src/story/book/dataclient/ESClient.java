@@ -125,6 +125,28 @@ public class ESClient extends DataClient {
 	}
 	
 	/**
+	 *  Downloads a single binary illustration from the server.	 
+	 *  
+	 * @param BinaryIllustration to be uploaded
+	 * @param SID the illustration belongs to 
+	 */
+	private void downloadBinaryFile(String file, String sid_string) {
+		String path =  story_dir + sid_string + "/";
+		
+		try {
+			String server_read = new ESRead(binaries_folder).execute(sid_string+"/"+file).get();
+			Type type = new TypeToken<ESData<BinaryFile>>(){}.getType();
+			ESData<BinaryFile> es = (ESData<BinaryFile>) super.unSerialize(server_read, type);
+			BinaryFile binFile = es.getSource();
+			binFile.decode(path);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 *  Reads the in-use SID list from the server. 
 	 *  
 	 * @return SIDList
@@ -144,23 +166,37 @@ public class ESClient extends DataClient {
 		ESResponse<SIDList> es = (ESResponse<SIDList>) super.unSerialize(server_read, type);
 		return (ArrayList<String>) es.getIDs();
 	}
-
-	private ArrayList<String> readIllustrations(String sid_string) {
-		String server_read;
-		Type type;
-
+	
+	private ArrayList<String> readIllustrations(Story story) {
+		int SID = story.getStoryInfo().getSID();
+		String stringSID = String.valueOf(SID);
+		
 		ArrayList<String> list = new ArrayList<String>();
+		
+		HashMap<Integer, StoryFragment> fragmentMap = story.getStoryFragments();
 
-		try {
-			server_read = new ESRead("").execute(sid_string + "/_search?fields=_id" ).get();
-			type = new TypeToken<ESResponse<BinaryFile>>(){}.getType();
-			ESResponse<BinaryFile> bl_response = (
-					ESResponse<BinaryFile>) this.unSerialize(server_read, type);		
-			list  =  (ArrayList<String>) bl_response.getIDs();
-			Log.d(list.toString(), "more stuff");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		for (Integer key: fragmentMap.keySet()) {
+			StoryFragment f = fragmentMap.get(key);
+
+			// get Binary Illustrations files
+			ArrayList<Illustration> illusrations = f.getIllustrations();
+			for (Illustration i: illusrations) {
+				if (i instanceof BinaryIllustration) {
+					String file = ((BinaryIllustration)i).getContent();
+					downloadBinaryFile(FilenameUtils.removeExtension(file), stringSID );
+					//list.add(FilenameUtils.removeExtension(file));
+				}
+			}
+			
+			// get Binary Annotations files
+			ArrayList<Annotation> annotations = f.getAnnotations();
+			for (Annotation a: annotations) {
+				Illustration i = a.getIllustration();
+				if (i instanceof BinaryIllustration) {
+					String file = ((BinaryIllustration)i).getContent();
+					downloadBinaryFile(FilenameUtils.removeExtension(file), stringSID );
+				}
+			}
 		}
 
 		return list;
@@ -195,18 +231,9 @@ public class ESClient extends DataClient {
 
 			// Read the story from the server
 			Story story = readStory(sid_string);
+			
 			// Read the illustrations from the server
-			ArrayList<String> filenames = readIllustrations(sid_string);
-			String path =  story_dir + sid_string + "/";
-
-			// Now that we have both annotations and illustrations, decode the story
-			for (String file: filenames) {
-				String server_read = new ESRead(binaries_folder).execute(sid_string+"/"+file).get();
-				Type type = new TypeToken<ESData<BinaryFile>>(){}.getType();
-				ESData<BinaryFile> es = (ESData<BinaryFile>) super.unSerialize(server_read, type);
-				BinaryFile binFile = es.getSource();
-				binFile.decode(path);
-			}
+			ArrayList<String> filenames = readIllustrations(story);
 
 			return  story;
 
