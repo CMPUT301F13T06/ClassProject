@@ -17,6 +17,10 @@
 
 package story.book.controller;
 
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Set;
+
 import story.book.dataclient.IOClient;
 import story.book.model.Story;
 import story.book.model.StoryFragment;
@@ -66,6 +70,22 @@ public class StoryReadController {
 		return ioHelper.getStoryPath();
 	}
 	
+	public int getRandomFragmentID(int currentID) {
+		ArrayList<Integer> IDs = fragmentManager.getFragmentIDs();
+		int n = currentID;
+		if (IDs.size() == 1) {
+			return n;
+		}
+		
+		Random rand = new Random();
+		
+		while (n == currentID) {
+			n = rand.nextInt(IDs.size());
+		}
+		
+		return IDs.get(n);
+	}
+	
 	/**
 	 * Helper class responsible for managing the fragments and fragment IDs of
 	 * the controller's story object as well as the object itself.
@@ -87,6 +107,15 @@ public class StoryReadController {
 		public StoryFragment getStartingFragment() {
 			return (story.getStoryInfo().getStartingFragmentID() != -1) ? 
 					story.getStoryFragment(story.getStoryInfo().getStartingFragmentID()) : null;
+		}
+		
+		/**
+		 * 
+		 * @return returns all fragment IDs
+		 */
+		public ArrayList<Integer> getFragmentIDs() {
+			Set<Integer> keys =  story.getStoryFragments().keySet();
+			return new ArrayList<Integer>(keys);
 		}
 		
 		/**
