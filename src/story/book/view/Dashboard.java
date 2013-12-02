@@ -174,17 +174,21 @@ public class Dashboard extends Activity {
 	 * they do not enter anything, set the name to "Anonymous"
 	 */
 	private void setNickname() {
-		String name = enterName.getText().toString();
-		if (name.equals("")) {
-			name = defaultName;
-		}
-		
+		String name = name();
 		SharedPreferences settings = getPreferences(MODE_PRIVATE);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putString("Nickname", name);
 		editor.commit();
 		
 		StoryApplication.setNickname(name);
+	}
+
+	private String name() {
+		String name = enterName.getText().toString();
+		if (name.equals("")) {
+			name = defaultName;
+		}
+		return name;
 	}
 	
 	/**
