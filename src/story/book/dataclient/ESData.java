@@ -15,10 +15,15 @@ public class ESData<T> {
 	int _version;
 	boolean exists; // if a data item exists
 	double max_score;
+	T fields;
 	T _source; // the data
 
 	public T getSource() {
 		return _source;
+	}
+	
+	public T getFields() {
+		return fields;
 	}
 	
 	public String getID() {

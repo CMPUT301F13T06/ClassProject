@@ -248,38 +248,43 @@ public class ESClient extends DataClient {
 	public ArrayList<StoryInfo> search(String term) {
 		String server_read = "";
 		try {
-			server_read = new ESRead(stories_folder).execute("_search?q="+term.toLowerCase() ).get();
+			server_read = new ESRead(stories_folder).execute("_search?q="+term.toLowerCase()+"&fields=storyInfo" ).get();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Type type = new TypeToken<ESResponse<Story>>(){}.getType();
-		ESResponse<Story> es = (ESResponse<Story>) super.unSerialize(server_read, type);			
-
-		ArrayList<StoryInfo> storyInfoList = new ArrayList<StoryInfo>();
-		ArrayList<Story> stories = (ArrayList<Story>) es.getSources();
-		for(Story s: stories) {
-			storyInfoList.add(s.getStoryInfo());
-		}
-		return storyInfoList;
+		return getStoryInfoFromField(server_read);
 		
 	}
-
+	
+	private ArrayList<StoryInfo> getStoryInfoFromField(String server_read) {
+		Type type = new TypeToken<ESResponse<StoryInfoItem>>(){}.getType();
+		ESResponse<StoryInfoItem> es =  super.unSerialize(server_read, type);
+		ArrayList<StoryInfo> storyinfo = new ArrayList<StoryInfo>();
+		for(StoryInfoItem item : es.getFields())
+			storyinfo.add(item.storyInfo);
+		return storyinfo;	
+	}
+	
+	/**
+	 * This is really a strange class to explain.
+	 * When I search by a field, the items inside field are generated
+	 * automatically. And that field is named after the variable name.
+	 * 
+	 * Basically the shortest answer is that 'field' is 
+	 * never the type you are looking for but a container
+	 * of what you are looking for.
+	 * 
+	 * @author Anthony Ou
+	 * @see StoryInfoItem
+	 * @see getStoryInfoFromField
+	 */
+	private class StoryInfoItem{public StoryInfo storyInfo;}
+	
 	public ArrayList<StoryInfo> getStoryInfoList() {
 		try {
-			String server_read = new ESRead(stories_folder).execute("_search?").get();
-
-			Type type = new TypeToken<ESResponse<Story>>(){}.getType();
-			ESResponse<Story> es = (ESResponse<Story>) super.unSerialize(server_read, type);			
-
-			ArrayList<StoryInfo> storyInfoList = new ArrayList<StoryInfo>();
-			ArrayList<Story> stories = (ArrayList<Story>) es.getSources();
-			for(Story s: stories) {
-				storyInfoList.add(s.getStoryInfo());
-			}
-
-			return storyInfoList;			
-
+			String server_read = new ESRead(stories_folder).execute("_search?&fields=storyInfo").get();
+			return getStoryInfoFromField(server_read);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

@@ -34,6 +34,18 @@ public class ESResponse<T> {
 		return out;
 	}
 	
+	public Collection<T> getFields() {
+		Collection<T> out = new ArrayList<T>();
+		
+		if (hits.getTotal() > 0) {
+			for (ESData<T> essrt : getHits()) {
+				out.add( essrt.getFields() );
+			}
+		}
+		
+		return out;
+	}
+	
 	public Collection<String> getIDs() {
 		Collection<String> out = new ArrayList<String>();
 		
