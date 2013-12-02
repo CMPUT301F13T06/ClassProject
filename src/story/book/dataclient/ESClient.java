@@ -293,7 +293,8 @@ public class ESClient extends DataClient {
 
 	public Boolean checkSID(int SID) {
 		ArrayList<String> list = readSIDList();
-		if (!list.contains(Integer.valueOf(SID))) {
+		
+		if (!list.contains(String.valueOf(SID))) {
 			return true;
 		} else {
 			return false;
