@@ -95,15 +95,12 @@ public class ReadingFragment extends Fragment {
 		
 		if (db.size() > 1) {
 			// Set "I'm feeling lucky" button only if there are more than 1 decision branches
-			Random rand = new Random();
 			int n = SF.getFragmentID();
-			while (n == SF.getFragmentID()) {
-				n = rand.nextInt(db.size()+1);
-			}
-			
+	
 			Button luckyButton = new Button(c);
 			luckyButton.setText("I'm feeling lucky");
 			
+			n = SRC.getRandomFragmentID(n);
 			luckyButton.setOnClickListener(setListener(luckyButton, n));
 			buttonList.add(luckyButton);
 		}
