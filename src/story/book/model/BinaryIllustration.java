@@ -32,8 +32,7 @@ public abstract class BinaryIllustration extends Illustration<String> {
 
 		byte[] encoded = null;
 		try {
-			encoded =  Base64.encode(FileUtils.readFileToByteArray(file), Base64.NO_WRAP);
-			//encoded =  Base64.encode(packRaw(FileUtils.readFileToByteArray(file)), Base64.NO_WRAP);
+			encoded =  Base64.encode(packRaw(FileUtils.readFileToByteArray(file)), Base64.NO_WRAP);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
