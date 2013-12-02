@@ -29,7 +29,6 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.ContextMenu;
@@ -54,7 +53,7 @@ import android.widget.SimpleAdapter;
  * stories. This activity uses a controller LocalStoryController to get the
  * story information to display in the list. The controller is also used to save
  * stories. There is a "I'm Feeling Lucky" ala Google button that chooses a random
- * story for the user.
+ * story for the user. Users may also search for existing stories.
  * 
  * @author Nancy Pham-Nguyen
  * @author Anthony Ou
