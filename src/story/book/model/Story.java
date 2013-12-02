@@ -156,18 +156,4 @@ public class Story extends StoryModel<StoryView> {
 			fragmentIterator.next().removeBranchWithFragment(storyFragmentID);
 	}
 	
-	/**
-	 * Copies everything except inherited view list from StoryModel.
-	 * This is to recover from serialization as the view list cannot be
-	 * serialized.
-	 * 
-	 * @return a new Story object
-	 */
-	public Story copy() {
-		Story copy = new Story(this.getStoryInfo());
-		copy.fragmentList = this.fragmentList;
-		copy.nextFragmentID = this.nextFragmentID;
-		
-		return copy;
-	}
 }
