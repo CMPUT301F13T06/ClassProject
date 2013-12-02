@@ -16,7 +16,7 @@ import java.io.File;
 
 import org.apache.commons.io.FileUtils;
 
-public class GifIllustration extends Illustration<String>{
+public class GifIllustration extends BinaryIllustration{
 
 	String content;
 
@@ -29,16 +29,6 @@ public class GifIllustration extends Illustration<String>{
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	@Override
-	public String getContent() {
-		// TODO Auto-generated method stub
-		return content;
-	}
-
-	@Override
-	public void setContent(String content) {
-		this.content = content;
 	}
 
 	@Override
@@ -53,6 +43,4 @@ public class GifIllustration extends Illustration<String>{
 			loadUrl("file://"+path);
 		}
 	}
-
-
 }
