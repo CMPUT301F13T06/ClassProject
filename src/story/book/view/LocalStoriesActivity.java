@@ -62,9 +62,10 @@ import android.widget.SimpleAdapter;
 
 public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 
+	private ListAdapter adapter = new ListAdapter();
+
 	ListView listView;
 
-	SimpleAdapter sAdapter;
 	ArrayList<HashMap<String, String>> sList;
 
 	SearchView searchView;
@@ -91,7 +92,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 			public void onItemClick(AdapterView<?> parent, View view, int pos,
 					long id) {
 				// read story with a single tap.
-				localController.getStory(getFromAdapter(pos));
+				localController.getStory(adapter.getFromAdapter(pos));
 				readStory();
 			}
 		});
@@ -100,10 +101,10 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		luckyButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (sAdapter.getCount() > 0) {
+				if (adapter.getSAdapter().getCount() > 0) {
 					//generates a random story for the user
-					localController.getStory(getFromAdapter(new Random()
-							.nextInt(sAdapter.getCount())));
+					localController.getStory(adapter.getFromAdapter(new Random()
+							.nextInt(adapter.getSAdapter().getCount())));
 					readStory();
 				}
 			}
@@ -134,21 +135,12 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		String[] from = new String[] { "Title", "Author", "Date", "SID" };
 		int[] to = new int[] { R.id.listItem1, R.id.listItem2, R.id.listItem3 };
 
-		sAdapter = new SimpleAdapter(this, sList, R.layout.stories_list, from,
-				to);
-		listView.setAdapter(sAdapter);
+		adapter.setSAdapter(new SimpleAdapter(this, sList,
+				R.layout.stories_list, from, to));
+		listView.setAdapter(adapter.getSAdapter());
 
 	}
 	
-	/**
-     * This method gets the position of the item of the adapter
-     */
-	private int getFromAdapter(int pos) {
-		return Integer.parseInt(((HashMap<String, String>) sAdapter
-				.getItem(pos)).get("SID"));
-
-	}
-
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -187,7 +179,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 	 */
 	public void deleteStory() {
 		// if long click on story, give the option to delete the story
-		localController.deleteStory(getFromAdapter(position));
+		localController.deleteStory(adapter.getFromAdapter(position));
 		refreshList(localController.getStoryList());
 	}
 
@@ -213,7 +205,7 @@ public class LocalStoriesActivity extends Activity implements StoryView<Story> {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
 				.getMenuInfo();
 		position = info.position;
-		localController.getStory(getFromAdapter(position));
+		localController.getStory(adapter.getFromAdapter(position));
 
 		switch (item.getItemId()) {
 		case R.id.edit_story:
