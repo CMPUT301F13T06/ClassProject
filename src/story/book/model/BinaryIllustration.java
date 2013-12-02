@@ -29,7 +29,7 @@ public abstract class BinaryIllustration extends Illustration<String> {
 	 *@param path is the base file path that the binary file is stored at
 	 */
 	public byte[] encodeIllustration(String path) {
-		File file = new File(path + content.toString());
+		File file = new File(path + content);
 
 		byte[] encoded = null;
 		try {
@@ -59,5 +59,10 @@ public abstract class BinaryIllustration extends Illustration<String> {
 		zos.close();
 
 		return baos.toByteArray();
+	}
+	
+	public void deleteIllustration(String path) {
+		File file = new File(path + content);
+		FileUtils.deleteQuietly(file);
 	}
 }

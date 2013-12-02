@@ -423,6 +423,12 @@ public class StoryFragmentEditActivity extends FragmentActivity implements Story
 		case 1:
 			//Delete illustration
 			Log.d(String.valueOf(itemPos), "DEBUG: Item selected");
+			
+			Illustration i = illustrationList.get(itemPos).second;
+			if (i instanceof BinaryIllustration) {
+				((BinaryIllustration)i).deleteIllustration(SCC.getStoryPath());
+			}
+			
 			illustrationList.remove(itemPos);
 			displayFragment();
 			break;
