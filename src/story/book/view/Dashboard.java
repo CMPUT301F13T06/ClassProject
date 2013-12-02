@@ -26,18 +26,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.RelativeSizeSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * Activity that serves as the main menu where the user can 
@@ -51,6 +44,7 @@ import android.widget.Toast;
 
 public class Dashboard extends Activity {
 
+	private DashboardButtons dashboardButtons = new DashboardButtons();
 	private EditText enterName;
 	private String defaultName;
 	
@@ -69,91 +63,10 @@ public class Dashboard extends Activity {
 				"fonts/RobotoSlab-Light.ttf"));
 		
 		displayNickname();
-		initializeLocalButton();
-		initializeOnlineButton();
+		dashboardButtons.initializeLocalButton(this);
+		dashboardButtons.initializeOnlineButton(this);
 	}
 	
-	/**
-	 * Parameter object which defines the format of a button for the
-	 * <code>formatButton</code> method
-	 * @author Alex
-	 *
-	 */
-	private class ButtonFormat {
-		
-		public String connection;
-		public String name;
-		public Typeface font;
-		
-		/**
-		 * Constructor initializing the format attributes of a button
-		 * 
-		 * @param connection	local or online
-		 * @param name			name of the library
-		 * @param font			<code>Typeface</code> for the font
-		 */
-		public ButtonFormat(String connection, String name, Typeface font) {
-			this.connection = connection;
-			this.name = name;
-			this.font = font;
-		}
-
-		/**
-		 * Formats the specified button using attributes from the  <code>ButtonFormat</code> parameter object.
-		 * @param button 	the <code>Button</code> to format
-		 */
-		public void formatButton(Button button) {
-			Spannable span = new SpannableString(connection + "\n" + name);
-			span.setSpan(new RelativeSizeSpan(0.5f), 0, connection.length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-			button.setText(span);
-			button.setTypeface(font);
-		}
-	}
-	
-	/**
-	 * Initializes the button for the local story library
-	 */
-	private void initializeLocalButton() {
-		Button localButton = (Button) findViewById(R.id.local_stories);
-		final Intent localIntent = new Intent(this, LocalStoriesActivity.class);
-
-		new ButtonFormat(getString(R.string.dashboard_local),
-				getString(R.string.dashboard_nook), Typeface.createFromAsset(
-						getApplicationContext().getAssets(), "fonts/homey.ttf")).formatButton(localButton);
-		
-		localButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				//Navigate to the Local Stories
-				startActivity(localIntent);
-			}
-		});
-	}
-	
-	/**
-	 * Initializes the button for the online story library
-	 */
-	private void initializeOnlineButton() {
-		Button onlineButton = (Button) findViewById(R.id.online_stories);
-		final Intent onlineIntent = new Intent(this, OnlineStoriesActivity.class);
-		
-		new ButtonFormat(getString(R.string.dashboard_online),
-				getString(R.string.dashboard_club), Typeface.createFromAsset(
-						getApplicationContext().getAssets(),
-						"fonts/adventure.ttf")).formatButton(onlineButton);
-		
-		onlineButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				// Navigate to the Online Stories
-				if (StoryApplication.checkInternetConnected())
-					startActivity(onlineIntent);
-				// Tell user to connect to internet if there is no connection
-				else Toast.makeText(getApplicationContext(), 
-						R.string.no_internet_library, 
-						Toast.LENGTH_SHORT).show();
-			}
-		});
-	}
 	
 	@Override
 	protected void onPause() {
