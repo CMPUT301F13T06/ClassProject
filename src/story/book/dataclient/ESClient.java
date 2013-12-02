@@ -162,8 +162,8 @@ public class ESClient extends DataClient {
 			e.printStackTrace();
 			server_read = "";
 		} 
-		Type type = new TypeToken<ESResponse<SIDList>>(){}.getType();
-		ESResponse<SIDList> es = (ESResponse<SIDList>) super.unSerialize(server_read, type);
+		Type type = new TypeToken<ESResponse>(){}.getType();
+		ESResponse es = (ESResponse) super.unSerialize(server_read, type);
 		return (ArrayList<String>) es.getIDs();
 	}
 	
