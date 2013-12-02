@@ -52,22 +52,20 @@ ActivityInstrumentationTestCase2<story.book.view.Dashboard> {
 		
 		Story story = new Story(info);
 		StoryFragment fragment1 = new StoryFragment("Finding the Star");
-		// TODO
 		TextIllustration text = new TextIllustration("It was a dark, clear night.");
 		fragment1.addIllustration(text);
 		StoryFragment fragment2 = new StoryFragment("Preparing for the Journey");
-		//TextIllustration text2 = new TextIllustration("She ventured into the locked dungeons to retrieve some potions.");
-		//TextIllustration text3 = new TextIllustration("She could not carry everything, she had to choose between potion A and potion B.");
-		//fragment2.addIllustration(text2);
-		//fragment2.addIllustration(text3);
+		TextIllustration text2 = new TextIllustration("She ventured into the locked dungeons to retrieve some potions.");
+		TextIllustration text3 = new TextIllustration("She could not carry everything, she had to choose between potion A and potion B.");
+		fragment2.addIllustration(text2);
+		fragment2.addIllustration(text3);
 		story.addFragment(fragment1);
 		story.addFragment(fragment2);
 		
 		DecisionBranch branch = new DecisionBranch("She decides she must find the star.", fragment1.getFragmentID());
-		//DecisionBranch branch2 = new DecisionBranch("She declares she is too weak to find the star.", fragment2.getFragmentID);
+		DecisionBranch branch2 = new DecisionBranch("She declares she is too weak to find the star.", fragment2.getFragmentID());
 		fragment1.addDecisionBranch(branch);
-		//fragment2.addDecisionBranch(branch2);
-		
+		fragment2.addDecisionBranch(branch2);
 		
 		sample_story.add(story);
 		
@@ -126,7 +124,6 @@ ActivityInstrumentationTestCase2<story.book.view.Dashboard> {
 	public void testCheckSID() {
 		assertTrue(es.checkSID(500));
 		assertFalse(es.checkSID(600));
-		assertEquals(0, es.getSID());
 	}
 	
 }
