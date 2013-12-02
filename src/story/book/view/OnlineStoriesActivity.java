@@ -47,7 +47,8 @@ import android.support.v4.app.NavUtils;
  * Activity that allows the user to view stories from an available list of 
  * stories online and download them to their local stories list.
  * It uses a controller called OnlineStoryController. There is also an "I'm Feeling Lucky" ala Google
- * button that the user can select to choose a random story for them.
+ * button that the user can select to choose a random story for them. Users may also
+ * search for existing stories.
  * 
  * @author Nancy Pham-Nguyen
  * @author Anthony Ou
