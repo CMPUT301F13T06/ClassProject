@@ -28,7 +28,7 @@ import com.google.gson.reflect.TypeToken;
  */
 
 public class ESClient extends DataClient {	
-	private String def_folder = "stories/";
+	private String stories_folder = "stories/";
 	private String SID_folder = "SIDs/0";
 	private String Binary_folder = "binaries2/";
 	private String Annotations_folder="";
@@ -50,7 +50,7 @@ public class ESClient extends DataClient {
 			String story_string = super.serialize(story);
 
 			// Write the Story to the server
-			String result = new ESWrite(def_folder).execute(stringSID, story_string).get();
+			String result = new ESWrite(stories_folder).execute(stringSID, story_string).get();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
@@ -126,15 +126,15 @@ public class ESClient extends DataClient {
 	private ArrayList<String> readSIDList() {
 		String server_read;
 		try {
-			server_read = new ESRead(def_folder).execute("_search?fields=_id").get();
+			server_read = new ESRead(stories_folder).execute("_search?fields=_id").get();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			server_read = "";
 		} 
-		Type type = new TypeToken<ES_ID_Response>(){}.getType();
-		ES_ID_Response es = (ES_ID_Response) super.unSerialize(server_read, type);
-		return (ArrayList<String>) es.getSources();
+		Type type = new TypeToken<ESResponse<SIDList>>(){}.getType();
+		ESResponse<SIDList> es = (ESResponse<SIDList>) super.unSerialize(server_read, type);
+		return (ArrayList<String>) es.getIDs();
 	}
 
 	private ArrayList<String> readIllustrations(String sid_string) {
@@ -145,12 +145,11 @@ public class ESClient extends DataClient {
 
 		try {
 			server_read = new ESRead("").execute(sid_string + "/_search?fields=_id" ).get();
-			type = new TypeToken<ES_ID_Response>(){}.getType();
-			ES_ID_Response bl_response = (
-					ES_ID_Response) this.unSerialize(server_read, type);		
-			list  =  (ArrayList<String>) bl_response.getSources();
+			type = new TypeToken<ESResponse<BinaryFile>>(){}.getType();
+			ESResponse<BinaryFile> bl_response = (
+					ESResponse<BinaryFile>) this.unSerialize(server_read, type);		
+			list  =  (ArrayList<String>) bl_response.getIDs();
 			Log.d(list.toString(), "more stuff");
-
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -163,7 +162,7 @@ public class ESClient extends DataClient {
 		Story story = null;
 		// Get the story from the server
 		try {
-			String server_read = new ESRead(def_folder).execute(sid_string ).get();
+			String server_read = new ESRead(stories_folder).execute(sid_string ).get();
 			Type type = new TypeToken<ESData<Story>>(){}.getType();
 			ESData<Story> es = (ESData<Story>) super.unSerialize(server_read, type);
 
@@ -213,7 +212,7 @@ public class ESClient extends DataClient {
 
 	public ArrayList<StoryInfo> getStoryInfoList() {
 		try {
-			String server_read = new ESRead(def_folder).execute("_search?").get();
+			String server_read = new ESRead(stories_folder).execute("_search?").get();
 
 			Type type = new TypeToken<ESResponse<Story>>(){}.getType();
 			ESResponse<Story> es = (ESResponse<Story>) super.unSerialize(server_read, type);			

@@ -17,4 +17,8 @@ public class ESDataMatches<T> {
 	public Collection<ESData<T>> getHits() {
 		return hits;
 	}
+	
+	public int getTotal() {
+		return total;
+	}
 }

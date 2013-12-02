@@ -17,7 +17,7 @@ public class ESResponse<T> {
 	transient Object _shards;
 	ESDataMatches<T> hits;
 	boolean exists;
-
+	
 	public Collection<ESData<T>> getHits() {
 		return hits.getHits();        
 	}
@@ -25,8 +25,22 @@ public class ESResponse<T> {
 	public Collection<T> getSources() {
 		Collection<T> out = new ArrayList<T>();
 		
-		for (ESData<T> essrt : getHits()) {
-			out.add( essrt.getSource() );
+		if (hits.getTotal() > 0) {
+			for (ESData<T> essrt : getHits()) {
+				out.add( essrt.getSource() );
+			}
+		}
+		
+		return out;
+	}
+	
+	public Collection<String> getIDs() {
+		Collection<String> out = new ArrayList<String>();
+		
+		if (hits.getTotal() > 0) {
+			for (ESData<T> essrt : getHits()) {
+				out.add( essrt.getID() );
+			}
 		}
 
 		return out;

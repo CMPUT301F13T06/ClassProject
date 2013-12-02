@@ -20,4 +20,8 @@ public class ESData<T> {
 	public T getSource() {
 		return _source;
 	}
+	
+	public String getID() {
+		return _id;
+	}
 }
