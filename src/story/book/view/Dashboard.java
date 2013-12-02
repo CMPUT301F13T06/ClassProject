@@ -35,7 +35,8 @@ import android.widget.TextView;
 /**
  * Activity that serves as the main menu where the user can 
  * navigate to a list of their local stories or to a list of online stories.
- * Every view is able to navigate back to this Dashboard.
+ * Every view is able to navigate back to this Dashboard. There is also a help 
+ * button that users may address if the user does not know how to use a feature.
  * 
  * @author Nancy Pham-Nguyen
  * @author Vina Nguyen
