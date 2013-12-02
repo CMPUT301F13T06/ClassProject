@@ -16,6 +16,12 @@ import java.io.File;
 
 import org.apache.commons.io.FileUtils;
 
+/**
+ * Gif images come from here
+ * 
+ * @author Anthony Ou
+ *
+ */
 public class GifIllustration extends BinaryIllustration{
 
 	public GifIllustration(Uri path, Uri savePath) {
@@ -32,6 +38,7 @@ public class GifIllustration extends BinaryIllustration{
 	@Override
 	public View getView(String path, Boolean editMode, Context context) {
 		GifView gif = new GifView(context, (path+content));
+		gif.setDrawingCacheEnabled(true);
 		return gif;
 	}
 
