@@ -45,7 +45,6 @@ public class ESWrite extends ESCommand {
 				writer.write(data);
 				writer.flush();
 				writer.close();
-				
 			}while(conn.getResponseCode() != HttpURLConnection.HTTP_OK);
 			closeConnection();
 		} catch (IOException e) {

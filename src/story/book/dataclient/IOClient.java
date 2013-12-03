@@ -1,10 +1,9 @@
 package story.book.dataclient;
 
-import java.io.*;
-import java.text.SimpleDateFormat;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 
@@ -12,7 +11,6 @@ import story.book.model.Story;
 import story.book.model.StoryInfo;
 import android.content.Context;
 import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
 
 /**
@@ -49,14 +47,15 @@ public class IOClient extends DataClient {
 	 *            The story to be saved
 	 */
 	public void saveStory(Story aStory) {
-		try {
-			String SID = String.valueOf(aStory.getStoryInfo().getSID());
-			new File(story_dir + SID).mkdir();
-			FileUtils.write(new File(story_dir + SID + "/" + SID), 
-					super.serialize(aStory));
-		} catch (IOException e) {
-			Log.d("error saving a story", "IOclient errors");
-		}
+		if(aStory != null)
+			try {
+				String SID = String.valueOf(aStory.getStoryInfo().getSID());
+				new File(story_dir + SID).mkdir();
+				FileUtils.write(new File(story_dir + SID + "/" + SID), 
+						super.serialize(aStory));
+			} catch (Exception e) {
+				Log.d("error saving a story", "IOclient errors");
+			}
 	}
 
 	/**
@@ -73,7 +72,7 @@ public class IOClient extends DataClient {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Use this when you want a free media file name
 	 * 
@@ -85,7 +84,7 @@ public class IOClient extends DataClient {
 		return Uri.fromFile(
 				new File(dir, Calendar.getInstance().getTimeInMillis()+Extension));
 	}
-	
+
 	/**
 	 * 
 	 * @return a list of all the SIDs on the internal device.
@@ -116,7 +115,7 @@ public class IOClient extends DataClient {
 		}
 		return listOfStoryInfo;
 	}
-	
+
 	/**
 	 * @return the file path to the application's storage directory
 	 */
@@ -127,7 +126,7 @@ public class IOClient extends DataClient {
 	public Boolean checkSID(int SID) {
 		return getStoryList().contains(String.valueOf(SID)) ? false : true;
 	}
-	
+
 	public void moveDirectory(int oldSID, int newSID) {
 		new File(story_dir+oldSID+"/"+oldSID).renameTo(new File(story_dir+oldSID+"/"+newSID));
 		new File(story_dir+oldSID).renameTo(new File(story_dir+newSID));

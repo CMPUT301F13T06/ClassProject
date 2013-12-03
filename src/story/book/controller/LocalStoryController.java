@@ -32,27 +32,29 @@ import story.book.view.StoryApplication;
  *
  */
 public class LocalStoryController extends StoryController {
-	
+
 	/**
 	 * Sets the current application Story to the locally stored Story with 
 	 * matching SID.
 	 * 
 	 * @param SID the SID of the Story to fetch
 	 */
-	public void getStory(int SID) {		
-		StoryApplication.setCurrentStory(io.getStory(SID));
+	public void getStory(int SID) {
+		Story story = io.getStory(SID);
+		if(story != null)
+			StoryApplication.setCurrentStory(story);
 	}
-	
+
 	/**
 	 * Returns the list of StoryInfo corresponding to all locally stored 
 	 * stories.
 	 */
 	public ArrayList<StoryInfo> getStoryList() {
 		super.clearViewedStory();
-		
+
 		return io.getStoryInfoList();
 	}
-	
+
 	/**
 	 * Instantiates a new Story object and sets the current application Story
 	 * to the new object.
@@ -70,7 +72,7 @@ public class LocalStoryController extends StoryController {
 	public ArrayList<StoryInfo> search(String term) {
 		return io.search(term);
 	}
-	
+
 	/**
 	 * Deletes the locally stored Story with the specified SID.
 	 * 
