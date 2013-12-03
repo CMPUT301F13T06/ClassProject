@@ -159,7 +159,7 @@ public class IOClient extends DataClient {
 			Log.d("reading file error", "getStory() error");
 			new File(story_dir + SID ).delete();
 			e.printStackTrace();
-			return new Story(new StoryInfo("", -1));
+			return null;
 		}
 	}
 }
