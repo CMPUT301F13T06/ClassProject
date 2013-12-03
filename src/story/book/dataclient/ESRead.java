@@ -2,6 +2,9 @@ package story.book.dataclient;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+
+import android.util.Log;
 
 /**
  * ESRead is an ESCommand that reads from the Elastic Search server. 
@@ -34,16 +37,18 @@ public class ESRead extends ESCommand {
 			conn.setChunkedStreamingMode(0);
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept","application/json");
+			conn.setRequestProperty("Connection","keep-alive");
 			conn.connect();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			String server_read = "";
 			String inputLine;
-			while ((inputLine = reader.readLine()) != null)
-				server_read += inputLine;
-			
+			BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			do{
+				while ((inputLine = reader.readLine()) != null)
+					server_read += inputLine;
+			}while(conn.getResponseCode() != HttpURLConnection.HTTP_OK);
 			reader.close();
 			closeConnection();
-			
+
 			return server_read;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
