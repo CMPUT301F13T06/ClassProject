@@ -66,7 +66,7 @@ public class IOClient extends DataClient {
 	 */
 	public void deleteStory(int SID) {
 		try{
-			FileUtils.deleteDirectory(new File(story_dir + "/" + SID));
+			FileUtils.deleteDirectory(new File(story_dir + SID));
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -110,7 +110,12 @@ public class IOClient extends DataClient {
 			}
 			catch (Exception e)
 			{
-				new File(story_dir,file).delete();
+				try {
+					FileUtils.deleteDirectory(new File(story_dir,file));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		}
 		return listOfStoryInfo;
@@ -156,7 +161,12 @@ public class IOClient extends DataClient {
 					+ SID + "/" + SID)),Story.class);
 		} catch (Exception e) {
 			Log.d("reading file error", "getStory() error");
-			new File(story_dir + SID ).delete();
+			try {
+				FileUtils.deleteDirectory(new File(story_dir + SID));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 			return null;
 		}
